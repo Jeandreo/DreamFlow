@@ -1,0 +1,10 @@
+body, html {
+    font-family: Jost, Helvetica, "sans-serif";
+}
+
+@media (min-width: 992px){
+    :root {
+        --bs-app-sidebar-width: 335px;
+        --bs-app-sidebar-width-actual: 335px;
+    }
+}
