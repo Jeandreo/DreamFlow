@@ -20,7 +20,12 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role',
         'password',
+        'status',
+        'filed_by',
+        'created_by',
+        'updated_by',
     ];
 
     /**

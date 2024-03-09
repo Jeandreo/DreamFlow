@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,7 +47,12 @@ class ProjectController extends Controller
     {
 
         // GET ALL DATA
-        return view('pages.projects.create');
+        $users = User::where('status', 1)->get();
+
+        // RENDER VIEW
+        return view('pages.projects.create')->with([
+            'users' => $users,
+        ]);
 
     } 
 

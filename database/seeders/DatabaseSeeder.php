@@ -19,8 +19,9 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Administração',
             'email' => 'atendimento@dreamake.com.br',
-            'email_verified_at' => now(),
+            'role' => 1,
             'password' => Hash::make('Inc@ns4v3l_2024'),
+            'created_by' => 0,
         ]);
 
         \App\Models\User::factory(10)->create();

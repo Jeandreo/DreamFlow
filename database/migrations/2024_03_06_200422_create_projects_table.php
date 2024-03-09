@@ -14,15 +14,16 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('url')->nullable();
+            $table->string('url');
+            $table->boolean('image')->default(false);
             $table->longText('description')->nullable();
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
-            $table->integer('status')->default(1);
-            $table->integer('priority')->default(0);
-            $table->integer('category')->nullable();
+            $table->integer('position')->default(0);
+            $table->integer('category_id')->nullable();
             $table->integer('client_id')->nullable();
             $table->integer('manager_id')->nullable();
+            $table->integer('status')->default(1);
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();
