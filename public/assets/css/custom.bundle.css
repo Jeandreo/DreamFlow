@@ -6,6 +6,7 @@ body, html {
     :root {
         --bs-app-sidebar-width: 335px;
         --bs-app-sidebar-width-actual: 335px;
+        --bs-border-radius: 15px;
     }
 }
 
@@ -27,4 +28,20 @@ body, html {
     div:hover, main:hover, ol:hover, pre:hover, span:hover, ul:hover {
         scrollbar-color: #ffffff0d transparent;
     }
+}
+
+.rounded {
+    border-radius: 15px !important;
+}
+
+/* PROJECTS */
+
+.separator-vertical{
+    display: block;
+    height: 50px;
+    border-right: 1px dashed #e1e3ea;
+}
+
+.shadow-list{
+    box-shadow: 0px 3px 8px #00000015;
 }

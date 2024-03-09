@@ -14,36 +14,22 @@
         <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
             <!--begin::Page-->
             <div class="app-page  flex-column flex-column-fluid " id="kt_app_page">
-                <!--begin::Header-->
-                @include('layouts.header')
-                <!--end::Header-->        
+                @if(false)
+                    <!--begin::Header-->
+                    @include('layouts.header')
+                    <!--end::Header-->   
+                @endif     
                 <!--begin::Wrapper-->
-                <div class="app-wrapper  flex-column flex-row-fluid " id="kt_app_wrapper">
+                <div class="app-wrapper  flex-column flex-row-fluid @if(true) mt-0 @endif" id="kt_app_wrapper">
                     <!--begin::Sidebar-->
                     @include('layouts.sidebar')
-                    <!--end::Sidebar-->                
+                    <!--end::Sidebar-->
                     <!--begin::Main-->
-                    <div class="app-main flex-column flex-row-fluid " id="kt_app_main">
-                        <!--begin::Content wrapper-->
-                        <div class="d-flex flex-column flex-column-fluid">                             
-                            <!--begin::Content-->
-                            <div id="kt_app_content" class="app-content  flex-column-fluid py-6" >
-                                <!--begin::Content container-->
-                                <div id="kt_app_content_container" class="app-container  container-fluid ">
-                                    <!--begin::Row-->
-									@yield('content')
-                                    <!--end::Row-->
-                                </div>
-                                <!--end::Content container-->
-                            </div>
-                            <!--end::Content-->	
-                        </div>
-                        <!--end::Content wrapper-->
-                        <!--begin::Footer-->
-                       @include('layouts.footer')
-                        <!--end::Footer-->                            
-                    </div>
+                    @yield('content')
                     <!--end:::Main-->
+                    {{-- <!--begin::Footer-->
+                    @include('layouts.footer')
+                    <!--end::Footer-->          --}}
                 </div>
                 <!--end::Wrapper-->
             </div>
@@ -60,14 +46,16 @@
 		<!--end::Modals-->
         <!--begin::Javascript-->
         <script>
-            var hostUrl = "/metronic8/demo1/assets/";        
+            var hostUrl = "assets/";
         </script>
         <!--begin::Global Javascript Bundle(mandatory for all pages)-->
         <script src="{{ asset('/assets/plugins/global/plugins.bundle.js') }}"></script>
         <script src="{{ asset('/assets/js/scripts.bundle.js') }}"></script>
 		<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/l10n/pt.min.js"></script>
         <script src="{{ asset('/assets/js/custom.bundle.js') }}"></script>
         <!--end::Global Javascript Bundle-->
+        @yield('custom-footer')
         <!--end::Javascript-->
     </body>
     <!--end::Body-->

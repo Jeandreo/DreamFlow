@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
+    
     protected $request;
     private $repository;
     
@@ -94,10 +95,12 @@ class ProjectController extends Controller
     {
         // GET ALL DATA
         $contents = $this->repository->find($id);
+        $users = User::where('status', 1)->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.projects.show')->with([
             'contents' => $contents,
+            'users' => $users,
         ]);
     }
 
@@ -114,9 +117,7 @@ class ProjectController extends Controller
         $users = User::where('status', 1)->get();
 
         // VERIFY IF EXISTS
-        if(!$content){
-            return redirect()->back();
-        }
+        if(!$content) return redirect()->back();
 
         // GENERATES DISPLAY WITH DATA
         return view('pages.projects.edit')->with([
@@ -182,4 +183,5 @@ class ProjectController extends Controller
             ->with('message', 'Projeto ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
 
     }
+
 }

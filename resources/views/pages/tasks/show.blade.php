@@ -198,7 +198,6 @@
 
 		// AJAX
         $.ajax({
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: 'POST',
             url: "{{ route('tasks.store') }}",
             success: function(data){

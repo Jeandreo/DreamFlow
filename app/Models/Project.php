@@ -41,4 +41,12 @@ class Project extends Model
         return $this->HasOne(ProjectCategory::class, 'id', 'category_id');
     }
 
+    /**
+     * Get the brand associated with the user.
+     */
+     public function manager(): HasOne
+    {
+        return $this->HasOne(User::class, 'id', 'manager_id');
+    }
+
 }

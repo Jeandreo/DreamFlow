@@ -115,7 +115,7 @@ $('.upload-type').change(function () {
 });
 
 // GENERATE TABLES
-function loadTables(tableSelector = '.dmk-datatables', items = 25, order = undefined) {
+function loadDataTable(tableSelector = '.dmk-datatables', items = 25, order = undefined) {
 
     // SELECT TABLE
     const table = $(tableSelector);
@@ -178,6 +178,6 @@ function onlyUrl(getUrl = '.get-to-url', onlyUrl = '.only-url'){
 
 
 // CALL FUNCTIONS
-loadTables();
+loadDataTable();
 generateFlatpickr();
 onlyUrl();

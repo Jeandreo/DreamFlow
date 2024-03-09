@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,13 +42,12 @@ Route::middleware(['auth'])->group(function () {
         // TASKS
         Route::prefix('tarefas')->group(function () {
             Route::name('tasks.')->group(function () {
-                Route::get('/', [StatusController::class, 'index'])->name('index');
-                Route::get('/adicionar', [StatusController::class, 'create'])->name('create');
-                Route::post('/adicionar', [StatusController::class, 'store'])->name('store');
-                Route::get('/visualizando/{id}', [StatusController::class, 'show'])->name('show');
-                Route::get('/desabilitar/{id}', [StatusController::class, 'destroy'])->name('destroy');
-                Route::get('/editar/{id}', [StatusController::class, 'edit'])->name('edit');
-                Route::put('/editar/{id}', [StatusController::class, 'update'])->name('update');
+                Route::get('/', [TaskController::class, 'index'])->name('index');
+                Route::post('/adicionar', [TaskController::class, 'store'])->name('store');
+                Route::get('/visualizando/{id}', [TaskController::class, 'show'])->name('show');
+                Route::get('/desabilitar/{id}', [TaskController::class, 'destroy'])->name('destroy');
+                Route::get('/editar/{id}', [TaskController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [TaskController::class, 'update'])->name('update');
             });
         });
 
