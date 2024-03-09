@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title-page', 'Adicionar Projeto')
-@section('title-toolbar', 'Adicionar Projeto')
+@section('title-page', 'Editar Projeto')
+@section('title-toolbar', 'Editar Projeto')
 
 @section('content')
 @include('layouts.title')

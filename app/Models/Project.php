@@ -20,7 +20,7 @@ class Project extends Model
     protected $fillable = [
         'name',
         'url',
-        'image',
+        'color',
         'description',
         'start_date',
         'end_date',
@@ -33,20 +33,12 @@ class Project extends Model
         'updated_by',
     ];
 
-    // /**
-    //  * Get the brand associated with the user.
-    //  */
-    // public function brand(): HasOne
-    // {
-    //     return $this->hasOne(Brand::class, 'id', 'brand_id');
-    // }
-
-    // /**
-    //  * Get the subbrand associated with the user.
-    //  */
-    // public function subBrand(): HasMany
-    // {
-    //     return $this->hasOne(SubBrand::class, 'id', 'sub_brand_id');
-    // }
+    /**
+     * Get the brand associated with the user.
+     */
+     public function category(): HasOne
+    {
+        return $this->HasOne(ProjectCategory::class, 'id', 'category_id');
+    }
 
 }

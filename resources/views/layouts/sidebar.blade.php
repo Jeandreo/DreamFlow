@@ -1,10 +1,10 @@
-<div id="kt_app_sidebar" class="app-sidebar  flex-column " 
+<div id="kt_app_sidebar" class="app-sidebar  flex-column " style="backgroundw: url('{{ asset('assets/media/images/bg_colors.jpg') }}'); background-size: cover;"
     data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="225px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle"      
     >
     <!--begin::Logo-->
     <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
         <!--begin::Logo image-->
-        <a href="/metronic8/demo1/index.html">
+        <a href="{{ route('index') }}">
         <img alt="Logo" src="{{ asset('/assets/media/logos/default-dark.svg') }}" class="h-25px app-sidebar-logo-default"/>
         <img alt="Logo" src="{{ asset('/assets/media/logos/default-small.svg') }}" class="h-20px app-sidebar-logo-minimize"/>
         </a>
@@ -118,19 +118,20 @@
                         </div>
                         <!--end:Menu item-->
                         <!--end::Heading-->
+                        @foreach (projects() as $project)
                         <!--begin::Menu Item-->
                         <div class="menu-item">
                             <!--begin::Menu link-->
-                            <a class="menu-link" href="{{ route('index') }}">
+                            <a class="menu-link" href="{{ route('projects.show', $project->id) }}">
                                 <!--begin::Bullet--> 
                                 <span class="menu-icon">
-                                <span class="bullet bullet-dot h-10px w-10px bg-primary">
+                                <span class="bullet bullet-dot h-10px w-10px" style="background: {{ $project->color }};">
                                 </span>
                                 </span>                      
                                 <!--end::Bullet--> 
                                 <!--begin::Title-->
                                 <span class="menu-title">
-                                Google Ads                </span>
+                                {{ $project->name }}                </span>
                                 <!--end::Title-->
                                 <!--begin::Badge--> 
                                 <span class="menu-badge">
@@ -142,54 +143,7 @@
                             <!--end::Menu link-->                
                         </div>
                         <!--end::Menu Item-->
-                        <!--begin::Menu Item-->
-                        <div class="menu-item">
-                            <!--begin::Menu link-->
-                            <a class="menu-link" href="{{ route('index') }}">
-                                <!--begin::Bullet--> 
-                                <span class="menu-icon">
-                                <span class="bullet bullet-dot h-10px w-10px bg-success">
-                                </span>
-                                </span>                      
-                                <!--end::Bullet--> 
-                                <!--begin::Title-->
-                                <span class="menu-title">
-                                AirStoke App                </span>
-                                <!--end::Title-->
-                                <!--begin::Badge--> 
-                                <span class="menu-badge">
-                                <span class="badge badge-custom">
-                                2                    </span>
-                                </span>                      
-                                <!--end::Badge-->                                      
-                            </a>
-                            <!--end::Menu link-->                
-                        </div>
-                        <!--end::Menu Item-->
-                        <!--begin::Menu Item-->
-                        <div class="menu-item">
-                            <!--begin::Menu link-->
-                            <a class="menu-link" href="{{ route('index') }}">
-                                <!--begin::Bullet--> 
-                                <span class="menu-icon">
-                                <span class="bullet bullet-dot h-10px w-10px bg-warning">
-                                </span>
-                                </span>                      
-                                <!--end::Bullet--> 
-                                <!--begin::Title-->
-                                <span class="menu-title">
-                                Internal Tasks                </span>
-                                <!--end::Title-->
-                                <!--begin::Badge--> 
-                                <span class="menu-badge">
-                                <span class="badge badge-custom">
-                                37                    </span>
-                                </span>                      
-                                <!--end::Badge-->                                      
-                            </a>
-                            <!--end::Menu link-->                
-                        </div>
-                        <!--end::Menu Item-->
+                        @endforeach
                     </div>
                     <!--begin:Menu item-->
                     <div  class="menu-item pt-5" >

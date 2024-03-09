@@ -45,7 +45,6 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        dd(123);
         // GET ALL DATA
         $users = User::where('status', 1)->get();
 
@@ -53,7 +52,6 @@ class ProjectController extends Controller
         return view('pages.projects.create')->with([
             'users' => $users,
         ]);
-
     } 
 
     /**
@@ -65,17 +63,6 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
 
-        // VERIFY IF TITLE IS UNIQUE
-        $existName = $this->repository->where('name', $request->name)->exists();
-
-        // IF EXISTS
-        if($existName){
-            // REDIRECT AND MESSAGES
-            return redirect()
-                ->route('core.ink.brands.create')
-                ->with('message', 'A marca <b>'. $request->name . '</b> já existe.');
-        }
-
         // GET FORM DATA
         $data = $request->all();
 
@@ -83,13 +70,35 @@ class ProjectController extends Controller
         $data['created_by'] = Auth::id();
         
         // SEND DATA
-        $insertTable = $this->repository->create($data);
+        $created = $this->repository->create($data);
+
+        // SAVE AND RENAME IMAGE
+        if($created && $request->hasFile('image')){
+            $request->file('image')->storeAs('public/images', $created->id . '.jpg');
+        }
 
         // REDIRECT AND MESSAGES
         return redirect()
-                ->route('core.projects.index')
-                ->with('message', 'Projeto <b>'. $insertTable->name . '</b> adicionado com sucesso.');
+                ->route('projects.index')
+                ->with('message', 'Projeto adicionado com sucesso.');
 
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        // GET ALL DATA
+        $contents = $this->repository->find($id);
+
+        // RETURN VIEW WITH DATA
+        return view('pages.projects.show')->with([
+            'contents' => $contents,
+        ]);
     }
 
     /**
@@ -102,6 +111,7 @@ class ProjectController extends Controller
     {
         // GET ALL DATA
         $content = $this->repository->find($id);
+        $users = User::where('status', 1)->get();
 
         // VERIFY IF EXISTS
         if(!$content){
@@ -109,7 +119,10 @@ class ProjectController extends Controller
         }
 
         // GENERATES DISPLAY WITH DATA
-        return view('pages.projects..edit')->with(['content' => $content]);
+        return view('pages.projects.edit')->with([
+            'content' => $content,
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -122,15 +135,6 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
 
-        // VERIFY IF TITLE IS UNIQUE
-        $existName = $this->repository->where('name', $request->name)->where('id', '!=', $id)->count();
-        if($existName > 0){
-            // REDIRECT AND MESSAGES
-            return redirect()
-            ->route('core.ink.brands.edit', $id)
-            ->with('message', 'A marca <b>'. $request->name . '</b> já existe.');
-        }
-
         // VERIFY IF EXISTS
         if(!$content = $this->repository->find($id))
         return redirect()->back();
@@ -142,12 +146,17 @@ class ProjectController extends Controller
         $data['updated_by'] = Auth::id();
         
         // STORING NEW DATA
-        $content->update($data);
+        $updated = $content->update($data);
+
+        // SAVE AND RENAME IMAGE
+        if($updated && $request->hasFile('image')){
+            $request->file('image')->storeAs('public/images', $id . '.jpg');
+        }
 
         // REDIRECT AND MESSAGES
         return redirect()
-        ->route('core.ink.brands.edit', $id)
-        ->with('message', 'Marca <b>'. $request->name . '</b> atualizada com sucesso.');
+            ->route('projects.edit', $id)
+            ->with('message', 'Projeto editado com sucesso.');
 
     }
 
@@ -162,21 +171,15 @@ class ProjectController extends Controller
         
         // GET DATA
         $content = $this->repository->find($id);
+        $status = $content->status == true ? false : true;
 
         // STORING NEW DATA
-        if($content->status == 1){
-            $this->repository->where('id', $id)->update(['status' => 0, 'filed_by' => Auth::id()]);
-            $message = 'desabilitada';
-        } else {
-            $this->repository->where('id', $id)->update(['status' => 1]);
-            $message = 'habilitada';
-        }
-        
+        $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
         // REDIRECT AND MESSAGES
         return redirect()
-        ->route('core.ink.brands.index')
-        ->with('message', 'Marca <b>'. $content->name . '</b> '. $message .' com sucesso.');
+            ->route('projects.index')
+            ->with('message', 'Projeto ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
 
     }
 }

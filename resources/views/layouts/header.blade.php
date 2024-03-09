@@ -11,7 +11,7 @@
                         <!--end::Sidebar mobile toggle-->
                         <!--begin::Mobile logo-->
                         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-                            <a href="/metronic8/demo1/index.html" class="d-lg-none">
+                            <a href="{{ route('index') }}" class="d-lg-none">
                             <img alt="Logo" src="{{ asset('/assets/media/logos/default-small.svg') }}" class="h-30px"/>
                             </a>
                         </div>
@@ -3923,8 +3923,8 @@
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5">
-                                            <a href="/metronic8/demo1/authentication/layouts/corporate/sign-in.html" class="menu-link px-5">
-                                            Sign Out
+                                            <a href="{{ route('logout') }}" class="menu-link px-5">
+                                            Sair
                                             </a>
                                         </div>
                                         <!--end::Menu item-->

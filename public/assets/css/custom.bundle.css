@@ -8,3 +8,23 @@ body, html {
         --bs-app-sidebar-width-actual: 335px;
     }
 }
+
+[type="color"]{
+    cursor: pointer;
+    height: 44px;
+}
+
+.flatpickr {
+    cursor: pointer;
+}
+
+@media (min-width: 992px){
+    div, main, ol, pre, span, ul {
+        scrollbar-width: thin;
+        scrollbar-color: #ffffff00 transparent;
+    }
+
+    div:hover, main:hover, ol:hover, pre:hover, span:hover, ul:hover {
+        scrollbar-color: #ffffff0d transparent;
+    }
+}
