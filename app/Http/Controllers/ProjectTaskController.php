@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
+use App\Models\Project;
+use App\Models\ProjectTask;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class TaskController extends Controller
+class ProjectTaskController extends Controller
 {
-    
     protected $request;
     private $repository;
     
-    public function __construct(Request $request, Task $content)
+    public function __construct(Request $request, ProjectTask $content)
     {
         
         $this->request = $request;
@@ -25,15 +26,17 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id = null)
     {
 
         // GET ALL DATA
-        $contents = $this->repository->orderBy('name', 'ASC')->get();
+        $contents = Project::orderBy('name', 'ASC')->get();
+        $users = User::where('status', 1)->get();
 
         // RETURN VIEW WITH DATA
-        return view('pages.tasks.index', [
+        return view('pages.tasks.index')->with([
             'contents' => $contents,
+            'users' => $users,
         ]);
 
     }
@@ -47,13 +50,12 @@ class TaskController extends Controller
     public function store(Request $request)
     {
 
-        dd($request->all());
-
         // GET FORM DATA
         $data = $request->all();
 
         // CREATED BY
         $data['created_by'] = Auth::id();
+        $data['for_id']     = Auth::id();
         
         // SEND DATA
         $created = $this->repository->create($data);
@@ -97,7 +99,6 @@ class TaskController extends Controller
         // GENERATES DISPLAY WITH DATA
         return view('pages.tasks.edit')->with([
             'content' => $content,
-            'users' => $users,
         ]);
     }
 
@@ -158,4 +159,25 @@ class TaskController extends Controller
             ->with('message', 'Projeto ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
 
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ajax($id)
+    {
+
+        // GET ALL DATA
+        $contents = ProjectTask::where('project_id', $id)->get();
+        $users = User::where('status', 1)->get();
+
+        // RETURN VIEW WITH DATA
+        return view('pages.tasks._tasks')->with([
+            'contents' => $contents,
+            'users' => $users,
+        ]);
+
+    }
+
 }

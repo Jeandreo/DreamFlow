@@ -1,114 +1,37 @@
-@extends('layouts.app')
-
-@section('title-page', 'Projetos')
-
-@section('title-toolbar', 'Projetos')
-
-@section('content')
-	@include('layouts.title')
-	<div class="app-main flex-column flex-row-fluid " id="kt_app_main">
-		<div class="d-flex flex-column flex-column-fluid">                             
-			<div id="kt_app_content" class="app-content  flex-column-fluid py-6" >
-				<div id="kt_app_content_container" class="app-container  container-fluid ">
-					<div class="row">
-						<div class="col-12">
-							<div class="card">
-								<div class="card-body">
-									<table class="table table-striped table-row-bordered gy-3 gs-7 border rounded align-middle dmk-datatables">
-										<thead>
-											<tr class="fw-bold fs-6 text-gray-800 px-7">
-												<th>Nome</th>
-												<th>Categoria</th>
-												<th>Time</th>
-												<th>Duração</th>
-												<th class="text-center">Status</th>
-												<th class="text-center" width="145px">
-													<span>Ações</span>
-												</th>
-											</tr>
-										</thead>
-										<tbody>
-											@foreach ($contents as $content)
-											<tr>
-												<td>
-													<a href="{{ route('projects.show', $content->id) }}" class="d-flex align-items-center text-gray-700 text-hover-primary">
-														<span class="bullet bullet-dot h-5px w-5px me-2" style="background: {{ $content->color }}"></span>
-														{{ $content->name }}
-													</a>
-												</td>
-												<td>
-													<span class="text-gray-700">{{ $content->category->name }}</span>
-												</td>
-												<td>
-													<div class="symbol-group symbol-hover flex-nowrap">
-														<div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" title="Alan Warden">
-																<span class="symbol-label bg-warning text-inverse-warning fw-bold">A</span>
-														</div>
-														<div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" title="Michael Eberon">
-																<img alt="Pic" src="{{ asset('assets/media/avatars/300-11.jpg') }}">
-														</div>
-														<div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" title="Susan Redwood">
-																<span class="symbol-label bg-primary text-inverse-primary fw-bold">S</span>
-														</div>
-														<div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" title="Barry Walter">
-																<img alt="Pic" src="{{ asset('assets/media/avatars/300-11.jpg') }}">
-														</div>
-														<a href="#" class="symbol symbol-30px symbol-circle" data-bs-toggle="modal" data-bs-target="#kt_modal_view_users">
-															<span class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+3</span>
-														</a>
-													</div>
-												</td>
-												<td>
-													@if($content->start_date) 
-													<span class="text-gray-600" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ date('d/m/Y', strtotime($content->start_date)) }} ás {{ date('H:i:s', strtotime($content->start_date)) }}">
-														{{ date('d/m/Y', strtotime($content->start_date)) }}
-													</span>
-													@else
-													<span class="badge badge-light">
-														-
-													</span>
-													@endif
-													@if($content->end_date) 
-													<span class="text-gray-600" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ date('d/m/Y', strtotime($content->end_date)) }} ás {{ date('H:i:s', strtotime($content->end_date)) }}">
-														{{ date('d/m/Y', strtotime($content->end_date)) }}
-													</span>
-													@endif
-												</td>
-												<td class="text-center">
-													@if($content->status == 1) 
-													<span class="badge badge-light-success">
-														Ativo
-													</span>
-													@else
-													<span class="badge badge-light-danger">
-														Inativo
-													</span>
-													@endif
-												</td>
-												<td class="text-center">
-													<a href="{{ route('projects.show', $content->id) }}" class="btn btn-sm btn-light btn-active-light-primary btn-icon">
-														<i class="fa-solid fa-eye"></i>
-													</a>
-													<a href="{{ route('projects.edit', $content->id) }}" class="btn btn-sm btn-light btn-active-light-success btn-icon">
-														<i class="fa-solid fa-pen-to-square "></i>
-													</a>
-													<a href="{{ route('projects.destroy', $content->id) }}" class="btn btn-sm btn-light btn-active-light-danger btn-icon">
-														<i class="fa-solid fa-trash-can"></i>
-													</a>
-											</tr>
-											@endforeach
-										</tbody>
-									</table>
-								</div>
-							</div>
-							<div class="d-flex justify-content-between mt-6">
-								<a href="{{ route('index') }}" class="btn btn-sm fw-bold btn-secondary">Voltar</a>
-								<a href="{{ route('projects.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger">Adicionar Projeto</a>
-							</div>
-						</div>
-					</div>
+@foreach ($contents as $content)
+<div class="card mb-6">
+	<div class="card-body p-5">
+		<!-- BEGIN:HEADER -->
+		<div class="p-0 d-flex align-items-center justify-content-between fw-bold mb-2">
+			<div class="d-flex align-items-center ps-3 pe-5">
+				<h2 class="text-gray-700 fs-6 text-uppercase">{{ $content->name }}</h2>
+			</div>
+			<div class="d-flex align-items-center">
+				<div class="w-125px text-center text-gray-700 fs-7 text-uppercase">
+					Designado
+				</div>
+				<div class="d-flex align-items-center justify-content-center cursor-pointer w-150px text-gray-700 fs-7 text-uppercase">
+					Status
+				</div>
+				<div class="d-flex align-items-center justify-content-center cursor-pointer w-200px text-gray-700 fs-7 text-uppercase">
+					Data
+				</div>
+				<div>
+					<i class="fa-solid fa-arrows-to-dot text-hover-primary cursor-pointer py-2 px-3 mx-3 fs-7 text-gray-700"></i>
 				</div>
 			</div>
 		</div>
+		<!-- END:HEADER -->
+		<div class="min-h-200px draggable-zone load-tasks-project" data-project="{{ $content->id }}" id="project-tasks-{{ $content->id }}">
+			{{-- LOAD TASKS HERE --}}
+			{{-- LOAD TASKS HERE --}}
+			{{-- LOAD TASKS HERE --}}
+		</div>
+		<form action="#" method="POST" class="send-tasks">
+			@csrf
+			<input type="hidden" name="project_id" value="{{$content->id}}">
+			<input type="text" name="name" class="form-control form-control-solid w-100 rounded mt-5" placeholder="Inserir nova tarefa">
+		</form>
 	</div>
-@endsection
+</div>
+@endforeach

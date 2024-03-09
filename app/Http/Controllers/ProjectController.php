@@ -33,7 +33,7 @@ class ProjectController extends Controller
         $contents = $this->repository->orderBy('name', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
-        return view('pages.projects.index', [
+        return view('pages.projects.index')->with([
             'contents' => $contents,
         ]);
 

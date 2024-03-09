@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\StatusController;
-use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ProjectStatusController;
+use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\UserController;
+use App\Models\ProjectTask;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,25 +42,26 @@ Route::middleware(['auth'])->group(function () {
         // TASKS
         Route::prefix('tarefas')->group(function () {
             Route::name('tasks.')->group(function () {
-                Route::get('/', [TaskController::class, 'index'])->name('index');
-                Route::post('/adicionar', [TaskController::class, 'store'])->name('store');
-                Route::get('/visualizando/{id}', [TaskController::class, 'show'])->name('show');
-                Route::get('/desabilitar/{id}', [TaskController::class, 'destroy'])->name('destroy');
-                Route::get('/editar/{id}', [TaskController::class, 'edit'])->name('edit');
-                Route::put('/editar/{id}', [TaskController::class, 'update'])->name('update');
+                Route::get('/', [ProjectTaskController::class, 'index'])->name('index');
+                Route::post('/adicionar', [ProjectTaskController::class, 'store'])->name('store');
+                Route::get('/visualizando/{id}', [ProjectTaskController::class, 'show'])->name('show');
+                Route::get('/desabilitar/{id}', [ProjectTaskController::class, 'destroy'])->name('destroy');
+                Route::get('/editar/{id}', [ProjectTaskController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [ProjectTaskController::class, 'update'])->name('update');
+                Route::get('/ajax/{id}', [ProjectTaskController::class, 'ajax'])->name('ajax');
             });
         });
 
         // STATUS
         Route::prefix('status')->group(function () {
             Route::name('status.')->group(function () {
-                Route::get('/', [StatusController::class, 'index'])->name('index');
-                Route::get('/adicionar', [StatusController::class, 'create'])->name('create');
-                Route::post('/adicionar', [StatusController::class, 'store'])->name('store');
-                Route::get('/visualizando/{id}', [StatusController::class, 'show'])->name('show');
-                Route::get('/desabilitar/{id}', [StatusController::class, 'destroy'])->name('destroy');
-                Route::get('/editar/{id}', [StatusController::class, 'edit'])->name('edit');
-                Route::put('/editar/{id}', [StatusController::class, 'update'])->name('update');
+                Route::get('/', [ProjectStatusController::class, 'index'])->name('index');
+                Route::get('/adicionar', [ProjectStatusController::class, 'create'])->name('create');
+                Route::post('/adicionar', [ProjectStatusController::class, 'store'])->name('store');
+                Route::get('/visualizando/{id}', [ProjectStatusController::class, 'show'])->name('show');
+                Route::get('/desabilitar/{id}', [ProjectStatusController::class, 'destroy'])->name('destroy');
+                Route::get('/editar/{id}', [ProjectStatusController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [ProjectStatusController::class, 'update'])->name('update');
             });
         });
 
