@@ -49,4 +49,12 @@ class Project extends Model
         return $this->HasOne(User::class, 'id', 'manager_id');
     }
 
+    /**
+     * Get the brand associated with the user.
+     */
+     public function statuses(): HasMany
+    {
+        return $this->HasMany(ProjectStatus::class, 'project_id', 'id');
+    }
+
 }

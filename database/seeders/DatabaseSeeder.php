@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Administração',
             'email' => 'atendimento@dreamake.com.br',
-            'role' => 1,
+            'role_id' => 1,
             'password' => Hash::make('Inc@ns4v3l_2024'),
             'created_by' => 0,
         ]);
@@ -138,14 +138,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         ProjectStatus::create([
-            'name' => 'Concluído',
-            'color' => '#00FF00',
-            'project_id' => 1,
-            'order' => 1,
-            'created_by' => 1,
-        ]);
-
-        ProjectStatus::create([
             'name' => 'Em andamento',
             'color' => '#FFA500',
             'project_id' => 1,
@@ -154,9 +146,105 @@ class DatabaseSeeder extends Seeder
         ]);
 
         ProjectStatus::create([
-            'name' => 'Pendente',
-            'color' => '#FF0000',
+            'name' => 'Concluído',
+            'color' => '#00FF00',
             'project_id' => 1,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectStatus::create([
+            'name' => 'A Fazer',
+            'color' => '#E67E22',
+            'project_id' => 2,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectStatus::create([
+            'name' => 'Em andamento',
+            'color' => '#FFA500',
+            'project_id' => 2,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectStatus::create([
+            'name' => 'Concluído',
+            'color' => '#00FF00',
+            'project_id' => 2,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectStatus::create([
+            'name' => 'A Fazer',
+            'color' => '#E67E22',
+            'project_id' => 3,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectStatus::create([
+            'name' => 'Em andamento',
+            'color' => '#FFA500',
+            'project_id' => 3,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectStatus::create([
+            'name' => 'Concluído',
+            'color' => '#00FF00',
+            'project_id' => 3,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectStatus::create([
+            'name' => 'A Fazer',
+            'color' => '#E67E22',
+            'project_id' => 4,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectStatus::create([
+            'name' => 'Em andamento',
+            'color' => '#FFA500',
+            'project_id' => 4,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectStatus::create([
+            'name' => 'Concluído',
+            'color' => '#00FF00',
+            'project_id' => 4,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectStatus::create([
+            'name' => 'A Fazer',
+            'color' => '#E67E22',
+            'project_id' => 5,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectStatus::create([
+            'name' => 'Em andamento',
+            'color' => '#FFA500',
+            'project_id' => 5,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectStatus::create([
+            'name' => 'Concluído',
+            'color' => '#00FF00',
+            'project_id' => 5,
             'order' => 1,
             'created_by' => 1,
         ]);

@@ -51,6 +51,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::put('/editar-ajax/{id}', [ProjectTaskController::class, 'updateAjax'])->name('update.ajax');
                 Route::get('/ajax/{id}', [ProjectTaskController::class, 'ajax'])->name('ajax');
                 Route::post('/check', [ProjectTaskController::class, 'check'])->name('check');
+                Route::put('/prioridade', [ProjectTaskController::class, 'priority'])->name('priority');
             });
         });
 
@@ -78,7 +79,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [UserController::class, 'index'])->name('index');
                 Route::get('/adicionar', [UserController::class, 'create'])->name('create');
                 Route::post('/adicionar', [UserController::class, 'store'])->name('store');
-                Route::get('/visualizando/{id}', [UserController::class, 'show'])->name('show');
                 Route::get('/desabilitar/{id}', [UserController::class, 'destroy'])->name('destroy');
                 Route::get('/editar/{id}', [UserController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [UserController::class, 'update'])->name('update');

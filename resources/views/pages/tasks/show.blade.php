@@ -166,8 +166,6 @@
 
 @endsection
 @section('custom-footer')
-<link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css"/>
-<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <script>
 
 	// DRAGGABLE

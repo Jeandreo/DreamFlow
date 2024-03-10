@@ -177,6 +177,99 @@ function onlyUrl(getUrl = '.get-to-url', onlyUrl = '.only-url'){
 }
 
 
+// OPTIONS OF CROPPER
+var defaultOptionsCropper = {
+    aspectRatio: 1 / 1, 
+    replace: '#replace-img', 
+    inputCutImage: '[name="cutImage"]', 
+    onChange: '.image-to-crop',
+};
+
+// CROP IMAGE
+function cropImage(optionsCropper) {
+
+    // MESCLA OPÇÕES
+    var optionsCropper = { ...defaultOptionsCropper, ...optionsCropper };
+
+    // GET ACTUAL DIV
+    var divCropper = $('#cropper_modal').html();
+
+    // AO ALTERAR
+    if(optionsCropper['onChange'] == undefined){
+        optionsCropper['onChange'] = '.image-to-crop';
+    }
+
+    // AFTER INPUT FILE CHANGE
+    $(optionsCropper['onChange']).change(function (file) {
+
+        // GET FILE IN INPUT
+        var file = file.target.files[0];
+
+        // ABRE MODAL SE TIVER ARQUIVO
+        if(file){
+            // INSERT CROPPER IN SECTION
+            $('#cropper_modal').html(divCropper);
+    
+            // SHOW MODAL TO CANVA
+            $('#cropper_modal').modal('show');
+    
+            // READ FILE IN BASE64
+            var reader = new FileReader();
+    
+            // PLACE FILE IN MODAL
+            reader.onload = function (event) {
+                var img = event.target.result;
+                $('#crop-image').attr('src', img);
+            };
+    
+            // EXECUTE
+            reader.readAsDataURL(file);
+    
+            // DELAY TO FUNCTION
+            setTimeout(function () {
+    
+                // SELECT IMAGE TO GENERATE CROP CANVA
+                var image = $('#crop-image')[0];
+    
+                var cropper = new Cropper(image, {
+                    aspectRatio: optionsCropper['aspectRatio'],
+                    viewMode: 1,
+                    ready() {
+                        this.cropper.zoom(-0.25);
+                    },
+                });
+    
+                // CUT IMAGE
+                $('#submit-cropper').click(function () {
+    
+                    // INICIA BOTÃO DE CARREGAMENTO
+                    $('.btn-loading').attr('data-kt-indicator', 'on');
+    
+                    // GET IMAGE
+                    cutImage = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+    
+                    // REPLACE IMAGE
+                    $(optionsCropper['replace']).attr('src', cutImage);
+
+                    // INSERT IMAGE CUT IN INPUT FILE
+                    $(optionsCropper['inputCutImage']).val(cutImage);
+
+                    // SHOW MODAL TO CANVA
+                    $('#cropper_modal').modal('hide');
+
+                    // PARA BOTÃO DE CARREGAMENTO                    
+                    $('.btn-loading').attr('data-kt-indicator', 'off');
+    
+    
+                })
+    
+            }, 300);
+        }
+
+    });
+
+}
+
 // CALL FUNCTIONS
 loadDataTable();
 generateFlatpickr();

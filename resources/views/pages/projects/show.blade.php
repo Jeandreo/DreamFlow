@@ -22,12 +22,15 @@
 
 @endsection
 @section('custom-footer')
-<link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css"/>
-<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <script>
 	
 	// PROJECT ID
 	var projectId = {{ $contents->id }};
+
+	function callFunctions(){
+		generateFlatpickr();
+		KTMenu.createInstances();
+	}
 
 	// DRAGGABLE
 	function draggable(){
@@ -70,8 +73,8 @@
 					// IF LAST TASKS
 					if(counting == projectsCount){
 						setTimeout(() => {
+							callFunctions();
 							draggable();
-							generateFlatpickr();
 						}, 200);
 					}
 
@@ -91,6 +94,7 @@
             url: "{{ route('tasks.ajax', '') }}/" + id,
             success: function(data){
 				$('#project-tasks-' + id).html(data);
+				callFunctions();
             }
         });
 
@@ -175,7 +179,7 @@
 	// UPDATE TITLE AND PHRASE
 	$(document).on('change', '.task-name, .task-phrase', function(){
 
-		// OBTEM TEXTO, ID e TIPO
+		// GET DATA
 		var input = $(this).attr('name'); 
 		var value = $(this).val();
 		var taskId = $(this).data('task');
@@ -188,6 +192,44 @@
 		});
 
 	});
+
+
+	// UPDATE TITLE AND PHRASE
+	$(document).on('click', '.task-priority', function(){
+
+		// GET TEXT
+		var taskId = $(this).data('task');
+
+		// SAVE FLAG
+		var flagHtml = $(this).find('i');
+
+		// AJAX
+		$.ajax({
+			type: 'PUT',
+            url: "{{ route('tasks.priority') }}",
+			data: {_token: @json(csrf_token()), task_id: taskId},
+			success: function(data){
+				console.log(data);
+
+				// ALTERA PRIORIDADE
+				if (data == 1){
+					flagHtml.removeClass('text-gray-300').addClass('text-warning');
+				} else if (data == 2){
+					flagHtml.removeClass('text-warning ').addClass('text-info');
+				} else if (data == 3){
+					flagHtml.removeClass('text-info').addClass('text-danger');
+				} else {
+					flagHtml.removeClass('text-danger').addClass('text-gray-300');
+				}
+
+			}
+		});
+
+	});
+
+
+
+	
 
 
 </script>

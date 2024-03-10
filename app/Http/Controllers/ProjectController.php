@@ -75,7 +75,7 @@ class ProjectController extends Controller
 
         // SAVE AND RENAME IMAGE
         if($created && $request->hasFile('image')){
-            $request->file('image')->storeAs('public/images', $created->id . '.jpg');
+            $request->file('image')->storeAs('public/projetos/' . $created->id, 'capa.jpg');
         }
 
         // REDIRECT AND MESSAGES
@@ -152,7 +152,7 @@ class ProjectController extends Controller
 
         // SAVE AND RENAME IMAGE
         if($updated && $request->hasFile('image')){
-            $request->file('image')->storeAs('public/images', $id . '.jpg');
+            $request->file('image')->storeAs('public/projetos/' . $id, 'capa.jpg');
         }
 
         // REDIRECT AND MESSAGES

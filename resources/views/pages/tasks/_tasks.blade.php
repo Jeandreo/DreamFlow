@@ -19,10 +19,18 @@
                 </div>
             </div>
         </div>
-        <span>
-        <i class="fa-solid fa-font-awesome p-1 text-gray-300"></i>
-        <i class="fa-solid fa-font-awesome p-1 text-gray-300"></i>
-        <i class="fa-solid fa-font-awesome p-1 text-gray-300 me-3"></i>
+        <span class="task-priority" data-task="{{ $content->id }}">
+            <i class="fa-solid fa-font-awesome p-2 
+            @if ($content->priority == 0)
+            text-gray-300
+            @elseif($content->priority == 1)
+            text-warning
+            @elseif($content->priority == 2)
+            text-info
+            @elseif($content->priority == 3)
+            text-danger
+            @endif
+            cursor-pointer me-5"></i>
         </span>
     </div>
     <div class="d-flex align-items-center h-100">
@@ -62,48 +70,13 @@
             <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
             <p class="text-white fw-bold m-0 status-name-1260">Solicitações</p>
             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
+                @foreach ($content->project->statuses as $status)
                 <div class="menu-item px-3 mb-2">
-                    <a href="https://sulink.com.br/public/core/projetos/tarefas/status" data-task-id="1260" data-status-id="9" class="menu-link px-3 d-block text-center select-status-drop" style="background: #2a2a2d; color: white">
-                    <span class="">
-                    Solicitações
-                    </span>
+                    <a href="https://sulink.com.br/public/core/projetos/tarefas/status" data-task="{{ $content->id }}" data-status="{{ $status->id }}" class="menu-link px-3 d-block text-center" style="background: {{ $status->color }}; color: white">
+                        <span class="">{{ $status->name }}</span>
                     </a>
                 </div>
-                <div class="menu-item px-3 mb-2">
-                    <a href="https://sulink.com.br/public/core/projetos/tarefas/status" data-task-id="1260" data-status-id="100" class="menu-link px-3 d-block text-center select-status-drop" style="background: #0eade1; color: white">
-                    <span class="">
-                    A Fazer
-                    </span>
-                    </a>
-                </div>
-                <div class="menu-item px-3 mb-2">
-                    <a href="https://sulink.com.br/public/core/projetos/tarefas/status" data-task-id="1260" data-status-id="24" class="menu-link px-3 d-block text-center select-status-drop" style="background: #0041c2; color: white">
-                    <span class="">
-                    Em Progresso
-                    </span>
-                    </a>
-                </div>
-                <div class="menu-item px-3 mb-2">
-                    <a href="https://sulink.com.br/public/core/projetos/tarefas/status" data-task-id="1260" data-status-id="25" class="menu-link px-3 d-block text-center select-status-drop" style="background: #ffa200; color: white">
-                    <span class="">
-                    Em Testes
-                    </span>
-                    </a>
-                </div>
-                <div class="menu-item px-3 mb-2">
-                    <a href="https://sulink.com.br/public/core/projetos/tarefas/status" data-task-id="1260" data-status-id="26" class="menu-link px-3 d-block text-center select-status-drop" style="background: #07b013; color: white">
-                    <span class="">
-                    Finalizado
-                    </span>
-                    </a>
-                </div>
-                <div class="menu-item px-3 mb-2">
-                    <a href="https://sulink.com.br/public/core/projetos/tarefas/status" data-task-id="1260" data-status-id="27" class="menu-link px-3 d-block text-center select-status-drop" style="background: #b0b0b0; color: white">
-                    <span class="">
-                    Arquivado
-                    </span>
-                    </a>
-                </div>
+                @endforeach
             </div>
             </div>
         </div>

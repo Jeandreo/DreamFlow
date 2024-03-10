@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('status_id')->default(1);
             $table->integer('for_id');
             $table->boolean('checked')->default(false);
-            $table->integer('priority')->default(1);
+            $table->integer('priority')->default(0);
             $table->dateTime('date')->nullable();
             $table->string('name');
             $table->string('phrase')->nullable();

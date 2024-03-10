@@ -232,4 +232,33 @@ class ProjectTaskController extends Controller
 
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function priority(Request $request)
+    {
+
+        // GET ALL DATA
+        $contents = ProjectTask::find($request->task_id);
+
+        // MARK AS CHECK
+        $priority = $contents->priority;
+
+        // SET PRIORITY
+        if($priority <= 2){
+            $newPriority = $priority + 1;
+        } else {
+            $newPriority = 0;
+        } 
+
+        // SAVE
+        $contents->priority = $newPriority;
+        $contents->save();
+
+        return response()->json($contents->priority, 200);
+
+    }
+
 }
