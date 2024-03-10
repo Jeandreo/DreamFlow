@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\ProjectTask;
 use App\Models\User;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -138,6 +139,37 @@ class ProjectTaskController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateAjax(Request $request, $id)
+    {
+
+        // VERIFY IF EXISTS
+        if(!$content = $this->repository->find($id))
+        return redirect()->back();
+
+        // GET FORM DATA
+        $data = $request->all();
+
+        // UPDATE VALUE
+        $data[$request->input] = $request->value;
+
+        // UPDATE BY
+        $data['updated_by'] = Auth::id();
+        
+        // STORING NEW DATA
+        $content->update($data);
+
+        // REDIRECT AND MESSAGES
+        return response()->json('Success', 200);
+
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -177,6 +209,26 @@ class ProjectTaskController extends Controller
             'contents' => $contents,
             'users' => $users,
         ]);
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function check(Request $request)
+    {
+
+        // GET ALL DATA
+        $contents = ProjectTask::find($request->task_id);
+
+        // MARK AS CHECK
+        $check = $contents->checked == true ? false : true;
+
+        // SAVE
+        $contents->checked = $check;
+        $contents->save();
 
     }
 

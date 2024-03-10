@@ -22,7 +22,7 @@
 			</div>
 		</div>
 		<!-- END:HEADER -->
-		<div class="min-h-200px draggable-zone load-tasks-project" data-project="{{ $content->id }}" id="project-tasks-{{ $content->id }}">
+		<div class="draggable-zone load-tasks-project" data-project="{{ $content->id }}" id="project-tasks-{{ $content->id }}">
 			{{-- LOAD TASKS HERE --}}
 			{{-- LOAD TASKS HERE --}}
 			{{-- LOAD TASKS HERE --}}

@@ -1,19 +1,21 @@
 @if ($contents->count())
 @foreach ($contents as $content)
 <!-- BEGIN:TASK -->
-<div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 draggable shadow-list dmk-tasks h-45px">
+<div class="draggable bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-45px">
     <div class="d-flex align-items-center justify-content-between w-100 h-100">
         <div class="d-flex align-items-center h-100">
             <div style="background: {{ $content->project->color }}" class="rounded-start h-100 w-40px d-flex align-items-center justify-content-center">
             <div class="form-check form-check-custom form-check-solid">
-                <input class="form-check-input w-15px h-15px cursor-pointer" type="checkbox" value="1" style="border-radius: 3px" id="flexCheckDefault"/>
+                <input class="form-check-input w-15px h-15px cursor-pointer check-task" data-task="{{ $content->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($content->checked == true) checked @endif/>
             </div>
             </div>
             <div class="d-flex align-items-center h-100">
             <i class="fa-solid fa-ellipsis-vertical text-hover-primary cursor-pointer py-2 px-3 mx-3 fs-3"></i>
-                <div>
-                    <span class="text-gray-600 fs-6 lh-1 fw-normal">{{ $content->name }}</span>
-                    <p class="m-0 lh-1 text-gray-500">Lorem Ipsum is simply dummy text of the printing and typesetting.</p>
+                <div class="d-block min-w-600px">
+                    <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 task-name d-flex" value="{{ $content->name }}" name="name" data-task="{{ $content->id }}">
+                    <div class="input-phrase" @if($content->phrase == '') style="display: none;" @endif>
+                        <input type="text" class="text-gray-500 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 fs-7 d-flex task-phrase z-index-9 h-15px mt-n1" maxlength="255" name="phrase" value="{{ $content->phrase }}" @if($content->phrase == '') style="border-bottom: dashed 1px #bbbdcb63 !important;" @endif data-task="{{ $content->id }}">
+                    </div>
                 </div>
             </div>
         </div>
@@ -105,7 +107,7 @@
             </div>
             </div>
         </div>
-        <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px" placeholder="Prazo da tarefa" name="start_date" value="{{ $content->project->start_date ?? old('start_date') }}" required/>
+        <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px" placeholder="Prazo da tarefa" name="start_date" value="" required/>
         <!-- SEPARATOR -->
         <div class="separator-vertical h-100"></div>
         <!-- SEPARATOR -->

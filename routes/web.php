@@ -48,7 +48,9 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/desabilitar/{id}', [ProjectTaskController::class, 'destroy'])->name('destroy');
                 Route::get('/editar/{id}', [ProjectTaskController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [ProjectTaskController::class, 'update'])->name('update');
+                Route::put('/editar-ajax/{id}', [ProjectTaskController::class, 'updateAjax'])->name('update.ajax');
                 Route::get('/ajax/{id}', [ProjectTaskController::class, 'ajax'])->name('ajax');
+                Route::post('/check', [ProjectTaskController::class, 'check'])->name('check');
             });
         });
 
