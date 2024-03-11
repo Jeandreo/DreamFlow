@@ -20,16 +20,31 @@
                     <!--end::Header-->   
                 @endif     
                 <!--begin::Wrapper-->
-                <div class="app-wrapper  flex-column flex-row-fluid @if(isset($noHeader)) mt-0 @endif" id="kt_app_wrapper">
+                <div class="app-wrapper  flex-column flex-row-fluid position-relative @if(isset($noHeader)) mt-0 @endif" id="kt_app_wrapper">
                     <!--begin::Sidebar-->
                     @include('layouts.sidebar')
                     <!--end::Sidebar-->
                     <!--begin::Main-->
                     @yield('content')
                     <!--end:::Main-->
-                    {{-- <!--begin::Footer-->
-                    @include('layouts.footer')
-                    <!--end::Footer-->          --}}
+                    <!--begin::Toast-->
+                    @if(session('message'))
+                    <div class="toast show position-absolute" role="alert" aria-live="assertive" aria-atomic="true" style="right: 30px;top: 30px;">
+                        <div class="toast-header">
+                            <i class="ki-duotone ki-abstract-39 fs-2 text-primary me-3"><span class="path1"></span><span class="path2"></span></i>
+                            <strong class="me-auto">ATENÇÃO</strong>
+                            <small>A alguns segundos</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            {{ session('message') }}
+                        </div>
+                    </div>
+                    @endif
+                    <!--end:::Toast-->
+                    <!--begin::Footer-->
+                    {{-- @include('layouts.footer') --}}
+                    <!--end::Footer-->         
                 </div>
                 <!--end::Wrapper-->
             </div>

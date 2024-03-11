@@ -52,12 +52,12 @@
                   <div  class="menu-sub menu-sub-accordion">
                      <!--begin:Menu item-->
                      <div  class="menu-item">
-                        <!--begin:Menu link--><a class="menu-link active"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Painél de Controle</span></a><!--end:Menu link-->
+                        <!--begin:Menu link--><a class="menu-link active"  href="{{ route('projects.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
                      </div>
                      <!--end:Menu item-->
                      <!--begin:Menu item-->
                      <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Leads</span></a><!--end:Menu link-->
+                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('statuses.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Status</span></a><!--end:Menu link-->
                      </div>
                      <!--end:Menu item-->
                      <!--begin:Menu item-->
@@ -185,7 +185,10 @@
                </div>
                <!--end:Menu item--><!--begin:Menu item-->
                <div  class="menu-item" >
-                  <!--begin:Menu link--><a class="menu-link"  href="https://preview.keenthemes.com/html/metronic/docs/base/utilities"><span  class="menu-icon" ><i class="ki-duotone ki-rocket fs-2"><span class="path1"></span><span class="path2"></span></i></span><span  class="menu-title" >Components</span></a><!--end:Menu link-->
+                  <!--begin:Menu link--><a class="menu-link"  href="https://preview.keenthemes.com/html/metronic/docs/base/utilities"><span  class="menu-icon" ><i class="ki-duotone ki-rocket fs-2"><span class="path1"></span><span class="path2"></span></i></span><span  class="menu-title" >Objetivos e Missões</span></a><!--end:Menu link-->
+               </div><!--begin:Menu item-->
+               <div  class="menu-item" >
+                  <!--begin:Menu link--><a class="menu-link"  href="https://preview.keenthemes.com/html/metronic/docs/base/utilities"><span  class="menu-icon" ><i class="ki-duotone ki-rocket fs-2"><span class="path1"></span><span class="path2"></span></i></span><span  class="menu-title" >Metas Semanais e Mensais</span></a><!--end:Menu link-->
                </div>
                <!--end:Menu item--><!--begin:Menu item-->
                <div  class="menu-item" >

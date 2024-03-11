@@ -33,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [ProjectController::class, 'index'])->name('index');
             Route::get('/adicionar', [ProjectController::class, 'create'])->name('create');
             Route::post('/adicionar', [ProjectController::class, 'store'])->name('store');
-            Route::get('/visualizando/{id}', [ProjectController::class, 'show'])->name('show');
+            Route::get('/visualizando/{id?}', [ProjectController::class, 'show'])->name('show');
             Route::get('/desabilitar/{id}', [ProjectController::class, 'destroy'])->name('destroy');
             Route::get('/editar/{id}', [ProjectController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [ProjectController::class, 'update'])->name('update');
@@ -42,7 +42,7 @@ Route::middleware(['auth'])->group(function () {
         // TASKS
         Route::prefix('tarefas')->group(function () {
             Route::name('tasks.')->group(function () {
-                Route::get('/', [ProjectTaskController::class, 'index'])->name('index');
+                Route::post('/', [ProjectTaskController::class, 'index'])->name('index');
                 Route::post('/adicionar', [ProjectTaskController::class, 'store'])->name('store');
                 Route::get('/visualizando/{id}', [ProjectTaskController::class, 'show'])->name('show');
                 Route::get('/desabilitar/{id}', [ProjectTaskController::class, 'destroy'])->name('destroy');
@@ -52,12 +52,13 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/ajax/{id}', [ProjectTaskController::class, 'ajax'])->name('ajax');
                 Route::post('/check', [ProjectTaskController::class, 'check'])->name('check');
                 Route::put('/prioridade', [ProjectTaskController::class, 'priority'])->name('priority');
+                Route::put('/designado', [ProjectTaskController::class, 'designated'])->name('designated');
             });
         });
 
         // STATUS
         Route::prefix('status')->group(function () {
-            Route::name('status.')->group(function () {
+            Route::name('statuses.')->group(function () {
                 Route::get('/', [ProjectStatusController::class, 'index'])->name('index');
                 Route::get('/adicionar', [ProjectStatusController::class, 'create'])->name('create');
                 Route::post('/adicionar', [ProjectStatusController::class, 'store'])->name('store');

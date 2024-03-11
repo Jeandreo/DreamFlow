@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('project_id');
             $table->integer('status_id')->default(1);
-            $table->integer('for_id');
+            $table->integer('designated_id');
             $table->boolean('checked')->default(false);
             $table->integer('priority')->default(0);
             $table->dateTime('date')->nullable();

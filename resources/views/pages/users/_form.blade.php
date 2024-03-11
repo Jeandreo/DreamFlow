@@ -24,7 +24,7 @@
         <input type="hidden" name="cutImage">
     </div>
     <div class="col-12 mb-5">
-        <label class="required form-label fw-bold">Senha:</label>
+        <label class="@if(!isset($content)) required @endif form-label fw-bold">Senha:</label>
         <input type="text" class="form-control form-control-solid" placeholder="*********" name="password" value="" @if(!isset($content)) required @endif/>
     </div>
 </div>

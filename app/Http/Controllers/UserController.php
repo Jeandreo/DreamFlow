@@ -10,6 +10,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class UserController extends Controller
 {
+    
     protected $request;
     private $repository;
     
@@ -70,7 +71,6 @@ class UserController extends Controller
         // CREATED BY
         $data['created_by'] = Auth::id();
         $data['password'] = Hash::make($request->password);
-        $data['email'] = rand(0,9999999) . $data['email'];
 
         // SEND DATA
         $created = $this->repository->create($data);
@@ -82,7 +82,7 @@ class UserController extends Controller
             $sizes = [35, 300, 600, 1200];
         
             // DIRETORY
-            $path = 'usuarios/' . $created->id . '/';
+            $path = 'users/' . $created->id . '/';
         
             // RESIZE AND SAVE
             resizeAndSaveImage($request->cutImage, $sizes, 'perfil', $path);
@@ -137,13 +137,29 @@ class UserController extends Controller
 
         // UPDATE BY
         $data['updated_by'] = Auth::id();
+
+        // FORMAT PASSWORD
+        if(isset($data['password'])){
+            $data['password'] = Hash::make($request->password);
+        } else {
+            unset($data['password']);
+        }
         
         // STORING NEW DATA
         $updated = $content->update($data);
 
-        // SAVE AND RENAME IMAGE
-        if($updated && $request->hasFile('image')){
-            $request->file('image')->storeAs('public/usuarios', $id . '.jpg');
+        // SAVE IMAGE
+        if ($updated && $request->cutImage) {
+        
+            // SET SIZES TO SAVE
+            $sizes = [35, 300, 600, 1200];
+        
+            // DIRETORY
+            $path = 'users/' . $id . '/';
+        
+            // RESIZE AND SAVE
+            resizeAndSaveImage($request->cutImage, $sizes, 'perfil', $path);
+
         }
 
         // REDIRECT AND MESSAGES
@@ -175,4 +191,5 @@ class UserController extends Controller
             ->with('message', 'Usuário ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
 
     }
+
 }

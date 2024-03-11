@@ -27,11 +27,14 @@ class ProjectTaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id = null)
+    public function index(Request $request)
     {
 
         // GET ALL DATA
-        $contents = Project::orderBy('name', 'ASC')->get();
+        $contents = Project::orderBy('name', 'ASC');
+        $contents = $request->project_id == 0 ? $contents : $contents->where('id', $request->project_id);
+        $contents = $contents->get(); 
+
         $users = User::where('status', 1)->get();
 
         // RETURN VIEW WITH DATA
@@ -56,7 +59,7 @@ class ProjectTaskController extends Controller
 
         // CREATED BY
         $data['created_by'] = Auth::id();
-        $data['for_id']     = Auth::id();
+        $data['designated_id']     = Auth::id();
         
         // SEND DATA
         $created = $this->repository->create($data);
@@ -258,6 +261,29 @@ class ProjectTaskController extends Controller
         $contents->save();
 
         return response()->json($contents->priority, 200);
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function designated(Request $request)
+    {
+
+        // GET ALL DATA
+        $contents = ProjectTask::find($request->task_id);
+
+        // MARK AS CHECK
+        $contents->designated_id = $request->designated_id;
+        $contents->save();
+
+        // GET IMAGE
+        $img = findImage('users/' . $request->designated_id . '/' . 'perfil-35px.jpg');
+
+        // RETURN
+        return response()->json($img, 200);
 
     }
 

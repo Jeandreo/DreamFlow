@@ -74,64 +74,64 @@ class DatabaseSeeder extends Seeder
             'created_by' => 1,
         ]);
 
-        // // Project::create([
-        // //     'name' => 'Campanha de E-mail Marketing',
-        // //     'url' => 'campanha-de-email-marketing',
-        // //     'color' => '#1ABC9C',
-        // //     'description' => 'Uma série de e-mails estratégicos para promover produtos, engajar clientes e aumentar as vendas.',
-        // //     'start_date' => now(),
-        // //     'category_id' => 3,
-        // //     'manager_id' => 1,
-        // //     'created_by' => 1,
-        // // ]);
+        Project::create([
+            'name' => 'Campanha de E-mail Marketing',
+            'url' => 'campanha-de-email-marketing',
+            'color' => '#1ABC9C',
+            'description' => 'Uma série de e-mails estratégicos para promover produtos, engajar clientes e aumentar as vendas.',
+            'start_date' => now(),
+            'category_id' => 3,
+            'manager_id' => 1,
+            'created_by' => 1,
+        ]);
         
-        // // Project::create([
-        // //     'name' => 'Otimização de SEO',
-        // //     'url' => 'otimizacao-de-seo',
-        // //     'color' => '#9B59B6',
-        // //     'description' => 'Um projeto focado em melhorar a classificação nos mecanismos de busca, aumentando o tráfego orgânico para o site.',
-        // //     'start_date' => now(),
-        // //     'category_id' => 4,
-        // //     'manager_id' => 1,
-        // //     'created_by' => 1,
-        // // ]);
+        Project::create([
+            'name' => 'Otimização de SEO',
+            'url' => 'otimizacao-de-seo',
+            'color' => '#9B59B6',
+            'description' => 'Um projeto focado em melhorar a classificação nos mecanismos de busca, aumentando o tráfego orgânico para o site.',
+            'start_date' => now(),
+            'category_id' => 4,
+            'manager_id' => 1,
+            'created_by' => 1,
+        ]);
 
-        // // Project::create([
-        // //     'name' => 'Marketing de Conteúdo',
-        // //     'url' => 'marketing-de-conteudo',
-        // //     'color' => '#3498DB',
-        // //     'description' => 'Estratégia para criar e distribuir conteúdo relevante para atrair e engajar o público-alvo.',
-        // //     'start_date' => now(),
-        // //     'category_id' => 5,
-        // //     'manager_id' => 1,
-        // //     'created_by' => 1,
-        // // ]);
+        Project::create([
+            'name' => 'Marketing de Conteúdo',
+            'url' => 'marketing-de-conteudo',
+            'color' => '#3498DB',
+            'description' => 'Estratégia para criar e distribuir conteúdo relevante para atrair e engajar o público-alvo.',
+            'start_date' => now(),
+            'category_id' => 5,
+            'manager_id' => 1,
+            'created_by' => 1,
+        ]);
         
-        // // Project::create([
-        // //     'name' => 'Publicidade Online',
-        // //     'url' => 'publicidade-online',
-        // //     'color' => '#E67E22',
-        // //     'description' => 'Uma campanha paga direcionada para alcançar o público-alvo em sites, redes sociais e mecanismos de busca.',
-        // //     'start_date' => now(),
-        // //     'category_id' => 2,
-        // //     'manager_id' => 1,
-        // //     'created_by' => 1,
-        // // ]);
+        Project::create([
+            'name' => 'Publicidade Online',
+            'url' => 'publicidade-online',
+            'color' => '#009ef7',
+            'description' => 'Uma campanha paga direcionada para alcançar o público-alvo em sites, redes sociais e mecanismos de busca.',
+            'start_date' => now(),
+            'category_id' => 2,
+            'manager_id' => 1,
+            'created_by' => 1,
+        ]);
 
-        // // Project::create([
-        // //     'name' => 'Marketing de Influenciadores',
-        // //     'url' => 'marketing-de-influenciadores',
-        // //     'color' => '#27AE60',
-        // //     'description' => 'Colaboração com influenciadores digitais para promover produtos ou serviços para suas audiências.',
-        // //     'start_date' => now(),
-        // //     'category_id' => 3,
-        // //     'manager_id' => 1,
-        // //     'created_by' => 1,
-        // // ]);
+        Project::create([
+            'name' => 'Marketing de Influenciadores',
+            'url' => 'marketing-de-influenciadores',
+            'color' => '#27AE60',
+            'description' => 'Colaboração com influenciadores digitais para promover produtos ou serviços para suas audiências.',
+            'start_date' => now(),
+            'category_id' => 3,
+            'manager_id' => 1,
+            'created_by' => 1,
+        ]);
 
         ProjectStatus::create([
             'name' => 'A Fazer',
-            'color' => '#E67E22',
+            'color' => '#009ef7',
             'project_id' => 1,
             'order' => 1,
             'created_by' => 1,
@@ -139,7 +139,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'Em andamento',
-            'color' => '#FFA500',
+            'color' => '#79bc17',
             'project_id' => 1,
             'order' => 1,
             'created_by' => 1,
@@ -147,7 +147,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'Concluído',
-            'color' => '#00FF00',
+            'color' => '#282c43',
             'project_id' => 1,
             'order' => 1,
             'created_by' => 1,
@@ -155,7 +155,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'A Fazer',
-            'color' => '#E67E22',
+            'color' => '#009ef7',
             'project_id' => 2,
             'order' => 1,
             'created_by' => 1,
@@ -163,7 +163,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'Em andamento',
-            'color' => '#FFA500',
+            'color' => '#79bc17',
             'project_id' => 2,
             'order' => 1,
             'created_by' => 1,
@@ -171,7 +171,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'Concluído',
-            'color' => '#00FF00',
+            'color' => '#282c43',
             'project_id' => 2,
             'order' => 1,
             'created_by' => 1,
@@ -179,7 +179,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'A Fazer',
-            'color' => '#E67E22',
+            'color' => '#009ef7',
             'project_id' => 3,
             'order' => 1,
             'created_by' => 1,
@@ -187,7 +187,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'Em andamento',
-            'color' => '#FFA500',
+            'color' => '#79bc17',
             'project_id' => 3,
             'order' => 1,
             'created_by' => 1,
@@ -195,7 +195,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'Concluído',
-            'color' => '#00FF00',
+            'color' => '#282c43',
             'project_id' => 3,
             'order' => 1,
             'created_by' => 1,
@@ -203,7 +203,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'A Fazer',
-            'color' => '#E67E22',
+            'color' => '#009ef7',
             'project_id' => 4,
             'order' => 1,
             'created_by' => 1,
@@ -211,7 +211,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'Em andamento',
-            'color' => '#FFA500',
+            'color' => '#79bc17',
             'project_id' => 4,
             'order' => 1,
             'created_by' => 1,
@@ -219,7 +219,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'Concluído',
-            'color' => '#00FF00',
+            'color' => '#282c43',
             'project_id' => 4,
             'order' => 1,
             'created_by' => 1,
@@ -227,7 +227,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'A Fazer',
-            'color' => '#E67E22',
+            'color' => '#009ef7',
             'project_id' => 5,
             'order' => 1,
             'created_by' => 1,
@@ -235,7 +235,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'Em andamento',
-            'color' => '#FFA500',
+            'color' => '#79bc17',
             'project_id' => 5,
             'order' => 1,
             'created_by' => 1,
@@ -243,7 +243,7 @@ class DatabaseSeeder extends Seeder
 
         ProjectStatus::create([
             'name' => 'Concluído',
-            'color' => '#00FF00',
+            'color' => '#282c43',
             'project_id' => 5,
             'order' => 1,
             'created_by' => 1,

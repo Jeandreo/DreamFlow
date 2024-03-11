@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title-page', 'Usuários')
+@section('title-page', 'Status')
 
-@section('title-toolbar', 'Usuários')
+@section('title-toolbar', 'Status')
 
 @section('content')
 	@include('layouts.title')
@@ -18,12 +18,9 @@
 										<thead>
 											<tr class="fw-bold fs-6 text-gray-800 px-7">
 												<th width="4%" class="pe-0 ps-5">ID</th>
-												<th>Nome</th>
-												<th>Cargo</th>
-												<th class="text-center">Status</th>
-												<th class="text-center" width="145px">
-													<span>Ações</span>
-												</th>
+												<th>Projeto</th>
+												<th>Status Ativos</th>
+												<th>Status Desativados</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -35,34 +32,31 @@
 													</span>
 												</td>
 												<td>
-													<a href="{{ route('users.edit', $content->id) }}" class="d-flex align-items-center text-gray-700 text-hover-primary">
-														<div class="symbol symbol-25px symbol-circle me-2">
-															<img alt="Pic" src="{{ findImage('storage/users/' . $content->id . '/' . 'perfil-35px.jpg') }}">
-														</div>
+													<a href="{{ route('projects.show', $content->id) }}" class="text-gray-700 text-hover-primary">
 														{{ $content->name }}
 													</a>
 												</td>
 												<td>
-													<span class="badge badge-light-danger">Administrador</span>
-												</td>
-												<td class="text-center">
-													@if($content->status == 1) 
-													<span class="badge badge-light-success">
-														Ativo
-													</span>
+													@if ($content->statuses()->where('status', 1)->count())
+														@foreach ($content->statuses()->where('status', 1)->get() as $status)
+														<a href="{{ route('statuses.edit', $status->id) }}" class="badge" style="background: {{ hex2rgb($status->color, 15) }}; color: {{ $status->color, 100 }}">
+															{{ $status->name }}
+														</a>
+														@endforeach
 													@else
-													<span class="badge badge-light-danger">
-														Inativo
-													</span>
+														-
 													@endif
 												</td>
-												<td class="text-center">
-													<a href="{{ route('users.edit', $content->id) }}" class="btn btn-sm btn-light btn-active-light-success btn-icon">
-														<i class="fa-solid fa-pen-to-square "></i>
-													</a>
-													<a href="{{ route('users.destroy', $content->id) }}" class="btn btn-sm btn-light btn-active-light-danger btn-icon">
-														<i class="fa-solid fa-trash-can"></i>
-													</a>
+												<td>
+													@if ($content->statuses()->where('status', 0)->count())
+														@foreach ($content->statuses()->where('status', 1)->get() as $status)
+														<a class="badge" style="background: {{ hex2rgb($status->color, 15) }}; color: {{ $status->color, 100 }}">
+															{{ $status->name }}
+														</a>
+														@endforeach
+													@else
+														-
+													@endif
 												</td>
 											</tr>
 											@endforeach
@@ -72,7 +66,7 @@
 							</div>
 							<div class="d-flex justify-content-between mt-6">
 								<a href="{{ route('index') }}" class="btn btn-sm fw-bold btn-secondary">Voltar</a>
-								<a href="{{ route('users.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger">Adicionar Projeto</a>
+								<a href="{{ route('statuses.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger">Adicionar Projeto</a>
 							</div>
 						</div>
 					</div>

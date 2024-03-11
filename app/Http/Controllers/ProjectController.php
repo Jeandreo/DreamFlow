@@ -91,7 +91,7 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id = null)
     {
         // GET ALL DATA
         $contents = $this->repository->find($id);
@@ -181,7 +181,7 @@ class ProjectController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('projects.index')
-            ->with('message', 'Projeto ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
+            ->with('message', 'Projeto ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
 
     }
 

@@ -3689,7 +3689,11 @@
                                         data-kt-menu-trigger="{default: 'click', lg: 'hover'}" 
                                         data-kt-menu-attach="parent" 
                                         data-kt-menu-placement="bottom-end">
-                                        <img src="{{ asset('/assets/media/avatars/300-3.jpg') }}" class="rounded-3" alt="user"/>
+                                        @if(Storage::disk('public')->exists('users/' . Auth::id() . '/' . 'perfil-35px.jpg'))
+                                            <img src="{{ asset('storage/users/' . Auth::id() . '/' . 'perfil-35px.jpg') }}" alt="Imagem do perfil">
+                                        @else
+                                            <img src="{{ asset('/assets/media/avatars/blank.png') }}" alt="Imagem padrão">
+                                        @endif
                                     </div>
                                     <!--begin::User account menu-->
                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">

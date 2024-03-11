@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ProjectStatus extends Model
 {
@@ -24,4 +25,13 @@ class ProjectStatus extends Model
         'created_by',
         'updated_by',
     ];
+
+    /**
+     * Get the creator associated with the tasks.
+     */
+    public function project(): HasOne
+    {
+        return $this->hasOne(Project::class, 'id', 'project_id');
+    }
+
 }

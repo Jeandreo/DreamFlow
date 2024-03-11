@@ -17,6 +17,7 @@
 									<table class="table table-striped table-row-bordered gy-3 gs-7 border rounded align-middle dmk-datatables">
 										<thead>
 											<tr class="fw-bold fs-6 text-gray-800 px-7">
+												<th width="4%" class="pe-0 ps-5">ID</th>
 												<th>Nome</th>
 												<th>Categoria</th>
 												<th>Time</th>
@@ -30,6 +31,11 @@
 										<tbody>
 											@foreach ($contents as $content)
 											<tr>
+												<td class="pe-0 ps-4">
+													<span class="fw-normal">
+														{{  str_pad($content->id , 4 , '0' , STR_PAD_LEFT)}}
+													</span>
+												</td>
 												<td>
 													<a href="{{ route('projects.show', $content->id) }}" class="d-flex align-items-center text-gray-700 text-hover-primary">
 														<span class="bullet bullet-dot h-5px w-5px me-2" style="background: {{ $content->color }}"></span>
@@ -95,6 +101,7 @@
 													<a href="{{ route('projects.destroy', $content->id) }}" class="btn btn-sm btn-light btn-active-light-danger btn-icon">
 														<i class="fa-solid fa-trash-can"></i>
 													</a>
+												</td>
 											</tr>
 											@endforeach
 										</tbody>

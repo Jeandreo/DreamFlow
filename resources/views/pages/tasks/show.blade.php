@@ -1,8 +1,11 @@
 @extends('layouts.app')
+
 @section('title-page', $contents->name)
+
 @section('custom-head')
 <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
 @endsection
+
 @section('content')
 <div class="app-main flex-column flex-row-fluid " id="kt_app_main" style="background: url('{{ asset('assets/media/images/bg_colors.jpg') }}');">
 	<div class="d-flex flex-column flex-column-fluid">                             

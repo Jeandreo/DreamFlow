@@ -19,7 +19,7 @@ class ProjectTask extends Model
     protected $fillable = [
         'project_id',
         'status_id',
-        'for_id',
+        'designated_id',
         'checked',
         'priority',
         'date',

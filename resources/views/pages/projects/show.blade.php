@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title-page', $contents->name)
+@section('title-page', $contents->name ?? 'Projetos')
 @section('custom-head')
 <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
 @endsection
@@ -25,7 +25,7 @@
 <script>
 	
 	// PROJECT ID
-	var projectId = {{ $contents->id }};
+	var projectId = {{ $contents->id ?? 0 }};
 
 	function callFunctions(){
 		generateFlatpickr();
@@ -45,14 +45,15 @@
 			}
 		});
 	}
-
+	
 	// FUNCTION LOAD PROJECTS
 	function loadProjects(){
 		// AJAX
 		$.ajax({
 			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-			type: 'GET',
+			type: 'POST',
 			url: "{{ route('tasks.index') }}",
+			data: {project_id: projectId},
 			success: function(data){
 				// LOAD PROJECTS
 				$('#load-projects').html(data);
@@ -209,7 +210,6 @@
             url: "{{ route('tasks.priority') }}",
 			data: {_token: @json(csrf_token()), task_id: taskId},
 			success: function(data){
-				console.log(data);
 
 				// ALTERA PRIORIDADE
 				if (data == 1){
@@ -226,6 +226,79 @@
 		});
 
 	});
+
+	// UPDATE DESIGNATED TASK
+	$(document).on('click', '.task-designated', function(){
+
+		// GET TEXT
+		var taskId = $(this).data('task');
+		var designated = $(this).data('designated');
+
+		// SAVE FLAG
+		var img = $(this).closest('.designated-div').find('.designated');
+
+		// AJAX
+		$.ajax({
+			type: 'PUT',
+			url: "{{ route('tasks.designated') }}",
+			data: {_token: @json(csrf_token()), task_id: taskId, designated_id: designated},
+			success: function(data){
+				img.attr('src', data);
+			}
+		});
+
+	});
+
+
+
+
+
+
+
+
+	// // // AJAX SELECT USER FOR STATUS
+    // // $(document).on('click', '.select-status-drop', function(e){
+        
+    // //     e.preventDefault();
+
+    // //     var url = $(this).attr('href');
+    // //     var id = $(this).attr('data-task-id');
+    // //     var status = $(this).attr('data-status-id');
+
+    // //     $.ajax({
+    // //         type:'PUT',
+    // //         url: url,
+    // //         data: {_token: @json(csrf_token()), task_id: id, status_id: status},
+    // //         success:function(data) {
+    // //             // CHANGE TO NEW COLOR AND NAME STATUS
+    // //             $('.status-name-' + data[['task']]).text(data['status']['name']);
+    // //             $('.status-color-' + data[['task']]).css('background', data['status']['color']);
+    // //             loadKanban();
+    // //         }
+    // //     });
+    
+    // // });
+
+
+
+	// //  // AJAX UPDATE DATE TASK
+	// //  $(document).on('change', '.select_date', function(){
+    
+	// // var date = $(this).val();
+	// // var idTask = $(this).data('task-id-date');
+
+	// // var url = '';
+
+	// // $.ajax({
+	// // 	type:'PUT',
+	// // 	url: url,
+	// // 	data: {_token: @json(csrf_token()), when: date},
+	// // 	success:function(data) {
+	// // 		loadKanban();
+	// // 	}
+	// // });
+
+// });
 
 
 

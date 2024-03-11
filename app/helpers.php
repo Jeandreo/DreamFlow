@@ -3,6 +3,7 @@
 // GET PROJECTS
 
 use App\Models\Project;
+use Illuminate\Support\Facades\Storage;
 
 function projects() {
     $projects = Project::where('status', 1)->get();
@@ -34,5 +35,33 @@ function resizeAndSaveImage($base64Image, $sizes, $name, $path){
         imagedestroy($img);
         imagedestroy($resized);
     }
+
+}
+
+
+function findImage($pathAndFile){
+
+    if(Storage::disk('public')->exists($pathAndFile)){
+        $url = asset('storage/' . $pathAndFile);
+    } else {
+        $url = asset('/assets/media/avatars/blank.png');
+    }
+
+    return $url;
+
+}
+
+// PUT THE BACKGROUND IN THE TEXT COLOR
+function hex2rgb($colour, $opacity) {
+    
+    // REMOVE # FROM STRING
+    $colour = ltrim($colour, '#');
+
+    // EXTRACT RGB FROM HEX
+    $rgb = sscanf($colour, '%2x%2x%2x');
+    $rgb[] = $opacity;
+
+    // RETURN RGBA
+    return sprintf('rgb(%d, %d, %d, %d%%)', ...$rgb);
 
 }
