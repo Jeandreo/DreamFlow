@@ -15,7 +15,7 @@ class ChatGPTController extends Controller
 public function index()
 {
     // Substitua 'YOUR_API_KEY' pela sua chave de API OpenAI
-    $apiKey = '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';
+    $apiKey = '';
 
     // Dados da solicitação para enviar ao serviço ChatGPT
     $data = [
