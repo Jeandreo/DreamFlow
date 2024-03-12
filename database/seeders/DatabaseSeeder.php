@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Project;
 use App\Models\ProjectCategory;
 use App\Models\ProjectStatus;
+use App\Models\ProjectTask;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -248,6 +249,320 @@ class DatabaseSeeder extends Seeder
             'order' => 1,
             'created_by' => 1,
         ]);
+
+        ProjectTask::create([
+            'project_id' => 1,
+            'status_id' => 1,
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Reunião com cliente para entender o projeto',
+            'phrase' => 'Levar 5 ideias para facilitar a comunicação',
+            'created_by' => rand(1, 5),
+        ]);
+
+        ProjectTask::create([
+            'project_id' => 1,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Desenvolvimento de protótipo inicial',
+            'phrase' => 'Garantir que os principais recursos estejam funcionando corretamente',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 1,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Testes de Usabilidade',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 1,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Implementação de novos recursos',
+            'phrase' => 'Adicionar funcionalidades solicitadas pelo cliente',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 1,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Revisão de código',
+            'phrase' => 'Verificar e corrigir erros no código-fonte',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 1,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Preparação para entrega do projeto',
+            'phrase' => 'Garantir que todos os requisitos estejam atendidos antes da entrega ao cliente',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Implementação de funcionalidade de chat em tempo real',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Otimização de desempenho da aplicação',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Implementação de sistema de notificações por e-mail',
+            'phrase' => 'Desenvolver um sistema de notificações por e-mail para alertar os usuários sobre eventos importantes',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Refatoração do código-fonte',
+            'phrase' => 'Reestruturar o código para torná-lo mais legível e sustentável a longo prazo',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 7,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Testes de segurança da aplicação',
+            'phrase' => 'Realizar testes de segurança para identificar e corrigir possíveis vulnerabilidades',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Desenvolvimento de interface de administração',
+            'phrase' => 'Criar uma interface de administração para gerenciar conteúdos e usuários do sistema',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 3,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Integração com API de terceiros',
+            'phrase' => 'Integrar com API de terceiros para adicionar novos recursos ao sistema',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 3,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Melhoria na documentação do código',
+            'phrase' => 'Atualizar e aprimorar a documentação do código para facilitar a manutenção futura',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 3,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Implementação de sistema de cache',
+            'phrase' => 'Adicionar um sistema de cache para melhorar o desempenho e a escalabilidade da aplicação',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Configuração de servidor de produção',
+            'phrase' => 'Configurar o servidor de produção para garantir alta disponibilidade e segurança',
+            'created_by' => rand(1, 5),
+        ]);
+
+
+
+
+        ProjectTask::create([
+            'project_id' => 4,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Desenvolvimento de campanha publicitária',
+            'phrase' => 'Criar estratégias de marketing para promover o produto/serviço',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 4,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Análise de mercado e concorrência',
+            'phrase' => 'Realizar estudo de mercado para identificar oportunidades e ameaças',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 4,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Desenvolvimento de materiais de vendas',
+            'phrase' => 'Elaborar apresentações, folhetos e outras ferramentas de vendas',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 6,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Treinamento da equipe de vendas',
+            'phrase' => 'Realizar treinamentos para melhorar habilidades de vendas e conhecimento do produto',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 5,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Gestão de redes sociais',
+            'phrase' => 'Gerenciar perfis em redes sociais para aumentar a visibilidade da marca',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 5,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Desenvolvimento de parcerias estratégicas',
+            'phrase' => 'Identificar e estabelecer parcerias com outras empresas para aumentar as vendas',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 5,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Otimização de funil de vendas',
+            'phrase' => 'Analisar e otimizar o funil de vendas para aumentar a conversão de leads em clientes',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 7,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Participação em eventos do setor',
+            'phrase' => 'Representar a empresa em eventos do setor para criar networking e gerar leads',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Análise de métricas de marketing',
+            'phrase' => 'Analisar métricas de marketing para avaliar o desempenho das campanhas',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Desenvolvimento de estratégia de pricing',
+            'phrase' => 'Desenvolver uma estratégia de precificação competitiva para maximizar lucros',
+            'created_by' => rand(1, 5),
+        ]);
+        
+        
 
         \App\Models\User::factory(10)->create();
     }

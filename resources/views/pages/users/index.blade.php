@@ -37,7 +37,7 @@
 												<td>
 													<a href="{{ route('users.edit', $content->id) }}" class="d-flex align-items-center text-gray-700 text-hover-primary">
 														<div class="symbol symbol-25px symbol-circle me-2">
-															<img alt="Pic" src="{{ findImage('storage/users/' . $content->id . '/' . 'perfil-35px.jpg') }}">
+															<img alt="Pic" src="{{ findImage('users/' . $content->id . '/' . 'perfil-35px.jpg') }}">
 														</div>
 														{{ $content->name }}
 													</a>

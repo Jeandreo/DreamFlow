@@ -1,7 +1,7 @@
 @if ($contents->count())
 @foreach ($contents as $content)
 <!-- BEGIN:TASK -->
-<div class="draggable bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-45px">
+<div class="draggable bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-45px task-list" data-task="{{ $content->id }}">
    <div class="d-flex align-items-center justify-content-between w-100 h-100">
       <div class="d-flex align-items-center h-100">
          <div style="background: {{ $content->project->color }}" class="rounded-start h-100 w-40px d-flex align-items-center justify-content-center">
@@ -60,21 +60,21 @@
          </div>
       </div>
    </div>
-   <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0" style="background: #0eade1">
+   <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-status" style="background: {{ $content->statusInfo->color }}">
       <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
-         <p class="text-white fw-bold m-0 status-name-1260">Solicitações</p>
+         <p class="text-white fw-bold m-0 status-name">{{ $content->statusInfo->name }}</p>
          <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
             @foreach ($content->project->statuses as $status)
             <div class="menu-item px-3 mb-2">
-               <a href="https://sulink.com.br/public/core/projetos/tarefas/status" data-task="{{ $content->id }}" data-status="{{ $status->id }}" class="menu-link px-3 d-block text-center" style="background: {{ $status->color }}; color: white">
-               <span class="">{{ $status->name }}</span>
-               </a>
+               <span data-task="{{ $content->id }}" data-status="{{ $status->id }}" class="menu-link px-3 d-block text-center tasks-status" style="background: {{ $status->color }}; color: white">
+                  <span class="">{{ $status->name }}</span>
+               </span>
             </div>
             @endforeach
          </div>
       </div>
    </div>
-   <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px" placeholder="Prazo da tarefa" name="start_date" value="" required/>
+   <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date" data-task="{{ $content->id }}" placeholder="Prazo da tarefa" value="@if($content->date) {{ date('Y-m-d H:i:s', strtotime($content->date)) }} @endif"/>
    <!-- SEPARATOR -->
    <div class="separator-vertical h-100"></div>
    <!-- SEPARATOR -->

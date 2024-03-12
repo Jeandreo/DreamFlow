@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\ProjectStatus;
 use App\Models\ProjectTask;
 use App\Models\User;
 use GuzzleHttp\Psr7\Response;
@@ -286,5 +287,64 @@ class ProjectTaskController extends Controller
         return response()->json($img, 200);
 
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function status(Request $request)
+    {
+
+        // UPDATE TASK STATUS
+        $content = ProjectTask::find($request->task_id);
+        $content->status_id = $request->status_id;
+        $content->save();
+
+        // STATUS
+        $status = ProjectStatus::find($request->status_id);
+
+        // RETURN
+        return response()->json([
+            "name" => $status->name,
+            "color" => $status->color,
+        ], 200);
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function date(Request $request)
+    {
+
+        // UPDATE TASK STATUS
+        $content = ProjectTask::find($request->task_id);
+        $content->date = $request->date;
+        $content->save();
+
+        // RETURN
+        return response()->json('Sucesso', 200);
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function order(Request $request)
+    {
+
+        // UPDATE TASK STATUS
+        dd($request->all());
+
+        // RETURN
+        return response()->json('Sucesso', 200);
+
+    }
+
 
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatGPTController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectStatusController;
@@ -53,6 +54,9 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/check', [ProjectTaskController::class, 'check'])->name('check');
                 Route::put('/prioridade', [ProjectTaskController::class, 'priority'])->name('priority');
                 Route::put('/designado', [ProjectTaskController::class, 'designated'])->name('designated');
+                Route::put('/status', [ProjectTaskController::class, 'status'])->name('status');
+                Route::put('/data', [ProjectTaskController::class, 'date'])->name('date');
+                Route::put('/ordem', [ProjectTaskController::class, 'order'])->name('order');
             });
         });
 
@@ -100,6 +104,13 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/editar/{id}', [ProfileController::class, 'update'])->name('update');
         });
     });
+
+    // CHAT-GPT
+    // // Route::prefix('chat-gpt')->group(function () {
+    // //     Route::name('users.')->group(function () {
+    // //         Route::get('/', [ChatGPTController::class, 'index'])->name('index');
+    // //     });
+    // // });
 
 });
 

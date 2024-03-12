@@ -21,6 +21,7 @@ class ProjectTask extends Model
         'status_id',
         'designated_id',
         'checked',
+        'order',
         'priority',
         'date',
         'name',

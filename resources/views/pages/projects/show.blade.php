@@ -44,6 +44,43 @@
 				constrainDimensions: true
 			}
 		});
+
+		// ON STOP DRAG
+		swappable.on('drag:stopped', function(event) {
+
+			// GET DIV OF ELEMENT
+			var movedDiv = event.originalSource;
+
+			// GET ID OF TASK
+			var taskId = $(movedDiv).data('task');
+
+			// GET PROJECT
+			var projectId = $(movedDiv).closest('.draggable-zone').data('project');
+
+			// START
+			var tasksOrderIds = [];
+
+			// GET IDS OF TASKS only within the specific draggable-zone
+			$(movedDiv).closest('.draggable-zone').find('.task-list').each(function() {
+				// OBTEM ITEM
+				var item = $(this).data('task');
+				tasksOrderIds.push(item);
+			});
+
+			console.log('Projeto' + projectId);
+			console.log('Tarefa' + taskId);
+			console.log('Ordem' + tasksOrderIds);
+
+
+			// // AJAX
+			// $.ajax({
+			// 	headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+			// 	type:'PUT',
+			// 	url: "{{ route('tasks.order') }}",
+			// 	data: {_token: @json(csrf_token()), tasksOrderIds: tasksOrderIds},
+			// });
+
+		});
 	}
 	
 	// FUNCTION LOAD PROJECTS
@@ -249,61 +286,47 @@
 
 	});
 
-
-
-
-
-
-
-
-	// // // AJAX SELECT USER FOR STATUS
-    // // $(document).on('click', '.select-status-drop', function(e){
+	// UPDATE STATUS
+    $(document).on('click', '.tasks-status', function(e){
         
-    // //     e.preventDefault();
+		// GET DATA
+        var taskId = $(this).data('task');
+        var statusId = $(this).data('status');
 
-    // //     var url = $(this).attr('href');
-    // //     var id = $(this).attr('data-task-id');
-    // //     var status = $(this).attr('data-status-id');
+		// GET ACTUAL STATUS
+		var status = $(this).closest('.actual-status');
 
-    // //     $.ajax({
-    // //         type:'PUT',
-    // //         url: url,
-    // //         data: {_token: @json(csrf_token()), task_id: id, status_id: status},
-    // //         success:function(data) {
-    // //             // CHANGE TO NEW COLOR AND NAME STATUS
-    // //             $('.status-name-' + data[['task']]).text(data['status']['name']);
-    // //             $('.status-color-' + data[['task']]).css('background', data['status']['color']);
-    // //             loadKanban();
-    // //         }
-    // //     });
+		// AJAX
+        $.ajax({
+            type:'PUT',
+            url: "{{ route('tasks.status') }}",
+            data: {_token: @json(csrf_token()), task_id: taskId, status_id: statusId},
+            success:function(data) {
+                // CHANGE TO NEW COLOR AND NAME STATUS
+				status.find('.status-name').text(data['name']);
+				status.css('background', data['color']);
+            }
+        });
     
-    // // });
+    });
 
 
 
-	// //  // AJAX UPDATE DATE TASK
-	// //  $(document).on('change', '.select_date', function(){
+	// UPDATE DATE
+	$(document).on('change', '.task-date', function(){
     
-	// // var date = $(this).val();
-	// // var idTask = $(this).data('task-id-date');
+		// GET NEW DATE
+		var date = $(this).val();
+		var taskId = $(this).data('task');
 
-	// // var url = '';
+		// AJAX
+		$.ajax({
+			type:'PUT',
+			url: "{{ route('tasks.date') }}",
+			data: {_token: @json(csrf_token()), task_id: taskId, date: date},
+		});
 
-	// // $.ajax({
-	// // 	type:'PUT',
-	// // 	url: url,
-	// // 	data: {_token: @json(csrf_token()), when: date},
-	// // 	success:function(data) {
-	// // 		loadKanban();
-	// // 	}
-	// // });
-
-// });
-
-
-
-	
-
+	});
 
 </script>
 @endsection
