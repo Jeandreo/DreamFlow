@@ -72,13 +72,16 @@
 			console.log('Ordem' + tasksOrderIds);
 
 
-			// // AJAX
-			// $.ajax({
-			// 	headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-			// 	type:'PUT',
-			// 	url: "{{ route('tasks.order') }}",
-			// 	data: {_token: @json(csrf_token()), tasksOrderIds: tasksOrderIds},
-			// });
+			// AJAX
+			$.ajax({
+				headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+				type:'PUT',
+				url: "{{ route('tasks.order') }}",
+				data: {_token: @json(csrf_token()), project_id: projectId, task_id: taskId, tasksOrderIds: tasksOrderIds},
+				success: function(data){
+					console.log(data);
+				}
+			});
 
 		});
 	}

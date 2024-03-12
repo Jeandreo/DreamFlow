@@ -205,7 +205,7 @@ class ProjectTaskController extends Controller
     {
 
         // GET ALL DATA
-        $contents = ProjectTask::where('project_id', $id)->get();
+        $contents = ProjectTask::where('project_id', $id)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get();
         $users = User::where('status', 1)->get();
 
         // RETURN VIEW WITH DATA
@@ -338,8 +338,18 @@ class ProjectTaskController extends Controller
     public function order(Request $request)
     {
 
-        // UPDATE TASK STATUS
-        dd($request->all());
+        // START POSITION 0
+        $position = 0;
+
+        foreach($request->tasksOrderIds as $id){
+            // STORING NEW DATA
+            $content = ProjectTask::find($id);
+            $content->order = $position;
+            $content->save();
+
+            // SAVE NEXT POSITION
+            ++$position;
+        }
 
         // RETURN
         return response()->json('Sucesso', 200);
