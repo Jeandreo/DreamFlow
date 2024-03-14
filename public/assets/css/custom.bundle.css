@@ -8,6 +8,9 @@ body, html {
         --bs-app-sidebar-width-actual: 335px;
         --bs-border-radius: 15px;
     }
+    .modal {
+        --bs-modal-width: 1250px;
+    }
 }
 
 [type="color"]{
@@ -79,4 +82,17 @@ button:focus {
 .task-icons:hover {
     width: 140px;
     border-radius: 15px !important;
+}
+
+.modal-backdrop.show {
+    background-color: rgb(0 2 41 / 70%);
+    mix-blend-mode: normal;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 1;
+}
+
+.ck-content {
+    min-height: 100px;
+    height: 100px;
 }

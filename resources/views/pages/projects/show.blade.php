@@ -4,6 +4,9 @@
 <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
 @endsection
 @section('content')
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+    Launch demo modal
+</button>
 <div class="app-main flex-column flex-row-fluid " id="kt_app_main" style="background: url('{{ asset('assets/media/images/bg_colors.jpg') }}');">
 	<div class="d-flex flex-column flex-column-fluid">                             
 		<div id="kt_app_content" class="app-content  flex-column-fluid py-6" >
@@ -20,6 +23,70 @@
 	</div>
 </div>
 
+<div class="modal fade" tabindex="-1" id="kt_modal_1">
+    <div class="modal-dialog modal-dialog-centered rounded">
+        <div class="modal-content rounded">
+            <div class="modal-body p-0">
+                <div class="row m-0">
+					<div class="col-4 bg-dark h-600px rounded-start p-0">
+						<div class="h-75px p-3 d-flex align-items-center justify-content-center" style="border-bottom: solid 1px rgba(0, 0, 0, 0.3)">
+							<h2 class="text-white fw-bold text-uppercase m-0">Detalhes da missão</h2>
+						</div>
+						<div class="px-8">
+							<span class="badge badge-primary mb-4 mt-7">A fazer</span>
+							<h2 class="text-white fs-2x my-4">Desenvolvimento de campanha publicitária</h2>
+							<p class="text-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+							<div class="h-125px"></div>
+							<h3 class="text-white">Detalhes</h3>
+							<div class="row pb-3 mb-2" style="border-bottom: solid 1px rgba(0, 0, 0, 0.2)">
+								<div class="col-4">
+									<p class="text-white fw-bolder m-0">Autor</p>
+								</div>
+								<div class="col-8">
+									<p class="text-white text-end m-0">Jeandreo F. Furquim</p>
+								</div>
+							</div>
+							<div class="row pb-3 mb-2" style="border-bottom: solid 1px rgba(0, 0, 0, 0.2)">
+								<div class="col-4">
+									<p class="text-white fw-bolder m-0">Projeto</p>
+								</div>
+								<div class="col-8">
+									<p class="text-white text-end m-0">Jeandreo F. Furquim</p>
+								</div>
+							</div>
+							<div class="row pb-3 mb-2">
+								<div class="col-4">
+									<p class="text-white fw-bolder m-0">Criado as</p>
+								</div>
+								<div class="col-8">
+									<p class="text-white text-end m-0">Jeandreo F. Furquim</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-8 h-600px rounded-end">
+						<div class="h-75px p-3 d-flex align-items-center justify-content-center" style="border-bottom: solid 1px rgba(0, 0, 0, 0.05);">
+							<p class="text-gray-600 text-uppercase m-0">“Não é sobre ideias. É sobre fazer as ideias acontecerem.” – Scott Belsky</p>
+						</div>
+						<div class="h-350px">
+							<div class="h-100 bg-light rounded mt-2" id="results-comments">
+								{{-- COMMENTS HERE --}}
+								{{-- COMMENTS HERE --}}
+								{{-- COMMENTS HERE --}}
+							</div>
+						</div>
+						<div class="h-100px">
+							<div class="pt-5" data-bs-theme="light">
+								<textarea name="kt_docs_ckeditor_classic" id="kt_docs_ckeditor_classic">
+								</textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('custom-footer')
 <script>
