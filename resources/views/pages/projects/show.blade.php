@@ -40,9 +40,8 @@
 			draggable: ".draggable",
 			handle: ".draggable .draggable-handle",
 			mirror: {
-				appendTo: "body",
-				constrainDimensions: true
-			}
+				constrainDimensions: true,
+			},
 		});
 
 		// ON STOP DRAG
@@ -55,35 +54,57 @@
 			var taskId = $(movedDiv).data('task');
 
 			// GET PROJECT
-			var projectId = $(movedDiv).closest('.draggable-zone').data('project');
+			var draggableDropped = $(movedDiv).closest('.draggable-zone');
+			
+			// TYPE DRAGGABLE
+			var draggableType = draggableDropped.data('type');
+
+			// GET PROJECT
+			var projectId = draggableDropped.data('project');
 
 			// START
 			var tasksOrderIds = [];
 
-			// GET IDS OF TASKS only within the specific draggable-zone
-			$(movedDiv).closest('.draggable-zone').find('.task-list').each(function() {
+			// GET IDS OF TASKS ONLY DRAGGABLE-ZONE
+			draggableDropped.find('.task-list').each(function() {
 				// OBTEM ITEM
 				var item = $(this).data('task');
 				tasksOrderIds.push(item);
 			});
 
-			console.log('Projeto' + projectId);
-			console.log('Tarefa' + taskId);
-			console.log('Ordem' + tasksOrderIds);
-
+			// HIDE NO TASKS IN ZONE DROPPED
+			draggableDropped.find('.no-tasks').fadeOut();
 
 			// AJAX
 			$.ajax({
 				headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 				type:'PUT',
 				url: "{{ route('tasks.order') }}",
-				data: {_token: @json(csrf_token()), project_id: projectId, task_id: taskId, tasksOrderIds: tasksOrderIds},
-				success: function(data){
-					console.log(data);
+				data: {
+					_token: @json(csrf_token()), 
+					project_id: projectId, 
+					task_id: taskId, 
+					tasksOrderIds: tasksOrderIds
+				},
+				success: function(response){
+					
+					// CHANGE COLOR PROJECT ON TASK
+					$(movedDiv).find('.color-task').css('background', response['color']);
+
+					// GET ZONE INITIAL
+					var startZone = $('#project-tasks-' + response['startProject']);
+					
+					// COUNT TASKS IN ZONE
+					var tasksCount = startZone.find('.task-list').length;
+
+					// IF NO TASKS IN ZONE
+					if (tasksCount == 0) startZone.find('.no-tasks').fadeIn();
+
 				}
 			});
 
 		});
+
 	}
 	
 	// FUNCTION LOAD PROJECTS
@@ -174,6 +195,9 @@
 
 		// GET TASK
 		var taskId = $(this).data('task');
+		var isMain = $(this).hasClass('task-main');
+		var subtask = $(this).closest('.task-left-side').find('.task-name');
+		console.log(subtask);
 
 		// AJAX
         $.ajax({
@@ -183,20 +207,50 @@
 			data: {task_id: taskId},
         });
 
-		// SELECT DIV OF TASK
-		var taskDiv = $(this).closest('.draggable');
 
-		// ADD ANIMATION AND REMOVE TASK
-		taskDiv.addClass('slide-up');
-		setTimeout(function() {
-			taskDiv.remove();
-		}, 500);
+		// IF TASK MAIN
+		if(isMain){
+			// SELECT DIV OF TASK
+			var taskDiv = $(this).closest('.draggable');
 
-		// PLAY SOUND
-		audio.play();
+			// ADD ANIMATION AND REMOVE TASK
+			taskDiv.addClass('slide-up');
+			setTimeout(function() {
+				taskDiv.remove();
+			}, 500);
 
+		} else {
+			subtask.toggleClass('text-decoration-line-through ');
+			// PLAY SOUND
+			audio.play();
+		}
 
 	});
+
+	// SAVE STATUS CHECKED
+	$(document).on('click', '.add-subtasks', function(){
+
+		// GET TASK
+		var taskId = $(this).data('task');
+		var projectId = $(this).data('project');
+
+		// DIV
+		var divSubtasks = $(this).closest('.draggable');
+
+		// AJAX
+		$.ajax({
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+			type: 'POST',
+			url: "{{ route('tasks.subtask') }}",
+			data: {task_id: taskId, project_id: projectId},
+			success: function(data){
+				divSubtasks.append(data);
+			}
+		});
+
+	});
+
+	
 
 	// CALL FUNCTIONS
 	loadProjects();

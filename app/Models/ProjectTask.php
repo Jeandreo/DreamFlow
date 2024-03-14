@@ -18,6 +18,7 @@ class ProjectTask extends Model
      */
     protected $fillable = [
         'project_id',
+        'task_id',
         'status_id',
         'designated_id',
         'checked',
@@ -46,7 +47,7 @@ class ProjectTask extends Model
      */
     public function subtasks(): HasMany
     {
-        return $this->hasMany(ProjectSubtask::class);
+        return $this->hasMany(ProjectTask::class, 'task_id', 'id');
     }
 
     /**

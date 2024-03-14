@@ -368,7 +368,7 @@ class DatabaseSeeder extends Seeder
         ]);
         
         ProjectTask::create([
-            'project_id' => 7,
+            'project_id' => 6,
             'status_id' => rand(1, 3),
             'designated_id' => rand(1, 5),
             'checked' => rand(0, 1),
@@ -527,7 +527,7 @@ class DatabaseSeeder extends Seeder
         ]);
         
         ProjectTask::create([
-            'project_id' => 7,
+            'project_id' => 6,
             'status_id' => rand(1, 3),
             'designated_id' => rand(1, 5),
             'checked' => rand(0, 1),

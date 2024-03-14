@@ -57,8 +57,26 @@ button:focus {
     transition: all 0.5s ease;
   }
 
-  .draggable.slide-up {
+.draggable.slide-up {
     transform: translateY(-100%);
     opacity: 0;
     transition: transform 0.5s ease, opacity 0.5s ease;
-  }
+}
+
+.color-task {
+    transition: background-color 0.3s ease;
+}
+
+.bg-light .form-check.form-check-solid .form-check-input:not(:checked) {
+    background-color: var(--bs-gray-300);
+}
+
+.task-icons {
+    transition: all 0.2s;
+    width: 45px;
+}
+
+.task-icons:hover {
+    width: 140px;
+    border-radius: 15px !important;
+}

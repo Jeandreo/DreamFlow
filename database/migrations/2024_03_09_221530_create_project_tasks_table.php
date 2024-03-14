@@ -14,13 +14,14 @@ return new class extends Migration
         Schema::create('projects_tasks', function (Blueprint $table) {
             $table->id();
             $table->integer('project_id');
+            $table->integer('task_id')->nullable();
             $table->integer('status_id')->default(1);
             $table->integer('designated_id');
             $table->boolean('checked')->default(false);
             $table->integer('order')->default(0);
             $table->integer('priority')->default(0);
             $table->dateTime('date')->nullable();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('phrase')->nullable();
             $table->longText('description')->nullable();
             $table->boolean('status')->default(true);

@@ -205,7 +205,7 @@ class ProjectTaskController extends Controller
     {
 
         // GET ALL DATA
-        $contents = ProjectTask::where('project_id', $id)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get();
+        $contents = ProjectTask::where('project_id', $id)->whereNull('task_id')->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get();
         $users = User::where('status', 1)->get();
 
         // RETURN VIEW WITH DATA
@@ -341,6 +341,16 @@ class ProjectTaskController extends Controller
         // START POSITION 0
         $position = 0;
 
+        // GET TASK
+        $task = ProjectTask::find($request->task_id);
+        $startProject = $task->project_id;
+        $task->project_id = $request->project_id;
+        $task->save();
+
+        // PROJECT
+        $project = Project::find($request->project_id);
+
+        // SAVE NEW ORDER
         foreach($request->tasksOrderIds as $id){
             // STORING NEW DATA
             $content = ProjectTask::find($id);
@@ -352,7 +362,35 @@ class ProjectTaskController extends Controller
         }
 
         // RETURN
-        return response()->json('Sucesso', 200);
+        return response()->json(['color' => $project->color, 'startProject' => $startProject], 200);
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function subtask(Request $request)
+    {
+
+        // GET TASK
+        $created = ProjectTask::create([
+            'task_id' => $request->task_id,
+            'project_id' => $request->project_id,
+            'designated_id' => Auth::id(),
+            'created_by' => Auth::id(),
+        ]);
+
+        // GET USERS
+        $users = User::where('status', 1)->get();
+        $task = ProjectTask::find($created->id);
+
+        // RETURN VIEW WITH DATA
+        return view('pages.tasks._subtask')->with([
+            'subtask' => $task,
+            'users' => $users,
+        ]);
 
     }
 

@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::put('/status', [ProjectTaskController::class, 'status'])->name('status');
                 Route::put('/data', [ProjectTaskController::class, 'date'])->name('date');
                 Route::put('/ordem', [ProjectTaskController::class, 'order'])->name('order');
+                Route::post('/subtarefa', [ProjectTaskController::class, 'subtask'])->name('subtask');
             });
         });
 
