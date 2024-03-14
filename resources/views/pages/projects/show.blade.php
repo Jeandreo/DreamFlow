@@ -4,8 +4,8 @@
 <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
 @endsection
 @section('content')
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
-    Launch demo modal
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_task">
+    PREVIEW TAREFA
 </button>
 <div class="app-main flex-column flex-row-fluid " id="kt_app_main" style="background: url('{{ asset('assets/media/images/bg_colors.jpg') }}');">
 	<div class="d-flex flex-column flex-column-fluid">                             
@@ -23,7 +23,7 @@
 	</div>
 </div>
 
-<div class="modal fade" tabindex="-1" id="kt_modal_1">
+<div class="modal fade" tabindex="-1" id="modal_task">
     <div class="modal-dialog modal-dialog-centered rounded">
         <div class="modal-content rounded">
             <div class="modal-body p-0">
@@ -66,7 +66,7 @@
 					</div>
 					<div class="col-8 h-600px rounded-end">
 						<div class="h-75px p-3 d-flex align-items-center justify-content-center" style="border-bottom: solid 1px rgba(0, 0, 0, 0.05);">
-							<p class="text-gray-600 text-uppercase m-0">“Não é sobre ideias. É sobre fazer as ideias acontecerem.” – Scott Belsky</p>
+							<p class="text-gray-600 text-uppercase m-0"><i>“Não é sobre ideias. É sobre fazer as ideias acontecerem.” – Scott Belsky</i></p>
 						</div>
 						<div class="h-350px">
 							<div class="h-100 bg-light rounded mt-2" id="results-comments">
@@ -288,9 +288,10 @@
 
 		} else {
 			subtask.toggleClass('text-decoration-line-through ');
-			// PLAY SOUND
-			audio.play();
 		}
+
+		// PLAY SOUND
+		audio.play();
 
 	});
 
