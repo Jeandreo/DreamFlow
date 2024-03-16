@@ -7,7 +7,7 @@
 <meta property="og:locale" content="pt_BR" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="DreamFlow - Gerenciamento de Tarefas Simplificado" />
-<meta property="og:url" content="https://keenthemes.com/metronic" />
+<meta property="og:url" content="https://dreamake.com.br/" />
 <meta property="og:site_name" content="Keenthemes | Metronic" />
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />

@@ -16,9 +16,9 @@
                         </div>
                   </div>
                   <div class="d-flex align-items-center h-100 w-100">
-                     <i class="fa-solid fa-ellipsis-vertical text-hover-primary cursor-pointer py-2 px-3 mx-3 fs-3"></i>
+                     <i class="fa-solid fa-ellipsis-vertical text-hover-primary cursor-pointer py-2 px-3 mx-3 fs-3 show-task" data-task="{{ $content->id }}"></i>
                      <div class="d-block min-w-300px w-100">
-                        <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 task-name d-flex" value="{{ $content->name }}" name="name" data-task="{{ $content->id }}">
+                        <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 task-name d-flex" maxlength="80" value="{{ $content->name }}" name="name" data-task="{{ $content->id }}">
                         <div class="input-phrase" @if($content->phrase == '') style="display: none;" @endif>
                            <input type="text" class="text-gray-500 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 fs-7 d-flex task-phrase z-index-9 h-15px mt-n1" maxlength="255" name="phrase" value="{{ $content->phrase }}" @if($content->phrase == '') style="border-bottom: dashed 1px #bbbdcb63 !important;" @endif data-task="{{ $content->id }}">
                         </div>

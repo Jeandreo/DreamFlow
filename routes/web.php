@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ChatGPTController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectCommentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\ProjectTaskController;
@@ -45,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
             Route::name('tasks.')->group(function () {
                 Route::post('/', [ProjectTaskController::class, 'index'])->name('index');
                 Route::post('/adicionar', [ProjectTaskController::class, 'store'])->name('store');
-                Route::get('/visualizando/{id}', [ProjectTaskController::class, 'show'])->name('show');
+                Route::post('/visualizando', [ProjectTaskController::class, 'show'])->name('show');
                 Route::get('/desabilitar/{id}', [ProjectTaskController::class, 'destroy'])->name('destroy');
                 Route::get('/editar/{id}', [ProjectTaskController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [ProjectTaskController::class, 'update'])->name('update');
@@ -67,10 +69,19 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [ProjectStatusController::class, 'index'])->name('index');
                 Route::get('/adicionar', [ProjectStatusController::class, 'create'])->name('create');
                 Route::post('/adicionar', [ProjectStatusController::class, 'store'])->name('store');
-                Route::get('/visualizando/{id}', [ProjectStatusController::class, 'show'])->name('show');
                 Route::get('/desabilitar/{id}', [ProjectStatusController::class, 'destroy'])->name('destroy');
                 Route::get('/editar/{id}', [ProjectStatusController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [ProjectStatusController::class, 'update'])->name('update');
+            });
+        });
+
+        // COMMENTS
+        Route::prefix('comentarios')->group(function () {
+            Route::name('comments.')->group(function () {
+                Route::post('/adicionar', [ProjectCommentController::class, 'store'])->name('store');
+                Route::post('/visualizando', [ProjectCommentController::class, 'show'])->name('show');
+                Route::get('/desabilitar/{id}', [ProjectCommentController::class, 'destroy'])->name('destroy');
+                Route::put('/editar/{id}', [ProjectCommentController::class, 'update'])->name('update');
             });
         });
 
@@ -103,6 +114,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/desabilitar/{id}', [ProfileController::class, 'destroy'])->name('destroy');
             Route::get('/editar/{id}', [ProfileController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [ProfileController::class, 'update'])->name('update');
+        });
+    });
+
+    // PROFILE USER
+    Route::prefix('configuracoes')->group(function () {
+        Route::name('configs.')->group(function () {
+            Route::post('/CKEupload', [ConfigController::class, 'CKEupload']);
         });
     });
 

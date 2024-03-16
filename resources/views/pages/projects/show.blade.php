@@ -4,9 +4,6 @@
 <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
 @endsection
 @section('content')
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_task">
-    PREVIEW TAREFA
-</button>
 <div class="app-main flex-column flex-row-fluid " id="kt_app_main" style="background: url('{{ asset('assets/media/images/bg_colors.jpg') }}');">
 	<div class="d-flex flex-column flex-column-fluid">                             
 		<div id="kt_app_content" class="app-content  flex-column-fluid py-6" >
@@ -25,65 +22,10 @@
 
 <div class="modal fade" tabindex="-1" id="modal_task">
     <div class="modal-dialog modal-dialog-centered rounded">
-        <div class="modal-content rounded">
-            <div class="modal-body p-0">
-                <div class="row m-0">
-					<div class="col-4 bg-dark h-600px rounded-start p-0">
-						<div class="h-75px p-3 d-flex align-items-center justify-content-center" style="border-bottom: solid 1px rgba(0, 0, 0, 0.3)">
-							<h2 class="text-white fw-bold text-uppercase m-0">Detalhes da missão</h2>
-						</div>
-						<div class="px-8">
-							<span class="badge badge-primary mb-4 mt-7">A fazer</span>
-							<h2 class="text-white fs-2x my-4">Desenvolvimento de campanha publicitária</h2>
-							<p class="text-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-							<div class="h-125px"></div>
-							<h3 class="text-white">Detalhes</h3>
-							<div class="row pb-3 mb-2" style="border-bottom: solid 1px rgba(0, 0, 0, 0.2)">
-								<div class="col-4">
-									<p class="text-white fw-bolder m-0">Autor</p>
-								</div>
-								<div class="col-8">
-									<p class="text-white text-end m-0">Jeandreo F. Furquim</p>
-								</div>
-							</div>
-							<div class="row pb-3 mb-2" style="border-bottom: solid 1px rgba(0, 0, 0, 0.2)">
-								<div class="col-4">
-									<p class="text-white fw-bolder m-0">Projeto</p>
-								</div>
-								<div class="col-8">
-									<p class="text-white text-end m-0">Jeandreo F. Furquim</p>
-								</div>
-							</div>
-							<div class="row pb-3 mb-2">
-								<div class="col-4">
-									<p class="text-white fw-bolder m-0">Criado as</p>
-								</div>
-								<div class="col-8">
-									<p class="text-white text-end m-0">Jeandreo F. Furquim</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-8 h-600px rounded-end">
-						<div class="h-75px p-3 d-flex align-items-center justify-content-center" style="border-bottom: solid 1px rgba(0, 0, 0, 0.05);">
-							<p class="text-gray-600 text-uppercase m-0"><i>“Não é sobre ideias. É sobre fazer as ideias acontecerem.” – Scott Belsky</i></p>
-						</div>
-						<div class="h-350px">
-							<div class="h-100 bg-light rounded mt-2" id="results-comments">
-								{{-- COMMENTS HERE --}}
-								{{-- COMMENTS HERE --}}
-								{{-- COMMENTS HERE --}}
-							</div>
-						</div>
-						<div class="h-100px">
-							<div class="pt-5" data-bs-theme="light">
-								<textarea name="kt_docs_ckeditor_classic" id="kt_docs_ckeditor_classic">
-								</textarea>
-							</div>
-						</div>
-					</div>
-				</div>
-            </div>
+        <div class="modal-content rounded bg-transparent" id="load-task">
+            {{-- LOAP TASK HERE --}}
+            {{-- LOAP TASK HERE --}}
+            {{-- LOAP TASK HERE --}}
         </div>
     </div>
 </div>
@@ -340,7 +282,7 @@
 	});
 
 	// UPDATE TITLE AND PHRASE
-	$(document).on('change', '.task-name, .task-phrase', function(){
+	$(document).on('change', '.task-name, .task-phrase, .task-description', function(){
 
 		// GET DATA
 		var input = $(this).attr('name'); 
@@ -355,7 +297,6 @@
 		});
 
 	});
-
 
 	// UPDATE TITLE AND PHRASE
 	$(document).on('click', '.task-priority', function(){
@@ -453,5 +394,86 @@
 
 	});
 
+	function showTask(id){
+
+		// AJAX
+        $.ajax({
+            type:'POST',
+            url: "{{ route('tasks.show') }}",
+            data: {_token: @json(csrf_token()), task_id: id},
+            success:function(data) {
+
+				//  REPLACE CONTENT
+				$('#load-task').html(data);
+
+                // CHANGE TO NEW COLOR AND NAME STATUS
+				$('#modal_task').modal('show');
+
+				// LOAD COMMENTS
+				loadComments(id);
+
+				// LOAD EDITOR
+				loadEditorText();
+
+            }
+        });
+
+	}
+
+	function loadComments(id){
+
+		// AJAX
+		$.ajax({
+			type:'POST',
+			url: "{{ route('comments.show') }}",
+			data: {_token: @json(csrf_token()), task_id: id},
+			success:function(data) {
+
+				//  REPLACE CONTENT
+				$('#results-comments').html(data);
+
+			}
+		});
+
+	}
+
+
+	// SHOW TASK
+	$(document).on('submit', '#send-comment', function(e){
+
+		// PARA EVENTO
+		e.preventDefault();
+
+		// GET DATA
+		var taskId = $(this).data('task');
+		var text = $(this).find('[name="text"]').val();
+
+		// AJAX
+		$.ajax({
+			type:'POST',
+			url: "{{ route('comments.store') }}",
+			data: {_token: @json(csrf_token()), task_id: taskId, text: text},
+			success:function(data) {
+				loadComments(taskId);
+			}
+		});
+
+
+	})
+
+
+	
+
+
+	// SHOW TASK
+	$(document).on('click', '.show-task', function(){
+
+		// GET DATA
+        var taskId = $(this).data('task');
+
+		// EXIBE TASK
+		showTask(taskId);
+
+	});
 </script>
 @endsection

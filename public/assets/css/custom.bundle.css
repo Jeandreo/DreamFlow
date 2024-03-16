@@ -93,6 +93,41 @@ button:focus {
 }
 
 .ck-content {
-    min-height: 100px;
-    height: 100px;
+    min-height: 80px;
+    height: 80px;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+.comment-ajax img {
+    width: 100%;
+    border-radius: 10px;
+}
+/* 
+.ck-editor__top {
+    display: none;
+} */
+
+.ck-balloon-panel {
+    z-index: 99999 !important;
+}
+
+.ck-editor__editable.ck-rounded-corners {
+    border-radius: 10px !important;
+    background: whitesmoke !important;
+    border: none !important;
+}
+
+::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.opacity-0 {
+    transition: all 0.2s;
+}
+
+.opacity-1:hover .opacity-0 {
+    opacity: 1 !important;
 }

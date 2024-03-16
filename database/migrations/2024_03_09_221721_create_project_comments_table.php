@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('project_comments', function (Blueprint $table) {
             $table->id();
+            $table->integer('task_id');
+            $table->longText('text');
+            $table->integer('status')->default(true);
+            $table->integer('filed_by')->nullable();
+            $table->integer('created_by');
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

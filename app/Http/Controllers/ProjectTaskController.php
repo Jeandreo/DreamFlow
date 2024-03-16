@@ -76,10 +76,10 @@ class ProjectTaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
         // GET ALL DATA
-        $contents = $this->repository->find($id);
+        $contents = $this->repository->find($request->task_id);
 
         // RETURN VIEW WITH DATA
         return view('pages.tasks.show')->with([
