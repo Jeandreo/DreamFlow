@@ -6,7 +6,7 @@
     </head>
     <!--end::Head-->
     <!--begin::Body-->
-    <body  id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true"  class="app-default" data-kt-app-sidebar-minimize="on">
+    <body  id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true"  class="app-default" data-kt-app-sidebar-minimize="@if(Auth::user()->sidebar){{ 'off' }}@else{{ 'on' }}@endif">
         <!--begin::Theme mode setup on page load-->
         @include('layouts.config')
         <!--end::Theme mode setup on page load-->
@@ -75,6 +75,16 @@
         <script src="{{ asset('assets/plugins/custom/ckeditor5/ckeditor-classic.bundle.js') }}"></script>
         <script src="{{ asset('/assets/js/custom.bundle.js') }}"></script>
         <!--end::Global Javascript Bundle-->
+        <script>
+            // SAVE STATE SIDEBAR
+            $(document).on('click', '.toggle-sidebar', function(){
+                $.ajax({
+                    type:'PUT',
+                    url: "{{ route('users.sidebar') }}",
+                    data: {_token: @json(csrf_token())},
+                });
+            });
+        </script>
         @yield('custom-footer')
         <!--end::Javascript-->
     </body>

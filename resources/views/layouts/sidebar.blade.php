@@ -12,7 +12,7 @@
       <!--begin::Sidebar toggle-->
       <div 
          id="kt_app_sidebar_toggle" 
-         class="app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary h-30px w-30px position-absolute top-50 start-100 translate-middle rotate " 
+         class="toggle-sidebar app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary h-30px w-30px position-absolute top-50 start-100 translate-middle rotate @if(Auth::user()->sidebar == false){{ 'active' }}@endif" 
          data-kt-toggle="true" 
          data-kt-toggle-state="active" 
          data-kt-toggle-target="body" 
@@ -65,15 +65,6 @@
                         <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
                      </div>
                      <!--end:Menu item-->
-                     <!--begin:Menu item-->
-                     <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Relatórios</span></a><!--end:Menu link-->
-                     </div>
-                     <!--end:Menu item--><!--begin:Menu item-->
-                     <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Marketing</span></a><!--end:Menu link-->
-                     </div>
-                     <!--end:Menu item-->
                      <div class="menu-inner flex-column collapse " id="kt_app_sidebar_menu_dashboards_collapse">
                         <!--begin:Menu item-->
                         <div  class="menu-item" >
@@ -113,12 +104,51 @@
                   <!--begin:Menu item-->
                   <div  class="menu-item pt-5" >
                      <!--begin:Menu content-->
-                     <div  class="menu-content" ><span class="menu-heading fw-bold text-uppercase fs-7">Projetos Marketing</span></div>
+                     <div  class="menu-content" ><span class="menu-heading fw-bold text-uppercase fs-7">Negócios</span></div>
                      <!--end:Menu content-->
                   </div>
                   <!--end:Menu item-->
                   <!--end::Heading-->
-                  @foreach (projects() as $project)
+                  @foreach (projects()->where('type', 1)->get() as $project)
+                  <!--begin::Menu Item-->
+                  <div class="menu-item">
+                     <!--begin::Menu link-->
+                     <a class="menu-link" href="{{ route('projects.show', $project->id) }}">
+                        <!--begin::Bullet--> 
+                        <span class="menu-icon">
+                        <span class="bullet bullet-dot h-10px w-10px" style="background: {{ $project->color }};">
+                        </span>
+                        </span>                      
+                        <!--end::Bullet--> 
+                        <!--begin::Title-->
+                        <span class="menu-title">
+                        {{ $project->name }}                </span>
+                        <!--end::Title-->
+                        <!--begin::Badge--> 
+                        <span class="menu-badge">
+                        <span class="badge badge-custom">
+                        6                    </span>
+                        </span>                      
+                        <!--end::Badge-->                                      
+                     </a>
+                     <!--end::Menu link-->                
+                  </div>
+                  <!--end::Menu Item-->
+                  @endforeach
+               </div>
+               <!--begin:Menu item-->
+               <!--end:Menu item-->
+               <div class="menu menu-rounded menu-column">
+                  <!--begin::Heading-->
+                  <!--begin:Menu item-->
+                  <div  class="menu-item pt-5" >
+                     <!--begin:Menu content-->
+                     <div  class="menu-content" ><span class="menu-heading fw-bold text-uppercase fs-7">Crescimento</span></div>
+                     <!--end:Menu content-->
+                  </div>
+                  <!--end:Menu item-->
+                  <!--end::Heading-->
+                  @foreach (projects()->where('type', 2)->get() as $project)
                   <!--begin::Menu Item-->
                   <div class="menu-item">
                      <!--begin::Menu link-->
@@ -150,38 +180,6 @@
                   <!--begin:Menu content-->
                   <div  class="menu-content" ><span class="menu-heading fw-bold text-uppercase fs-7">Configurações</span></div>
                   <!--end:Menu content-->
-               </div>
-               <!--end:Menu item--><!--begin:Menu item-->
-               <div  data-kt-menu-trigger="click"  class="menu-item menu-accordion" >
-                  <!--begin:Menu link--><span class="menu-link"  ><span  class="menu-icon" ><i class="ki-duotone ki-address-book fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i></span><span  class="menu-title" >User Profile</span><span  class="menu-arrow" ></span></span><!--end:Menu link--><!--begin:Menu sub-->
-                  <div  class="menu-sub menu-sub-accordion" >
-                     <!--begin:Menu item-->
-                     <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Overview</span></a><!--end:Menu link-->
-                     </div>
-                     <!--end:Menu item--><!--begin:Menu item-->
-                     <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projects</span></a><!--end:Menu link-->
-                     </div>
-                     <!--end:Menu item--><!--begin:Menu item-->
-                     <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Campaigns</span></a><!--end:Menu link-->
-                     </div>
-                     <!--end:Menu item--><!--begin:Menu item-->
-                     <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Documents</span></a><!--end:Menu link-->
-                     </div>
-                     <!--end:Menu item--><!--begin:Menu item-->
-                     <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Followers</span></a><!--end:Menu link-->
-                     </div>
-                     <!--end:Menu item--><!--begin:Menu item-->
-                     <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Activity</span></a><!--end:Menu link-->
-                     </div>
-                     <!--end:Menu item-->
-                  </div>
-                  <!--end:Menu sub-->
                </div>
                <!--end:Menu item--><!--begin:Menu item-->
                <div  class="menu-item" >

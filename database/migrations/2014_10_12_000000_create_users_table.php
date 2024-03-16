@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('role_id');
             $table->string('password');
             $table->rememberToken();
+            $table->boolean('sidebar')->default(true);
             $table->integer('status')->default(1);
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();

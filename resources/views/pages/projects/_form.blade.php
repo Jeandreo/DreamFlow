@@ -35,11 +35,19 @@
         <label class="form-label fw-bold">Fim:</label>
         <input type="text" class="form-control form-control-solid flatpickr" placeholder="Data de fim" name="end_date" value="{{ $content->end_date ?? old('end_date') }}"/>
     </div>
-    <div class="col-6 mb-5">
+    <div class="col-4 mb-5">
         <label class="form-label fw-bold">Cor:</label>
         <input type="color" class="form-control form-control-solid" placeholder="Selecione uma cor" name="color" value="{{ $content->color ?? '#009ef7' }}"/>
     </div>
-    <div class="col-6 mb-5">
+    <div class="col-4 mb-5">
+        <label class="required form-label fw-bold">Tipo:</label>
+        <select class="form-select form-select-solid" name="type" data-control="select2" data-placeholder="Selecione" required>
+            <option value=""></option>
+            <option value="1" @if(isset($content) && $content->type == 1) selected @endif>Corporativo</option>
+            <option value="2" @if(isset($content) && $content->type == 2) selected @endif>Pessoal</option>
+        </select>
+    </div>
+    <div class="col-4 mb-5">
         <label class="form-label fw-bold">Imagem:</label>
         <input class="form-control form-control-solid image-to-crop" type="file" name="image" accept="images/*">
         <input type="hidden" name="cutImage">

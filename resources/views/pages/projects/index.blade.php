@@ -20,10 +20,11 @@
 												<th width="4%" class="pe-0 ps-5">ID</th>
 												<th>Nome</th>
 												<th>Categoria</th>
+												<th>Tipo</th>
 												<th>Time</th>
 												<th>Duração</th>
 												<th class="text-center">Status</th>
-												<th class="text-center" width="145px">
+												<th class="text-center" width="165px">
 													<span>Ações</span>
 												</th>
 											</tr>
@@ -44,6 +45,15 @@
 												</td>
 												<td>
 													<span class="text-gray-700">{{ $content->category->name }}</span>
+												</td>
+												<td>
+													<span class="text-gray-700">
+														@if ($content->type == 1)
+															<span class="badge badge-light-primary">Corporativo</span>
+														@else
+														<span class="badge badge-light-success">Pessoal</span>
+														@endif
+													</span>
 												</td>
 												<td>
 													<div class="symbol-group symbol-hover flex-nowrap">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\ProjectStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,6 +73,32 @@ class ProjectController extends Controller
         
         // SEND DATA
         $created = $this->repository->create($data);
+
+        if($created){
+            ProjectStatus::create([
+                'name' => 'A Fazer',
+                'color' => '#009ef7',
+                'project_id' => $created->id,
+                'order' => 1,
+                'created_by' => 1,
+            ]);
+
+            ProjectStatus::create([
+                'name' => 'Em andamento',
+                'color' => '#79bc17',
+                'project_id' => $created->id,
+                'order' => 1,
+                'created_by' => 1,
+            ]);
+
+            ProjectStatus::create([
+                'name' => 'Concluído',
+                'color' => '#282c43',
+                'project_id' => $created->id,
+                'order' => 1,
+                'created_by' => 1,
+            ]);
+        }
 
         // SAVE AND RENAME IMAGE
         if($created && $request->hasFile('image')){

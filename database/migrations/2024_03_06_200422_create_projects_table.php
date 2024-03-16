@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('type')->default();
             $table->string('url');
             $table->string('color')->default('#009ef7');
             $table->longText('description')->nullable();

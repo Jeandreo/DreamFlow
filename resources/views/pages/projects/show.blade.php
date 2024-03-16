@@ -385,6 +385,33 @@
 		var date = $(this).val();
 		var taskId = $(this).data('task');
 
+		// GET ACTUAL DATE
+        var currentDate = new Date();
+		
+        // FORMAT DATE
+        var taskDate = new Date(date);
+
+		// Obtenha as datas sem as horas, minutos e segundos
+		var taskDateWithoutTime = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
+		var currentDateWithoutTime = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+
+		// GET DIFERENCE
+		var difference = Math.floor((taskDateWithoutTime - currentDateWithoutTime) / (1000 * 60 * 60 * 24));
+
+		// REMOVE PREVIOUS CLASS
+		$('.task-date-' + taskId).removeClass('text-danger text-primary text-info text-gray-700');
+
+        // VERIIFY DIFERENCE
+        if (difference < 0) {
+            $('.task-date-' + taskId).addClass('text-danger');
+        } else if (difference == 0) {
+            $('.task-date-' + taskId).addClass('text-primary');
+        } else if (difference <= 2) {
+            $('.task-date-' + taskId).addClass('text-info');
+        } else {
+            $('.task-date-' + taskId).addClass('text-gray-700');
+        }
+
 		// AJAX
 		$.ajax({
 			type:'PUT',

@@ -80,7 +80,17 @@
                      </div>
                   </div>
                </div>
-               <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date" data-task="{{ $content->id }}" placeholder="Prazo da tarefa" value="@if($content->date) {{ date('Y-m-d H:i:s', strtotime($content->date)) }} @endif"/>
+               <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date task-date-{{ $content->id }} 
+                  
+               @if(date('Y-m-d', strtotime($content->date)) == date('Y-m-d'))
+                  text-primary
+               @elseif(strtotime($content->date) < time())
+                  text-danger
+               @elseif(\Carbon\Carbon::parse($content->date)->diffInDays() <= 2)
+                  text-info
+               @else
+                  text-gray-700
+               @endif" data-task="{{ $content->id }}" placeholder="Prazo da tarefa" value="@if($content->date) {{ date('Y-m-d H:i:s', strtotime($content->date)) }} @endif"/>
                <!-- SEPARATOR -->
                <div class="separator-vertical h-100"></div>
                <!-- SEPARATOR -->

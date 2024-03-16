@@ -6,7 +6,7 @@ use App\Models\Project;
 use Illuminate\Support\Facades\Storage;
 
 function projects() {
-    $projects = Project::where('status', 1)->get();
+    $projects = Project::where('status', 1);
     return $projects;
 }
 

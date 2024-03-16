@@ -192,4 +192,24 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function sidebar()
+    {
+        
+        // GET DATA
+        $content = User::find(Auth::id());
+        $openOrClose = $content->sidebar == true ? false : true;
+        $content->sidebar = $openOrClose;
+        $content->save();
+
+        // RETURN
+        return response()->json('Success', 200);
+
+    }
+
 }
