@@ -29,6 +29,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         ProjectCategory::create([
+            'name' => 'Vendas',
+            'created_by' => 1,
+        ]);
+
+        ProjectCategory::create([
             'name' => 'Tráfego Pago',
             'created_by' => 1,
         ]);
@@ -50,6 +55,11 @@ class DatabaseSeeder extends Seeder
 
         ProjectCategory::create([
             'name' => 'Design',
+            'created_by' => 1,
+        ]);
+
+        ProjectCategory::create([
+            'name' => 'Pessoal',
             'created_by' => 1,
         ]);
 
