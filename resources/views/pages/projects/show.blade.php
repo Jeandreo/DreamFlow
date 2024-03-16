@@ -20,7 +20,7 @@
 	</div>
 </div>
 
-<div class="modal fade" tabindex="-1" id="modal_task">
+<div class="modal fade" data-bs-focus="false" id="modal_task">
     <div class="modal-dialog modal-dialog-centered rounded">
         <div class="modal-content rounded bg-transparent" id="load-task">
             {{-- LOAP TASK HERE --}}
@@ -437,7 +437,6 @@
 
 	}
 
-
 	// SHOW TASK
 	$(document).on('submit', '#send-comment', function(e){
 
@@ -455,15 +454,34 @@
 			data: {_token: @json(csrf_token()), task_id: taskId, text: text},
 			success:function(data) {
 				loadComments(taskId);
+				textarea.setData('');
+				$('#results-comments').scrollTop(0);
 			}
 		});
 
+	});
 
-	})
+	// SHOW TASK
+	$(document).on('click', '.destroy-comment', function(e){
 
+		// PARA EVENTO
+		e.preventDefault();
 
-	
+		// GET DATA
+		var url = $(this).attr('href');
+		var taskId = $(this).data('task');
 
+		// AJAX
+		$.ajax({
+			type:'PUT',
+			url: url,
+			data: {_token: @json(csrf_token())},
+			success:function(data) {
+				loadComments(taskId);
+			}
+		});
+
+	});
 
 	// SHOW TASK
 	$(document).on('click', '.show-task', function(){

@@ -31,6 +31,9 @@ body, html {
     div:hover, main:hover, ol:hover, pre:hover, span:hover, ul:hover {
         scrollbar-color: #ffffff0d transparent;
     }
+    .scroll-dark:hover {
+        scrollbar-color: hsla(0, 0%, 0%, 0.1) transparent;
+    }
 }
 
 .rounded {
@@ -84,7 +87,7 @@ button:focus {
     border-radius: 15px !important;
 }
 
-.modal-backdrop.show {
+.modal-backdrop.show, .bg-blur {
     background-color: rgb(0 2 41 / 70%);
     mix-blend-mode: normal;
     backdrop-filter: blur(8px);
@@ -105,10 +108,10 @@ p:last-child {
     width: 100%;
     border-radius: 10px;
 }
-/* 
+
 .ck-editor__top {
     display: none;
-} */
+}
 
 .ck-balloon-panel {
     z-index: 99999 !important;
@@ -130,4 +133,15 @@ p:last-child {
 
 .opacity-1:hover .opacity-0 {
     opacity: 1 !important;
+}
+
+figure {
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+figure:hover {
+    scale: 1.03;
+    transform: rotate(2deg);
+    box-shadow: 10px 10px 20px rgb(0 0 0 / 5%);
 }

@@ -80,7 +80,7 @@ Route::middleware(['auth'])->group(function () {
             Route::name('comments.')->group(function () {
                 Route::post('/adicionar', [ProjectCommentController::class, 'store'])->name('store');
                 Route::post('/visualizando', [ProjectCommentController::class, 'show'])->name('show');
-                Route::get('/desabilitar/{id}', [ProjectCommentController::class, 'destroy'])->name('destroy');
+                Route::put('/desabilitar/{id}', [ProjectCommentController::class, 'destroy'])->name('destroy');
                 Route::put('/editar/{id}', [ProjectCommentController::class, 'update'])->name('update');
             });
         });

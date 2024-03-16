@@ -270,8 +270,6 @@ function cropImage(optionsCropper) {
 
 }
 
-
-
 // CUSTOM UPLOAD
 class MyUploadCKE {
     constructor(loader) {
@@ -366,15 +364,29 @@ function loadEditorText(selector = '.load-editor') {
     ClassicEditor.create(document.querySelector(selector), {
         extraPlugins: [UploadPlugin],
         removePlugins: ["MediaEmbedToolbar"],
-        link: { 
-            addTargetToExternalLinks: true 
-        },
     }).then(function (editor) {
         // ALOW ACCESS TO CLEAR
-        texstArea = editor;
+        textarea = editor;
     });
 
 }
+
+$(document).on('click', '.close-modal', function(){
+    $(this).closest('.modal').modal('hide');
+});
+
+$(document).on('click', '.show-image, .show-image img', function(){
+
+    // GET LINK IMAGE
+    var url = $(this).attr('src');
+
+    // REPLACE IN MODAL
+    $('#preview-image-modal').attr('src', url);
+
+    // OPEN MODAL
+    $('#preview_image_modal').modal('show');
+
+});
 
 // CALL FUNCTIONS
 loadDataTable();

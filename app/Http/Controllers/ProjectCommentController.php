@@ -108,10 +108,8 @@ class ProjectCommentController extends Controller
         // STORING NEW DATA
         $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
-        // REDIRECT AND MESSAGES
-        return redirect()
-            ->route('statuses.index')
-            ->with('message', 'Status ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
+        // REDIRECT AND MESSAGESS
+        return response()->json($id, 200);
 
     }
 }
