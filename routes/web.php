@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChatGPTController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectCategoryController;
 use App\Http\Controllers\ProjectCommentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectStatusController;
@@ -72,6 +73,18 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/desabilitar/{id}', [ProjectStatusController::class, 'destroy'])->name('destroy');
                 Route::get('/editar/{id}', [ProjectStatusController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [ProjectStatusController::class, 'update'])->name('update');
+            });
+        });
+
+        // STATUS
+        Route::prefix('categorias')->group(function () {
+            Route::name('categories.')->group(function () {
+                Route::get('/', [ProjectCategoryController::class, 'index'])->name('index');
+                Route::get('/adicionar', [ProjectCategoryController::class, 'create'])->name('create');
+                Route::post('/adicionar', [ProjectCategoryController::class, 'store'])->name('store');
+                Route::get('/desabilitar/{id}', [ProjectCategoryController::class, 'destroy'])->name('destroy');
+                Route::get('/editar/{id}', [ProjectCategoryController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [ProjectCategoryController::class, 'update'])->name('update');
             });
         });
 

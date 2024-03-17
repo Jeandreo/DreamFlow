@@ -16,6 +16,7 @@ class ProjectCategory extends Model
      */
     protected $fillable = [
         'name',
+        'type',
         'status',
         'created_by',
         'updated_by',

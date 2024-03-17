@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\ProjectCategory;
 use App\Models\ProjectStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -49,10 +50,12 @@ class ProjectController extends Controller
     {
         // GET ALL DATA
         $users = User::where('status', 1)->get();
+        $categories = ProjectCategory::where('status', 1)->get();
 
         // RENDER VIEW
         return view('pages.projects.create')->with([
             'users' => $users,
+            'categories' => $categories,
         ]);
     } 
 

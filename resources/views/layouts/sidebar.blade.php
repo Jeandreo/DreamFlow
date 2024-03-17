@@ -62,7 +62,7 @@
                      <!--end:Menu item-->
                      <!--begin:Menu item-->
                      <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
+                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('categories.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Categorias</span></a><!--end:Menu link-->
                      </div>
                      <!--end:Menu item-->
                      <div class="menu-inner flex-column collapse " id="kt_app_sidebar_menu_dashboards_collapse">

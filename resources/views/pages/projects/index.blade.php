@@ -21,7 +21,7 @@
 												<th>Nome</th>
 												<th>Categoria</th>
 												<th>Tipo</th>
-												<th>Time</th>
+												{{-- <th>Time</th> --}}
 												<th>Duração</th>
 												<th class="text-center">Status</th>
 												<th class="text-center" width="165px">
@@ -55,7 +55,7 @@
 														@endif
 													</span>
 												</td>
-												<td>
+												{{-- <td>
 													<div class="symbol-group symbol-hover flex-nowrap">
 														<div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" title="Alan Warden">
 																<span class="symbol-label bg-warning text-inverse-warning fw-bold">A</span>
@@ -73,7 +73,7 @@
 															<span class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+3</span>
 														</a>
 													</div>
-												</td>
+												</td> --}}
 												<td>
 													@if($content->start_date) 
 													<span class="text-gray-600" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ date('d/m/Y', strtotime($content->start_date)) }} ás {{ date('H:i:s', strtotime($content->start_date)) }}">

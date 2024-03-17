@@ -11,11 +11,9 @@
         <label class="required form-label fw-bold">Categoria:</label>
         <select class="form-select form-select-solid" name="category_id" data-control="select2" data-placeholder="Selecione" required>
             <option value=""></option>
-            <option value="1" @if(isset($content) && $content->category_id == 1) selected @endif>Tráfego Pago</option>
-            <option value="2" @if(isset($content) && $content->category_id == 2) selected @endif>Marketing Digital</option>
-            <option value="3" @if(isset($content) && $content->category_id == 3) selected @endif>Social Media</option>
-            <option value="4" @if(isset($content) && $content->category_id == 4) selected @endif>Web Design</option>
-            <option value="5" @if(isset($content) && $content->category_id == 5) selected @endif>Design</option>
+            @foreach ($categories as $category)
+            <option value="{{ $category->id }}" @if(isset($content) && $content->category_id == $category->id) selected @endif>{{ $category->name }}</option>
+            @endforeach
         </select>
     </div>
     <div class="col-3 mb-5">
@@ -41,7 +39,7 @@
     </div>
     <div class="col-4 mb-5">
         <label class="required form-label fw-bold">Tipo:</label>
-        <select class="form-select form-select-solid" name="type" data-control="select2" data-placeholder="Selecione" required>
+        <select class="form-select form-select-solid" name="type" data-control="select2" data-hide-search="true" data-placeholder="Selecione" required>
             <option value=""></option>
             <option value="1" @if(isset($content) && $content->type == 1) selected @endif>Corporativo</option>
             <option value="2" @if(isset($content) && $content->type == 2) selected @endif>Pessoal</option>

@@ -206,7 +206,7 @@
 		var taskId = $(this).data('task');
 		var isMain = $(this).hasClass('task-main');
 		var subtask = $(this).closest('.task-left-side').find('.task-name');
-		console.log(subtask);
+		var checked = $(this).is(':checked');
 
 		// AJAX
         $.ajax({
@@ -215,7 +215,6 @@
             url: "{{ route('tasks.check') }}",
 			data: {task_id: taskId},
         });
-
 
 		// IF TASK MAIN
 		if(isMain){
@@ -232,8 +231,11 @@
 			subtask.toggleClass('text-decoration-line-through ');
 		}
 
-		// PLAY SOUND
-		audio.play();
+		// IF CHECKED
+		if(checked){
+			// PLAY SOUND
+			audio.play();
+		}
 
 	});
 
