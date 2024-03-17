@@ -135,12 +135,16 @@ p:last-child {
     opacity: 1 !important;
 }
 
-figure {
+.show-image-div img {
+    cursor: pointer;
+}
+
+.show-image-div img {
     transition: all 0.2s;
     cursor: pointer;
 }
 
-figure:hover {
+.show-image-div img:hover {
     scale: 1.03;
     transform: rotate(2deg);
     box-shadow: 10px 10px 20px rgb(0 0 0 / 5%);

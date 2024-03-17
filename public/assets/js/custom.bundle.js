@@ -375,7 +375,7 @@ $(document).on('click', '.close-modal', function(){
     $(this).closest('.modal').modal('hide');
 });
 
-$(document).on('click', '.show-image, .show-image img', function(){
+$(document).on('click', '.show-image, .show-image-div img', function(){
 
     // GET LINK IMAGE
     var url = $(this).attr('src');

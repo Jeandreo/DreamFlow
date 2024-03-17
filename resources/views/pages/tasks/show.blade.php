@@ -52,7 +52,7 @@
 					<i class="fa-solid fa-xmark text-white text-gray-400 fs-5"></i>
                 </div>
 			</div>
-			<div class="rounded scroll-y scroll-dark h-425px p-3 show-image" id="results-comments">
+			<div class="rounded scroll-y scroll-dark h-425px p-3 show-image-div" id="results-comments">
 				{{-- COMMENTS HERE --}}
 				{{-- COMMENTS HERE --}}
 				{{-- COMMENTS HERE --}}
