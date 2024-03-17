@@ -15,6 +15,13 @@
 						{{-- LOAD PROJECTS HERE --}}
 					</div>
 				</div>
+				<!-- CHECKEDS AND FILEDS -->
+				<div class="card" id="card-to-fileds" style="display: none;">
+					<div class="card-body p-5" id="load-checkeds">
+						
+					</div>
+				</div>
+				<!-- CHECKEDS AND FILEDS -->
 			</div>
 		</div>
 	</div>
@@ -171,6 +178,10 @@
 
 	}
 
+	$(document).on('click', '.show-tasks-fileds', function(){
+		$('#card-to-fileds').toggle();
+	});
+
 	// SEND NEW TASK
 	$(document).on('submit', '.send-tasks', function(e){
 
@@ -239,6 +250,19 @@
 
 	});
 
+
+	// SAVE STATUS CHECKED
+	$(document).on('click', '.edit-name-task', function(){
+
+		var div = $(this).closest('.div-name-task');
+
+		$(this).toggleClass('fa-pen-to-square fa-eye');
+
+		div.find('.task-name').toggle();
+		div.find('.input-name').toggle();
+
+	});
+
 	// SAVE STATUS CHECKED
 	$(document).on('click', '.add-subtasks', function(){
 
@@ -268,7 +292,7 @@
 	loadProjects();
 
 	// SHOW INPUT PHRASE
-	$(document).on('focus', '.task-name', function(){
+	$(document).on('focus', '.input-name', function(){
 		$(this).next('.input-phrase').fadeIn();
 	});
 
@@ -284,7 +308,7 @@
 	});
 
 	// UPDATE TITLE AND PHRASE
-	$(document).on('change', '.task-name, .task-phrase, .task-description', function(){
+	$(document).on('change', '.input-name, .task-phrase, .task-description', function(){
 
 		// GET DATA
 		var input = $(this).attr('name'); 
@@ -448,6 +472,24 @@
         });
 
 	}
+
+
+	function loadCheckeds(){
+
+		// AJAX
+		$.ajax({
+			type:'POST',
+			url: "{{ route('tasks.checkeds') }}",
+			data: {_token: @json(csrf_token()), project_id: projectId},
+			success:function(data) {
+				//  REPLACE CONTENT
+				$('#load-checkeds').html(data);
+			}
+		});
+
+	}
+
+	loadCheckeds();
 
 	function loadComments(id){
 

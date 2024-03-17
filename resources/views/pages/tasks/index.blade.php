@@ -4,7 +4,7 @@
 		<!-- BEGIN:HEADER -->
 		<div class="p-0 d-flex align-items-center justify-content-between fw-bold mb-2">
 			<div class="d-flex align-items-center ps-3 pe-5">
-				<h2 class="text-gray-700 fs-6 text-uppercase">{{ $content->name }}</h2>
+				<h2 class="text-gray-700 fs-6 text-uppercase cursor-pointer show-tasks-fileds">{{ $content->name }}</h2>
 			</div>
 			<div class="d-flex align-items-center">
 				<div class="w-125px text-center text-gray-700 fs-7 text-uppercase">

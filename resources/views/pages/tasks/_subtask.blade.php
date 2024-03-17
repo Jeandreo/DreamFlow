@@ -9,7 +9,7 @@
                    </div>
              </div>
              <div class="d-flex align-items-center h-100 w-100">
-                <i class="fa-solid fa-ellipsis-vertical text-hover-primary cursor-pointer py-2 px-3 mx-3 fs-3"></i>
+                <i class="fa-solid fa-ellipsis-vertical text-hover-primary cursor-pointer py-2 px-3 mx-3 fs-3 show-task" data-task="{{ $content->id }}"></i>
                 <div class="d-block min-w-300px w-100">
                    <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 task-name d-flex @if($subtask->checked == true) text-decoration-line-through @endif" value="{{ $subtask->name }}" name="name" data-task="{{ $subtask->id }}">
                 </div>
@@ -71,7 +71,6 @@
              </div>
           </div>
           <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center task-date" data-task="{{ $subtask->id }}" placeholder="Prazo da tarefa" value="@if($subtask->date) {{ date('Y-m-d H:i:s', strtotime($subtask->date)) }} @endif"/>
-          
        </div>
     </div>
  </div>

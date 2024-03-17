@@ -191,8 +191,8 @@ class ProjectTaskController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('projects.index')
-            ->with('message', 'Projeto ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
+            ->route('projects.show', $content->project_id)
+            ->with('message', 'Tarefa ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
 
     }
 
@@ -205,7 +205,7 @@ class ProjectTaskController extends Controller
     {
 
         // GET ALL DATA
-        $contents = ProjectTask::where('project_id', $id)->whereNull('task_id')->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get();
+        $contents = ProjectTask::where('project_id', $id)->whereNull('task_id')->where('status', 1)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get();
         $users = User::where('status', 1)->get();
 
         // RETURN VIEW WITH DATA
@@ -394,5 +394,22 @@ class ProjectTaskController extends Controller
 
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function checkeds(Request $request)
+    {
+
+        // GET ALL DATA
+        $contents = ProjectTask::where('project_id', $request->project_id)->where('checked', 1)->orWhere('status', 0)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get();
+
+        // RETURN VIEW WITH DATA
+        return view('pages.tasks._checkeds')->with([
+            'contents' => $contents,
+        ]);
+
+    }
 
 }

@@ -8,17 +8,22 @@
             <div class="d-flex align-items-center justify-content-between w-100 h-100">
                <div class="d-flex align-items-center h-100 w-100">
                   <div style="background: {{ $content->project->color }};" class="rounded-start h-100 d-flex align-items-center color-task task-icons">
-                        <div class="form-check form-check-custom form-check-solid py-3 px-5">
+                        <div class="form-check form-check-custom form-check-solid py-2 px-5">
                            <input class="form-check-input w-15px h-15px cursor-pointer check-task task-main" data-task="{{ $content->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($content->checked == true) checked @endif/>
-                           <i class="fa-solid fa-list-check fs-5 text-white ms-5 cursor-pointer add-subtasks" data-task="{{ $content->id }}" data-project="{{ $content->project->id }}"></i>
-                           <i class="fa-solid fa-copy fs-5 text-white ms-3 cursor-pointer"></i>
-                           <i class="fa-solid fa-trash-alt fs-5 text-white ms-3 cursor-pointer"></i>
+                           <i class="fa-solid p-1 fa-list-check fs-5 text-white ms-5 cursor-pointer add-subtasks zoom-hover zoom-hover-03" data-task="{{ $content->id }}" data-project="{{ $content->project->id }}"></i>
+                           <i class="fa-solid p-1 fa-copy fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03"></i>
+                           <a href="{{ route('tasks.destroy', $content->id) }}" class="tasks-destroy">
+                              <i class="fa-solid p-1 fa-trash-alt fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03"></i>
+                           </a>
                         </div>
                   </div>
-                  <div class="d-flex align-items-center h-100 w-100">
-                     <i class="fa-solid fa-ellipsis-vertical text-hover-primary cursor-pointer py-2 px-3 mx-3 fs-3 show-task" data-task="{{ $content->id }}"></i>
+                  <div class="d-flex align-items-center h-100 w-100 div-name-task">
+                     <label for="rename-task-{{ $content->id }}">
+                        <i class="fa-solid fa-pen-to-square text-hover-primary cursor-pointer py-2 w-50px text-center fs-5 edit-name-task" data-task="{{ $content->id }}"></i>
+                     </label>
                      <div class="d-block min-w-300px w-100">
-                        <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 task-name d-flex" maxlength="80" value="{{ $content->name }}" name="name" data-task="{{ $content->id }}">
+                        <p class="text-gray-600 text-hover-primary fs-6 lh-1 fw-normal p-0 mb-1 cursor-pointer border-0 w-100 task-name show-task" style="margin-top: 3px;" data-task="{{ $content->id }}">{{ $content->name }}</p>
+                        <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 input-name" maxlength="80" value="{{ $content->name }}" name="name" data-task="{{ $content->id }}" id="rename-task-{{ $content->id }}" style="display: none; margin-bottom: 1px !important;">
                         <div class="input-phrase" @if($content->phrase == '') style="display: none;" @endif>
                            <input type="text" class="text-gray-500 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 fs-7 d-flex task-phrase z-index-9 h-15px mt-n1" maxlength="255" name="phrase" value="{{ $content->phrase }}" @if($content->phrase == '') style="border-bottom: dashed 1px #bbbdcb63 !important;" @endif data-task="{{ $content->id }}">
                         </div>

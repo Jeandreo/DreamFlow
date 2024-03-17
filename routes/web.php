@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::put('/data', [ProjectTaskController::class, 'date'])->name('date');
                 Route::put('/ordem', [ProjectTaskController::class, 'order'])->name('order');
                 Route::post('/subtarefa', [ProjectTaskController::class, 'subtask'])->name('subtask');
+                Route::post('/concluidas', [ProjectTaskController::class, 'checkeds'])->name('checkeds');
             });
         });
 

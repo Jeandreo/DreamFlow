@@ -7,8 +7,11 @@
 			<div class="px-8 h-500px">
 				<div class="h-350px">
 					<span class="badge text-white mb-4 mt-7" style="background-color: {{ $contents->statusInfo->color }};">{{ $contents->statusInfo->name }}</span>
+					@if ($contents->status == 0)
+					<span class="badge badge-danger text-white mb-4 mt-7">Arquivada</span>
+					@endif
 					<h2 class="text-white fs-2x my-4">{{ $contents->name }}</h2>
-					<textarea class="text-gray-200 fs-6 bg-transparent p-0 border-0 w-100 task-description" placeholder="anotações aqui..." style="resize: none;" name="description" rows="8" data-task="{{ $contents->id }}">@if($contents->description){{ $contents->description }}@endif</textarea>
+					<textarea class="text-gray-200 fs-6 bg-transparent p-0 border-0 w-100 task-description" @if ($contents->status == 0) disabled @endif placeholder="anotações aqui..." style="resize: none;" name="description" rows="8" data-task="{{ $contents->id }}">@if($contents->description){{ $contents->description }}@endif</textarea>
 				</div>
 				{{-- ALINHAR EM BAIXO  --}}
 				<div class="d-flex align-items-end h-150px">
@@ -55,6 +58,7 @@
 				{{-- COMMENTS HERE --}}
 			</div>
 			<div class="h-100px p-3">
+				@if ($contents->status != 0)
 				<form action="" method="POST" class="position-relative" id="send-comment" data-task="{{ $contents->id }}">
 					@csrf
 					<div class="pt-0" data-bs-theme="light">
@@ -66,6 +70,7 @@
 						</button>
 					</div>
 				</form>
+				@endif
 			</div>
 		</div>
 	</div>
