@@ -62,7 +62,7 @@
 				<form action="" method="POST" class="position-relative" id="send-comment" data-task="{{ $contents->id }}">
 					@csrf
 					<div class="pt-0" data-bs-theme="light">
-						<textarea name="text" class="load-editor"></textarea>
+						<textarea name="text" placeholder="Algum comentário sobre essa tarefa?" class="load-editor"></textarea>
 					</div>
 					<div class="text-end position-absolute" style="bottom: 5px; right: 5px;">
 						<button class="btn btn-sm btn-icon btn-primary btn-active-danger fw-bold text-uppercase mt-2">
