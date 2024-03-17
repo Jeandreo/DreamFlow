@@ -73,7 +73,13 @@
                 </div>
              </div>
           </div>
-          <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center task-date" data-task="{{ $subtask->id }}" placeholder="Prazo da tarefa" value="@if($subtask->date) {{ date('Y-m-d H:i:s', strtotime($subtask->date)) }} @endif"/>
+          <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date" data-task="{{ $subtask->id }}" placeholder="Prazo da tarefa" value="@if($subtask->date) {{ date('Y-m-d H:i:s', strtotime($subtask->date)) }} @endif"/>
        </div>
+        <!-- SEPARATOR -->
+        <div class="separator-vertical h-100"></div>
+        <!-- SEPARATOR -->
+        <div>
+           <i class="fa-solid fa-bars-staggered text-gray-300 py-2 px-3 mx-3 fs-6"></i>
+        </div>
     </div>
  </div>
