@@ -59,7 +59,7 @@
                     text-info
                 @else
                     text-gray-700
-                @endif" disabled data-task="{{ $content->id }}" placeholder="Prazo da tarefa" value="@if($content->date) {{ date('d/m/Y', strtotime($content->date)) }} @endif"/>
+                @endif" disabled placeholder="Prazo da tarefa" value="@if($content->date) {{ date('d/m/Y', strtotime($content->date)) }} @endif"/>
                 <!-- SEPARATOR -->
                 <div class="separator-vertical h-100"></div>
                 <!-- SEPARATOR -->
@@ -73,5 +73,65 @@
             </div>
         </div>
     <!-- END:TASK -->
+    <!-- BEGIN:SUB-TASK -->
+    @foreach ($content->subtasks as $subtask)
+    <div class="mb-2 ms-12">
+        <div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-35px task-list task-on-subtask z-index-1">
+        <div class="d-flex align-items-center justify-content-between w-100 h-100">
+            <div class="d-flex align-items-center h-100 w-100 task-left-side">
+                <div style="background: {{ $subtask->project->color }}" class="rounded-start h-100 w-40px d-flex align-items-center justify-content-center color-task">
+                    <div class="form-check form-check-custom form-check-solid">
+                        <input class="form-check-input w-15px h-15px cursor-pointer check-task" disabled type="checkbox" value="1" style="border-radius: 3px" @if($subtask->checked == true) checked @endif/>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center h-100 w-100 div-name-task">
+                <div class="w-20px"></div>
+                <div class="d-block min-w-300px w-100">
+                        <p class="text-gray-600 text-hover-primary fs-6 lh-1 fw-normal p-0 mb-0 cursor-pointer border-0 w-100 task-name show-task" data-task="{{ $subtask->task_id }}" style="margin-top: 1px;">{{ $subtask->name }}</p>
+                    </div>
+                </div>
+            </div>
+            <span>
+            <i class="fa-solid fa-font-awesome p-2 
+                @if ($subtask->priority == 0)
+                text-gray-300
+                @elseif($subtask->priority == 1)
+                text-warning
+                @elseif($subtask->priority == 2)
+                text-info
+                @elseif($subtask->priority == 3)
+                text-danger
+                @endif
+                me-5"></i>
+            </span>
+        </div>
+        <div class="d-flex align-items-center h-100">
+            <!-- SEPARATOR -->
+            <div class="separator-vertical h-100"></div>
+            <!-- SEPARATOR -->
+            <div class="w-125px text-center designated-div">
+                <div class="symbol symbol-30px symbol-circle" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
+                    <div class="symbol symbol-25px symbol-circle me-2">
+                        <img alt="Pic" src="{{ findImage('users/' . $subtask->designated_id . '/' . 'perfil-35px.jpg') }}" class="designated">
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-status" style="background: {{ $subtask->statusInfo->color }}">
+                <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
+                    <p class="text-white fw-bold m-0 status-name">{{ $subtask->statusInfo->name }}</p>
+                </div>
+            </div>
+            <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date" disabled data-task="{{ $subtask->id }}" placeholder="Prazo da tarefa" value="@if($subtask->date) {{ date('Y-m-d H:i:s', strtotime($subtask->date)) }} @endif"/>
+        </div>
+            <!-- SEPARATOR -->
+            <div class="separator-vertical h-100"></div>
+            <!-- SEPARATOR -->
+            <div>
+            <i class="fa-solid fa-bars-staggered text-gray-300 py-2 px-3 mx-3 fs-6"></i>
+            </div>
+        </div>
+    </div>
+    @endforeach
+    <!-- END:SUB-TASK -->
     </div>
 @endforeach

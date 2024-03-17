@@ -111,7 +111,7 @@
          </div>
          <!-- END:TASK -->
       </div>
-      <!-- END:SUB-TASK -->
+      <!-- BEGIN:SUB-TASK -->
       @foreach ($content->subtasks as $subtask)
       @include('pages.tasks._subtask')
       @endforeach
