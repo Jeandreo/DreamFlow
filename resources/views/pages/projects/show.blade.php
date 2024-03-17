@@ -216,7 +216,7 @@
 		// GET TASK
 		var taskId = $(this).data('task');
 		var isMain = $(this).hasClass('task-main');
-		var subtask = $(this).closest('.task-left-side').find('.task-name');
+		var subtask = $(this).closest('.task-left-side').find('.input-name');
 		var checked = $(this).is(':checked');
 
 		// AJAX
@@ -314,6 +314,11 @@
 		var input = $(this).attr('name'); 
 		var value = $(this).val();
 		var taskId = $(this).data('task');
+		
+		// IF RENAME TASK
+		if(input == 'name'){
+			$(this).closest('.div-name-task').find('.task-name').text(value);
+		}
 
 		// AJAX
 		$.ajax({

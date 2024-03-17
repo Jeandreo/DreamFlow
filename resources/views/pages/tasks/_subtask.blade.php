@@ -8,11 +8,14 @@
                       <input class="form-check-input w-15px h-15px cursor-pointer check-task" data-task="{{ $subtask->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($subtask->checked == true) checked @endif/>
                    </div>
              </div>
-             <div class="d-flex align-items-center h-100 w-100">
-                <i class="fa-solid fa-ellipsis-vertical text-hover-primary cursor-pointer py-2 px-3 mx-3 fs-3 show-task" data-task="{{ $content->id }}"></i>
-                <div class="d-block min-w-300px w-100">
-                   <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 task-name d-flex @if($subtask->checked == true) text-decoration-line-through @endif" value="{{ $subtask->name }}" name="name" data-task="{{ $subtask->id }}">
-                </div>
+             <div class="d-flex align-items-center h-100 w-100 div-name-task">
+               <label for="rename-subtask-{{ $subtask->id }}">
+                  <i class="fa-solid fa-pen-to-square text-hover-primary cursor-pointer py-2 w-50px text-center fs-5 edit-name-task" data-task="{{ $subtask->task_id }}"></i>
+               </label>
+               <div class="d-block min-w-300px w-100">
+                     <p class="text-gray-600 text-hover-primary fs-6 lh-1 fw-normal p-0 mb-0 cursor-pointer border-0 w-100 task-name show-task" data-task="{{ $subtask->task_id }}" style="margin-top: 1px;">{{ $subtask->name }}</p>
+                     <input type="text" id="rename-subtask-{{ $subtask->id }}" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 input-name @if($subtask->checked == true) text-decoration-line-through @endif" value="{{ $subtask->name }}" name="name" data-task="{{ $subtask->id }}" style="display: none;">
+                  </div>
              </div>
           </div>
           <span class="task-priority" data-task="{{ $subtask->id }}">
