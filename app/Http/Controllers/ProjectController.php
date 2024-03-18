@@ -146,6 +146,7 @@ class ProjectController extends Controller
         // GET ALL DATA
         $content = $this->repository->find($id);
         $users = User::where('status', 1)->get();
+        $categories = ProjectCategory::where('status', 1)->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
@@ -153,6 +154,7 @@ class ProjectController extends Controller
         // GENERATES DISPLAY WITH DATA
         return view('pages.projects.edit')->with([
             'content' => $content,
+            'categories' => $categories,
             'users' => $users,
         ]);
     }
