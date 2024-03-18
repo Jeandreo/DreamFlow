@@ -13,7 +13,7 @@
                   <i class="fa-solid @if($subtask->name != '')fa-pen-to-square @else fa-eye @endif text-hover-primary cursor-pointer py-2 w-50px text-center fs-5 edit-name-task" data-task="{{ $subtask->task_id }}"></i>
                </label>
                <div class="d-block min-w-300px w-100">
-                     <p class="text-gray-600 text-hover-primary fs-6 lh-1 fw-normal p-0 mb-0 cursor-pointer border-0 w-100 task-name show-task" data-task="{{ $subtask->task_id }}" style="margin-top: 1px;  @if($subtask->name == '') display: none; @endif">{{ $subtask->name }}</p>
+                     <p class="text-gray-600 text-hover-primary fs-6 lh-1 fw-normal p-0 mb-0 cursor-pointer border-0 w-100 task-name show-task" data-task="{{ $subtask->id }}" style="margin-top: 1px;  @if($subtask->name == '') display: none; @endif">{{ $subtask->name }}</p>
                      <input type="text" id="rename-subtask-{{ $subtask->id }}" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 input-name placeholder-02 @if($subtask->checked == true) text-decoration-line-through @endif" value="{{ $subtask->name }}" name="name" placeholder="Subtarefa" data-task="{{ $subtask->id }}" @if($subtask->name != '') style="display: none;" @endif>
                   </div>
              </div>
