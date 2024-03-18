@@ -18,6 +18,11 @@
                   </div>
              </div>
           </div>
+          @if ($subtask->comments->count())
+          <span>
+             <i class="fa-regular fa-comments text-gray-300 p-2 ms-5"></i>
+          </span>
+          @endif
           <span class="task-priority" data-task="{{ $subtask->id }}">
           <i class="fa-solid fa-font-awesome p-2 
              @if ($subtask->priority == 0)
