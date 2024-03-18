@@ -46,6 +46,60 @@
                data-kt-menu="true" 
                data-kt-menu-expand="false"
                >
+               <!--begin::Avatar-->
+               <div class="aside-user d-flex align-items-sm-center justify-content-center py-5">
+                  <!--begin::Symbol-->
+                  <div class="symbol symbol-40px mx-2">             
+                     <img src="{{ findImage('users/' . Auth::id() . '/' . 'perfil-300px.jpg') }}" alt="">         
+                  </div>
+                  <!--end::Symbol-->
+                  <!--begin::Wrapper-->
+                  <div class="aside-user-info flex-row-fluid flex-wrap ms-5">
+                     <!--begin::Section-->
+                     <div class="d-flex">
+                        <!--begin::Info-->                  
+                        <div class="flex-grow-1 me-2">
+                           <!--begin::Username-->
+                           <a href="#" class="text-white text-hover-primary fs-6 fw-bold">{{ Auth::user()->name }}</a>
+                           <!--end::Username-->
+                           <!--begin::Description-->
+                           <span class="text-gray-600 fw-semibold d-block fs-8 mb-1">Sonhador SL</span>
+                           <!--end::Description-->
+                        </div>
+                        <!--end::Info-->                   
+                        <!--begin::User menu-->        
+                        <div class="me-n2">
+                           <!--begin::Action-->        
+                           <a href="#" class="btn btn-icon btn-sm btn-active-color-primary mt-n2" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start" data-kt-menu-overflow="true">
+                           <i class="ki-duotone ki-setting-2 text-muted fs-1"><span class="path1"></span><span class="path2"></span></i>            
+                           </a> 
+                           <!--begin::User account menu-->
+                           <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
+                              <!--begin::Menu item-->
+                              <div class="menu-item px-5">
+                                 <a href="{{ route('profile.index') }}" class="menu-link px-5">
+                                 Meu Perfil
+                                 </a>
+                              </div>
+                              <!--end::Menu item-->
+                              <!--begin::Menu item-->
+                              <div class="menu-item px-5">
+                                 <a href="{{ route('logout') }}" class="menu-link px-5">
+                                 Sair
+                                 </a>
+                              </div>
+                              <!--end::Menu item-->
+                           </div>
+                           <!--end::User account menu-->
+                           <!--end::Action-->
+                        </div>
+                        <!--end::User menu-->      
+                     </div>
+                     <!--end::Section-->   
+                  </div>
+                  <!--end::Wrapper-->                
+               </div>
+               <!--end::Avatar-->
                <!--begin:Menu item-->
                <div  data-kt-menu-trigger="click"  class="menu-item here show menu-accordion" >
                   <!--begin:Menu link--><span class="menu-link"  ><span  class="menu-icon" ><i class="ki-duotone ki-element-11 fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span  class="menu-title" >Painéis</span><span  class="menu-arrow" ></span></span><!--end:Menu link--><!--begin:Menu sub-->
@@ -68,30 +122,22 @@
                      <div class="menu-inner flex-column collapse " id="kt_app_sidebar_menu_dashboards_collapse">
                         <!--begin:Menu item-->
                         <div  class="menu-item" >
-                           <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Bidding</span></a><!--end:Menu link-->
+                           <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Objetivos e Missões</span></a><!--end:Menu link-->
                         </div>
                         <!--end:Menu item--><!--begin:Menu item-->
                         <div  class="menu-item" >
-                           <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >POS System</span></a><!--end:Menu link-->
+                           <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Metas Semanais e Mensais</span></a><!--end:Menu link-->
                         </div>
                         <!--end:Menu item--><!--begin:Menu item-->
                         <div  class="menu-item" >
-                           <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Call Center</span></a><!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item--><!--begin:Menu item-->
-                        <div  class="menu-item" >
-                           <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Logistics</span></a><!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item--><!--begin:Menu item-->
-                        <div  class="menu-item" >
-                           <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Website Analytics</span></a><!--end:Menu link-->
+                           <!--begin:Menu link--><a class="menu-link"  href="{{ route('users.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Usuários</span></a><!--end:Menu link-->
                         </div>
                         <!--end:Menu item-->
                      </div>
                      <div class="menu-item">
                         <div class="menu-content">
-                           <a class="btn btn-flex btn-color-primary d-flex flex-stack fs-base p-0 ms-2 mb-2 toggle collapsible collapsed" data-bs-toggle="collapse" href="#kt_app_sidebar_menu_dashboards_collapse" data-kt-toggle-text="Show Less">
-                           <span data-kt-toggle-text-target="true">Show 12 More</span> <i class="ki-duotone ki-minus-square toggle-on fs-2 me-0"><span class="path1"></span><span class="path2"></span></i><i class="ki-duotone ki-plus-square toggle-off fs-2 me-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>                        
+                           <a class="btn btn-flex btn-color-primary d-flex flex-stack fs-base p-0 ms-2 mb-2 toggle collapsible collapsed" data-bs-toggle="collapse" href="#kt_app_sidebar_menu_dashboards_collapse" data-kt-toggle-text="Menos opções">
+                           <span data-kt-toggle-text-target="true">Mais opções</span> <i class="ki-duotone ki-minus-square toggle-on fs-2 me-0"><span class="path1"></span><span class="path2"></span></i><i class="ki-duotone ki-plus-square toggle-off fs-2 me-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>                        
                            </a>
                         </div>
                      </div>
@@ -175,28 +221,7 @@
                   <!--end::Menu Item-->
                   @endforeach
                </div>
-               <!--begin:Menu item-->
-               <div  class="menu-item pt-5" >
-                  <!--begin:Menu content-->
-                  <div  class="menu-content" ><span class="menu-heading fw-bold text-uppercase fs-7">Configurações</span></div>
-                  <!--end:Menu content-->
-               </div>
-               <!--end:Menu item--><!--begin:Menu item-->
-               <div  class="menu-item" >
-                  <!--begin:Menu link--><a class="menu-link"  href="https://preview.keenthemes.com/html/metronic/docs/base/utilities"><span  class="menu-icon" ><i class="ki-duotone ki-rocket fs-2"><span class="path1"></span><span class="path2"></span></i></span><span  class="menu-title" >Objetivos e Missões</span></a><!--end:Menu link-->
-               </div><!--begin:Menu item-->
-               <div  class="menu-item" >
-                  <!--begin:Menu link--><a class="menu-link"  href="https://preview.keenthemes.com/html/metronic/docs/base/utilities"><span  class="menu-icon" ><i class="ki-duotone ki-rocket fs-2"><span class="path1"></span><span class="path2"></span></i></span><span  class="menu-title" >Metas Semanais e Mensais</span></a><!--end:Menu link-->
-               </div>
-               <!--end:Menu item--><!--begin:Menu item-->
-               <div  class="menu-item" >
-                  <!--begin:Menu link--><a class="menu-link"  href="{{ route('users.index') }}"><span  class="menu-icon" ><i class="ki-duotone ki-abstract-26 fs-2"><span class="path1"></span><span class="path2"></span></i></span><span  class="menu-title" >Usuários</span></a><!--end:Menu link-->
-               </div>
-               <!--end:Menu item--><!--begin:Menu item-->
-               <div  class="menu-item" >
-                  <!--begin:Menu link--><a class="menu-link"  href="{{ route('logout') }}"><span  class="menu-icon" ><i class="ki-duotone ki-code fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span  class="menu-title" >Sair do sistema</span></a><!--end:Menu link-->
-               </div>
-               <!--end:Menu item-->            
+               <!--begin:Menu item-->        
             </div>
             <!--end::Menu-->
          </div>
@@ -208,14 +233,15 @@
    <!--begin::Footer-->
    <div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
       <a 
-         href="https://preview.keenthemes.com/html/metronic/docs" 
+         href="https://chat.openai.com/" 
+         target="_blank"
          class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100" 
          data-bs-toggle="tooltip" 
          data-bs-trigger="hover" 
          data-bs-dismiss-="click" 
-         title="200+ in-house components and 3rd-party plugins">
+         title="Sem ideias? Fale com o nosso amigo GPT. :D">
       <span class="btn-label">
-      Docs & Components
+      CHAT GPT
       </span>
       <i class="ki-duotone ki-document btn-icon fs-2 m-0"><span class="path1"></span><span class="path2"></span></i>    </a>
    </div>

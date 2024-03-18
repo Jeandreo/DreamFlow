@@ -14,13 +14,13 @@
         <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
             <!--begin::Page-->
             <div class="app-page  flex-column flex-column-fluid " id="kt_app_page">
-                @if(!isset($noHeader))
+                {{-- @if(!isset($noHeader))
                     <!--begin::Header-->
                     @include('layouts.header')
                     <!--end::Header-->   
-                @endif     
+                @endif      --}}
                 <!--begin::Wrapper-->
-                <div class="app-wrapper  flex-column flex-row-fluid position-relative @if(isset($noHeader)) mt-0 @endif" id="kt_app_wrapper">
+                <div class="app-wrapper  flex-column flex-row-fluid position-relative mt-0" id="kt_app_wrapper">
                     <!--begin::Sidebar-->
                     @include('layouts.sidebar')
                     <!--end::Sidebar-->

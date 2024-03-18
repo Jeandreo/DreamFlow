@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ChatGPTController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectCategoryController;
 use App\Http\Controllers\ProjectCommentController;
@@ -27,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->group(function () {
 
     // DASHBOARD
-    Route::get('/', [ProjectController::class, 'index'])->name('index');
+    Route::get('/', [DashboardController::class, 'index'])->name('index');
 
     // PROFILE USER
     Route::prefix('projetos')->group(function () {
