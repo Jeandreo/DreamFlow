@@ -14,11 +14,9 @@
         <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
             <!--begin::Page-->
             <div class="app-page  flex-column flex-column-fluid " id="kt_app_page">
-                {{-- @if(!isset($noHeader))
-                    <!--begin::Header-->
-                    @include('layouts.header')
-                    <!--end::Header-->   
-                @endif      --}}
+                <!--begin::Header-->
+                @include('layouts.header')
+                <!--end::Header-->   
                 <!--begin::Wrapper-->
                 <div class="app-wrapper  flex-column flex-row-fluid position-relative mt-0" id="kt_app_wrapper">
                     <!--begin::Sidebar-->

@@ -1,6 +1,6 @@
 <div class="modal-body p-0">
 	<div class="row m-0">
-		<div class="col-4 bg-dark h-600px rounded-start p-0">
+		<div class="col-12 col-md-4 bg-dark h-600px rounded-start p-0">
 			<div class="h-75px p-3 d-flex align-items-center justify-content-center" style="border-bottom: solid 1px rgba(0, 0, 0, 0.3)">
 				<h2 class="text-white fw-bold text-uppercase m-0">Detalhes da missão</h2>
 			</div>
@@ -45,7 +45,7 @@
 				{{-- ALINHAR EM BAIXO  --}}
 			</div>
 		</div>
-		<div class="col-8 h-600px rounded-end bg-white p-0">
+		<div class="col-12 col-md-8 h-600px rounded-end bg-white p-0">
 			<div class="h-75px p-3 d-flex align-items-center justify-content-center position-relative opacity-1" style="border-bottom: solid 1px rgba(0, 0, 0, 0.05);">
 				<p class="text-gray-600 text-uppercase m-0"><i>“Não é sobre ideias. É sobre fazer as ideias acontecerem.” – Scott Belsky</i></p>
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2 position-absolute opacity-0" style="right: 20px;" data-bs-dismiss="modal" aria-label="Close">

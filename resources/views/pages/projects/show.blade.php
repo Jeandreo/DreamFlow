@@ -1,8 +1,11 @@
 @extends('layouts.app')
+
 @section('title-page', $contents->name ?? 'Projetos')
+
 @section('custom-head')
 <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
 @endsection
+
 @section('content')
 <div class="app-main flex-column flex-row-fluid " id="kt_app_main" style="background: url('{{ asset('assets/media/images/bg_colors.jpg') }}');">
 	<div class="d-flex flex-column flex-column-fluid">                             
@@ -37,6 +40,7 @@
     </div>
 </div>
 @endsection
+
 @section('custom-footer')
 <script>
 	
@@ -230,7 +234,7 @@
 		// IF TASK MAIN
 		if(isMain){
 			// SELECT DIV OF TASK
-			var taskDiv = $(this).closest('.draggable');
+			var taskDiv = $(this).closest('.dmk-div-task');
 
 			// ADD ANIMATION AND REMOVE TASK
 			taskDiv.addClass('slide-up');

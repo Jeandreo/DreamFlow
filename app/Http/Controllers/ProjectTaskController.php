@@ -205,12 +205,12 @@ class ProjectTaskController extends Controller
     {
 
         // GET ALL DATA
-        $contents = ProjectTask::where('project_id', $id)->whereNull('task_id')->where('status', 1)->where('checked', 0)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get();
+        $tasks = ProjectTask::where('project_id', $id)->whereNull('task_id')->where('status', 1)->where('checked', 0)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get();
         $users = User::where('status', 1)->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.tasks._tasks')->with([
-            'contents' => $contents,
+            'tasks' => $tasks,
             'users' => $users,
         ]);
 

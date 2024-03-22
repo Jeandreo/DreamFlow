@@ -131,7 +131,6 @@ class ProjectController extends Controller
         return view('pages.projects.show')->with([
             'contents' => $contents,
             'users' => $users,
-            'noHeader' => true,
         ]);
     }
 
