@@ -1,7 +1,7 @@
 <div id="kt_app_header" class="app-header d-flex d-md-none" 
-                    data-kt-sticky="true" data-kt-sticky-activate="{default: true, lg: true}" data-kt-sticky-name="app-header-minimize" data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false"  >
+                    data-kt-sticky="true" data-kt-sticky-activate="{default: true, lg: true}" data-kt-sticky-name="app-header-minimize" data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                     <!--begin::Header container-->
-                    <div class="app-container  container-fluid d-flex align-items-stretch justify-content-between bg-white" id="kt_app_header_container">
+                    <div class="app-container  container-fluid d-flex align-items-stretch justify-content-between bg-white" id="kt_app_header_container" style="background: linear-gradient(45deg, #1e1e2d, #001b5a);" >
                         <!--begin::Sidebar mobile toggle-->
                         <div class="d-flex align-items-center d-lg-none ms-n3 me-1 me-md-2" title="Show sidebar menu">
                             <div class="btn btn-icon btn-active-color-primary w-35px h-35px" id="kt_app_sidebar_mobile_toggle">
@@ -12,7 +12,7 @@
                         <!--begin::Mobile logo-->
                         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
                             <a href="{{ route('index') }}" class="d-lg-none">
-                            <img alt="Logo" src="{{ asset('/assets/media/logos/default-small.svg') }}" class="h-30px"/>
+                            <img alt="Logo" src="{{ asset('/assets/media/logos/dreamflow-pb.webp') }}" class="h-30px"/>
                             </a>
                         </div>
                         <!--end::Mobile logo-->

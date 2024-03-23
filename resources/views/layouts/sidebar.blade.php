@@ -1,12 +1,12 @@
 <div id="kt_app_sidebar" class="app-sidebar  flex-column " style="backgroundw: url('{{ asset('assets/media/images/bg_colors.jpg') }}'); background-size: cover;"
-   data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="325px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle"      
+   data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="325px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#open_sidebar"      
    >
    <!--begin::Logo-->
    <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
       <!--begin::Logo image-->
       <a href="{{ route('index') }}">
-      <img alt="Logo" src="{{ asset('/assets/media/logos/default-dark.svg') }}" class="h-25px app-sidebar-logo-default"/>
-      <img alt="Logo" src="{{ asset('/assets/media/logos/default-small.svg') }}" class="h-20px app-sidebar-logo-minimize"/>
+      <img alt="Logo" src="{{ asset('/assets/media/logos/dreamflow-pb.webp') }}" class="h-35px app-sidebar-logo-default"/>
+      <img alt="Logo" src="{{ asset('/assets/media/logos/favicon-pb.webp') }}" class="h-25px app-sidebar-logo-minimize"/>
       </a>
       <!--end::Logo image-->
       <!--begin::Sidebar toggle-->
@@ -30,7 +30,7 @@
          <!--begin::Scroll wrapper-->
          <div
             id="kt_app_sidebar_menu_scroll"
-            class="scroll-y my-5 mx-3"       
+            class="scroll-y my-5 mx-3 overflow-x-hidden"       
             data-kt-scroll="true"
             data-kt-scroll-activate="true"
             data-kt-scroll-height="auto"     
@@ -60,10 +60,10 @@
                         <!--begin::Info-->                  
                         <div class="flex-grow-1 me-2">
                            <!--begin::Username-->
-                           <a href="#" class="text-white text-hover-primary fs-6 fw-bold">{{ Auth::user()->name }}</a>
+                           <a href="{{ route('users.edit', Auth::id()) }}" class="text-white text-hover-primary fs-6 fw-bold">{{ Auth::user()->name }}</a>
                            <!--end::Username-->
                            <!--begin::Description-->
-                           <span class="text-gray-600 fw-semibold d-block fs-8 mb-1">Sonhador SL</span>
+                           <span class="text-gray-600 fw-semibold d-block fs-8 mb-1">BORAAAAAAAAA!</span>
                            <!--end::Description-->
                         </div>
                         <!--end::Info-->                   
@@ -77,7 +77,7 @@
                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
                               <!--begin::Menu item-->
                               <div class="menu-item px-5">
-                                 <a href="{{ route('profile.index') }}" class="menu-link px-5">
+                                 <a href="{{ route('users.edit', Auth::id()) }}" class="menu-link px-5">
                                  Meu Perfil
                                  </a>
                               </div>
@@ -101,48 +101,13 @@
                </div>
                <!--end::Avatar-->
                <!--begin:Menu item-->
-               <div  data-kt-menu-trigger="click"  class="menu-item here show menu-accordion" >
-                  <!--begin:Menu link--><span class="menu-link"  ><span  class="menu-icon" ><i class="ki-duotone ki-element-11 fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span  class="menu-title" >Painéis</span><span  class="menu-arrow" ></span></span><!--end:Menu link--><!--begin:Menu sub-->
-                  <div  class="menu-sub menu-sub-accordion">
-                     <!--begin:Menu item-->
-                     <div  class="menu-item">
-                        <!--begin:Menu link--><a class="menu-link active"  href="{{ route('projects.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
-                     </div>
-                     <!--end:Menu item-->
-                     <!--begin:Menu item-->
-                     <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('statuses.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Status</span></a><!--end:Menu link-->
-                     </div>
-                     <!--end:Menu item-->
-                     <!--begin:Menu item-->
-                     <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('categories.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Categorias</span></a><!--end:Menu link-->
-                     </div>
-                     <!--end:Menu item-->
-                     <div class="menu-inner flex-column collapse " id="kt_app_sidebar_menu_dashboards_collapse">
-                        <!--begin:Menu item-->
-                        <div  class="menu-item" >
-                           <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Objetivos e Missões</span></a><!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item--><!--begin:Menu item-->
-                        <div  class="menu-item" >
-                           <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Metas Semanais e Mensais</span></a><!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item--><!--begin:Menu item-->
-                        <div  class="menu-item" >
-                           <!--begin:Menu link--><a class="menu-link"  href="{{ route('users.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Usuários</span></a><!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item-->
-                     </div>
-                     <div class="menu-item">
-                        <div class="menu-content">
-                           <a class="btn btn-flex btn-color-primary d-flex flex-stack fs-base p-0 ms-2 mb-2 toggle collapsible collapsed" data-bs-toggle="collapse" href="#kt_app_sidebar_menu_dashboards_collapse" data-kt-toggle-text="Menos opções">
-                           <span data-kt-toggle-text-target="true">Mais opções</span> <i class="ki-duotone ki-minus-square toggle-on fs-2 me-0"><span class="path1"></span><span class="path2"></span></i><i class="ki-duotone ki-plus-square toggle-off fs-2 me-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>                        
-                           </a>
-                        </div>
-                     </div>
-                  </div>
-                  <!--end:Menu sub-->
+               <div  class="menu-item">
+                  <!--begin:Menu link--><a class="menu-link active"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Painél de controle</span></a><!--end:Menu link-->
+               </div>
+               <!--end:Menu item-->
+               <!--begin:Menu item-->
+               <div  class="menu-item">
+                  <!--begin:Menu link--><a class="menu-link"  href="{{ route('projects.show') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
                </div>
                <!--end:Menu item-->
                <div class="menu menu-rounded menu-column">
@@ -172,8 +137,9 @@
                         <!--end::Title-->
                         <!--begin::Badge--> 
                         <span class="menu-badge">
-                        <span class="badge badge-custom">
-                        6                    </span>
+                           <span class="badge badge-custom">
+                              6
+                           </span>
                         </span>                      
                         <!--end::Badge-->                                      
                      </a>
@@ -184,7 +150,7 @@
                </div>
                <!--begin:Menu item-->
                <!--end:Menu item-->
-               <div class="menu menu-rounded menu-column">
+               <div class="menu menu-rounded menu-column mb-6">
                   <!--begin::Heading-->
                   <!--begin:Menu item-->
                   <div  class="menu-item pt-5" >
@@ -221,7 +187,59 @@
                   <!--end::Menu Item-->
                   @endforeach
                </div>
-               <!--begin:Menu item-->        
+               <!--begin:Menu item-->   
+               <!--begin:Menu item-->
+               <div  data-kt-menu-trigger="click"  class="menu-item menu-accordion" >
+                  <!--begin:Menu link-->
+                  <span class="menu-link"  >
+                     <span  class="menu-icon" >
+                        <i class="ki-duotone ki-element-11 fs-2">
+                           <span class="path1"></span>
+                           <span class="path2"></span>
+                           <span class="path3"></span>
+                           <span class="path4"></span>
+                        </i>
+                     </span>
+                     <span  class="menu-title" >
+                        Configurações
+                     </span>
+                     <span  class="menu-arrow" ></span>
+                  </span>
+                  <!--end:Menu link-->
+                  <!--begin:Menu sub-->
+                  <div  class="menu-sub menu-sub-accordion">
+                     <!--begin:Menu item-->
+                     <div  class="menu-item">
+                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('projects.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
+                     </div>
+                     <!--end:Menu item-->
+                     <!--begin:Menu item-->
+                     <div  class="menu-item" >
+                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('statuses.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Status</span></a><!--end:Menu link-->
+                     </div>
+                     <!--end:Menu item-->
+                     <!--begin:Menu item-->
+                     <div  class="menu-item" >
+                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('categories.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Categorias</span></a><!--end:Menu link-->
+                     </div>
+                     <!--end:Menu item-->
+                     <!--begin:Menu item-->
+                     <div  class="menu-item" >
+                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Objetivos e Missões</span></a><!--end:Menu link-->
+                     </div>
+                     <!--end:Menu item--><!--begin:Menu item-->
+                     <div  class="menu-item" >
+                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Metas Semanais e Mensais</span></a><!--end:Menu link-->
+                     </div>
+                     <!--end:Menu item--><!--begin:Menu item-->
+                     <div  class="menu-item" >
+                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('users.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Usuários</span></a><!--end:Menu link-->
+                     </div>
+                     <!--end:Menu item-->
+                  </div>
+                  <!--end:Menu sub-->
+               </div>
+               <!--end:Menu item-->     
             </div>
             <!--end::Menu-->
          </div>

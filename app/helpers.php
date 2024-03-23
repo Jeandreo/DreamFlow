@@ -2,7 +2,10 @@
 
 // GET PROJECTS
 
+use App\Models\ChallengeMonthly;
+use App\Models\ChallenngeMonthly;
 use App\Models\Project;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 function projects() {
@@ -63,5 +66,16 @@ function hex2rgb($colour, $opacity) {
 
     // RETURN RGBA
     return sprintf('rgb(%d, %d, %d, %d%%)', ...$rgb);
+
+}
+
+// VERIFY IF DAY CHECKED
+function checkDayMonth($date){
+
+    // VERIFY IF COMPLETED IN THE DAY
+    $exists = ChallengeMonthly::where('date', $date)->where('completed', true)->where('user_id', Auth::id())->exists();
+
+    // RETURN
+    return $exists;
 
 }

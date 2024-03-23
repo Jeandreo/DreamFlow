@@ -26,7 +26,7 @@
    @endforeach
 @else
 <div class="no-tasks" @if ($contents->count()) style="display: none;" @endif>
-   <div class="rounded bg-light d-flex align-items-center justify-content-center h-400px">
+   <div class="rounded bg-light d-flex align-items-center justify-content-center h-200px h-md-400px">
       <div class="text-center">
          <p class="m-0 text-gray-600 fw-bold text-uppercase">Sem comentários ainda nessa tarefa!</p>
       </div>

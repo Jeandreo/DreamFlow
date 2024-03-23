@@ -2,16 +2,22 @@ body, html {
     font-family: Jost, Helvetica, "sans-serif";
 }
 
-@media (min-width: 992px){
-    :root {
-        --bs-app-sidebar-width: 335px;
-        --bs-app-sidebar-width-actual: 335px;
-        --bs-border-radius: 15px;
-        --bs-success: #94cb0a;
-    }
-    .modal {
-        --bs-modal-width: 1250px;
-    }
+body {
+    overflow-x: hidden;
+}
+
+.tooltip-inner {
+    font-family: Jost, Helvetica, "sans-serif";
+}
+
+:root {
+    --bs-app-sidebar-width: 335px;
+    --bs-app-sidebar-width-actual: 335px;
+    --bs-border-radius: 15px;
+    --bs-success: #94cb0a;
+}
+.modal {
+    --bs-modal-width: 1250px;
 }
 
 [type="color"]{
@@ -21,6 +27,21 @@ body, html {
 
 .flatpickr {
     cursor: pointer;
+}
+
+
+.rounded-task-left {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 0;
+}
+
+.rounded-task-right {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 20px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 20px;
 }
 
 @media (min-width: 992px){
@@ -35,6 +56,25 @@ body, html {
     .scroll-dark:hover {
         scrollbar-color: hsla(0, 0%, 0%, 0.1) transparent;
     }
+}
+@media (min-width: 768px){
+    .rounded-task-left {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+    }
+    .rounded-task-right {
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}
+
+.app-layout-builder-toggle {
+    bottom: 20px;
+    left: 30px !important;
 }
 
 .rounded {
@@ -64,7 +104,7 @@ button:focus {
     transition: all 0.5s ease;
   }
 
-.draggable.slide-up {
+.slide-up {
     transform: translateY(-100%);
     opacity: 0;
     transition: transform 0.5s ease, opacity 0.5s ease;
@@ -176,4 +216,30 @@ input[type=text]:disabled {
 
 .ck .ck-placeholder:before, .ck.ck-placeholder:before {
     color: #00000040 !important;
+}
+
+.check-day {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.check-day:hover {
+    margin-top: -5px;
+}
+
+[data-kt-app-layout=dark-sidebar] .app-sidebar {
+    background: linear-gradient(45deg, #1e1e2d, #001b5a);
+}
+
+[data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link.active {
+    background: #00000026;
+}
+
+[data-kt-app-layout=dark-sidebar] .app-sidebar .app-sidebar-logo {
+    border-bottom: 1px dashed #0000477a;
+}
+
+
+[data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-heading {
+    color: #e6e6ed !important;
 }

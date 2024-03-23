@@ -115,24 +115,11 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/editar/{id}', [UserController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [UserController::class, 'update'])->name('update');
                 Route::put('/barra-lateral', [UserController::class, 'sidebar'])->name('sidebar');
+                Route::put('/notas', [UserController::class, 'notes'])->name('notes');
             });
         });
 
     });
-
-    // PROFILE USER
-    Route::prefix('meu-perfil')->group(function () {
-        Route::name('profile.')->group(function () {
-            Route::get('/', [ProfileController::class, 'index'])->name('index');
-            Route::get('/adicionar', [ProfileController::class, 'create'])->name('create');
-            Route::post('/adicionar', [ProfileController::class, 'store'])->name('store');
-            Route::get('/visualizando/{id}', [ProfileController::class, 'show'])->name('show');
-            Route::get('/desabilitar/{id}', [ProfileController::class, 'destroy'])->name('destroy');
-            Route::get('/editar/{id}', [ProfileController::class, 'edit'])->name('edit');
-            Route::put('/editar/{id}', [ProfileController::class, 'update'])->name('update');
-        });
-    });
-
     // PROFILE USER
     Route::prefix('configuracoes')->group(function () {
         Route::name('configs.')->group(function () {

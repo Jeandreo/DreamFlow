@@ -2,7 +2,7 @@
 @section('title-page', 'Dashboard')
 @section('title-toolbar', 'Dashboard')
 @section('content')
-<div class="row pb-12" style="background: url('{{ asset('assets/media/images/bg_colors.jpg') }}'); background-position: center;">
+<div class="row pb-12 m-0" style="background: url('{{ asset('assets/media/images/bg_colors.jpg') }}'); background-position: center;">
     <div class="col-12">
         <div class="toolbar py-15" id="kt_toolbar">
             <!--begin::Container-->
@@ -37,44 +37,138 @@
                 <div class="row mt-n20">
                     <div class="col-12">
                         <div class="card mb-4 shadow">
-                            <div class="card-body pb-5">
-                                <h2 class="fs-4 text-uppercase text-gray-700 text-center mb-5">Desafio do mês: Ler 20 páginas todo dia</h2>
+                            <div class="card-body pb-5 px-2">
+                                <h2 class="fs-4 text-uppercase text-gray-700 text-center mb-5">
+                                    Desafio do mês: Ler 20 páginas todo dia
+                                    <i class="fa-solid fa-circle-exclamation text-gray-300 fs-5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Precisa ser algo que te estremessa de medo!!! 😱<br><li>Correr todo dia 1h</li><li>Ler 20 páginas por dia</li><li>Assistir um episódio em inglês por dia</li>"></i>
+                                </h2>
                                 <div class="d-flex justify-content-center">
-                                    <div class="d-flex scroll-y">
-                                        @for ($i = $previousMonth->daysInMonth - 1; $i <= $previousMonth->daysInMonth; $i++)
-                                        <div class="h-35px w-35px min-h-35px min-w-35px rounded-circle d-flex align-items-center justify-content-center mx-1 bg-light bg-hover-success text-hover-white mt-1 fw-bold text-gray-700 @if($previousMonth->daysInMonth == $i) opacity-50 @else opacity-25 @endif">
+                                    <div class="d-flex scroll-y pt-2 pb-3 pb-md-0">
+                                        @for ($i = $previousMonth->daysInMonth - 0; $i <= $previousMonth->daysInMonth; $i++)
+                                        <div class="h-35px w-35px min-h-35px min-w-35px rounded-circle d-flex align-items-center justify-content-center mx-1 bg-light fw-bold text-gray-700 opacity-50 mt-2">
                                             {{ str_pad($i, 2, '0', STR_PAD_LEFT) }}
                                         </div>
                                         @endfor
                                         @for ($day = 1; $day <= $actualMonth->daysInMonth; $day++)
-                                        @if(str_pad($day, 2, '0', STR_PAD_LEFT) == date('d'))
-                                        <div class="d-block bg-primary rounded py-2 px-1">
-                                            <div class="h-35px w-35px min-h-35px min-w-35px rounded-circle d-flex align-items-center justify-content-center fw-bold mx-1 bg-hover-success text-hover-white bg-white text-primary">
-                                                {{ str_pad($day, 2, '0', STR_PAD_LEFT) }}
+
+                                            @if (checkDayMonth(date('Y-m-' . $day)))
+                                            <div class="d-block bg-success rounded py-2 px-2 mx-1 check-day" data-day="{{ $day }}">
+                                                <div class="h-25px w-25px min-h-25px min-w-25px rounded-circle d-flex align-items-center justify-content-center fw-bold bg-white text-primary">
+                                                    {{ str_pad($day, 2, '0', STR_PAD_LEFT) }}
+                                                </div>
+                                                <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">
+                                                    {{ date('D', strtotime(date('Y-m-' . $day))) }}
+                                                </p>
                                             </div>
-                                            <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">{{ date('D') }}</p>
-                                        </div>
-                                        @else
-                                        <div class="h-35px w-35px min-h-35px min-w-35px rounded-circle d-flex align-items-center justify-content-center fw-bold mx-1 bg-hover-success text-hover-white mt-1 @if(str_pad($day, 2, '0', STR_PAD_LEFT) < date('d')) bg-success text-white @else bg-light text-gray-700 @endif">
-                                            {{ str_pad($day, 2, '0', STR_PAD_LEFT) }}
-                                        </div>
-                                        @endif
+                                            @elseif (date('Y-m-d', strtotime(date('Y-m-' . $day))) <= date('Y-m-d'))
+                                            <div class="d-block bg-primary rounded py-2 px-2 mx-1 check-day" data-day="{{ $day }}">
+                                                <div class="h-25px w-25px min-h-25px min-w-25px rounded-circle d-flex align-items-center justify-content-center fw-bold bg-white text-primary">
+                                                    {{ str_pad($day, 2, '0', STR_PAD_LEFT) }}
+                                                </div>
+                                                <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">
+                                                    {{ date('D', strtotime(date('Y-m-' . $day))) }}
+                                                </p>
+                                            </div>
+                                            @elseif (date('Y-m-d', strtotime(date('Y-m-' . $day))) > date('Y-m-d'))
+                                            <div class="d-block bg-light rounded py-2 px-2 mx-1">
+                                                <div class="h-25px w-25px min-h-25px min-w-25px rounded-circle d-flex align-items-center justify-content-center fw-bold bg-white text-primary">
+                                                    {{ str_pad($day, 2, '0', STR_PAD_LEFT) }}
+                                                </div>
+                                                <p class="fs-9 fw-bold text-center text-gray-700 mb-0 text-center mt-1 text-uppercase">
+                                                    {{ date('D', strtotime(date('Y-m-' . $day))) }}
+                                                </p>
+                                            </div>
+                                            @endif
+
                                         @endfor
-                                        @for ($i = 1; $i <= 2; $i++)
-                                        <div class="h-35px w-35px min-h-35px min-w-35px rounded-circle d-flex align-items-center justify-content-center mx-1 bg-light bg-hover-success text-hover-white mt-1 fw-bold text-gray-700 @if($i == 1) opacity-50 @else opacity-25 @endif">
-                                            {{ str_pad($i, 2, '0', STR_PAD_LEFT) }}
+                                        <div class="h-35px w-35px min-h-35px min-w-35px rounded-circle d-flex align-items-center justify-content-center mx-1 bg-light mt-1 fw-bold text-gray-700 opacity-50 mt-2">
+                                            01
                                         </div>
-                                        @endfor
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4">
-                        <div class="card mb-4">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <div class="card mb-4">
+                                    <div class="card-header border-0 py-5">
+                                        <h3 class="card-title align-items-start flex-column">
+                                            <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Semana da Leitura</span>
+                                            <span class="text-muted fw-semibold fs-7">Latest trends</span>
+                                        </h3>
+                                        <div class="card-toolbar">
+                                            <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                            <i class="ki-duotone ki-category fs-6"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div class="d-flex justify-content-center scroll-y pb-3 pb-md-0">
+                                            <div class="d-flex">
+                                                @foreach (range(1, 7) as $dayOfWeek)
+                                                @php
+                                                $currentDay = \Carbon\Carbon::now()->startOfWeek()->addDays($dayOfWeek - 1);
+                                                @endphp
+                                                <div class="d-block bg-primary rounded py-2 px-1 mx-1">
+                                                    <div class="h-md-35px w-md-35px min-h-md-35px min-w-md-35px h-30px w-30px min-h-30px min-w-30px rounded-circle d-flex align-items-center justify-content-center fw-bold mx-1 bg-hover-success text-hover-white bg-white text-primary">
+                                                        {{ str_pad($currentDay->day, 2, '0', STR_PAD_LEFT) }}
+                                                    </div>
+                                                    <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">{{ date('D', strtotime($currentDay)) }}</p>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" style="display: none;">
+                                <div class="card mb-4">
+                                    <div class="card-header border-0 py-5">
+                                        <h3 class="card-title align-items-start flex-column">
+                                            <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">O que vou encarar essa semana?</span>
+                                            <span class="text-muted fw-semibold fs-7">Latest trends</span>
+                                        </h3>
+                                        <div class="card-toolbar">
+                                            <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                            <i class="ki-duotone ki-category fs-6"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="d-flex">
+                                                @foreach (range(1, 7) as $dayOfWeek)
+                                                @php
+                                                $currentDay = \Carbon\Carbon::now()->startOfWeek()->addDays($dayOfWeek - 1);
+                                                @endphp
+                                                <div class="d-block bg-primary rounded py-2 px-1 mx-1">
+                                                    <div class="h-md-35px w-md-35px min-h-md-35px min-w-md-35px h-30px w-30px min-h-30px min-w-30px rounded-circle d-flex align-items-center justify-content-center fw-bold mx-1 bg-hover-success text-hover-white bg-white text-primary">
+                                                        {{ str_pad($currentDay->day, 2, '0', STR_PAD_LEFT) }}
+                                                    </div>
+                                                    <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">{{ date('D', strtotime($currentDay)) }}</p>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <textarea class="form-control form-control-solid" name="notes" rows="5" placeholder="Anotações aqui...">{{ Auth::user()->notes }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4" style="display: none;">
+                        <div class="card">
                             <div class="card-header border-0 py-5">
                                 <h3 class="card-title align-items-start flex-column">
-                                    <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Semana da Leitura</span>
+                                    <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Como vai esta nosso mês?</span>
                                     <span class="text-muted fw-semibold fs-7">Latest trends</span>
                                 </h3>
                                 <div class="card-toolbar">
@@ -83,29 +177,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="card-body pt-0">
-                                <div class="d-flex justify-content-center">
-                                    <div class="d-flex">
-                                        @foreach (range(1, 7) as $dayOfWeek)
-                                        @php
-                                        $currentDay = \Carbon\Carbon::now()->startOfWeek()->addDays($dayOfWeek - 1);
-                                        @endphp
-                                        <div class="d-block bg-primary rounded py-2 px-1 mx-1">
-                                            <div class="h-md-35px w-md-35px min-h-md-35px min-w-md-35px h-30px w-30px min-h-30px min-w-30px rounded-circle d-flex align-items-center justify-content-center fw-bold mx-1 bg-hover-success text-hover-white bg-white text-primary">
-                                                {{ str_pad($currentDay->day, 2, '0', STR_PAD_LEFT) }}
-                                            </div>
-                                            <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">{{ date('D', strtotime($currentDay)) }}</p>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-8">
-                        <div class="card mb-4">
                             <div class="card-body">
-                                <textarea class="form-control form-control-solid" rows="5" placeholder="Anotações aqui..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -114,7 +186,7 @@
                             <div class="card-header border-0 py-5">
                                 <h3 class="card-title align-items-start flex-column">
                                     <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Próximas tarefas</span>
-                                    <span class="text-muted fw-semibold fs-7">Latest trends</span>
+                                    <span class="text-muted fw-semibold fs-7">Seja um destruidor de tarefas!</span>
                                 </h3>
                                 <div class="card-toolbar">
                                     <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -291,6 +363,17 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" data-bs-focus="false" id="modal_task">
+        <div class="modal-dialog modal-dialog-centered rounded">
+            <div class="modal-content rounded bg-transparent" id="load-task">
+                {{-- LOAP TASK HERE --}}
+                {{-- LOAP TASK HERE --}}
+                {{-- LOAP TASK HERE --}}
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('custom-footer')
@@ -540,6 +623,8 @@
             data: {_token: @json(csrf_token()), task_id: id},
             success:function(data) {
 
+                console.log('chegou');
+
 				//  REPLACE CONTENT
 				$('#load-task').html(data);
 
@@ -628,5 +713,64 @@
 		showTask(taskId);
 
 	});
+
+    // SHOW TASK
+    $(document).on('click', '.show-task', function(){
+
+        // GET DATA
+        var taskId = $(this).data('task');
+
+        // EXIBE TASK
+        showTask(taskId);
+
+    });
+    
+    // SHOW TASK
+    $(document).on('click', '.check-day', function(){
+
+        // GET DAY
+        var day = $(this).data('day');
+        $(this).toggleClass('bg-success bg-primary');
+
+        // AJAX
+		$.ajax({
+			type:'POST',
+			url: "{{ route('comments.store') }}",
+			data: {_token: @json(csrf_token()), task_id: taskId, text: text},
+			success:function(data) {
+				loadComments(taskId);
+				textarea.setData('');
+				$('#results-comments').scrollTop(0);
+			}
+		});
+
+    });
+    
+    // CONFIG NOTES
+    var typingTimer;
+    var doneTypingInterval = 300;
+
+    // CHANGE NOTES FOR USER
+    $(document).on('input', '[name="notes"]', function(){
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(function() {
+
+            // GET NOTE
+            var notes = $('[name="notes"]').val();
+
+            // AJAX
+            $.ajax({
+                type:'PUT',
+                url: "{{ route('users.notes') }}",
+                data: {_token: @json(csrf_token()), notes: notes},
+                success:function(data) {
+                    console.log(data);
+                }
+            });
+
+        }, doneTypingInterval);
+    });
+
+
 </script>
 @endsection

@@ -212,4 +212,23 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function notes(Request $request)
+    {
+        
+        // GET DATA
+        $content = User::find(Auth::id());
+        $content->notes = $request->notes;
+        $content->save();
+
+        // RETURN
+        return response()->json('Success', 200);
+
+    }
+
 }

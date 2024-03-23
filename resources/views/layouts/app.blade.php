@@ -15,7 +15,7 @@
             <!--begin::Page-->
             <div class="app-page  flex-column flex-column-fluid " id="kt_app_page">
                 <!--begin::Header-->
-                @include('layouts.header')
+                {{-- @include('layouts.header') --}}
                 <!--end::Header-->   
                 <!--begin::Wrapper-->
                 <div class="app-wrapper  flex-column flex-row-fluid position-relative mt-0" id="kt_app_wrapper">
@@ -42,7 +42,10 @@
                     <!--end:::Toast-->
                     <!--begin::Footer-->
                     {{-- @include('layouts.footer') --}}
-                    <!--end::Footer-->         
+                    <!--end::Footer-->     
+                    <button id="open_sidebar" class="btn btn-icon btn-dark app-layout-builder-toggle py-4 d-flex d-md-none">
+                        <i class="ki-duotone ki-setting-4 fs-1"></i>
+                    </button>    
                 </div>
                 <!--end::Wrapper-->
             </div>
