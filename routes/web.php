@@ -51,6 +51,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/adicionar', [ProjectTaskController::class, 'store'])->name('store');
                 Route::post('/visualizando', [ProjectTaskController::class, 'show'])->name('show');
                 Route::get('/desabilitar/{id}', [ProjectTaskController::class, 'destroy'])->name('destroy');
+                Route::get('/stand-by/{id}', [ProjectTaskController::class, 'standBy'])->name('stand.by');
                 Route::get('/editar/{id}', [ProjectTaskController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [ProjectTaskController::class, 'update'])->name('update');
                 Route::put('/editar-ajax/{id}', [ProjectTaskController::class, 'updateAjax'])->name('update.ajax');

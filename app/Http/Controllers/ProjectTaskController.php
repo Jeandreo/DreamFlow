@@ -184,15 +184,34 @@ class ProjectTaskController extends Controller
         
         // GET DATA
         $content = $this->repository->find($id);
-        $status = $content->status == true ? false : true;
+        $status = $content->status == 1 ? 0 : 1;
 
         // STORING NEW DATA
         $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('projects.show', $content->project_id)
+            ->route('index', $content->project_id)
             ->with('message', 'Tarefa ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function standBy($id)
+    {
+        
+        // STORING NEW DATA
+        $this->repository->where('id', $id)->update(['status' => 2, 'updated_by' => Auth::id()]);
+
+        // REDIRECT AND MESSAGES
+        return redirect()
+            ->route('index')
+            ->with('message', 'Tarefa em stand-by.');
 
     }
 

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('phrase')->nullable();
             $table->longText('description')->nullable();
-            $table->boolean('status')->default(true);
+            $table->integer('status')->default(1);
             $table->integer('filed_by')->nullable();
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
