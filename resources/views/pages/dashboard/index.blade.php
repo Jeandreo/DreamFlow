@@ -92,10 +92,53 @@
                     <div class="col">
                         <div class="row">
                             <div class="col-12 col-md-4">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card mb-4">
+                                            <div class="card-header border-0 py-5">
+                                                <h3 class="card-title align-items-start flex-column">
+                                                    <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Semana da Leitura</span>
+                                                    <span class="text-muted fw-semibold fs-7">Latest trends</span>
+                                                </h3>
+                                                <div class="card-toolbar">
+                                                    <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                    <i class="ki-duotone ki-category fs-6"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="d-flex justify-content-center scroll-y pb-3 pb-md-0">
+                                                    <div class="d-flex">
+                                                        @foreach (range(1, 7) as $dayOfWeek)
+                                                        @php
+                                                        $currentDay = \Carbon\Carbon::now()->startOfWeek()->addDays($dayOfWeek - 1);
+                                                        @endphp
+                                                        <div class="d-block bg-primary rounded py-2 px-1 mx-1">
+                                                            <div class="h-md-35px w-md-35px min-h-md-35px min-w-md-35px h-30px w-30px min-h-30px min-w-30px rounded-circle d-flex align-items-center justify-content-center fw-bold mx-1 bg-hover-success text-hover-white bg-white text-primary">
+                                                                {{ str_pad($currentDay->day, 2, '0', STR_PAD_LEFT) }}
+                                                            </div>
+                                                            <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">{{ date('D', strtotime($currentDay)) }}</p>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="card mb-4">
+                                            <div class="card-body">
+                                                <textarea class="form-control form-control-solid" name="notes" rows="3" placeholder="Anotações aqui...">{{ Auth::user()->notes }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 d-grid align-items-stretch">
                                 <div class="card mb-4">
                                     <div class="card-header border-0 py-5">
                                         <h3 class="card-title align-items-start flex-column">
-                                            <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Semana da Leitura</span>
+                                            <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Quais são as próximas conquistas?</span>
                                             <span class="text-muted fw-semibold fs-7">Latest trends</span>
                                         </h3>
                                         <div class="card-toolbar">
@@ -105,60 +148,51 @@
                                         </div>
                                     </div>
                                     <div class="card-body pt-0">
-                                        <div class="d-flex justify-content-center scroll-y pb-3 pb-md-0">
-                                            <div class="d-flex">
-                                                @foreach (range(1, 7) as $dayOfWeek)
-                                                @php
-                                                $currentDay = \Carbon\Carbon::now()->startOfWeek()->addDays($dayOfWeek - 1);
-                                                @endphp
-                                                <div class="d-block bg-primary rounded py-2 px-1 mx-1">
-                                                    <div class="h-md-35px w-md-35px min-h-md-35px min-w-md-35px h-30px w-30px min-h-30px min-w-30px rounded-circle d-flex align-items-center justify-content-center fw-bold mx-1 bg-hover-success text-hover-white bg-white text-primary">
-                                                        {{ str_pad($currentDay->day, 2, '0', STR_PAD_LEFT) }}
+                                        @if ($challenges->count())
+                                            @foreach ($challenges as $challenge)
+                                                <div class="bg-light rounded mb-3 p-3">
+                                                    <div class="row">
+                                                        <div class="col-6 d-flex align-items-center">
+                                                            <p class="m-0 fs-5 fw-bold text-gray-700">{{ $challenge->name }}</p>
+                                                        </div>
+                                                        <div class="col-5 d-flex align-items-center">
+                                                            <div class="d-flex">
+                                                                @foreach ($challenge->subtasks as $key => $mission)
+                                                                <div class="min-h-20px min-w-20px rounded-circle centered @if($mission->checked) bg-success text-white @elseif(!$mission->checked && $mission->date && strtotime($mission->date) < time()) bg-danger text-white @else bg-white text-primary @endif me-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="{{ $mission->name }} @if($mission->date) {{ '<br><b>' . date('d/m/Y', strtotime($mission->date)) . '</b>' }} @endif">
+                                                                    <span class="fw-bold">{{ $key + 1 }}</span>
+                                                                </div>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-1 d-flex align-items-center">
+                                                            @if ($challenge->date)
+                                                                <span class="badge badge-light-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<span class='text-primary fw-bold'>DEADLINE</span><br><b>{{ date('d/m/Y', strtotime($challenge->date)) }}</b>">
+                                                                    {{ ceil((strtotime($challenge->date) - time()) / (60 * 60 * 24)) }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge badge-light">
+                                                                    -
+                                                                </span>
+                                                            @endif
+                                                        </div>
                                                     </div>
-                                                    <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">{{ date('D', strtotime($currentDay)) }}</p>
                                                 </div>
-                                                @endforeach
+                                            @endforeach
+                                        @else
+                                        <div class="bg-light rounded d-flex align-items-center justify-content-center h-100">
+                                            <div class="text-center">
+                                                <p class="fw-bold text-gray-700 fs-3 mb-1">EIIIIITAAA VOCÊ ESTA SEM DESAFIOS 😱</p>
+                                                <p class="text-gray-600 fs-5">Para você ter um desafio, você precisa ter uma tarefa com subtarefas.</p>
                                             </div>
                                         </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6" style="display: none;">
-                                <div class="card mb-4">
-                                    <div class="card-header border-0 py-5">
-                                        <h3 class="card-title align-items-start flex-column">
-                                            <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">O que vou encarar essa semana?</span>
-                                            <span class="text-muted fw-semibold fs-7">Latest trends</span>
-                                        </h3>
-                                        <div class="card-toolbar">
-                                            <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                            <i class="ki-duotone ki-category fs-6"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body pt-0">
-                                        <div class="d-flex justify-content-center">
-                                            <div class="d-flex">
-                                                @foreach (range(1, 7) as $dayOfWeek)
-                                                @php
-                                                $currentDay = \Carbon\Carbon::now()->startOfWeek()->addDays($dayOfWeek - 1);
-                                                @endphp
-                                                <div class="d-block bg-primary rounded py-2 px-1 mx-1">
-                                                    <div class="h-md-35px w-md-35px min-h-md-35px min-w-md-35px h-30px w-30px min-h-30px min-w-30px rounded-circle d-flex align-items-center justify-content-center fw-bold mx-1 bg-hover-success text-hover-white bg-white text-primary">
-                                                        {{ str_pad($currentDay->day, 2, '0', STR_PAD_LEFT) }}
-                                                    </div>
-                                                    <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">{{ date('D', strtotime($currentDay)) }}</p>
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-8">
-                                <div class="card mb-4">
+                            <div class="col-2">
+                                <div class="card" style="background: url('{{ asset('assets/media/images/lion.avif') }}');background-size: cover;height: 96%;">
                                     <div class="card-body">
-                                        <textarea class="form-control form-control-solid" name="notes" rows="5" placeholder="Anotações aqui...">{{ Auth::user()->notes }}</textarea>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -198,24 +232,22 @@
                               <!-- BEGIN:TASKS -->
                               <div style="min-height: 50px;">
                                 @if ($tasks->count())
-                                    @foreach ($tasks as $task)
-                                    <!-- BEGIN:TASK AND SUBTASK -->
-                                    <div class="dmk-div-task">
+                                @foreach ($tasks as $task)
+                                <!-- BEGIN:TASK AND SUBTASK -->
+                                <div class="draggable dmk-div-task" data-task="{{ $task->id }}">
                                     <div class="d-grid">
                                         <!-- BEGIN:TASK -->
                                         <div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-45px task-list task-on-subtask z-index-1" data-task="{{ $task->id }}">
                                             <div class="d-flex align-items-center justify-content-between w-100 h-100">
-                                                <div class="d-flex align-items-center h-100 w-100">
+                                            <div class="d-flex align-items-center h-100 w-100">
                                                 <div style="background: {{ $task->project->color }};" class="rounded-start h-100 d-flex align-items-center color-task task-icons">
                                                         <div class="form-check form-check-custom form-check-solid py-2 px-5">
-                                                            <input class="form-check-input w-15px h-15px cursor-pointer check-task task-main" data-task="{{ $task->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($task->checked == true) checked @endif/>
-                                                            <i class="fa-solid p-1 fa-list-check fs-5 text-white ms-5 cursor-pointer add-subtasks zoom-hover zoom-hover-03" data-task="{{ $task->id }}" data-project="{{ $task->project->id }}"></i>
-                                                            <a href="{{ route('tasks.stand.by', $task->id) }}">
-                                                                <i class="fa-solid fa-hourglass-start p-1 fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03"></i>
-                                                            </a>
-                                                            <a href="{{ route('tasks.destroy', $task->id) }}" class="tasks-destroy">
-                                                                <i class="fa-solid p-1 fa-trash-alt fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03"></i>
-                                                            </a>
+                                                        <input class="form-check-input w-15px h-15px cursor-pointer check-task task-main" data-task="{{ $task->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($task->checked == true) checked @endif/>
+                                                        <i class="fa-solid p-1 fa-list-check fs-5 text-white ms-5 cursor-pointer add-subtasks zoom-hover zoom-hover-03" data-task="{{ $task->id }}" data-project="{{ $task->project->id }}"></i>
+                                                        <i class="fa-solid p-1 fa-copy fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03"></i>
+                                                        <a href="{{ route('tasks.destroy', $task->id) }}" class="tasks-destroy">
+                                                            <i class="fa-solid p-1 fa-trash-alt fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03"></i>
+                                                        </a>
                                                         </div>
                                                 </div>
                                                 <div class="d-flex align-items-center h-100 w-100 div-name-task">
@@ -226,18 +258,18 @@
                                                         <p class="text-gray-600 text-hover-primary fs-6 lh-1 fw-normal p-0 mb-1 cursor-pointer border-0 w-100 task-name show-task" style="margin-top: 3px;" data-task="{{ $task->id }}">{{ $task->name }}</p>
                                                         <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 input-name" maxlength="80" value="{{ $task->name }}" name="name" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}" style="display: none; margin-bottom: 1px !important;">
                                                         <div class="input-phrase" @if($task->phrase == '') style="display: none;" @endif>
-                                                            <input type="text" class="text-gray-500 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 fs-7 d-flex task-phrase z-index-9 h-15px mt-n1" maxlength="255" name="phrase" value="{{ $task->phrase }}" @if($task->phrase == '') style="border-bottom: dashed 1px #bbbdcb63 !important;" @endif data-task="{{ $task->id }}">
+                                                        <input type="text" class="text-gray-500 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 fs-7 d-flex task-phrase z-index-9 h-15px mt-n1" maxlength="255" name="phrase" value="{{ $task->phrase }}" @if($task->phrase == '') style="border-bottom: dashed 1px #bbbdcb63 !important;" @endif data-task="{{ $task->id }}">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                </div>
-                                                @if ($task->comments->count())
-                                                <span>
+                                            </div>
+                                            @if ($task->comments->count())
+                                            <span>
                                                 <i class="fa-regular fa-comments text-gray-300 p-2 ms-5"></i>
-                                                </span>
-                                                @endif
-                                                <span class="task-priority d-none d-md-flex" data-task="{{ $task->id }}">
-                                                <i class="fa-solid fa-font-awesome p-2 
+                                            </span>
+                                            @endif
+                                            <span class="task-priority d-none d-md-flex" data-task="{{ $task->id }}">
+                                            <i class="fa-solid fa-font-awesome p-2 
                                                 @if ($task->priority == 0)
                                                 text-gray-300
                                                 @elseif($task->priority == 1)
@@ -248,101 +280,78 @@
                                                 text-danger
                                                 @endif
                                                 cursor-pointer me-5"></i>
-                                                </span>
+                                            </span>
                                             </div>
                                             <div class="d-flex align-items-center h-100 d-none d-md-flex">
-                                               
-                                                <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date task-date-{{ $task->id }} 
-                                                
-                                                @if(date('Y-m-d', strtotime($task->date)) == date('Y-m-d'))
-                                                text-primary
-                                                @elseif(strtotime($task->date) < time())
-                                                text-danger
-                                                @elseif(\Carbon\Carbon::parse($task->date)->diffInDays() <= 2)
-                                                text-info
-                                                @else
-                                                text-gray-700
-                                                @endif" data-task="{{ $task->id }}" placeholder="Prazo da tarefa" value="@if($task->date) {{ date('Y-m-d H:i:s', strtotime($task->date)) }} @endif"/>
-                                                <!-- SEPARATOR -->
-                                                <div class="separator-vertical h-100"></div>
-                                                <!-- SEPARATOR -->
-                                                <div>
-                                                <i class="fa-solid fa-chevron-down text-hover-primary py-2 px-3 mx-3 fs-6 draggable-handle"></i>
+                                            <!-- SEPARATOR -->
+                                            <div class="separator-vertical h-100"></div>
+                                            <!-- SEPARATOR -->
+                                            <div class="w-125px text-center designated-div">
+                                                <div class="symbol symbol-30px symbol-circle cursor-pointer" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
+                                                    <div class="symbol symbol-25px symbol-circle me-2">
+                                                        <img alt="Pic" src="{{ findImage('users/' . $task->designated_id . '/' . 'perfil-35px.jpg') }}" class="designated">
+                                                    </div>
+                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true">
+                                                        @foreach ($users as $user)
+                                                        <div class="menu-item px-3">
+                                                        <a href="{{ route('tasks.designated') }}" class="menu-link px-3 py-1 task-designated" data-task="{{ $task->id }}" data-designated="{{ $user->id }}">
+                                                            <div class="cursor-pointer symbol symbol-25px symbol-md-35px">
+                                                                    <div class="symbol symbol-25px symbol-circle me-2">
+                                                                    <img alt="Pic" src="{{ findImage('users/' . $user->id . '/' . 'perfil-35px.jpg') }}">
+                                                                    </div>
+                                                            </div>
+                                                            <span class="ms-4">
+                                                            {{ $user->name }}
+                                                            </span>
+                                                        </a>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
                                                 </div>
+                                            </div>
+                                            <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-status" style="background: {{ $task->statusInfo->color }}">
+                                                <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
+                                                    <p class="text-white fw-bold m-0 status-name">{{ $task->statusInfo->name }}</p>
+                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
+                                                        @foreach ($task->project->statuses as $status)
+                                                        <div class="menu-item px-3 mb-2">
+                                                            <span data-task="{{ $task->id }}" data-status="{{ $status->id }}" class="menu-link px-3 d-block text-center tasks-status" style="background: {{ $status->color }}; color: white">
+                                                            <span class="">{{ $status->name }}</span>
+                                                            </span>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date task-date-{{ $task->id }} 
+                                                
+                                            @if(date('Y-m-d', strtotime($task->date)) == date('Y-m-d'))
+                                                text-primary
+                                            @elseif(strtotime($task->date) < time())
+                                                text-danger
+                                            @elseif(\Carbon\Carbon::parse($task->date)->diffInDays() <= 2)
+                                                text-info
+                                            @else
+                                                text-gray-700
+                                            @endif" data-task="{{ $task->id }}" placeholder="Prazo da tarefa" value="@if($task->date) {{ date('Y-m-d H:i:s', strtotime($task->date)) }} @endif"/>
+                                            <!-- SEPARATOR -->
+                                            <div class="separator-vertical h-100"></div>
+                                            <!-- SEPARATOR -->
+                                            <div>
+                                                <i class="fa-solid fa-arrows-to-dot text-hover-primary py-2 px-3 mx-3 fs-6 draggable-handle"></i>
+                                            </div>
                                             </div>
                                         </div>
                                         <!-- END:TASK -->
                                     </div>
                                     <!-- BEGIN:SUB-TASK -->
                                     @foreach ($task->subtasks as $subtask)
-                                        <div class="mb-2 ms-12">
-                                            <div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-35px task-list task-on-subtask z-index-1" data-task="{{ $subtask->id }}">
-                                            <div class="d-flex align-items-center justify-content-between w-100 h-100">
-                                                <div class="d-flex align-items-center h-100 w-100 task-left-side">
-                                                    <div style="background: {{ $subtask->project->color }}" class="rounded-start h-100 w-40px d-flex align-items-center justify-content-center color-task">
-                                                        <div class="form-check form-check-custom form-check-solid">
-                                                            <input class="form-check-input w-15px h-15px cursor-pointer check-task" data-task="{{ $subtask->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($subtask->checked == true) checked @endif/>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-center h-100 w-100 div-name-task">
-                                                    <label for="rename-subtask-{{ $subtask->id }}">
-                                                        <i class="fa-solid @if($subtask->name != '')fa-pen-to-square @else fa-eye @endif text-hover-primary cursor-pointer py-2 w-50px text-center fs-5 edit-name-task" data-task="{{ $subtask->task_id }}"></i>
-                                                    </label>
-                                                    <div class="d-block min-w-300px w-100">
-                                                            <p class="text-gray-600 text-hover-primary fs-6 lh-1 fw-normal p-0 mb-0 cursor-pointer border-0 w-100 task-name show-task" data-task="{{ $subtask->id }}" style="margin-top: 1px;  @if($subtask->name == '') display: none; @endif">{{ $subtask->name }}</p>
-                                                            <input type="text" id="rename-subtask-{{ $subtask->id }}" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 input-name placeholder-02 @if($subtask->checked == true) text-decoration-line-through @endif" value="{{ $subtask->name }}" name="name" placeholder="Subtarefa" data-task="{{ $subtask->id }}" @if($subtask->name != '') style="display: none;" @endif>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @if ($subtask->comments->count())
-                                                <span>
-                                                    <i class="fa-regular fa-comments text-gray-300 p-2 ms-5"></i>
-                                                </span>
-                                                @endif
-                                                <span class="task-priority" data-task="{{ $subtask->id }}">
-                                                <i class="fa-solid fa-font-awesome p-2 
-                                                    @if ($subtask->priority == 0)
-                                                    text-gray-300
-                                                    @elseif($subtask->priority == 1)
-                                                    text-warning
-                                                    @elseif($subtask->priority == 2)
-                                                    text-info
-                                                    @elseif($subtask->priority == 3)
-                                                    text-danger
-                                                    @endif
-                                                    cursor-pointer me-5"></i>
-                                                </span>
-                                            </div>
-                                            <div class="d-flex align-items-center h-100">
-                                                <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-status" style="background: {{ $subtask->statusInfo->color }}">
-                                                    <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
-                                                        <p class="text-white fw-bold m-0 status-name">{{ $subtask->statusInfo->name }}</p>
-                                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
-                                                            @foreach ($subtask->project->statuses as $status)
-                                                            <div class="menu-item px-3 mb-2">
-                                                                <span data-task="{{ $subtask->id }}" data-status="{{ $status->id }}" class="menu-link px-3 d-block text-center tasks-status" style="background: {{ $status->color }}; color: white">
-                                                                <span class="">{{ $status->name }}</span>
-                                                                </span>
-                                                            </div>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date" data-task="{{ $subtask->id }}" placeholder="Prazo da tarefa" value="@if($subtask->date) {{ date('Y-m-d H:i:s', strtotime($subtask->date)) }} @endif"/>
-                                            </div>
-                                                <!-- SEPARATOR -->
-                                                <div class="separator-vertical h-100"></div>
-                                                <!-- SEPARATOR -->
-                                                <div>
-                                                <i class="fa-solid fa-bars-staggered text-gray-300 py-2 px-3 mx-3 fs-6"></i>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    @include('pages.tasks._subtask')
                                     @endforeach
-                                    </div>
-                                    <!-- END:SUB-TASK -->
-                                    <!-- END:TASK AND SUBTASK -->
-                                    @endforeach
+                                </div>
+                                <!-- END:SUB-TASK -->
+                                <!-- END:TASK AND SUBTASK -->
+                                @endforeach
                                 @endif
                                 <div class="no-tasks" @if ($tasks->count()) style="display: none;" @endif>
                                     <div class="rounded bg-light d-flex align-items-center justify-content-center h-50px">
@@ -353,10 +362,13 @@
                                 </div>
                               </div>
                               <!-- BEGIN: SEND TASKS -->
-                              <form action="#" method="POST" class="send-tasks">
-                                 @csrf
-                                 <input type="text" name="name" class="form-control form-control-solid w-100 rounded mt-5" placeholder="Inserir nova tarefa">
-                              </form>
+                                @if (projects()->where('reminder', true)->first())
+                                <form action="#" method="POST" class="send-tasks">
+                                    @csrf
+                                    <input type="hidden" name="project_id" value="{{ projects()->where('reminder', true)->first()->id }}">
+                                    <input type="text" name="name" class="form-control form-control-solid w-100 rounded mt-5" placeholder="Inserir nova tarefa">
+                                </form>
+                                @endif
                               <!-- END: SEND TASKS -->
                             </div>
                         </div>
@@ -378,11 +390,131 @@
 
 @endsection
 
+
 @section('custom-footer')
 <script>
 	
 	// PROJECT ID
-	var projectId = 0;
+	var projectId = {{ $contents->id ?? 0 }};
+
+	function callFunctions(){
+		generateFlatpickr();
+		KTMenu.createInstances();
+	}
+
+	// DRAGGABLE
+	function draggable(){
+		var containers = document.querySelectorAll(".draggable-zone");
+		if (containers.length === 0) return false;
+		var swappable = new Sortable.default(containers, {
+			draggable: ".draggable",
+			handle: ".draggable .draggable-handle",
+			mirror: {
+				constrainDimensions: true,
+			},
+		});
+
+		// ON STOP DRAG
+		swappable.on('drag:stopped', function(event) {
+
+			// GET DIV OF ELEMENT
+			var movedDiv = event.originalSource;
+
+			// GET ID OF TASK
+			var taskId = $(movedDiv).data('task');
+
+			// GET PROJECT
+			var draggableDropped = $(movedDiv).closest('.draggable-zone');
+			
+			// TYPE DRAGGABLE
+			var draggableType = draggableDropped.data('type');
+
+			// GET PROJECT
+			var projectId = draggableDropped.data('project');
+
+			// START
+			var tasksOrderIds = [];
+
+			// GET IDS OF TASKS ONLY DRAGGABLE-ZONE
+			draggableDropped.find('.task-list').each(function() {
+				// OBTEM ITEM
+				var item = $(this).data('task');
+				tasksOrderIds.push(item);
+			});
+
+			// HIDE NO TASKS IN ZONE DROPPED
+			draggableDropped.find('.no-tasks').fadeOut();
+
+			// AJAX
+			$.ajax({
+				headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+				type:'PUT',
+				url: "{{ route('tasks.order') }}",
+				data: {
+					_token: @json(csrf_token()), 
+					project_id: projectId, 
+					task_id: taskId, 
+					tasksOrderIds: tasksOrderIds
+				},
+				success: function(response){
+					
+					// CHANGE COLOR PROJECT ON TASK
+					$(movedDiv).find('.color-task').css('background', response['color']);
+
+					// GET ZONE INITIAL
+					var startZone = $('#project-tasks-' + response['startProject']);
+					
+					// COUNT TASKS IN ZONE
+					var tasksCount = startZone.find('.task-list').length;
+
+					// IF NO TASKS IN ZONE
+					if (tasksCount == 0) startZone.find('.no-tasks').fadeIn();
+
+				}
+			});
+
+		});
+
+	}
+	
+	// FUNCTION LOAD PROJECTS
+	function loadProjects(){
+		// AJAX
+		$.ajax({
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+			type: 'POST',
+			url: "{{ route('tasks.index') }}",
+			data: {project_id: projectId},
+			success: function(data){
+				// LOAD PROJECTS
+				$('#load-projects').html(data);
+
+				// COUNT PROJECTS
+				var projectsCount = $('.load-tasks-project').length;
+				var counting = 0;
+
+				// SEARCH TASKS OF PROJECTS
+				$('.load-tasks-project').each(function(){
+
+					// INSERT TASKS IN PROJECTS
+					loadTasks($(this).data('project'));
+
+					// ADD ONE IN COUNTING
+					++counting;
+
+					// IF LAST TASKS
+					if(counting == projectsCount){
+						setTimeout(() => {
+							callFunctions();
+							draggable();
+						}, 200);
+					}
+
+				});
+
+			}
+		});
+	}
 
 	// FUNCTION LOAD TASKS
 	function loadTasks(id){
@@ -399,6 +531,10 @@
         });
 
 	}
+
+	$(document).on('click', '.show-tasks-fileds', function(){
+		$('#card-to-fileds').toggle();
+	});
 
 	// SEND NEW TASK
 	$(document).on('submit', '.send-tasks', function(e){
@@ -423,6 +559,7 @@
         });
 
 	});
+
 
 	// LOAD SOUND
 	var audio = new Audio('{{ asset("assets/media/sounds/task-checked.mp3") }}');
@@ -503,6 +640,11 @@
 
 	});
 
+	
+
+	// CALL FUNCTIONS
+	loadProjects();
+
 	// SHOW INPUT PHRASE
 	$(document).on('focus', '.input-name', function(){
 		$(this).next('.input-phrase').fadeIn();
@@ -573,6 +715,54 @@
 
 	});
 
+	// UPDATE DESIGNATED TASK
+	$(document).on('click', '.task-designated', function(){
+
+		// GET TEXT
+		var taskId = $(this).data('task');
+		var designated = $(this).data('designated');
+
+		// SAVE FLAG
+		var img = $(this).closest('.designated-div').find('.designated');
+
+		// AJAX
+		$.ajax({
+			type: 'PUT',
+			url: "{{ route('tasks.designated') }}",
+			data: {_token: @json(csrf_token()), task_id: taskId, designated_id: designated},
+			success: function(data){
+				img.attr('src', data);
+			}
+		});
+
+	});
+
+	// UPDATE STATUS
+    $(document).on('click', '.tasks-status', function(e){
+        
+		// GET DATA
+        var taskId = $(this).data('task');
+        var statusId = $(this).data('status');
+
+		// GET ACTUAL STATUS
+		var status = $(this).closest('.actual-status');
+
+		// AJAX
+        $.ajax({
+            type:'PUT',
+            url: "{{ route('tasks.status') }}",
+            data: {_token: @json(csrf_token()), task_id: taskId, status_id: statusId},
+            success:function(data) {
+                // CHANGE TO NEW COLOR AND NAME STATUS
+				status.find('.status-name').text(data['name']);
+				status.css('background', data['color']);
+            }
+        });
+    
+    });
+
+
+
 	// UPDATE DATE
 	$(document).on('change', '.task-date', function(){
     
@@ -625,8 +815,6 @@
             data: {_token: @json(csrf_token()), task_id: id},
             success:function(data) {
 
-                console.log('chegou');
-
 				//  REPLACE CONTENT
 				$('#load-task').html(data);
 
@@ -644,6 +832,24 @@
 
 	}
 
+
+	function loadCheckeds(){
+
+		// AJAX
+		$.ajax({
+			type:'POST',
+			url: "{{ route('tasks.checkeds') }}",
+			data: {_token: @json(csrf_token()), project_id: projectId},
+			success:function(data) {
+				//  REPLACE CONTENT
+				$('#load-checkeds').html(data);
+			}
+		});
+
+	}
+
+	loadCheckeds();
+
 	function loadComments(id){
 
 		// AJAX
@@ -652,8 +858,10 @@
 			url: "{{ route('comments.show') }}",
 			data: {_token: @json(csrf_token()), task_id: id},
 			success:function(data) {
+
 				//  REPLACE CONTENT
 				$('#results-comments').html(data);
+
 			}
 		});
 
@@ -717,17 +925,6 @@
 	});
 
     // SHOW TASK
-    $(document).on('click', '.show-task', function(){
-
-        // GET DATA
-        var taskId = $(this).data('task');
-
-        // EXIBE TASK
-        showTask(taskId);
-
-    });
-    
-    // SHOW TASK
     $(document).on('click', '.check-day', function(){
 
         // GET DAY
@@ -735,19 +932,38 @@
         $(this).toggleClass('bg-success bg-primary');
 
         // AJAX
-		$.ajax({
-			type:'POST',
-			url: "{{ route('comments.store') }}",
-			data: {_token: @json(csrf_token()), task_id: taskId, text: text},
-			success:function(data) {
-				loadComments(taskId);
-				textarea.setData('');
-				$('#results-comments').scrollTop(0);
-			}
-		});
+        $.ajax({
+            type:'POST',
+            url: "{{ route('comments.store') }}",
+            data: {_token: @json(csrf_token()), task_id: taskId, text: text},
+            success:function(data) {
+                loadComments(taskId);
+                textarea.setData('');
+                $('#results-comments').scrollTop(0);
+            }
+        });
 
     });
-    
+
+    // MART AS CHALLENGE
+    $(document).on('change', '[name="challenge"]', function(){
+
+        // GET DAY
+        var taskId = $(this).data('task');
+        var checked = $(this).is(':checked');
+
+        // AJAX
+        $.ajax({
+            type:'POST',
+            url: "{{ route('tasks.challenge') }}",
+            data: {_token: @json(csrf_token()), task_id: taskId, checked: checked},
+            success:function(data) {
+                console.log(data);
+            }
+        });
+
+    });
+
     // CONFIG NOTES
     var typingTimer;
     var doneTypingInterval = 300;
@@ -772,7 +988,5 @@
 
         }, doneTypingInterval);
     });
-
-
 </script>
 @endsection

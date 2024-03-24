@@ -22,6 +22,7 @@ class Project extends Model
         'type',
         'url',
         'color',
+        'reminder',
         'description',
         'start_date',
         'end_date',

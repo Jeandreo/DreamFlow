@@ -243,3 +243,10 @@ input[type=text]:disabled {
 [data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-heading {
     color: #e6e6ed !important;
 }
+
+.centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}

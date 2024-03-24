@@ -573,5 +573,26 @@
 		showTask(taskId);
 
 	});
+
+
+
+    // MART AS CHALLENGE
+    $(document).on('change', '[name="challenge"]', function(){
+
+		// GET DAY
+		var taskId = $(this).data('task');
+		var checked = $(this).is(':checked');
+
+		// AJAX
+		$.ajax({
+			type:'POST',
+			url: "{{ route('tasks.challenge') }}",
+			data: {_token: @json(csrf_token()), task_id: taskId, checked: checked},
+			success:function(data) {
+				console.log(data);
+			}
+		});
+
+	});
 </script>
 @endsection

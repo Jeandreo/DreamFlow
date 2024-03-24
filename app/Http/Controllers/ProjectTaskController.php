@@ -59,8 +59,9 @@ class ProjectTaskController extends Controller
         $data = $request->all();
 
         // CREATED BY
-        $data['created_by'] = Auth::id();
-        $data['designated_id']     = Auth::id();
+        $data['date']           = now();
+        $data['created_by']     = Auth::id();
+        $data['designated_id']  = Auth::id();
         
         // SEND DATA
         $created = $this->repository->create($data);
@@ -251,6 +252,7 @@ class ProjectTaskController extends Controller
 
         // SAVE
         $contents->checked = $check;
+        $contents->checked_at = now();
         $contents->save();
 
     }
@@ -428,6 +430,22 @@ class ProjectTaskController extends Controller
         return view('pages.tasks._checkeds')->with([
             'contents' => $contents,
         ]);
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function challenge(Request $request)
+    {
+
+        $task = ProjectTask::find($request->task_id);
+        $task->challenge = $request->checked == 'true' ? true : false;
+        $task->save();
+
+        return response()->json($request->all(), 200);
 
     }
 

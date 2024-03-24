@@ -6,15 +6,25 @@
 			</div>
 			<div class="px-8 h-md-500px pb-4 mb-md-0">
 				<div class="h-md-350px">
-					<span class="badge text-white mb-4 mt-7" style="background-color: {{ $contents->statusInfo->color }};">{{ $contents->statusInfo->name }}</span>
-					@if ($contents->status == 0)
-					<span class="badge badge-danger text-white mb-4 mt-7">Arquivada</span>
-					@endif
+					<div class="d-flex mb-4 mt-7">
+						<span class="badge text-white" style="background-color: {{ $contents->statusInfo->color }};">{{ $contents->statusInfo->name }}</span>
+						@if ($contents->status == 0)
+						<span class="badge badge-danger text-white">Arquivada</span>
+						@endif
+						@if ($contents->subtasks->count())
+						<div class="form-check form-switch form-check-custom form-check-solid ms-4">
+							<input class="form-check-input h-20px w-30px cursor-pointer" name="challenge" data-task="{{ $contents->id }}" type="checkbox" @if($contents->challenge) checked @endif id="challenge_task"/>
+							<label class="form-check-label fw-bold cursor-pointer" for="challenge_task">
+								DESAFIO
+							</label>
+						</div>
+						@endif
+					</div>
 					<h2 class="text-white fs-2x my-4">{{ $contents->name }}</h2>
 					<textarea class="text-gray-200 fs-6 bg-transparent p-0 border-0 w-100 task-description mh-100px mh-md-300px" @if ($contents->status == 0) disabled @endif placeholder="anotações aqui..." style="resize: none;" name="description" rows="8" data-task="{{ $contents->id }}">@if($contents->description){{ $contents->description }}@endif</textarea>
 				</div>
 				{{-- ALINHAR EM BAIXO  --}}
-				<div class="d-flex align-items-end h-md-150px">
+				<div class="d-flex align-items-end h-md-150px pb-5">
 					<div class="w-100">
 						<div class="row pb-3 mb-2" style="border-bottom: solid 1px rgba(0, 0, 0, 0.1)">
 							<div class="col-4">

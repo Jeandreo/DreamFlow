@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/desabilitar/{id}', [ProjectController::class, 'destroy'])->name('destroy');
             Route::get('/editar/{id}', [ProjectController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [ProjectController::class, 'update'])->name('update');
+            Route::get('/lembrete/{id}', [ProjectController::class, 'reminder'])->name('reminder');
         });
 
         // TASKS
@@ -64,6 +65,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::put('/ordem', [ProjectTaskController::class, 'order'])->name('order');
                 Route::post('/subtarefa', [ProjectTaskController::class, 'subtask'])->name('subtask');
                 Route::post('/concluidas', [ProjectTaskController::class, 'checkeds'])->name('checkeds');
+                Route::post('/desafio', [ProjectTaskController::class, 'challenge'])->name('challenge');
             });
         });
 

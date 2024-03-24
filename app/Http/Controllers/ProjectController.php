@@ -193,6 +193,30 @@ class ProjectController extends Controller
 
     }
 
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reminder(Request $request, $id)
+    {
+
+        // SET ALL OFF
+        Project::query()->update(['reminder' => false]);
+
+        // SET PROJECT REMINDER
+        Project::where('id', $id)->update(['reminder' => true]);
+
+        // REDIRECT AND MESSAGES
+        return redirect()
+                ->route('projects.index')
+                ->with('message', 'Projeto destaque alterado.');
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *

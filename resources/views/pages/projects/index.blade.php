@@ -102,6 +102,9 @@
 													@endif
 												</td>
 												<td class="text-center">
+													<a href="{{ route('projects.reminder', $content->id) }}" class="btn btn-sm btn-light btn-active-light-primary btn-icon">
+														<i class="fa-solid fa-star @if($content->reminder) text-warning @endif"></i>
+													</a>
 													<a href="{{ route('projects.show', $content->id) }}" class="btn btn-sm btn-light btn-active-light-primary btn-icon">
 														<i class="fa-solid fa-eye"></i>
 													</a>

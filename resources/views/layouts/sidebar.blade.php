@@ -120,7 +120,7 @@
                   </div>
                   <!--end:Menu item-->
                   <!--end::Heading-->
-                  @foreach (projects()->where('type', 1)->get() as $project)
+                  @foreach (projects()->where('reminder', false)->where('type', 1)->get() as $project)
                   <!--begin::Menu Item-->
                   <div class="menu-item">
                      <!--begin::Menu link-->
@@ -136,11 +136,11 @@
                         {{ $project->name }}                </span>
                         <!--end::Title-->
                         <!--begin::Badge--> 
-                        <span class="menu-badge">
-                           <span class="badge badge-custom">
+                        {{-- <span class="menu-badge">
+                           <span class="badge badge-primary">
                               6
                            </span>
-                        </span>                      
+                        </span>                       --}}
                         <!--end::Badge-->                                      
                      </a>
                      <!--end::Menu link-->                
@@ -160,7 +160,7 @@
                   </div>
                   <!--end:Menu item-->
                   <!--end::Heading-->
-                  @foreach (projects()->where('type', 2)->get() as $project)
+                  @foreach (projects()->where('reminder', false)->where('type', 2)->get() as $project)
                   <!--begin::Menu Item-->
                   <div class="menu-item">
                      <!--begin::Menu link-->
@@ -248,20 +248,16 @@
       <!--end::Menu wrapper-->
    </div>
    <!--end::sidebar menu-->
+   @if (projects()->where('reminder', true)->first())
    <!--begin::Footer-->
    <div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
-      <a 
-         href="https://chat.openai.com/" 
-         target="_blank"
-         class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100" 
-         data-bs-toggle="tooltip" 
-         data-bs-trigger="hover" 
-         data-bs-dismiss-="click" 
-         title="Sem ideias? Fale com o nosso amigo GPT. :D">
-      <span class="btn-label">
-      CHAT GPT
-      </span>
-      <i class="ki-duotone ki-document btn-icon fs-2 m-0"><span class="path1"></span><span class="path2"></span></i>    </a>
+      <a href="{{ route('projects.show', projects()->where('reminder', true)->first()->id) }}" class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100">
+         <span class="btn-label text-uppercase">
+            {{ projects()->where('reminder', true)->first()->name }}
+         </span>
+         <i class="ki-duotone ki-document btn-icon fs-2 m-0"><span class="path1"></span><span class="path2"></span></i>
+      </a>
    </div>
-   <!--end::Footer-->    
+   <!--end::Footer-->   
+   @endif 
 </div>
