@@ -25,7 +25,7 @@ class DashboardController extends Controller
         $previousMonth = $actualMonth->copy()->subMonth();
 
         // GET TASKS AND CHALLENGES
-        $tasks = ProjectTask::where('date', '<=', date('Y-m-d', strtotime('+7 days')))->where('checked', false)->whereNull('task_id')->orderBy('date')->where('status', 1)->get();
+        $tasks = ProjectTask::where('date', '<=', date('Y-m-d', strtotime('+2 days')))->where('checked', false)->whereNull('task_id')->orderBy('date')->where('status', 1)->get();
         $challenges = ProjectTask::where('date', '>=', now())->where('checked', false)->where('challenge', true)->get();
 
         // GET USERS FOR TASK
