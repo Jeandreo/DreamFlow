@@ -192,7 +192,7 @@ class ProjectTaskController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('index', $content->project_id)
+            ->route('index')
             ->with('message', 'Tarefa ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
 
     }

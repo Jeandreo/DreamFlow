@@ -11,7 +11,9 @@
                         <div class="form-check form-check-custom form-check-solid py-2 px-5">
                            <input class="form-check-input w-15px h-15px cursor-pointer check-task task-main" data-task="{{ $task->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($task->checked == true) checked @endif/>
                            <i class="fa-solid p-1 fa-list-check fs-5 text-white ms-5 cursor-pointer add-subtasks zoom-hover zoom-hover-03" data-task="{{ $task->id }}" data-project="{{ $task->project->id }}"></i>
-                           <i class="fa-solid p-1 fa-copy fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03"></i>
+                           <a href="{{ route('tasks.stand.by', $task->id) }}">
+                              <i class="fa-solid fa-hourglass-start p-1 fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03"></i>
+                           </a>
                            <a href="{{ route('tasks.destroy', $task->id) }}" class="tasks-destroy">
                               <i class="fa-solid p-1 fa-trash-alt fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03"></i>
                            </a>
@@ -91,7 +93,6 @@
                   </div>
                </div>
                <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date task-date-{{ $task->id }} 
-                  
                @if(date('Y-m-d', strtotime($task->date)) == date('Y-m-d'))
                   text-primary
                @elseif(strtotime($task->date) < time())
