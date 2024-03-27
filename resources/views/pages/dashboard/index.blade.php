@@ -113,20 +113,27 @@
                                             </div>
                                             <div class="card-body pt-0 px-2">
                                                 <div class="d-flex justify-content-center hover-scroll-x pb-3 pb-md-0">
-                                                    <div class="d-flex">
-														@if ($weekChallenge)
-															@for ($currentDay = strtotime($weekChallenge->custom_start); $currentDay <= strtotime($weekChallenge->custom_end); $currentDay = strtotime('+1 day', $currentDay))
-																<div class="d-block @if(checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal') && checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal')->completed == true) bg-success @elseif(checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal') && checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal')->completed == false) bg-danger @else bg-primary @endif rounded py-2 px-2 mx-1 @if($weekChallenge) check-day @endif" data-day="{{ date('d', $currentDay) }}" data-type="semanal" data-challenge="{{ $weekChallenge->id }}">
-																	<div class="h-25px w-25px min-h-25px min-w-25px rounded-circle d-flex align-items-center justify-content-center fw-bold bg-white text-primary">
-																		{{ str_pad(date('d', $currentDay), 2, '0', STR_PAD_LEFT) }}
-																	</div>
-																	<p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">
-																		{{ $daysOfWeek[date('D', $currentDay)] }}
-																	</p>
+													@if ($weekChallenge)
+													<div class="d-flex">
+														@for ($currentDay = strtotime($weekChallenge->custom_start); $currentDay <= strtotime($weekChallenge->custom_end); $currentDay = strtotime('+1 day', $currentDay))
+															<div class="d-block @if(checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal') && checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal')->completed == true) bg-success @elseif(checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal') && checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal')->completed == false) bg-danger @else bg-primary @endif rounded py-2 px-2 mx-1 @if($weekChallenge) check-day @endif" data-day="{{ date('d', $currentDay) }}" data-type="semanal" data-challenge="{{ $weekChallenge->id }}">
+																<div class="h-25px w-25px min-h-25px min-w-25px rounded-circle d-flex align-items-center justify-content-center fw-bold bg-white text-primary">
+																	{{ str_pad(date('d', $currentDay), 2, '0', STR_PAD_LEFT) }}
 																</div>
-															@endfor
-														@endif
-                                                    </div>
+																<p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">
+																	{{ $daysOfWeek[date('D', $currentDay)] }}
+																</p>
+															</div>
+														@endfor
+													</div>
+													@else
+														<div class="h-125px bg-light rounded w-100 mx-10 d-flex align-items-center justify-content-center">
+															<div class="text-center">
+																<p class="fw-bold text-gray-700 fs-4 mb-0">SEM DESAFIOS ESSA SEMANA 😔</p>
+																<p class="text-gray-600 fs-6">Que pena, parece que você não planejou nenhum desafio para si.</p>
+															</div>
+														</div>
+													@endif
                                                 </div>
                                             </div>
                                         </div>
