@@ -47,9 +47,6 @@ class DashboardController extends Controller
             'Fri' => 'Sex',
             'Sat' => 'Sáb',
         ];
-
-        $startOfWeek = strtotime($weekChallenge->custom_start) ?? null;
-        $endOfWeek = strtotime($weekChallenge->custom_end) ?? null;
         
 
         // RETURN VIEW WITH DATA
@@ -62,8 +59,6 @@ class DashboardController extends Controller
             'daysOfWeek' => $daysOfWeek,
             'monthChallenge' => $monthChallenge,
             'weekChallenge' => $weekChallenge,
-            'startOfWeek' => $weekChallenge,
-            'endOfWeek' => $weekChallenge,
         ]);
 
     }
