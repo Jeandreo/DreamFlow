@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Challenge;
 use App\Models\Project;
 use App\Models\ProjectCategory;
 use App\Models\ProjectStatus;
@@ -591,6 +592,13 @@ class DatabaseSeeder extends Seeder
             'created_by' => rand(1, 5),
         ]);
         
+        Challenge::create([
+            'name' => 'Frutifera',
+            'type' => 'mensal',
+            'url' => 'frutifera',
+            'date' => '03/2024',
+            'created_by' => 1,
+        ]);
         
 
         \App\Models\User::factory(10)->create();

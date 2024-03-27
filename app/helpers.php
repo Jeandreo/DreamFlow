@@ -2,11 +2,19 @@
 
 // GET PROJECTS
 
+use App\Models\ChallengeCompleted;
 use App\Models\ChallengeMonthly;
 use App\Models\ChallenngeMonthly;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+
+
+function randomEmoji(){
+    $emojis = ["😊", "😄", "😃", "😁", "😆", "😍", "😋", "😎", "😸", "🌟", "🎉", "🥳", "🎈", "🌈", "💖"];
+    $random_index = array_rand($emojis);
+    return $emojis[$random_index];
+}
 
 function projects() {
     $projects = Project::where('status', 1);
@@ -70,10 +78,10 @@ function hex2rgb($colour, $opacity) {
 }
 
 // VERIFY IF DAY CHECKED
-function checkDayMonth($date){
+function checkDayMonth($date, $type){
 
     // VERIFY IF COMPLETED IN THE DAY
-    $exists = ChallengeMonthly::where('date', $date)->where('completed', true)->where('user_id', Auth::id())->exists();
+    $exists = ChallengeCompleted::where('type', $type)->where('date', $date)->where('created_by', Auth::id())->first();
 
     // RETURN
     return $exists;

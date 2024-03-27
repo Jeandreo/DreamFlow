@@ -192,7 +192,7 @@ class ProjectTaskController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('index')
+            ->back()
             ->with('message', 'Tarefa ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
 
     }
@@ -211,7 +211,7 @@ class ProjectTaskController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('index')
+            ->back()
             ->with('message', 'Tarefa em stand-by.');
 
     }
@@ -424,7 +424,7 @@ class ProjectTaskController extends Controller
     {
 
         // GET ALL DATA
-        $contents = ProjectTask::where('project_id', $request->project_id)->where('checked', 1)->orWhere('status', 0)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get();
+        $contents = ProjectTask::where('project_id', $request->project_id)->where('checked', true)->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.tasks._checkeds')->with([

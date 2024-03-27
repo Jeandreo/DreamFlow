@@ -11,7 +11,7 @@
                 <div class="page-title">
                     <!--begin::Title-->
                     <h1 class="text-white fw-bold my-1 fs-2 text-center">
-                        Bom dia Jeandreo!
+                        Bom diiiiaa Jeandreo! {{ randomEmoji() }}
                     </h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
@@ -39,34 +39,37 @@
                         <div class="card mb-4 shadow">
                             <div class="card-body pb-5 px-2">
                                 <h2 class="fs-4 text-uppercase text-gray-700 text-center mb-5">
-                                    Desafio do mês: Ler 20 páginas todo dia
+									@if ($monthChallenge)
+									Desafio do mês: <span class="text-info">{{ $monthChallenge->name }}</span>
+									@else
+									Desafio do mês: <span class="text-danger">Nenhum desafio cadastrado</span>! 😤
+									@endif
                                     <i class="fa-solid fa-circle-exclamation text-gray-300 fs-5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Precisa ser algo que te estremessa de medo!!! 😱<br><li>Correr todo dia 1h</li><li>Ler 20 páginas por dia</li><li>Assistir um episódio em inglês por dia</li>"></i>
                                 </h2>
                                 <div class="d-flex justify-content-center">
-                                    <div class="d-flex scroll-y pt-2 pb-3 pb-md-0">
+                                    <div class="d-flex hover-scroll-x pt-2 pb-3 pb-md-0">
                                         @for ($i = $previousMonth->daysInMonth - 0; $i <= $previousMonth->daysInMonth; $i++)
                                         <div class="h-35px w-35px min-h-35px min-w-35px rounded-circle d-flex align-items-center justify-content-center mx-1 bg-light fw-bold text-gray-700 opacity-50 mt-2">
                                             {{ str_pad($i, 2, '0', STR_PAD_LEFT) }}
                                         </div>
                                         @endfor
                                         @for ($day = 1; $day <= $actualMonth->daysInMonth; $day++)
-
-                                            @if (checkDayMonth(date('Y-m-' . $day)))
-                                            <div class="d-block bg-success rounded py-2 px-2 mx-1 check-day" data-day="{{ $day }}">
+                                            @if (checkDayMonth(date('Y-m-' . $day), 'mensal'))
+                                            <div class="d-block @if(checkDayMonth(date('Y-m-' . $day), 'mensal')->completed == true) bg-success @else bg-danger @endif rounded py-2 px-2 mx-1 @if($monthChallenge) check-day @endif" data-day="{{ $day }}" data-type="mensal" @if($monthChallenge) data-challenge="{{ $monthChallenge->id }}" @endif>
                                                 <div class="h-25px w-25px min-h-25px min-w-25px rounded-circle d-flex align-items-center justify-content-center fw-bold bg-white text-primary">
                                                     {{ str_pad($day, 2, '0', STR_PAD_LEFT) }}
                                                 </div>
                                                 <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">
-                                                    {{ date('D', strtotime(date('Y-m-' . $day))) }}
+													{{ $daysOfWeek[date('D', strtotime(date('Y-m-' . $day)))] }}
                                                 </p>
                                             </div>
                                             @elseif (date('Y-m-d', strtotime(date('Y-m-' . $day))) <= date('Y-m-d'))
-                                            <div class="d-block bg-primary rounded py-2 px-2 mx-1 check-day" data-day="{{ $day }}">
+                                            <div class="d-block bg-primary rounded py-2 px-2 mx-1 @if($monthChallenge) check-day @endif" data-day="{{ $day }}" data-type="mensal" @if($monthChallenge) data-challenge="{{ $monthChallenge->id }}" @endif>
                                                 <div class="h-25px w-25px min-h-25px min-w-25px rounded-circle d-flex align-items-center justify-content-center fw-bold bg-white text-primary">
                                                     {{ str_pad($day, 2, '0', STR_PAD_LEFT) }}
                                                 </div>
                                                 <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">
-                                                    {{ date('D', strtotime(date('Y-m-' . $day))) }}
+													{{ $daysOfWeek[date('D', strtotime(date('Y-m-' . $day)))] }}
                                                 </p>
                                             </div>
                                             @elseif (date('Y-m-d', strtotime(date('Y-m-' . $day))) > date('Y-m-d'))
@@ -75,11 +78,10 @@
                                                     {{ str_pad($day, 2, '0', STR_PAD_LEFT) }}
                                                 </div>
                                                 <p class="fs-9 fw-bold text-center text-gray-700 mb-0 text-center mt-1 text-uppercase">
-                                                    {{ date('D', strtotime(date('Y-m-' . $day))) }}
+													{{ $daysOfWeek[date('D', strtotime(date('Y-m-' . $day)))] }}
                                                 </p>
                                             </div>
                                             @endif
-
                                         @endfor
                                         <div class="h-35px w-35px min-h-35px min-w-35px rounded-circle d-flex align-items-center justify-content-center mx-1 bg-light mt-1 fw-bold text-gray-700 opacity-50 mt-2">
                                             01
@@ -95,30 +97,35 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="card mb-4">
-                                            <div class="card-header border-0 py-5 justify-content-center">
-                                                <h3 class="mb-0">
-                                                    <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Semana da Leitura</span>
+                                            <div class="card-header border-0 py-5 d-block">
+                                                <h3 class="mb-0 text-center">
+                                                    <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">
+														@if($weekChallenge)
+														{{ $weekChallenge->name }}
+														@else
+														Sem <span class="text-danger">nada</span> para essa semana? 😑😡
+														@endif
+													</span>
                                                 </h3>
-                                                <div class="">
-                                                    <span class="text-muted fw-semibold fs-7 text-center">
-                                                        Não tenha medo de desistir do bom para perseguir o ótimo.
-                                                    </span>
-                                                </div>
+                                                <p class="text-muted fw-semibold fs-7 text-center">
+                                                    Não tenha medo de desistir do bom para perseguir o ótimo.
+                                                </p>
                                             </div>
                                             <div class="card-body pt-0 px-2">
-                                                <div class="d-flex justify-content-center scroll-y pb-3 pb-md-0">
+                                                <div class="d-flex justify-content-center hover-scroll-x pb-3 pb-md-0">
                                                     <div class="d-flex">
-                                                        @foreach (range(1, 7) as $dayOfWeek)
-                                                        @php
-                                                        $currentDay = \Carbon\Carbon::now()->startOfWeek()->addDays($dayOfWeek - 1);
-                                                        @endphp
-                                                        <div class="d-block bg-primary rounded py-2 px-1 mx-1">
-                                                            <div class="h-md-35px w-md-35px min-h-md-35px min-w-md-35px h-30px w-30px min-h-30px min-w-30px rounded-circle d-flex align-items-center justify-content-center fw-bold mx-1 bg-hover-success text-hover-white bg-white text-primary">
-                                                                {{ str_pad($currentDay->day, 2, '0', STR_PAD_LEFT) }}
-                                                            </div>
-                                                            <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">{{ date('D', strtotime($currentDay)) }}</p>
-                                                        </div>
-                                                        @endforeach
+														@if ($weekChallenge)
+															@for ($currentDay = strtotime($weekChallenge->custom_start); $currentDay <= strtotime($weekChallenge->custom_end); $currentDay = strtotime('+1 day', $currentDay))
+																<div class="d-block @if(checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal') && checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal')->completed == true) bg-success @elseif(checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal') && checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal')->completed == false) bg-danger @else bg-primary @endif rounded py-2 px-2 mx-1 @if($weekChallenge) check-day @endif" data-day="{{ date('d', $currentDay) }}" data-type="semanal" data-challenge="{{ $weekChallenge->id }}">
+																	<div class="h-25px w-25px min-h-25px min-w-25px rounded-circle d-flex align-items-center justify-content-center fw-bold bg-white text-primary">
+																		{{ str_pad(date('d', $currentDay), 2, '0', STR_PAD_LEFT) }}
+																	</div>
+																	<p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">
+																		{{ $daysOfWeek[date('D', $currentDay)] }}
+																	</p>
+																</div>
+															@endfor
+														@endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -152,7 +159,7 @@
                                                             <p class="m-0 fs-5 fw-bold text-gray-700">{{ $challenge->name }}</p>
                                                         </div>
                                                         <div class="col-12 col-md-5 d-flex align-items-center">
-                                                            <div class="d-flex overflow-scroll">
+                                                            <div class="d-flex hover-scroll-x">
                                                                 @foreach ($challenge->subtasks as $key => $mission)
                                                                 <div class="min-h-20px min-w-20px rounded-circle centered @if($mission->checked) bg-success text-white @elseif(!$mission->checked && $mission->date && strtotime($mission->date) < time()) bg-danger text-white @else bg-white text-primary @endif me-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="{{ $mission->name }} @if($mission->date) {{ '<br><b>' . date('d/m/Y', strtotime($mission->date)) . '</b>' }} @endif">
                                                                     <span class="fw-bold">{{ $key + 1 }}</span>
@@ -795,19 +802,26 @@
     // SHOW TASK
     $(document).on('click', '.check-day', function(){
 
-        // GET DAY
+		// GET DAY
         var day = $(this).data('day');
-        $(this).toggleClass('bg-success bg-primary');
+        var challenge = $(this).data('challenge');
+        var type = $(this).data('type');
+        var btnDay = $(this);
 
-        // AJAX
+		// AJAX
         $.ajax({
             type:'POST',
-            url: "{{ route('comments.store') }}",
-            data: {_token: @json(csrf_token()), task_id: taskId, text: text},
+            url: "{{ route('challenges.check') }}",
+            data: {_token: @json(csrf_token()), day: day, challenge: challenge, type: type},
             success:function(data) {
-                loadComments(taskId);
-                textarea.setData('');
-                $('#results-comments').scrollTop(0);
+
+				// UPDATE COLORS
+				if(data[0] == true){
+					btnDay.removeClass('bg-primary bg-danger').addClass('bg-success');
+				} else {
+					btnDay.removeClass('bg-primary bg-success').addClass('bg-danger');
+				}
+
             }
         });
 

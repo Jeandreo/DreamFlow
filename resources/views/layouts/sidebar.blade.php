@@ -187,7 +187,7 @@
                   <!--end::Menu Item-->
                   @endforeach
                </div>
-               <!--begin:Menu item-->   
+               <!--begin:Menu item-->  
                <!--begin:Menu item-->
                <div  data-kt-menu-trigger="click"  class="menu-item menu-accordion" >
                   <!--begin:Menu link-->
@@ -225,6 +225,11 @@
                      <!--end:Menu item-->
                      <!--begin:Menu item-->
                      <div  class="menu-item" >
+                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('challenges.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Desafios M/S</span></a><!--end:Menu link-->
+                     </div>
+                     <!--end:Menu item-->
+                     <!--begin:Menu item-->
+                     <div  class="menu-item" >
                         <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Objetivos e Missões</span></a><!--end:Menu link-->
                      </div>
                      <!--end:Menu item--><!--begin:Menu item-->
@@ -236,6 +241,14 @@
                         <!--begin:Menu link--><a class="menu-link"  href="{{ route('users.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Usuários</span></a><!--end:Menu link-->
                      </div>
                      <!--end:Menu item-->
+                     <div class="row mt-4">
+                        <div class="col-6">
+                           <a href="{{ route('tasks.others', 'ideias') }}" class="btn btn-dark btn-sm w-100">Ideias</a>
+                        </div>
+                        <div class="col-6">
+                           <a href="{{ route('tasks.others', 'excluidas') }}" class="btn btn-dark btn-sm w-100">Excluídas</a>
+                        </div>
+                     </div> 
                   </div>
                   <!--end:Menu sub-->
                </div>

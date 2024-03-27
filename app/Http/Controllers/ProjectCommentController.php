@@ -63,36 +63,6 @@ class ProjectCommentController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-
-        // VERIFY IF EXISTS
-        if(!$content = $this->repository->find($id))
-        return redirect()->back();
-
-        // GET FORM DATA
-        $data = $request->all();
-
-        // UPDATE BY
-        $data['updated_by'] = Auth::id();
-        
-        // STORING NEW DATA
-        $content->update($data);
-
-        // REDIRECT AND MESSAGES
-        return redirect()
-            ->route('statuses.edit', $id)
-            ->with('message', 'Status editado com sucesso.');
-
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id

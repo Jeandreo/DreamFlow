@@ -4,7 +4,7 @@
 		<!-- BEGIN:HEADER -->
 		<div class="p-0 d-flex align-items-center justify-content-between fw-bold mb-2">
 			<div class="d-flex align-items-center ps-3 pe-5">
-				<h2 class="text-gray-700 fs-6 text-uppercase cursor-pointer show-tasks-fileds">{{ $content->name }}</h2>
+				<h2 class="text-gray-700 fs-6 text-uppercase cursor-pointer show-tasks-fileds" data-project="{{ $content->id }}">{{ $content->name }}</h2>
 			</div>
 			<div class="d-none d-md-flex align-items-center">
 				<div class="w-125px text-center text-gray-700 fs-7 text-uppercase">
@@ -32,6 +32,13 @@
 			<input type="hidden" name="project_id" value="{{$content->id}}">
 			<input type="text" name="name" class="form-control form-control-solid w-100 rounded mt-5" placeholder="Inserir nova tarefa">
 		</form>
+		<!-- CHECKEDS -->
+		<div class="mt-6" id="card-to-fileds-{{ $content->id }}" style="display: none;">
+			<div class="p-5 bg-light rounded" id="load-checkeds-{{ $content->id }}">
+				
+			</div>
+		</div>
+		<!-- CHECKEDS -->
 	</div>
 </div>
 @endforeach

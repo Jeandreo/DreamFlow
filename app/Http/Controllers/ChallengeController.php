@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Challenge;
+use App\Models\ChallengeCompleted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Intervention\Image\ImageManagerStatic as Image;
 
-class UserController extends Controller
+class ChallengeController extends Controller
 {
-    
     protected $request;
     private $repository;
     
-    public function __construct(Request $request, User $content)
+    public function __construct(Request $request, Challenge $content)
     {
         
         $this->request = $request;
@@ -34,7 +32,7 @@ class UserController extends Controller
         $contents = $this->repository->orderBy('name', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
-        return view('pages.users.index')->with([
+        return view('pages.challenges.index')->with([
             'contents' => $contents,
         ]);
 
@@ -47,13 +45,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        // GET ALL DATA
-        $users = User::where('status', 1)->get();
-
         // RENDER VIEW
-        return view('pages.users.create')->with([
-            'users' => $users,
-        ]);
+        return view('pages.challenges.create');
     } 
 
     /**
@@ -70,29 +63,29 @@ class UserController extends Controller
 
         // CREATED BY
         $data['created_by'] = Auth::id();
-        $data['password'] = Hash::make($request->password);
 
-        // SEND DATA
-        $created = $this->repository->create($data);
-        
-        // SAVE IMAGE
-        if ($created && $request->cutImage) {
-        
-            // SET SIZES TO SAVE
-            $sizes = [35, 300, 600, 1200];
-        
-            // DIRETORY
-            $path = 'users/' . $created->id . '/';
-        
-            // RESIZE AND SAVE
-            resizeAndSaveImage($request->cutImage, $sizes, 'perfil', $path);
+        // MONTH OR WEEK
+        if($data['type'] == 'mensal'){
+            $data['date'] = str_pad($request->month , 2 , '0' , STR_PAD_LEFT) . '/' . $request->year;
+        } else {
+
+            // SEPARE DATES
+            $week = explode(' até ', $data['days_week']);
+
+            // SAVE CUSTOM
+            $data['custom_start'] = $request->year . $week[0];
+            $data['custom_end'] = $request->year . $week[1];
 
         }
 
+
+        // SEND DATA
+        $this->repository->create($data);
+
         // REDIRECT AND MESSAGES
         return redirect()
-                ->route('users.index')
-                ->with('message', 'Usuário adicionado com sucesso.');
+                ->route('challenges.index')
+                ->with('message', 'Desafio adicionado com sucesso.');
 
     }
 
@@ -106,15 +99,13 @@ class UserController extends Controller
     {
         // GET ALL DATA
         $content = $this->repository->find($id);
-        $users = User::where('status', 1)->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
 
         // GENERATES DISPLAY WITH DATA
-        return view('pages.users.edit')->with([
+        return view('pages.challenges.edit')->with([
             'content' => $content,
-            'users' => $users,
         ]);
     }
 
@@ -138,34 +129,29 @@ class UserController extends Controller
         // UPDATE BY
         $data['updated_by'] = Auth::id();
 
-        // FORMAT PASSWORD
-        if(isset($data['password'])){
-            $data['password'] = Hash::make($request->password);
+
+
+        // MONTH OR WEEK
+        if($data['type'] == 'mensal'){
+            $data['date'] = str_pad($request->month , 2 , '0' , STR_PAD_LEFT) . '/' . $request->year;
         } else {
-            unset($data['password']);
+
+            // SEPARE DATES
+            $week = explode(' até ', $data['days_week']);
+
+            // SAVE CUSTOM
+            $data['custom_start'] = $request->year . $week[0];
+            $data['custom_end'] = $request->year . $week[1];
+
         }
         
         // STORING NEW DATA
-        $updated = $content->update($data);
-
-        // SAVE IMAGE
-        if ($updated && $request->cutImage) {
-        
-            // SET SIZES TO SAVE
-            $sizes = [35, 300, 600, 1200];
-        
-            // DIRETORY
-            $path = 'users/' . $id . '/';
-        
-            // RESIZE AND SAVE
-            resizeAndSaveImage($request->cutImage, $sizes, 'perfil', $path);
-
-        }
+        $content->update($data);
 
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('index.edit', $id)
-            ->with('message', 'Usuário editado com sucesso.');
+            ->with('message', 'Desafio editado com sucesso.');
 
     }
 
@@ -187,47 +173,57 @@ class UserController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('users.index')
-            ->with('message', 'Usuário ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
+            ->route('challenges.index')
+            ->with('message', 'Desafio ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function sidebar()
-    {
-        
-        // GET DATA
-        $content = User::find(Auth::id());
-        $openOrClose = $content->sidebar == true ? false : true;
-        $content->sidebar = $openOrClose;
-        $content->save();
 
-        // RETURN
-        return response()->json('Success', 200);
-
-    }
 
     /**
-     * Remove the specified resource from storage.
+     * Store a newly created resource in storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function notes(Request $request)
+    public function check(Request $request)
     {
-        
-        // GET DATA
-        $content = User::find(Auth::id());
-        $content->notes = $request->notes;
-        $content->save();
 
-        // RETURN
-        return response()->json('Success', 200);
+        // GET FORM DATA
+        $data = $request->all();
+
+        // FORMAT DATE
+        $newDate = date('Y-m-' . str_pad($data['day'], 2, '0', STR_PAD_LEFT));
+
+        // FIND RESULT
+        $day = ChallengeCompleted::where('date', $newDate)->where('type', $data['type'])->first();
+
+        // IF NO EXISTS
+        if($day == null){
+
+            // SET STATUS
+            $status = true;
+
+            // SCREATE
+            ChallengeCompleted::create([
+                'date' => $newDate,
+                'completed' => true,
+                'challenge_id' => $data['challenge'],
+                'type' => $data['type'],
+                'created_by' => Auth::id(), 
+            ]);
+        } else {
+
+            // VERIFY AND UPDATE
+            $status = $day->completed == true ? false : true;
+            $day->completed = $status;
+            $day->save();
+
+
+        }
+
+        // RESPONSE
+        return response()->json([$status], 200);
 
     }
 

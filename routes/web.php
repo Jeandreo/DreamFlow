@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ChatGPTController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DashboardController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\UserController;
+use App\Models\ChallengeMonthly;
 use App\Models\ProjectTask;
 use Illuminate\Support\Facades\Route;
 
@@ -66,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/subtarefa', [ProjectTaskController::class, 'subtask'])->name('subtask');
                 Route::post('/concluidas', [ProjectTaskController::class, 'checkeds'])->name('checkeds');
                 Route::post('/desafio', [ProjectTaskController::class, 'challenge'])->name('challenge');
+                Route::get('/outras/{type?}', [ProjectTaskController::class, 'others'])->name('others');
             });
         });
 
@@ -81,7 +84,7 @@ Route::middleware(['auth'])->group(function () {
             });
         });
 
-        // STATUS
+        // CATEGORIES
         Route::prefix('categorias')->group(function () {
             Route::name('categories.')->group(function () {
                 Route::get('/', [ProjectCategoryController::class, 'index'])->name('index');
@@ -90,6 +93,19 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/desabilitar/{id}', [ProjectCategoryController::class, 'destroy'])->name('destroy');
                 Route::get('/editar/{id}', [ProjectCategoryController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [ProjectCategoryController::class, 'update'])->name('update');
+            });
+        });
+
+        // CHALLENGES
+        Route::prefix('desafios')->group(function () {
+            Route::name('challenges.')->group(function () {
+                Route::get('/', [ChallengeController::class, 'index'])->name('index');
+                Route::get('/adicionar', [ChallengeController::class, 'create'])->name('create');
+                Route::post('/adicionar', [ChallengeController::class, 'store'])->name('store');
+                Route::get('/desabilitar/{id}', [ChallengeController::class, 'destroy'])->name('destroy');
+                Route::get('/editar/{id}', [ChallengeController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [ChallengeController::class, 'update'])->name('update');
+                Route::post('/marcar', [ChallengeController::class, 'check'])->name('check');
             });
         });
 

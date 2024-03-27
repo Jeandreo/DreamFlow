@@ -160,21 +160,29 @@ function generateFlatpickr(calendar = '.flatpickr') {
         altInput: true,
         altFormat: "d/m/Y",
         dateFormat: "Y-m-d H:i:S",
-        "locale": "pt",
+        locale: "pt",
     });
 }
 
 // FORCE URL
-function onlyUrl(getUrl = '.get-to-url', onlyUrl = '.only-url'){
-    $(`${onlyUrl}, ${getUrl}`).on('input', function() {
+function onlyUrl(getUrl = '.get-to-url', onlyUrl = '.only-url') {
+    $(`${onlyUrl}, ${getUrl}`).on('input', function () {
         // REPLACE SPACES BY HIFENS
-        var texto = $(this).val().replace(/\s+/g, '-');
-        
+        var texto = $(this).val().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-');
+
         // REMOVE SPECIAL CHARACTERS
         texto = texto.replace(/[^\w\s-]/gi, '').toLowerCase();
+
+        // REMOVE TRAILING AND LEADING HYPHENS
+        texto = texto.replace(/^-+|-+$/g, '');
+
+        // REMOVE CONSECUTIVE HYPHENS
+        texto = texto.replace(/-{2,}/g, '-');
+
         $(onlyUrl).val(texto);
     });
 }
+
 
 
 // OPTIONS OF CROPPER

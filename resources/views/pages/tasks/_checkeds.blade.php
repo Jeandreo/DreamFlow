@@ -1,4 +1,4 @@
-<h2 class="text-gray-700 text-center fs-5 text-uppercase cursor-pointer show-tasks-fileds mb-4">ARQUIVADAS</h2>
+<h2 class="text-gray-700 text-center fs-5 text-uppercase cursor-pointer show-tasks-fileds mb-4">CONCLUÍDAS</h2>
 @foreach ($contents as $content)
     <div class="d-grid">
         <!-- BEGIN:TASK -->

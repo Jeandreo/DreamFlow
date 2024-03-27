@@ -11,8 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('project_subtasks', function (Blueprint $table) {
+
+        Schema::dropIfExists('challenges_monthly');
+
+        Schema::create('challenges_completed', function (Blueprint $table) {
             $table->id();
+            $table->integer('challenge_id');
+            $table->date('date');
+            $table->boolean('completed')->default(false);
+            $table->enum('type', ['mensal', 'semanal']);
+            $table->integer('created_by');
             $table->timestamps();
         });
     }
@@ -22,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('project_subtasks');
+        Schema::dropIfExists('challenges_completed');
     }
 };

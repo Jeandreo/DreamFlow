@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col mb-5">
         <label class="required form-label fw-bold">Nome:</label>
-        <input type="text" class="form-control form-control-solid" placeholder="Nome do Status" name="name" value="{{ $content->name ?? old('name') }}" required/>
+        <input type="text" class="form-control form-control-solid" placeholder="Nome da Categoria" name="name" value="{{ $content->name ?? old('name') }}" required/>
     </div>
     <div class="col mb-5">
         <label class="required form-label fw-bold">Tipo:</label>

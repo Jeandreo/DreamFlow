@@ -5,18 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ChallengeMonthly extends Model
+class ChallengeCompleted extends Model
 {
     use HasFactory;
-    protected $table = 'challenges_monthly';
+    protected $table = 'challenges_completed';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
+        'challenge_id',
         'date',
         'completed',
-        'user_id',
+        'type',
+        'created_by',
     ];
 }

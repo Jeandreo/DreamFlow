@@ -18,13 +18,6 @@
 						{{-- LOAD PROJECTS HERE --}}
 					</div>
 				</div>
-				<!-- CHECKEDS AND FILEDS -->
-				<div class="card" id="card-to-fileds" style="display: none;">
-					<div class="card-body p-5" id="load-checkeds">
-						
-					</div>
-				</div>
-				<!-- CHECKEDS AND FILEDS -->
 			</div>
 		</div>
 	</div>
@@ -181,10 +174,6 @@
         });
 
 	}
-
-	$(document).on('click', '.show-tasks-fileds', function(){
-		$('#card-to-fileds').toggle();
-	});
 
 	// SEND NEW TASK
 	$(document).on('submit', '.send-tasks', function(e){
@@ -483,7 +472,7 @@
 	}
 
 
-	function loadCheckeds(){
+	function loadCheckeds(id){
 
 		// AJAX
 		$.ajax({
@@ -492,13 +481,28 @@
 			data: {_token: @json(csrf_token()), project_id: projectId},
 			success:function(data) {
 				//  REPLACE CONTENT
-				$('#load-checkeds').html(data);
+				$('#load-checkeds-' + id).html(data);
 			}
 		});
 
 	}
 
-	loadCheckeds();
+
+	// SHOW ZONE TASK CHECKETS
+	$(document).on('click', '.show-tasks-fileds', function(){
+
+		// GET PROJECT
+		var projectId = $(this).data('project');
+
+		if ($('#card-to-fileds-' + projectId).css('display') === 'none') {
+			// LOAD CHECKEDS AJAX
+			loadCheckeds(projectId);
+		}
+
+		// SHOW DIV
+		$('#card-to-fileds-' + projectId).toggle();
+
+	});
 
 	function loadComments(id){
 

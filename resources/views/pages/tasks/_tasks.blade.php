@@ -4,7 +4,7 @@
    <div class="draggable dmk-div-task" data-task="{{ $task->id }}">
       <div class="d-grid">
          <!-- BEGIN:TASK -->
-         <div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-45px task-list task-on-subtask z-index-1" data-task="{{ $task->id }}">
+         <div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-45px task-list task-on-subtask" data-task="{{ $task->id }}">
             <div class="d-flex align-items-center justify-content-between w-100 h-100">
                <div class="d-flex align-items-center h-100 w-100">
                   <div style="background: {{ $task->project->color }};" class="rounded-start h-100 d-flex align-items-center color-task task-icons">
