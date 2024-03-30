@@ -93,16 +93,19 @@
 					</div>
 				</div>
 			</div>
-			<input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date task-date-{{ $task->id }} 
-			@if(date('Y-m-d', strtotime($task->date)) == date('Y-m-d'))
-				text-primary
-			@elseif(strtotime($task->date) < time())
-				text-danger
-			@elseif(\Carbon\Carbon::parse($task->date)->diffInDays() <= 2)
-				text-info
-			@else
-				text-gray-700
-			@endif" data-task="{{ $task->id }}" placeholder="Prazo da tarefa" value="@if($task->date) {{ date('Y-m-d H:i:s', strtotime($task->date)) }} @endif"/>
+			<div class="position-relative opacity-1">
+				<input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date task-date-{{ $task->id }} 
+				@if(date('Y-m-d', strtotime($task->date)) == date('Y-m-d'))
+					text-primary
+				@elseif(strtotime($task->date) < time())
+					text-danger
+				@elseif(\Carbon\Carbon::parse($task->date)->diffInDays() <= 2)
+					text-info
+				@else
+					text-gray-700
+				@endif" data-task="{{ $task->id }}" placeholder="Prazo da tarefa" value="@if($task->date) {{ date('Y-m-d H:i:s', strtotime($task->date)) }} @endif"/>
+				<i class="fa-solid fa-calendar-xmark text-hover-primary text-gray-300 py-2 px-3 fs-7 position-absolute opacity-0 cursor-pointer remove-date" data-task={{ $task->id }}" style="top: 15%; right: 0"></i>
+			</div>
 			<!-- SEPARATOR -->
 			<div class="separator-vertical h-100"></div>
 			<!-- SEPARATOR -->

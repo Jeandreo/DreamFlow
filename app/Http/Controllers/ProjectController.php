@@ -127,7 +127,7 @@ class ProjectController extends Controller
         if($id == null){
             $projects = $this->repository->where('status', 1)->get();
         } else {
-            $projects = $this->repository->find($id);
+            $projects = $this->repository->where('id', $id)->get();
         }
         
         // GET USERS

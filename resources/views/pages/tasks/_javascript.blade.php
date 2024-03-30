@@ -420,4 +420,27 @@
         $('.subtasks-zone-' + task).toggle();
 
     });
+
+
+    // SHOW SUBTASKS
+    $(document).on('click', '.remove-date', function(){
+
+        // GET TASK
+        var task = $(this).data('task');
+
+        // GET TASK
+        $(this).closest('.position-relative').find('.task-date').val('');
+
+        // AJAX
+        $.ajax({
+            type:'POST',
+            url: "{{ route('tasks.time') }}",
+            data: {_token: @json(csrf_token()), task_id: task},
+            success:function(data) {
+                console.log('Data removida');
+            }
+        });
+
+    });
+
 </script>

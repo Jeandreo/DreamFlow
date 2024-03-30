@@ -470,6 +470,22 @@ class ProjectTaskController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function time(Request $request)
+    {
+
+        $task = ProjectTask::find($request->task_id);
+        $task->date = null;
+        $task->save();
+
+        return response()->json($request->all(), 200);
+
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id

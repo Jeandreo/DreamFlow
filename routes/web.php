@@ -68,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/subtarefa', [ProjectTaskController::class, 'subtask'])->name('subtask');
                 Route::post('/concluidas', [ProjectTaskController::class, 'checkeds'])->name('checkeds');
                 Route::post('/desafio', [ProjectTaskController::class, 'challenge'])->name('challenge');
+                Route::post('/prazo', [ProjectTaskController::class, 'time'])->name('time');
                 Route::get('/outras/{type?}', [ProjectTaskController::class, 'others'])->name('others');
             });
         });

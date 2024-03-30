@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title-page', 'Outras')
+@section('title-page', $type == 'ideias' ? 'Ideias' : 'Excluídas')
 
-@section('title-toolbar', 'Outras')
+@section('title-toolbar', $type == 'ideias' ? 'Ideias' : 'Excluídas')
 
 @section('custom-head')
 <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
@@ -63,8 +63,12 @@
 											</td>
 											<td class="text-center">
 												@if($content->status == 2) 
-												<span class="badge badge-light-success">
+												<span class="badge badge-light-light">
 													Stand By
+												</span>
+												@elseif($content->status == 0) 
+												<span class="badge badge-light-danger">
+													Excluída
 												</span>
 												@endif
 											</td>
