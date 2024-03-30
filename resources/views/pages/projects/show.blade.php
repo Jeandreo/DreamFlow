@@ -39,7 +39,7 @@
 								<!-- END:HEADER -->
 								<div class="draggable-zone load-tasks-project" data-type="project" style="min-height: 50px;" data-project="{{ $project->id }}" id="project-tasks-{{ $project->id }}">
 									@if ($project->tasks()->whereNull('task_id')->count())
-										@foreach ($project->tasks()->whereNull('task_id')->where('checked', false)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get() as $task)
+										@foreach ($project->tasks()->where('status', 1)->whereNull('task_id')->where('checked', false)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get() as $task)
 											@include('pages.tasks._tasks')
 										@endforeach
 										<div class="no-tasks" @if ($project->tasks->whereNull('task_id')->count()) style="display: none;" @endif>
