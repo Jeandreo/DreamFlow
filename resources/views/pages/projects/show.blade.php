@@ -12,10 +12,53 @@
 		<div id="kt_app_content" class="app-content  flex-column-fluid py-6" >
 			<div id="kt_app_content_container" class="app-container  container-fluid ">
 				<div class="row">
-					<div class="col-12" id="load-projects">
-						{{-- LOAD PROJECTS HERE --}}
-						{{-- LOAD PROJECTS HERE --}}
-						{{-- LOAD PROJECTS HERE --}}
+					<div class="col-12">
+						@foreach ($projects as $project)
+						<div class="card mb-6">
+							<div class="card-body p-5">
+								<!-- BEGIN:HEADER -->
+								<div class="p-0 d-flex align-items-center justify-content-between fw-bold mb-2">
+									<div class="d-flex align-items-center ps-3 pe-5">
+										<h2 class="text-gray-700 fs-6 text-uppercase cursor-pointer show-tasks-fileds" data-project="{{ $project->id }}">{{ $project->name }}</h2>
+									</div>
+									<div class="d-none d-md-flex align-items-center">
+										<div class="w-125px text-center text-gray-700 fs-7 text-uppercase">
+											Designado
+										</div>
+										<div class="d-flex align-items-center justify-content-center cursor-pointer w-150px text-gray-700 fs-7 text-uppercase">
+											Status
+										</div>
+										<div class="d-flex align-items-center justify-content-center cursor-pointer w-200px text-gray-700 fs-7 text-uppercase">
+											Data
+										</div>
+										<div>
+											<i class="fa-solid fa-arrows-to-dot text-hover-primary cursor-pointer py-2 px-3 mx-3 fs-7 text-gray-700"></i>
+										</div>
+									</div>
+								</div>
+								<!-- END:HEADER -->
+								<div class="draggable-zone load-tasks-project" data-type="project" style="min-height: 50px;" data-project="{{ $project->id }}" id="project-tasks-{{ $project->id }}">
+									@if ($project->tasks()->whereNull('task_id')->count())
+										@foreach ($project->tasks()->whereNull('task_id')->where('checked', false)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get() as $task)
+											@include('pages.tasks._tasks')
+										@endforeach
+										<div class="no-tasks" @if ($project->tasks->whereNull('task_id')->count()) style="display: none;" @endif>
+											<div class="rounded bg-light d-flex align-items-center justify-content-center h-50px">
+											<div class="text-center">
+												<p class="m-0 text-gray-600 fw-bold text-uppercase">Sem tarefas ainda nesse projeto</p>
+											</div>
+											</div>
+										</div>
+									@endif
+								</div>
+								<form action="#" method="POST" class="send-tasks">
+									@csrf
+									<input type="hidden" name="project_id" value="{{$project->id}}">
+									<input type="text" name="name" class="form-control form-control-solid w-100 rounded mt-5" placeholder="Inserir nova tarefa">
+								</form>
+							</div>
+						</div>
+						@endforeach
 					</div>
 				</div>
 			</div>
@@ -36,7 +79,6 @@
 
 @section('custom-footer')
 <script>
-	
 	// PROJECT ID
 	var projectId = {{ $contents->id ?? 0 }};
 
@@ -119,484 +161,9 @@
 		});
 
 	}
+
+	draggable();
 	
-	// FUNCTION LOAD PROJECTS
-	function loadProjects(){
-		// AJAX
-		$.ajax({
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-			type: 'POST',
-			url: "{{ route('tasks.index') }}",
-			data: {project_id: projectId},
-			success: function(data){
-				// LOAD PROJECTS
-				$('#load-projects').html(data);
-
-				// COUNT PROJECTS
-				var projectsCount = $('.load-tasks-project').length;
-				var counting = 0;
-
-				// SEARCH TASKS OF PROJECTS
-				$('.load-tasks-project').each(function(){
-
-					// INSERT TASKS IN PROJECTS
-					loadTasks($(this).data('project'));
-
-					// ADD ONE IN COUNTING
-					++counting;
-
-					// IF LAST TASKS
-					if(counting == projectsCount){
-						setTimeout(() => {
-							callFunctions();
-							draggable();
-						}, 200);
-					}
-
-				});
-
-			}
-		});
-	}
-
-	// FUNCTION LOAD TASKS
-	function loadTasks(id){
-
-		// AJAX
-        $.ajax({
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'GET',
-            url: "{{ route('tasks.ajax', '') }}/" + id,
-            success: function(data){
-				$('#project-tasks-' + id).html(data);
-				callFunctions();
-            }
-        });
-
-	}
-
-	// SEND NEW TASK
-	$(document).on('submit', '.send-tasks', function(e){
-
-		// STOP EVENT
-		e.preventDefault();
-
-		// GET TITLE OF TASK
-		var inputName = $(this).find('[name="name"]');
-		var project = $(this).find('[name="project_id"]').val();
-
-		// AJAX
-        $.ajax({
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'POST',
-            url: "{{ route('tasks.store') }}",
-			data: {project_id: project, name: inputName.val()},
-            success: function(data){
-				loadTasks(project);
-				inputName.val('');
-            }
-        });
-
-	});
-
-
-	// LOAD SOUND
-	var audio = new Audio('{{ asset("assets/media/sounds/task-checked.mp3") }}');
-
-	// SAVE STATUS CHECKED
-	$(document).on('click', '.check-task', function(){
-
-		// GET TASK
-		var taskId = $(this).data('task');
-		var isMain = $(this).hasClass('task-main');
-		var subtask = $(this).closest('.task-left-side').find('.input-name');
-		var checked = $(this).is(':checked');
-
-		// AJAX
-        $.ajax({
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'POST',
-            url: "{{ route('tasks.check') }}",
-			data: {task_id: taskId},
-        });
-
-		// IF TASK MAIN
-		if(isMain){
-			// SELECT DIV OF TASK
-			var taskDiv = $(this).closest('.dmk-div-task');
-
-			// ADD ANIMATION AND REMOVE TASK
-			taskDiv.addClass('slide-up');
-			setTimeout(function() {
-				taskDiv.remove();
-			}, 500);
-
-		} else {
-			subtask.toggleClass('text-decoration-line-through ');
-		}
-
-		// IF CHECKED
-		if(checked){
-			// PLAY SOUND
-			audio.play();
-		}
-
-	});
-
-
-	// SAVE STATUS CHECKED
-	$(document).on('click', '.edit-name-task', function(){
-
-		var div = $(this).closest('.div-name-task');
-
-		$(this).toggleClass('fa-pen-to-square fa-eye');
-
-		div.find('.task-name').toggle();
-		div.find('.input-name').toggle();
-
-	});
-
-	// SAVE STATUS CHECKED
-	$(document).on('click', '.add-subtasks', function(){
-
-		// GET TASK
-		var taskId = $(this).data('task');
-		var projectId = $(this).data('project');
-
-		// DIV
-		var divSubtasks = $(this).closest('.draggable');
-
-		// AJAX
-		$.ajax({
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-			type: 'POST',
-			url: "{{ route('tasks.subtask') }}",
-			data: {task_id: taskId, project_id: projectId},
-			success: function(data){
-				divSubtasks.append(data);
-			}
-		});
-
-	});
-
-	
-
-	// CALL FUNCTIONS
-	loadProjects();
-
-	// SHOW INPUT PHRASE
-	$(document).on('focus', '.input-name', function(){
-		$(this).next('.input-phrase').fadeIn();
-	});
-
-	// HIDE INPUT PHRASE
-	$(document).on('blur', '.input-phrase input', function(){
-
-		var text = $(this).val().trim();
-		if(text == ''){
-			$(this).closest('.input-phrase').fadeOut().css('border-bottom', 'dashed 1px #bbbdcb63 !important');
-		} else {
-			$(this).css('border-bottom', '');
-		};
-	});
-
-	// UPDATE TITLE AND PHRASE
-	$(document).on('change', '.input-name, .task-phrase, .task-description', function(){
-
-		// GET DATA
-		var input = $(this).attr('name'); 
-		var value = $(this).val();
-		var taskId = $(this).data('task');
-		
-		// IF RENAME TASK
-		if(input == 'name'){
-			$(this).closest('.div-name-task').find('.task-name').text(value);
-		}
-
-		// AJAX
-		$.ajax({
-			type: 'PUT',
-			url: "{!! route('tasks.update.ajax', '') !!}/" + taskId,
-			data: {_token: @json(csrf_token()), input: input, value: value},
-		});
-
-	});
-
-	// UPDATE TITLE AND PHRASE
-	$(document).on('click', '.task-priority', function(){
-
-		// GET TEXT
-		var taskId = $(this).data('task');
-
-		// SAVE FLAG
-		var flagHtml = $(this).find('i');
-
-		// AJAX
-		$.ajax({
-			type: 'PUT',
-            url: "{{ route('tasks.priority') }}",
-			data: {_token: @json(csrf_token()), task_id: taskId},
-			success: function(data){
-
-				// ALTERA PRIORIDADE
-				if (data == 1){
-					flagHtml.removeClass('text-gray-300').addClass('text-warning');
-				} else if (data == 2){
-					flagHtml.removeClass('text-warning ').addClass('text-info');
-				} else if (data == 3){
-					flagHtml.removeClass('text-info').addClass('text-danger');
-				} else {
-					flagHtml.removeClass('text-danger').addClass('text-gray-300');
-				}
-
-			}
-		});
-
-	});
-
-	// UPDATE DESIGNATED TASK
-	$(document).on('click', '.task-designated', function(){
-
-		// GET TEXT
-		var taskId = $(this).data('task');
-		var designated = $(this).data('designated');
-
-		// SAVE FLAG
-		var img = $(this).closest('.designated-div').find('.designated');
-
-		// AJAX
-		$.ajax({
-			type: 'PUT',
-			url: "{{ route('tasks.designated') }}",
-			data: {_token: @json(csrf_token()), task_id: taskId, designated_id: designated},
-			success: function(data){
-				img.attr('src', data);
-			}
-		});
-
-	});
-
-	// UPDATE STATUS
-    $(document).on('click', '.tasks-status', function(e){
-        
-		// GET DATA
-        var taskId = $(this).data('task');
-        var statusId = $(this).data('status');
-
-		// GET ACTUAL STATUS
-		var status = $(this).closest('.actual-status');
-
-		// AJAX
-        $.ajax({
-            type:'PUT',
-            url: "{{ route('tasks.status') }}",
-            data: {_token: @json(csrf_token()), task_id: taskId, status_id: statusId},
-            success:function(data) {
-                // CHANGE TO NEW COLOR AND NAME STATUS
-				status.find('.status-name').text(data['name']);
-				status.css('background', data['color']);
-            }
-        });
-    
-    });
-
-
-
-	// UPDATE DATE
-	$(document).on('change', '.task-date', function(){
-    
-		// GET NEW DATE
-		var date = $(this).val();
-		var taskId = $(this).data('task');
-
-		// GET ACTUAL DATE
-        var currentDate = new Date();
-		
-        // FORMAT DATE
-        var taskDate = new Date(date);
-
-		// Obtenha as datas sem as horas, minutos e segundos
-		var taskDateWithoutTime = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
-		var currentDateWithoutTime = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-
-		// GET DIFERENCE
-		var difference = Math.floor((taskDateWithoutTime - currentDateWithoutTime) / (1000 * 60 * 60 * 24));
-
-		// REMOVE PREVIOUS CLASS
-		$('.task-date-' + taskId).removeClass('text-danger text-primary text-info text-gray-700');
-
-        // VERIIFY DIFERENCE
-        if (difference < 0) {
-            $('.task-date-' + taskId).addClass('text-danger');
-        } else if (difference == 0) {
-            $('.task-date-' + taskId).addClass('text-primary');
-        } else if (difference <= 2) {
-            $('.task-date-' + taskId).addClass('text-info');
-        } else {
-            $('.task-date-' + taskId).addClass('text-gray-700');
-        }
-
-		// AJAX
-		$.ajax({
-			type:'PUT',
-			url: "{{ route('tasks.date') }}",
-			data: {_token: @json(csrf_token()), task_id: taskId, date: date},
-		});
-
-	});
-
-	function showTask(id){
-
-		// AJAX
-        $.ajax({
-            type:'POST',
-            url: "{{ route('tasks.show') }}",
-            data: {_token: @json(csrf_token()), task_id: id},
-            success:function(data) {
-
-				//  REPLACE CONTENT
-				$('#load-task').html(data);
-
-                // CHANGE TO NEW COLOR AND NAME STATUS
-				$('#modal_task').modal('show');
-
-				// LOAD COMMENTS
-				loadComments(id);
-
-				// LOAD EDITOR
-				loadEditorText();
-
-            }
-        });
-
-	}
-
-
-	function loadCheckeds(id){
-
-		// AJAX
-		$.ajax({
-			type:'POST',
-			url: "{{ route('tasks.checkeds') }}",
-			data: {_token: @json(csrf_token()), project_id: projectId},
-			success:function(data) {
-				//  REPLACE CONTENT
-				$('#load-checkeds-' + id).html(data);
-			}
-		});
-
-	}
-
-
-	// SHOW ZONE TASK CHECKETS
-	$(document).on('click', '.show-tasks-fileds', function(){
-
-		// GET PROJECT
-		var projectId = $(this).data('project');
-
-		if ($('#card-to-fileds-' + projectId).css('display') === 'none') {
-			// LOAD CHECKEDS AJAX
-			loadCheckeds(projectId);
-		}
-
-		// SHOW DIV
-		$('#card-to-fileds-' + projectId).toggle();
-
-	});
-
-	function loadComments(id){
-
-		// AJAX
-		$.ajax({
-			type:'POST',
-			url: "{{ route('comments.show') }}",
-			data: {_token: @json(csrf_token()), task_id: id},
-			success:function(data) {
-
-				//  REPLACE CONTENT
-				$('#results-comments').html(data);
-
-			}
-		});
-
-	}
-
-	// SHOW TASK
-	$(document).on('submit', '#send-comment', function(e){
-
-		// PARA EVENTO
-		e.preventDefault();
-
-		// GET DATA
-		var taskId = $(this).data('task');
-		var text = $(this).find('[name="text"]').val();
-
-		// AJAX
-		$.ajax({
-			type:'POST',
-			url: "{{ route('comments.store') }}",
-			data: {_token: @json(csrf_token()), task_id: taskId, text: text},
-			success:function(data) {
-				loadComments(taskId);
-				textarea.setData('');
-				$('#results-comments').scrollTop(0);
-			}
-		});
-
-	});
-
-	// SHOW TASK
-	$(document).on('click', '.destroy-comment', function(e){
-
-		// PARA EVENTO
-		e.preventDefault();
-
-		// GET DATA
-		var url = $(this).attr('href');
-		var taskId = $(this).data('task');
-
-		// AJAX
-		$.ajax({
-			type:'PUT',
-			url: url,
-			data: {_token: @json(csrf_token())},
-			success:function(data) {
-				loadComments(taskId);
-			}
-		});
-
-	});
-
-	// SHOW TASK
-	$(document).on('click', '.show-task', function(){
-
-		// GET DATA
-        var taskId = $(this).data('task');
-
-		// EXIBE TASK
-		showTask(taskId);
-
-	});
-
-
-
-    // MART AS CHALLENGE
-    $(document).on('change', '[name="challenge"]', function(){
-
-		// GET DAY
-		var taskId = $(this).data('task');
-		var checked = $(this).is(':checked');
-
-		// AJAX
-		$.ajax({
-			type:'POST',
-			url: "{{ route('tasks.challenge') }}",
-			data: {_token: @json(csrf_token()), task_id: taskId, checked: checked},
-			success:function(data) {
-				console.log(data);
-			}
-		});
-
-	});
 </script>
+@include('pages.tasks._javascript')
 @endsection

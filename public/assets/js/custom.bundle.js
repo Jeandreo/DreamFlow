@@ -396,6 +396,21 @@ $(document).on('click', '.show-image, .show-image-div img', function(){
 
 });
 
+// PUT THE BACKGROUND IN THE TEXT COLOR
+function hex2rgb($colour, $opacity) {
+    
+    // REMOVE # FROM STRING
+    $colour = ltrim($colour, '#');
+
+    // EXTRACT RGB FROM HEX
+    $rgb = sscanf($colour, '%2x%2x%2x');
+    $rgb = $opacity;
+
+    // RETURN RGBA
+    return sprintf('rgb(%d, %d, %d, %d%%)', ...$rgb);
+
+}
+
 // CALL FUNCTIONS
 loadDataTable();
 generateFlatpickr();

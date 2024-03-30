@@ -59,7 +59,6 @@ class ProjectTaskController extends Controller
         $data = $request->all();
 
         // CREATED BY
-        $data['date']           = now();
         $data['created_by']     = Auth::id();
         $data['designated_id']  = Auth::id();
         
@@ -185,7 +184,16 @@ class ProjectTaskController extends Controller
         
         // GET DATA
         $content = $this->repository->find($id);
-        $status = $content->status == 1 ? 0 : 1;
+
+
+        // UPDATE
+        if($content->status == 1){
+            $status = 0;
+            $message = 'Tarefa removida.';
+        } else {
+            $status = 1;
+            $message = 'Tarefa ativada! Bora pra cima!!! 💪🏼';
+        }
 
         // STORING NEW DATA
         $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
@@ -193,7 +201,7 @@ class ProjectTaskController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->back()
-            ->with('message', 'Tarefa ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
+            ->with('message', $message);
 
     }
 
@@ -206,13 +214,25 @@ class ProjectTaskController extends Controller
     public function standBy($id)
     {
         
+        // GET DATA
+        $content = $this->repository->find($id);
+
+        // UPDATE
+        if($content->status == 2){
+            $status = 1;
+            $message = 'Tarefa ativada! Bora pra cima!!! 💪🏼';
+        } else {
+            $status = 2;
+            $message = 'Tarefa em stand-by.';
+        }
+
         // STORING NEW DATA
-        $this->repository->where('id', $id)->update(['status' => 2, 'updated_by' => Auth::id()]);
+        $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->back()
-            ->with('message', 'Tarefa em stand-by.');
+                ->back()
+                ->with('message', $message);
 
     }
 
@@ -447,6 +467,30 @@ class ProjectTaskController extends Controller
 
         return response()->json($request->all(), 200);
 
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function others($type)
+    {
+
+        // FILTER TYPE
+        $filterStatus = $type == 'ideias' ? 2 : 0;
+
+        // GET ALL DATA
+        $contents = $this->repository->where('status', $filterStatus)->get();
+        $users = User::where('status', 1)->get();
+
+        // RETURN VIEW WITH DATA
+        return view('pages.tasks.others')->with([
+            'contents' => $contents,
+            'users' => $users,
+            'type' => $type,
+        ]);
     }
 
 }

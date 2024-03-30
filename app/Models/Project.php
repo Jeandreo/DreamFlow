@@ -51,6 +51,15 @@ class Project extends Model
         return $this->HasOne(User::class, 'id', 'manager_id');
     }
 
+
+    /**
+     * Get the brand associated with the user.
+     */
+    public function tasks(): HasMany
+    {
+        return $this->HasMany(ProjectTask::class, 'project_id', 'id');
+    }
+
     /**
      * Get the brand associated with the user.
      */

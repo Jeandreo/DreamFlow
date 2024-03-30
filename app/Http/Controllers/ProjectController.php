@@ -124,12 +124,18 @@ class ProjectController extends Controller
     public function show($id = null)
     {
         // GET ALL DATA
-        $contents = $this->repository->find($id);
+        if($id == null){
+            $projects = $this->repository->where('status', 1)->get();
+        } else {
+            $projects = $this->repository->find($id);
+        }
+        
+        // GET USERS
         $users = User::where('status', 1)->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.projects.show')->with([
-            'contents' => $contents,
+            'projects' => $projects,
             'users' => $users,
         ]);
     }
