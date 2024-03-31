@@ -78,7 +78,6 @@ class ChallengeController extends Controller
 
         }
 
-
         // SEND DATA
         $this->repository->create($data);
 
@@ -129,19 +128,19 @@ class ChallengeController extends Controller
         // UPDATE BY
         $data['updated_by'] = Auth::id();
 
-
-
         // MONTH OR WEEK
         if($data['type'] == 'mensal'){
             $data['date'] = str_pad($request->month , 2 , '0' , STR_PAD_LEFT) . '/' . $request->year;
         } else {
 
-            // SEPARE DATES
-            $week = explode(' até ', $data['days_week']);
+            if($data['days_week']){
+                // SEPARE DATES
+                $week = explode(' até ', $data['days_week']);
 
-            // SAVE CUSTOM
-            $data['custom_start'] = $request->year . $week[0];
-            $data['custom_end'] = $request->year . $week[1];
+                // SAVE CUSTOM
+                $data['custom_start'] = $request->year . $week[0];
+                $data['custom_end'] = $request->year . $week[1];
+            }
 
         }
         
@@ -150,7 +149,7 @@ class ChallengeController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('index.edit', $id)
+            ->route('index')
             ->with('message', 'Desafio editado com sucesso.');
 
     }
