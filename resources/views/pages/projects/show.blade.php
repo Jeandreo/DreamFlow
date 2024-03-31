@@ -42,14 +42,14 @@
 										@foreach ($project->tasks()->where('status', 1)->whereNull('task_id')->where('checked', false)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get() as $task)
 											@include('pages.tasks._tasks')
 										@endforeach
-										<div class="no-tasks" @if ($project->tasks->whereNull('task_id')->count()) style="display: none;" @endif>
-											<div class="rounded bg-light d-flex align-items-center justify-content-center h-50px">
+									@endif
+									<div class="no-tasks" @if ($project->tasks()->where('status', 1)->whereNull('task_id')->where('checked', false)->count()) style="display: none;" @endif>
+										<div class="rounded bg-light d-flex align-items-center justify-content-center h-50px">
 											<div class="text-center">
 												<p class="m-0 text-gray-600 fw-bold text-uppercase">Sem tarefas ainda nesse projeto</p>
 											</div>
-											</div>
 										</div>
-									@endif
+									</div>
 								</div>
 								<form action="#" method="POST" class="send-tasks">
 									@csrf

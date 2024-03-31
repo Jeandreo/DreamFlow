@@ -179,11 +179,11 @@ class ProjectTaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         
         // GET DATA
-        $content = $this->repository->find($id);
+        $content = $this->repository->find($request->task_id);
 
 
         // UPDATE
@@ -196,7 +196,7 @@ class ProjectTaskController extends Controller
         }
 
         // STORING NEW DATA
-        $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
+        $this->repository->where('id', $request->task_id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
         // REDIRECT AND MESSAGES
         return redirect()
@@ -211,11 +211,11 @@ class ProjectTaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function standBy($id)
+    public function standBy(Request $request)
     {
         
         // GET DATA
-        $content = $this->repository->find($id);
+        $content = $this->repository->find($request->task_id);
 
         // UPDATE
         if($content->status == 2){
@@ -227,7 +227,7 @@ class ProjectTaskController extends Controller
         }
 
         // STORING NEW DATA
-        $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
+        $this->repository->where('id', $request->task_id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
         // REDIRECT AND MESSAGES
         return redirect()

@@ -421,7 +421,6 @@
 
     });
 
-
     // SHOW SUBTASKS
     $(document).on('click', '.remove-date', function(){
 
@@ -438,6 +437,48 @@
             data: {_token: @json(csrf_token()), task_id: task},
             success:function(data) {
                 console.log('Data removida');
+            }
+        });
+
+    });
+
+    // SHOW SUBTASKS
+    $(document).on('click', '.tasks-destroy', function(){
+
+        // GET TASK
+        var task = $(this).data('task');
+
+        // GET DIV TASK
+        var taskDiv = $(this).closest('.dmk-div-task');
+
+        // AJAX
+        $.ajax({
+            type:'POST',
+            url: "{{ route('tasks.destroy') }}",
+            data: {_token: @json(csrf_token()), task_id: task},
+            success:function(data) {
+                taskDiv.remove();
+            }
+        });
+
+    });
+    
+    // SHOW SUBTASKS
+    $(document).on('click', '.stand-by', function(){
+
+        // GET TASK
+        var task = $(this).data('task');
+
+        // GET DIV TASK
+        var taskDiv = $(this).closest('.dmk-div-task');
+
+        // AJAX
+        $.ajax({
+            type:'POST',
+            url: "{{ route('tasks.stand.by') }}",
+            data: {_token: @json(csrf_token()), task_id: task},
+            success:function(data) {
+                taskDiv.remove();
             }
         });
 

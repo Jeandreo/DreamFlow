@@ -29,21 +29,24 @@ class DashboardController extends Controller
                             ->whereNull('task_id')
                             ->where('checked', false)
                             ->where('status', 1)
-                            ->orderBy('date')
                             ->get();
 
-        // ALREADY
+        // GET IDS ALREADY
         $already = $tasks->pluck('id')->toArray();
-        $subtasks = ProjectTask::where('date', '<=', date('Y-m-d', strtotime('+1 days')))
-                            ->whereNotNull('task_id')
+
+        // SEARCH
+        $tasks = ProjectTask::where('status', 1)
+                            ->where('date', '<=', date('Y-m-d', strtotime('+1 days')))
                             ->where('checked', false)
-                            ->whereNotIn('task_id', $already)
-                            ->where('status', 1)
+                            ->where(function($query) use ($already) {
+                                $query->whereNull('task_id')
+                                    ->orWhere(function($query) use ($already) {
+                                        $query->whereNotNull('task_id')
+                                            ->whereNotIn('task_id', $already);
+                                    });
+                            })
                             ->orderBy('date')
                             ->get();
-
-        // MERGE
-        $tasks = $tasks->merge($subtasks);
 
         // CHALLENGES
         $challenges = ProjectTask::where('date', '>=', now())->where('checked', false)->where('challenge', true)->get();
