@@ -120,7 +120,7 @@
                   </div>
                   <!--end:Menu item-->
                   <!--end::Heading-->
-                  @foreach (projects()->where('reminder', false)->where('type', 1)->get() as $project)
+                  @foreach (projects()->where('reminder', false)->where('type', 1)->where('created_by', Auth::id())->get() as $project)
                   <!--begin::Menu Item-->
                   <div class="menu-item">
                      <!--begin::Menu link-->
@@ -133,15 +133,9 @@
                         <!--end::Bullet--> 
                         <!--begin::Title-->
                         <span class="menu-title">
-                        {{ $project->name }}                </span>
-                        <!--end::Title-->
-                        <!--begin::Badge--> 
-                        {{-- <span class="menu-badge">
-                           <span class="badge badge-primary">
-                              6
-                           </span>
-                        </span>                       --}}
-                        <!--end::Badge-->                                      
+                           {{ $project->name }}
+                        </span>
+                        <!--end::Title-->                           
                      </a>
                      <!--end::Menu link-->                
                   </div>
@@ -160,7 +154,7 @@
                   </div>
                   <!--end:Menu item-->
                   <!--end::Heading-->
-                  @foreach (projects()->where('reminder', false)->where('type', 2)->get() as $project)
+                  @foreach (projects()->where('reminder', false)->where('type', 2)->where('created_by', Auth::id())->get() as $project)
                   <!--begin::Menu Item-->
                   <div class="menu-item">
                      <!--begin::Menu link-->
@@ -222,19 +216,9 @@
                      <div  class="menu-item" >
                         <!--begin:Menu link--><a class="menu-link"  href="{{ route('categories.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Categorias</span></a><!--end:Menu link-->
                      </div>
-                     <!--end:Menu item-->
-                     <!--begin:Menu item-->
-                     <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('challenges.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Desafios M/S</span></a><!--end:Menu link-->
-                     </div>
-                     <!--end:Menu item-->
-                     <!--begin:Menu item-->
-                     <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Objetivos e Missões</span></a><!--end:Menu link-->
-                     </div>
                      <!--end:Menu item--><!--begin:Menu item-->
                      <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Metas Semanais e Mensais</span></a><!--end:Menu link-->
+                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('challenges.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Metas Semanais e Mensais</span></a><!--end:Menu link-->
                      </div>
                      <!--end:Menu item--><!--begin:Menu item-->
                      <div  class="menu-item" >

@@ -29,6 +29,14 @@ class DatabaseSeeder extends Seeder
             'created_by' => 0,
         ]);
 
+        User::create([
+            'name' => 'Eduarda Cruz',
+            'email' => 'eduarda@dreamake.com.br',
+            'role_id' => 1,
+            'password' => Hash::make('atingir_metas'),
+            'created_by' => 0,
+        ]);
+
         ProjectCategory::create([
             'name' => 'Vendas',
             'type' => 1,

@@ -11,7 +11,7 @@
                 <div class="page-title">
                     <!--begin::Title-->
                     <h1 class="text-white fw-bold my-1 fs-2 text-center">
-                        Bom diiiiaa Jeandreo! {{ randomEmoji() }}
+                        Bom diiiiaa {{ Auth::user()->name }}! {{ randomEmoji() }}
                     </h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
@@ -246,6 +246,13 @@
                                 		@include('pages.tasks._tasks')
 									@endforeach
 								@endif
+                                <div class="no-tasks" @if ($tasks->count() != 0) style="display: none;" @endif>
+                                    <div class="rounded bg-light d-flex align-items-center justify-content-center h-50px">
+                                        <div class="text-center">
+                                            <p class="m-0 text-gray-600 fw-bold text-uppercase">Sem tarefas ainda em lembretes</p>
+                                        </div>
+                                    </div>
+                                </div>
                               </div>
                               <!-- BEGIN: SEND TASKS -->
                                 @if (projects()->where('reminder', true)->first())

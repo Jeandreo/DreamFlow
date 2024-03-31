@@ -7,6 +7,7 @@ use App\Models\ProjectTask;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -29,6 +30,7 @@ class DashboardController extends Controller
                             ->whereNull('task_id')
                             ->where('checked', false)
                             ->where('status', 1)
+                            ->where('designated_id', Auth::id())
                             ->get();
 
         // GET IDS ALREADY
@@ -46,19 +48,20 @@ class DashboardController extends Controller
                                     });
                             })
                             ->orderBy('date')
+                            ->where('designated_id', Auth::id())
                             ->get();
 
         // CHALLENGES
-        $challenges = ProjectTask::where('date', '>=', now())->where('checked', false)->where('challenge', true)->get();
+        $challenges = ProjectTask::where('date', '>=', now())->where('checked', false)->where('challenge', true)->where('created_by', Auth::id())->get();
 
         // GET USERS FOR TASK
         $users = User::where('status', 1)->get();
 
         // GET CHALLENGE
-        $monthChallenge = Challenge::where('type', 'mensal')->where('date', date('m/Y'))->where('status', 1)->first();
+        $monthChallenge = Challenge::where('type', 'mensal')->where('date', date('m/Y'))->where('status', 1)->where('created_by', Auth::id())->first();
 
         // GET WEEK CHALLENGE
-        $weekChallenge = Challenge::where('type', 'semanal')->where('custom_start', '<=', now())->where('custom_end', '>=', now())->where('status', 1)->first();
+        $weekChallenge = Challenge::where('type', 'semanal')->where('custom_start', '<=', now())->where('custom_end', '>=', now())->where('status', 1)->where('created_by', Auth::id())->first();
 
         // FORMAT DAYS
         $daysOfWeek = [
