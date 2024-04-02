@@ -411,6 +411,34 @@ function hex2rgb($colour, $opacity) {
 
 }
 
+function select2Images(selector = '.select-with-images'){
+    
+    // FORMAT OPTIONS SELECT2 WITH IMAGES
+    var optionFormat = function(item) {
+        if ( !item.id ) {
+            return item.text;
+        }
+
+        var span = document.createElement('span');
+        var imgUrl = item.element.getAttribute('data-kt-select2-user');
+        var template = '';
+
+        template += '<img src="' + imgUrl + '" class="rounded-circle h-20px me-2" alt="image"/>';
+        template += item.text;
+
+        span.innerHTML = template;
+
+        return $(span);
+    }
+
+    // INIT SELECT2 IMAGES
+    $(selector).select2({
+        templateSelection: optionFormat,
+        templateResult: optionFormat
+    });
+
+}
+
 // CALL FUNCTIONS
 loadDataTable();
 generateFlatpickr();

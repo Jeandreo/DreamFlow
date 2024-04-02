@@ -21,7 +21,7 @@
 												<th>Nome</th>
 												<th>Categoria</th>
 												<th>Tipo</th>
-												{{-- <th>Time</th> --}}
+												<th>Time</th>
 												<th>Duração</th>
 												<th class="text-center">Status</th>
 												<th class="text-center" width="165px">
@@ -55,25 +55,19 @@
 														@endif
 													</span>
 												</td>
-												{{-- <td>
+												<td>
+													@if ($content->users->count())
 													<div class="symbol-group symbol-hover flex-nowrap">
-														<div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" title="Alan Warden">
-																<span class="symbol-label bg-warning text-inverse-warning fw-bold">A</span>
+														@foreach ($content->users as $user)
+														<div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" title="{{ $user->name }}">
+															<img alt="Pic" src="{{ findImage('users/' . $user->id . '/' . 'perfil-35px.jpg') }}">
 														</div>
-														<div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" title="Michael Eberon">
-																<img alt="Pic" src="{{ asset('assets/media/avatars/300-11.jpg') }}">
-														</div>
-														<div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" title="Susan Redwood">
-																<span class="symbol-label bg-primary text-inverse-primary fw-bold">S</span>
-														</div>
-														<div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" title="Barry Walter">
-																<img alt="Pic" src="{{ asset('assets/media/avatars/300-11.jpg') }}">
-														</div>
-														<a href="#" class="symbol symbol-30px symbol-circle" data-bs-toggle="modal" data-bs-target="#kt_modal_view_users">
-															<span class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+3</span>
-														</a>
+														@endforeach
 													</div>
-												</td> --}}
+													@else
+														<span class="badge badge-light">Sem time</span>
+													@endif
+												</td>
 												<td>
 													@if($content->start_date) 
 													<span class="text-gray-600" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ date('d/m/Y', strtotime($content->start_date)) }} ás {{ date('H:i:s', strtotime($content->start_date)) }}">

@@ -1,4 +1,4 @@
-<div id="kt_app_sidebar" class="app-sidebar  flex-column " style="backgroundw: url('{{ asset('assets/media/images/bg_colors.jpg') }}'); background-size: cover;"
+<div id="kt_app_sidebar" class="app-sidebar  flex-column "
    data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="325px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#open_sidebar"      
    >
    <!--begin::Logo-->

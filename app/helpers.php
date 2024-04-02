@@ -17,7 +17,19 @@ function randomEmoji(){
 }
 
 function projects() {
-    $projects = Project::where('status', 1);
+    // Obtém o ID do usuário autenticado
+    $userId = Auth::id();
+
+    // Consulta os projetos em que o usuário está associado ou é o gerente
+    $projects = Project::where('status', 1)
+        ->where(function ($query) use ($userId) {
+            $query->whereHas('users', function ($subquery) use ($userId) {
+                $subquery->where('user_id', $userId);
+            })
+            ->orWhere('manager_id', $userId)
+            ->orWhere('created_by', $userId);
+        });
+
     return $projects;
 }
 

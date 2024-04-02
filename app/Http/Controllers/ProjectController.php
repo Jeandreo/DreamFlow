@@ -103,9 +103,20 @@ class ProjectController extends Controller
             ]);
         }
 
-        // SAVE AND RENAME IMAGE
-        if($created && $request->hasFile('image')){
-            $request->file('image')->storeAs('public/projetos/' . $created->id, 'capa.jpg');
+        // UPDATE
+        if($created){
+
+            // IF EXIST TEAM
+            if(isset($data['team'])){
+                // SYNC USERS OF TEAM OF PROJECT
+                Project::find($created->id)->users()->attach($data['team']);
+            }
+
+            // SAVE AND RENAME IMAGE
+            if($request->hasFile('image')){
+                $request->file('image')->storeAs('public/projetos/' . $created->id, 'capa.jpg');
+            }
+
         }
 
         // REDIRECT AND MESSAGES
@@ -187,9 +198,20 @@ class ProjectController extends Controller
         // STORING NEW DATA
         $updated = $content->update($data);
 
-        // SAVE AND RENAME IMAGE
-        if($updated && $request->hasFile('image')){
-            $request->file('image')->storeAs('public/projetos/' . $id, 'capa.jpg');
+        // UPDATE
+        if($updated){
+
+            // IF EXIST TEAM
+            if(isset($data['team'])){
+                // SYNC USERS OF TEAM OF PROJECT
+                Project::find($id)->users()->sync($data['team']);
+            }
+
+            // SAVE AND RENAME IMAGE
+            if($request->hasFile('image')){
+                $request->file('image')->storeAs('public/projetos/' . $id, 'capa.jpg');
+            }
+            
         }
 
         // REDIRECT AND MESSAGES
