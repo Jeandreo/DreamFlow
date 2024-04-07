@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/', [ProjectTaskController::class, 'index'])->name('index');
                 Route::post('/adicionar', [ProjectTaskController::class, 'store'])->name('store');
                 Route::post('/visualizando', [ProjectTaskController::class, 'show'])->name('show');
+                Route::post('/visualizando-lista', [ProjectTaskController::class, 'showOne'])->name('show.one');
                 Route::post('/desabilitar', [ProjectTaskController::class, 'destroy'])->name('destroy');
                 Route::post('/stand-by', [ProjectTaskController::class, 'standBy'])->name('stand.by');
                 Route::get('/editar/{id}', [ProjectTaskController::class, 'edit'])->name('edit');

@@ -59,6 +59,7 @@ class ProjectTaskController extends Controller
         $data = $request->all();
 
         // CREATED BY
+        $data['date']           = now();
         $data['created_by']     = Auth::id();
         $data['designated_id']  = Auth::id();
         
@@ -506,6 +507,25 @@ class ProjectTaskController extends Controller
             'contents' => $contents,
             'users' => $users,
             'type' => $type,
+        ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showOne(Request $request)
+    {
+        // GET ALL DATA
+        $contents = $this->repository->find($request->task_id);
+        $users = User::where('status', 1)->get();
+
+        // RETURN VIEW WITH DATA
+        return view('pages.tasks._tasks')->with([
+            'task' => $contents,
+            'users' => $users,
         ]);
     }
 

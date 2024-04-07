@@ -82,11 +82,6 @@
 	// PROJECT ID
 	var projectId = {{ $contents->id ?? 0 }};
 
-	function callFunctions(){
-		generateFlatpickr();
-		KTMenu.createInstances();
-	}
-
 	// DRAGGABLE
 	function draggable(){
 		var containers = document.querySelectorAll(".draggable-zone");

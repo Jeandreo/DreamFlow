@@ -1,4 +1,10 @@
 <script>
+
+	function callFunctions(){
+		generateFlatpickr();
+		KTMenu.createInstances();
+	}
+
     $(document).on('click', '.show-tasks-fileds', function(){
         $('#card-to-fileds').toggle();
     });
@@ -13,6 +19,9 @@
         var inputName = $(this).find('[name="name"]');
         var project = $(this).find('[name="project_id"]').val();
 
+        // FIND WHERE INSERT
+        var divNoTask = $(this).closest('.card-body').find('.no-tasks');
+
         // AJAX
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -20,7 +29,22 @@
             url: "{{ route('tasks.store') }}",
             data: {project_id: project, name: inputName.val()},
             success: function(data){
+
+                // CLEAN INPUT
                 inputName.val('');
+
+                // AJAX
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    type: 'POST',
+                    url: "{{ route('tasks.show.one') }}",
+                    data: {task_id: data['id']},
+                    success: function(taskDiv){
+                        divNoTask.before(taskDiv);
+                        callFunctions();
+                    }
+                });
+
             }
         });
 
