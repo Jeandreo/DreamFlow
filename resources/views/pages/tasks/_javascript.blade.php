@@ -64,14 +64,6 @@
         var subtask = $(this).closest('.task-left-side').find('.input-name');
         var checked = $(this).is(':checked');
 
-        // AJAX
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'POST',
-            url: "{{ route('tasks.check') }}",
-            data: {task_id: taskId},
-        });
-
         // IF TASK MAIN
         if(isMain){
             // SELECT DIV OF TASK
@@ -92,6 +84,14 @@
             // PLAY SOUND
             check.play();
         }
+
+        // AJAX
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'POST',
+            url: "{{ route('tasks.check') }}",
+            data: {task_id: taskId},
+        });
 
     });
 
@@ -499,6 +499,9 @@
 
         // PLAY SOUND
         remove.play();
+        
+        // REMOVE
+        taskDiv.remove();
 
         // AJAX
         $.ajax({
@@ -506,7 +509,6 @@
             url: "{{ route('tasks.destroy') }}",
             data: {_token: @json(csrf_token()), task_id: task},
             success:function(data) {
-                taskDiv.remove();
             }
         });
 
@@ -523,6 +525,9 @@
 
         // PLAY SOUND
         stand.play();
+        
+        // REMOVE
+        taskDiv.remove();
 
         // AJAX
         $.ajax({
@@ -530,7 +535,6 @@
             url: "{{ route('tasks.stand.by') }}",
             data: {_token: @json(csrf_token()), task_id: task},
             success:function(data) {
-                taskDiv.remove();
             }
         });
 
