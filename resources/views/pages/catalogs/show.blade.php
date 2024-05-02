@@ -17,8 +17,8 @@
 								@foreach ($contents->items as $item)
 								<div class="col-3">
 									<a href="{{ route('catalogs.items.show', $item->id) }}">
-										<div class="rounded mb-6 shadow zoom-hover zoom-hover-01">
-											<img src="{{ findImage('catalogos/' .$contents->id . '/' . $item->id . '/capa-600px.jpg') }}" alt="" class="rounded-top h-200px w-100 object-fit-cover">
+										<div class="rounded mb-6 shadow zoom-hover zoom-hover-01 p-2">
+											<img src="{{ findImage('catalogos/' .$contents->id . '/' . $item->id . '/capa-600px.jpg', 'landscape') }}" alt="" class="rounded-top h-200px w-100 object-fit-cover">
 											<p class="text-gray-700 text-center fw-bold fs-3 my-0 py-3">{{ $item->name }}</p>
 										</div>
 									</a>

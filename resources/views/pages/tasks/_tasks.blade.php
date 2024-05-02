@@ -6,7 +6,7 @@
 		<!-- END:TASK -->
 	</div>
 	<!-- BEGIN:SUB-TASK -->
-	<div class="subtasks-zone subtasks-zone-{{ $task->id }}" style="display: none;">
+	<div class="subtasks-zone subtasks-zone-{{ $task->id }}" @if($task->open_subtasks == false) style="display: none;" @endif>
 		@foreach ($task->subtasks as $subtask)
 		@include('pages.tasks._subtask')
 		@endforeach

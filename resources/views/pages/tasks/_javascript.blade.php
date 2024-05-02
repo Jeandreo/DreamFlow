@@ -51,7 +51,9 @@
     });
 
     // LOAD SOUND
-    var audio = new Audio('{{ asset("assets/media/sounds/task-checked.mp3") }}');
+    var check = new Audio('{{ asset("assets/media/sounds/task-checked.mp3") }}');
+    var stand = new Audio('{{ asset("assets/media/sounds/task-stand.mp3") }}');
+    var remove = new Audio('{{ asset("assets/media/sounds/task-remove.mp3") }}');
 
     // SAVE STATUS CHECKED
     $(document).on('click', '.check-task', function(){
@@ -88,7 +90,7 @@
         // IF CHECKED
         if(checked){
             // PLAY SOUND
-            audio.play();
+            check.play();
         }
 
     });
@@ -443,6 +445,26 @@
         // SHOW ZONE
         $('.subtasks-zone-' + task).toggle();
 
+        // VERIFY IF HAS "rotate-90"
+        var hasClass = $(this).hasClass('rotate-90');
+
+        // ADD OR REMOVE CLASS
+        if(hasClass){
+            $(this).removeClass('rotate-90');
+        } else {
+            $(this).addClass('rotate-90');
+        }
+
+        // AJAX
+        $.ajax({
+            type:'POST',
+            url: "{{ route('tasks.show.subtasks') }}",
+            data: {_token: @json(csrf_token()), task_id: task},
+            success:function(data) {
+                console.log(data);
+            }
+        });
+
     });
 
     // SHOW SUBTASKS
@@ -475,6 +497,9 @@
         // GET DIV TASK
         var taskDiv = $(this).closest('.dmk-div-task');
 
+        // PLAY SOUND
+        remove.play();
+
         // AJAX
         $.ajax({
             type:'POST',
@@ -495,6 +520,9 @@
 
         // GET DIV TASK
         var taskDiv = $(this).closest('.dmk-div-task');
+
+        // PLAY SOUND
+        stand.play();
 
         // AJAX
         $.ajax({

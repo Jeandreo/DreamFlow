@@ -33,7 +33,7 @@
         </span>
         @endif
         @if ($task->subtasks->count())
-        <i class="fa-solid fa-angle-down p-2 cursor-pointer text-gray-300 show-subtasks" data-task="{{ $task->id }}"></i>
+        <i class="fa-solid fa-angle-right p-2 cursor-pointer text-gray-300 show-subtasks rotate @if($task->open_subtasks) rotate-90 @endif" data-task="{{ $task->id }}"></i>
         @endif
         <span class="task-priority d-none d-md-flex" data-task="{{ $task->id }}">
         <i class="fa-solid fa-font-awesome p-2 

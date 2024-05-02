@@ -73,12 +73,16 @@ function resizeAndSaveImage($base64Image, $sizes, $name, $path){
 }
 
 
-function findImage($pathAndFile){
+function findImage($pathAndFile, $default = 'user'){
 
     if(Storage::disk('public')->exists($pathAndFile)){
         $url = asset('storage/' . $pathAndFile);
     } else {
-        $url = asset('/assets/media/avatars/blank.png');
+        if($default == 'landscape'){
+            $url = asset('/assets/media/images/default.png');
+        } else {
+            $url = asset('/assets/media/avatars/blank.png');
+        }
     }
 
     return $url;

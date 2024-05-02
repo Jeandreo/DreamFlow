@@ -127,7 +127,7 @@ class ProjectTaskController extends Controller
 
         // UPDATE BY
         $data['updated_by'] = Auth::id();
-        
+
         // STORING NEW DATA
         $updated = $content->update($data);
 
@@ -186,7 +186,6 @@ class ProjectTaskController extends Controller
         // GET DATA
         $content = $this->repository->find($request->task_id);
 
-
         // UPDATE
         if($content->status == 1){
             $status = 0;
@@ -203,6 +202,33 @@ class ProjectTaskController extends Controller
         return redirect()
             ->back()
             ->with('message', $message);
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showSubtasks(Request $request)
+    {
+        
+        // GET DATA
+        $content = $this->repository->find($request->task_id);
+
+        // UPDATE
+        if($content->open_subtasks == 1){
+            $show = 0;
+        } else {
+            $show = 1;
+        }
+
+        // STORING NEW DATA
+        $this->repository->where('id', $request->task_id)->update(['open_subtasks' => $show, 'updated_by' => Auth::id()]);
+
+        // REDIRECT AND MESSAGES
+        return response()->json('Success', 200);
 
     }
 

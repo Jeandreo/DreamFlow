@@ -1,18 +1,18 @@
 <div class="row">
-    <div class="col-4 mb-5">
+    <div class="col-6 mb-5">
         <label class="required form-label fw-bold">Nome:</label>
         <input type="text" class="form-control form-control-solid get-to-url" placeholder="Nome" name="name" value="{{ $content->name ?? old('name') }}" required/>
     </div>
-    <div class="col-4 mb-5">
+    <div class="col-6 mb-5">
         <label class="required form-label fw-bold">URL:</label>
         <input type="text" class="form-control form-control-solid only-url" placeholder="URL" name="url" value="{{ $content->url ?? old('url') }}"/>
     </div>
-    <div class="col-6 mb-5">
-        <label class="required form-label fw-bold">Link do Vídeo:</label>
+    <div class="col-4 mb-5">
+        <label class="form-label fw-bold">Link do Vídeo:</label>
         <input type="text" class="form-control form-control-solid" placeholder="URL" name="link_video" value="{{ $content->link_video ?? old('link_video') }}"/>
     </div>
-    <div class="col-6 mb-5">
-        <label class="required form-label fw-bold">Link do Vídeo:</label>
+    <div class="col-4 mb-5">
+        <label class="form-label fw-bold">Link do Vídeo:</label>
         <input type="text" class="form-control form-control-solid" placeholder="URL" name="link_blog" value="{{ $content->link_blog ?? old('link_blog') }}"/>
     </div>
     <div class="col-4 mb-5">
