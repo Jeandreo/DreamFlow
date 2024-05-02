@@ -69,7 +69,7 @@
 			</div>
 			<div class="h-100px p-3">
 				@if ($contents->status != 0)
-				<form action="" method="POST" class="position-relative" id="send-comment" data-task="{{ $contents->id }}">
+				<form action="" method="POST" class="position-relative ck-tiny" id="send-comment" data-task="{{ $contents->id }}">
 					@csrf
 					<div class="pt-0" data-bs-theme="light">
 						<textarea name="text" placeholder="Algum comentário sobre essa tarefa?" class="load-editor"></textarea>

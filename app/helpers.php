@@ -2,6 +2,7 @@
 
 // GET PROJECTS
 
+use App\Models\Catalog;
 use App\Models\ChallengeCompleted;
 use App\Models\ChallengeMonthly;
 use App\Models\ChallenngeMonthly;
@@ -31,6 +32,16 @@ function projects() {
         });
 
     return $projects;
+}
+
+function catalogs() {
+    // Obtém o ID do usuário autenticado
+    $userId = Auth::id();
+
+    // Consulta os projetos em que o usuário está associado ou é o gerente
+    $catalogs = Catalog::where('status', 1)->where('created_by', $userId);
+
+    return $catalogs;
 }
 
 function resizeAndSaveImage($base64Image, $sizes, $name, $path){

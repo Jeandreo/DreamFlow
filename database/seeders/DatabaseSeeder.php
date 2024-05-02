@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Catalog;
 use App\Models\Challenge;
 use App\Models\Project;
 use App\Models\ProjectCategory;
@@ -605,6 +606,24 @@ class DatabaseSeeder extends Seeder
             'type' => 'mensal',
             'url' => 'frutifera',
             'date' => '03/2024',
+            'created_by' => 1,
+        ]);
+        
+        Catalog::create([
+            'name' => 'Receitas de Academia',
+            'url' => 'receitas-de-academia',
+            'color' => '#b7f246',
+            'icon' => 'fa-solid fa-carrot',
+            'description' => 1,
+            'created_by' => 1,
+        ]);
+        
+        Catalog::create([
+            'name' => 'Vídeos Motivacionais',
+            'url' => 'videos-motivacionais',
+            'color' => '#fff700',
+            'icon' => 'fa-solid fa-hand-fist',
+            'description' => 1,
             'created_by' => 1,
         ]);
         

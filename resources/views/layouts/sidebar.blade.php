@@ -110,6 +110,44 @@
                   <!--begin:Menu link--><a class="menu-link"  href="{{ route('projects.show') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
                </div>
                <!--end:Menu item-->
+               <!--begin:Menu item-->
+               <div  class="menu-item">
+                  <!--begin:Menu link--><a class="menu-link"  href="{{ route('catalogs.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Listas</span></a><!--end:Menu link-->
+               </div>
+               <!--end:Menu item-->
+               <div class="menu menu-rounded menu-column">
+                  <!--begin::Heading-->
+                  <!--begin:Menu item-->
+                  <div  class="menu-item pt-5" >
+                     <!--begin:Menu content-->
+                     <div  class="menu-content" ><span class="menu-heading fw-bold text-uppercase fs-7">Listas</span></div>
+                     <!--end:Menu content-->
+                  </div>
+                  <!--end:Menu item-->
+                  <!--end::Heading-->
+                  @foreach (catalogs()->get() as $catalog)
+                  <!--begin::Menu Item-->
+                  <div class="menu-item">
+                     <!--begin::Menu link-->
+                     <a class="menu-link" href="{{ route('catalogs.show', $catalog->id) }}">
+                        <!--begin::Bullet--> 
+                        <span class="menu-icon">
+                           <i class="{{ $catalog->icon }} fs-5" style="color: {{ $catalog->color }}"></i>
+                        </span>
+                        <!--end::Bullet--> 
+                        <!--begin::Title-->
+                        <span class="menu-title">
+                           {{ $catalog->name }}
+                        </span>
+                        <!--end::Title-->                           
+                     </a>
+                     <!--end::Menu link-->                
+                  </div>
+                  <!--end::Menu Item-->
+                  @endforeach
+               </div>
+               <!--begin:Menu item-->
+               <!--end:Menu item-->
                <div class="menu menu-rounded menu-column">
                   <!--begin::Heading-->
                   <!--begin:Menu item-->

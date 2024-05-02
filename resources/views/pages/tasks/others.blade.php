@@ -74,7 +74,7 @@
 											</td>
 											<td class="text-center">
 												@if ($content->status == 2)
-												<a href="{{ route('tasks.stand.by', $content->id) }}" class="btn btn-sm btn-primary btn-active-success text-uppercase">
+												<a href="{{ route('tasks.stand.by.active', $content->id) }}" class="btn btn-sm btn-primary btn-active-success text-uppercase">
 													Ativar Tarefa
 												</a>
 												@else

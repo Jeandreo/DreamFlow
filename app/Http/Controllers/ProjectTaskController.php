@@ -212,11 +212,16 @@ class ProjectTaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function standBy(Request $request)
+    public function standBy(Request $request, $id = null)
     {
         
+        // GET BY POST
+        if($id == null){
+            $id = $request->task_id;
+        }
+
         // GET DATA
-        $content = $this->repository->find($request->task_id);
+        $content = $this->repository->find($id);
 
         // UPDATE
         if($content->status == 2){
@@ -228,7 +233,7 @@ class ProjectTaskController extends Controller
         }
 
         // STORING NEW DATA
-        $this->repository->where('id', $request->task_id)->update(['status' => $status, 'updated_by' => Auth::id()]);
+        $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
         // REDIRECT AND MESSAGES
         return redirect()

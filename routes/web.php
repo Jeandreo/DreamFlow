@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CatalogItemController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ChatGPTController;
 use App\Http\Controllers\ConfigController;
@@ -33,9 +35,41 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
 
     // PROFILE USER
+    Route::prefix('catalogo')->group(function () {
+
+        // PROJECTS
+        Route::name('catalogs.')->group(function () {
+            Route::get('/', [CatalogController::class, 'index'])->name('index');
+            Route::get('/adicionar', [CatalogController::class, 'create'])->name('create');
+            Route::post('/adicionar', [CatalogController::class, 'store'])->name('store');
+            Route::get('/visualizando/{id?}', [CatalogController::class, 'show'])->name('show');
+            Route::get('/desabilitar/{id}', [CatalogController::class, 'destroy'])->name('destroy');
+            Route::get('/editar/{id}', [CatalogController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}', [CatalogController::class, 'update'])->name('update');
+        });
+
+    });
+    
+    // PROFILE USER
+    Route::prefix('catalogo-itens')->group(function () {
+
+        // PROJECTS
+        Route::name('catalogs.items.')->group(function () {
+            Route::get('/', [CatalogItemController::class, 'index'])->name('index');
+            Route::get('/adicionar/{id}', [CatalogItemController::class, 'create'])->name('create');
+            Route::post('/adicionar/{id}', [CatalogItemController::class, 'store'])->name('store');
+            Route::get('/visualizando/{id?}', [CatalogItemController::class, 'show'])->name('show');
+            Route::get('/desabilitar/{id}', [CatalogItemController::class, 'destroy'])->name('destroy');
+            Route::get('/editar/{id}', [CatalogItemController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}', [CatalogItemController::class, 'update'])->name('update');
+        });
+
+    });
+
+    // PROFILE USER
     Route::prefix('projetos')->group(function () {
 
-        //PROJECTS
+        // PROJECTS
         Route::name('projects.')->group(function () {
             Route::get('/', [ProjectController::class, 'index'])->name('index');
             Route::get('/adicionar', [ProjectController::class, 'create'])->name('create');
@@ -56,6 +90,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/visualizando-lista', [ProjectTaskController::class, 'showOne'])->name('show.one');
                 Route::post('/desabilitar', [ProjectTaskController::class, 'destroy'])->name('destroy');
                 Route::post('/stand-by', [ProjectTaskController::class, 'standBy'])->name('stand.by');
+                Route::get('/stand-by/{id}', [ProjectTaskController::class, 'standBy'])->name('stand.by.active');
                 Route::get('/editar/{id}', [ProjectTaskController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [ProjectTaskController::class, 'update'])->name('update');
                 Route::put('/editar-ajax/{id}', [ProjectTaskController::class, 'updateAjax'])->name('update.ajax');
