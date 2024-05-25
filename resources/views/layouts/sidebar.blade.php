@@ -107,6 +107,11 @@
                <!--end:Menu item-->
                <!--begin:Menu item-->
                <div  class="menu-item">
+                  <!--begin:Menu link--><a class="menu-link"  href="{{ route('financial.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Financeiro</span></a><!--end:Menu link-->
+               </div>
+               <!--end:Menu item-->
+               <!--begin:Menu item-->
+               <div  class="menu-item">
                   <!--begin:Menu link--><a class="menu-link"  href="{{ route('projects.show') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
                </div>
                <!--end:Menu item-->
@@ -114,6 +119,58 @@
                <div  class="menu-item">
                   <!--begin:Menu link--><a class="menu-link"  href="{{ route('catalogs.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Listas</span></a><!--end:Menu link-->
                </div>
+               <!--end:Menu item-->
+               <div class="menu menu-rounded menu-column">
+                  <!--begin::Heading-->
+                  <!--begin:Menu item-->
+                  <div  class="menu-item pt-5" >
+                     <!--begin:Menu content-->
+                     <div  class="menu-content" ><span class="menu-heading fw-bold text-uppercase fs-7">Financeiro</span></div>
+                     <!--end:Menu content-->
+                  </div>
+                  <!--end:Menu item-->
+                  <!--end::Heading-->
+                  <!--begin::Menu Item-->
+                  <div class="menu-item">
+                     <!--begin::Menu link-->
+                     <a class="menu-link" href="{{ route('financial.wallets.index') }}">
+                        <!--begin::Title-->
+                        <span class="menu-title ms-4">
+                           Carteiras
+                        </span>
+                        <!--end::Title-->                           
+                     </a>
+                     <!--end::Menu link-->                
+                  </div>
+                  <!--end::Menu Item-->
+                  <!--begin::Menu Item-->
+                  <div class="menu-item">
+                     <!--begin::Menu link-->
+                     <a class="menu-link" href="#">
+                        <!--begin::Title-->
+                        <span class="menu-title ms-4">
+                           Valores Fixos
+                        </span>
+                        <!--end::Title-->                           
+                     </a>
+                     <!--end::Menu link-->                
+                  </div>
+                  <!--end::Menu Item-->
+                  <!--begin::Menu Item-->
+                  <div class="menu-item">
+                     <!--begin::Menu link-->
+                     <a class="menu-link" href="{{ route('financial.categories.index') }}">
+                        <!--begin::Title-->
+                        <span class="menu-title ms-4">
+                           Categorias
+                        </span>
+                        <!--end::Title-->                           
+                     </a>
+                     <!--end::Menu link-->                
+                  </div>
+                  <!--end::Menu Item-->
+               </div>
+               <!--begin:Menu item-->
                <!--end:Menu item-->
                <div class="menu menu-rounded menu-column">
                   <!--begin::Heading-->
@@ -147,6 +204,7 @@
                   @endforeach
                </div>
                <!--begin:Menu item-->
+               @if (projects()->where('reminder', false)->where('type', 1)->where('created_by', Auth::id())->count())
                <!--end:Menu item-->
                <div class="menu menu-rounded menu-column">
                   <!--begin::Heading-->
@@ -181,6 +239,8 @@
                   @endforeach
                </div>
                <!--begin:Menu item-->
+               @endif
+               @if (projects()->where('reminder', false)->where('type', 2)->where('created_by', Auth::id())->count())
                <!--end:Menu item-->
                <div class="menu menu-rounded menu-column mb-6">
                   <!--begin::Heading-->
@@ -220,6 +280,7 @@
                   @endforeach
                </div>
                <!--begin:Menu item-->  
+               @endif
                <!--begin:Menu item-->
                <div  data-kt-menu-trigger="click"  class="menu-item menu-accordion" >
                   <!--begin:Menu link-->

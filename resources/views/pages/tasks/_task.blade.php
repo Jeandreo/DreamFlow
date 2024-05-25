@@ -14,7 +14,7 @@
                     </span>
                 </div>
             </div>
-            <div class="d-flex align-items-center h-100 w-100 div-name-task">
+            <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
                 <label for="rename-task-{{ $task->id }}" class="d-none d-md-flex">
                     <i class="fa-solid fa-pen-to-square text-hover-primary cursor-pointer py-2 w-50px text-center fs-5 edit-name-task" data-task="{{ $task->id }}"></i>	
                 </label>

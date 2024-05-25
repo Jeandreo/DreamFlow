@@ -10,7 +10,7 @@
                             <input class="form-check-input w-15px h-15px cursor-pointer check-task task-main" data-task="{{ $content->id }}" disabled type="checkbox" value="1" style="border-radius: 3px" @if($content->checked == true) checked @endif/>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center h-100 w-100 div-name-task">
+                    <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
                     <div class="w-30px"></div>
                     <div class="d-block min-w-300px w-100">
                         <p class="text-gray-600 text-hover-primary fs-6 lh-1 fw-normal p-0 mb-1 cursor-pointer border-0 w-100 task-name show-task" style="margin-top: 3px;" data-task="{{ $content->id }}">{{ $content->name }}</p>
@@ -84,7 +84,7 @@
                         <input class="form-check-input w-15px h-15px cursor-pointer check-task" disabled type="checkbox" value="1" style="border-radius: 3px" @if($subtask->checked == true) checked @endif/>
                     </div>
                 </div>
-                <div class="d-flex align-items-center h-100 w-100 div-name-task">
+                <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
                 <div class="w-20px"></div>
                 <div class="d-block min-w-300px w-100">
                         <p class="text-gray-600 text-hover-primary fs-6 lh-1 fw-normal p-0 mb-0 cursor-pointer border-0 w-100 task-name show-task" data-task="{{ $subtask->task_id }}" style="margin-top: 1px;">{{ $subtask->name }}</p>

@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('catalog_items', function (Blueprint $table) {
+        Schema::create('financial_institutions', function (Blueprint $table) {
             $table->id();
-            $table->integer('catalog_id');
             $table->string('name');
-            $table->string('url')->unique();
-            $table->text('link_video')->nullable();
-            $table->text('link_blog')->nullable();
-            $table->longText('content')->nullable();
             $table->integer('status')->default(1);
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
@@ -31,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('catalog_items');
+        Schema::dropIfExists('financial_institutions');
     }
 };

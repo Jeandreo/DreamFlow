@@ -6,6 +6,10 @@ namespace Database\Seeders;
 
 use App\Models\Catalog;
 use App\Models\Challenge;
+use App\Models\Financial;
+use App\Models\FinancialCategory;
+use App\Models\FinancialInstitution;
+use App\Models\FinancialWallet;
 use App\Models\Project;
 use App\Models\ProjectCategory;
 use App\Models\ProjectStatus;
@@ -624,6 +628,230 @@ class DatabaseSeeder extends Seeder
             'color' => '#fff700',
             'icon' => 'fa-solid fa-hand-fist',
             'description' => 1,
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'NuBank',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Itaú',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Mercado Pago',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'C6 Bank',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'PagSeguro',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Banco do Brasil',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Bradesco',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Santander',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Caixa Econômica Federal',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Banco Inter',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'BTG Pactual',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'XP Investimentos',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Banco Neon',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Banco Original',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Banrisul',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Sicredi',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'PicPay',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Ame Digital',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'Banco Pan',
+            'created_by' => 1,
+        ]);
+
+        FinancialInstitution::create([
+            'name' => 'BMG',
+            'created_by' => 1,
+        ]);
+
+        FinancialWallet::create([
+            'name' => 'NuBank',
+            'url' => 'nubank',
+            'color' => '#333',
+            'institution_id' => 1,
+            'description' => 'Conta para movimentações gerais',
+            'created_by' => 1,
+        ]);
+
+        FinancialWallet::create([
+            'name' => 'Mercado Pago',
+            'url' => 'mercado-pago',
+            'color' => '#333',
+            'institution_id' => 3,
+            'description' => 'Conta salário Eduarda',
+            'created_by' => 1,
+        ]);
+
+        FinancialWallet::create([
+            'name' => 'Itaú',
+            'url' => 'itau',
+            'color' => '#333',
+            'institution_id' => 2,
+            'description' => 'Conta Salário Jeandreo',
+            'created_by' => 1,
+        ]);
+
+        FinancialWallet::create([
+            'name' => 'Nubank (Caixinha)',
+            'url' => 'nubank-caixinha',
+            'color' => '#333',
+            'institution_id' => 1,
+            'description' => 'Conta para aportes',
+            'created_by' => 1,
+        ]);
+
+        FinancialCategory::create([
+            'name' => 'Salário',
+            'type' => 'revenue',
+            'color' => '#a4d100',
+            'icon' => 'fa-solid fa-sack-dollar',
+            'created_by' => 1,
+        ]);
+
+        FinancialCategory::create([
+            'name' => 'Despesas de casa',
+            'type' => 'expense',
+            'color' => '#911901',
+            'icon' => 'fa-solid fa-sack-dollar',
+            'created_by' => 1,
+        ]);
+
+        FinancialCategory::create([
+            'name' => 'Luz',
+            'type' => 'expense',
+            'category_id' => 2,
+            'color' => '#cf2200',
+            'created_by' => 1,
+        ]);
+
+        FinancialCategory::create([
+            'name' => 'Investimentos',
+            'type' => 'revenue',
+            'color' => '#3a9d9a',
+            'icon' => 'fa-solid fa-chart-line',
+            'created_by' => 1,
+        ]);
+        
+        FinancialCategory::create([
+            'name' => 'Aluguel',
+            'type' => 'expense',
+            'color' => '#6b6b6b',
+            'icon' => 'fa-solid fa-home',
+            'created_by' => 1,
+        ]);
+        
+        FinancialCategory::create([
+            'name' => 'Transporte',
+            'type' => 'expense',
+            'color' => '#007bff',
+            'icon' => 'fa-solid fa-car',
+            'created_by' => 1,
+        ]);
+        
+        FinancialCategory::create([
+            'name' => 'Combustível',
+            'type' => 'expense',
+            'category_id' => 5,
+            'color' => '#ffc107',
+            'created_by' => 1,
+        ]);
+        
+        FinancialCategory::create([
+            'name' => 'Alimentação',
+            'type' => 'expense',
+            'color' => '#28a745',
+            'icon' => 'fa-solid fa-utensils',
+            'created_by' => 1,
+        ]);
+        
+        FinancialCategory::create([
+            'name' => 'Supermercado',
+            'type' => 'expense',
+            'category_id' => 6,
+            'color' => '#6610f2',
+            'created_by' => 1,
+        ]);
+        
+        FinancialCategory::create([
+            'name' => 'Lanche',
+            'category_id' => 6,
+            'type' => 'expense',
+            'color' => '#6610f2',
+            'created_by' => 1,
+        ]);
+        
+        FinancialCategory::create([
+            'name' => 'Viagem',
+            'type' => 'expense',
+            'category_id' => 6,
+            'color' => '#6610f2',
             'created_by' => 1,
         ]);
         

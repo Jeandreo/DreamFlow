@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('catalogs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('url');
+            $table->string('url')->unique();
             $table->string('color')->default('#009ef7');
             $table->string('icon')->nullable();
             $table->longText('description')->nullable();

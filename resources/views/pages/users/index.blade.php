@@ -30,12 +30,12 @@
 											@foreach ($contents as $content)
 											<tr>
 												<td class="pe-0 ps-4">
-													<span class="fw-normal">
+													<span class="fw-semibold text-gray-700">
 														{{  str_pad($content->id , 4 , '0' , STR_PAD_LEFT)}}
 													</span>
 												</td>
 												<td>
-													<a href="{{ route('users.edit', $content->id) }}" class="d-flex align-items-center text-gray-700 text-hover-primary">
+													<a href="{{ route('users.edit', $content->id) }}" class="d-flex align-items-center text-gray-800 text-hover-primary fs-6 fw-normal">
 														<div class="symbol symbol-25px symbol-circle me-2">
 															<img alt="Pic" src="{{ findImage('users/' . $content->id . '/' . 'perfil-35px.jpg') }}">
 														</div>

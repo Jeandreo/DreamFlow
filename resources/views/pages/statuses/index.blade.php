@@ -27,12 +27,12 @@
 											@foreach ($contents as $content)
 											<tr>
 												<td class="pe-0 ps-4">
-													<span class="fw-normal">
+													<span class="fw-semibold text-gray-700">
 														{{  str_pad($content->id , 4 , '0' , STR_PAD_LEFT)}}
 													</span>
 												</td>
 												<td>
-													<a href="{{ route('projects.show', $content->id) }}" class="text-gray-700 text-hover-primary">
+													<a href="{{ route('projects.show', $content->id) }}" class="text-gray-800 text-hover-primary fs-6 fw-normal">
 														{{ $content->name }}
 													</a>
 												</td>

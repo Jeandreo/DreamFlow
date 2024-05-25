@@ -11,25 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('financial_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('type')->default();
-            $table->string('url')->unique();
-            $table->string('color')->default('#009ef7');
-            $table->longText('description')->nullable();
-            $table->dateTime('start_date')->nullable();
-            $table->dateTime('end_date')->nullable();
-            $table->integer('position')->default(0);
             $table->integer('category_id')->nullable();
-            $table->integer('client_id')->nullable();
-            $table->integer('manager_id')->nullable();
+            $table->string('name');
+            $table->enum('type', ['expense', 'revenue']);
+            $table->string('color')->default('#009ef7');
+            $table->string('icon')->nullable();
+            $table->longText('description')->nullable();
             $table->integer('status')->default(1);
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
-        
     }
 
     /**
@@ -37,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('financial_categories');
     }
 };

@@ -8,7 +8,7 @@
                       <input class="form-check-input w-15px h-15px cursor-pointer check-task" data-task="{{ $subtask->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($subtask->checked == true) checked @endif/>
                    </div>
              </div>
-             <div class="d-flex align-items-center h-100 w-100 div-name-task">
+             <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
                <label for="rename-subtask-{{ $subtask->id }}">
                   <i class="fa-solid @if($subtask->name != '')fa-pen-to-square @else fa-eye @endif text-hover-primary cursor-pointer py-2 w-50px text-center fs-5 edit-name-task" data-task="{{ $subtask->task_id }}"></i>
                </label>

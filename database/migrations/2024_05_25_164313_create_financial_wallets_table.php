@@ -11,18 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('challenges', function (Blueprint $table) {
+        Schema::create('financial_wallets', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('type', ['mensal', 'semanal']);
             $table->string('url')->unique();
-            $table->string('date')->nullable();
-            $table->date('custom_start')->nullable();
-            $table->date('custom_end')->nullable();
-            $table->text('description')->nullable();
-            $table->integer('position')->default(0);
-            $table->integer('status')->default(true);
-            $table->integer('filed_by')->nullable();
+            $table->string('color')->default('#009ef7');
+            $table->integer('institution_id')->nullable();
+            $table->longText('description')->nullable();
+            $table->integer('status')->default(1);
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('challenges');
+        Schema::dropIfExists('financial_wallets');
     }
 };

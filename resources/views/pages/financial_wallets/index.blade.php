@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title-page', 'Categorias')
+@section('title-page', 'Carteiras')
 
-@section('title-toolbar', 'Categorias')
+@section('title-toolbar', 'Carteiras')
 
 @section('content')
 	@include('layouts.title')
@@ -19,7 +19,7 @@
 											<tr class="fw-bold fs-6 text-gray-800 px-7">
 												<th width="4%" class="pe-0 ps-5">ID</th>
 												<th>Nome</th>
-												<th>Tipo</th>
+												<th>Instituição</th>
 												<th class="text-center">Status</th>
 												<th class="text-center" width="165px">
 													<span>Ações</span>
@@ -35,17 +35,13 @@
 													</span>
 												</td>
 												<td>
-													<a href="{{ route('categories.edit', $content->id) }}" class="text-gray-800 text-hover-primary fs-6 fw-normal">
+													<a href="{{ route('financial.wallets.show', $content->id) }}" class="text-gray-800 text-hover-primary fs-6 fw-normal">
 														{{ $content->name }}
 													</a>
 												</td>
 												<td>
 													<span class="text-gray-700">
-														@if ($content->type == 1)
-															<span class="badge badge-light-primary">Corporativo</span>
-														@else
-														<span class="badge badge-light-success">Pessoal</span>
-														@endif
+														{{ $content->institution->name }}
 													</span>
 												</td>
 												<td class="text-center">
@@ -60,10 +56,10 @@
 													@endif
 												</td>
 												<td class="text-center">
-													<a href="{{ route('categories.edit', $content->id) }}" class="btn btn-sm btn-light btn-active-light-success btn-icon">
+													<a href="{{ route('financial.wallets.edit', $content->id) }}" class="btn btn-sm btn-light btn-active-light-success btn-icon">
 														<i class="fa-solid fa-pen-to-square "></i>
 													</a>
-													<a href="{{ route('categories.destroy', $content->id) }}" class="btn btn-sm btn-light btn-active-light-danger btn-icon">
+													<a href="{{ route('financial.wallets.destroy', $content->id) }}" class="btn btn-sm btn-light btn-active-light-danger btn-icon">
 														<i class="fa-solid fa-trash-can"></i>
 													</a>
 												</td>
@@ -75,7 +71,7 @@
 							</div>
 							<div class="d-flex justify-content-between mt-6">
 								<a href="{{ route('index') }}" class="btn btn-sm fw-bold btn-secondary">Voltar</a>
-								<a href="{{ route('categories.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger">Adicionar Categoria</a>
+								<a href="{{ route('financial.wallets.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger">Adicionar Carteira</a>
 							</div>
 						</div>
 					</div>

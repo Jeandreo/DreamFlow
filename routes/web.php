@@ -6,6 +6,10 @@ use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ChatGPTController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FinancialCategoryController;
+use App\Http\Controllers\FinancialController;
+use App\Http\Controllers\FinancialTransactionsController;
+use App\Http\Controllers\FinancialWalletController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectCategoryController;
 use App\Http\Controllers\ProjectCommentController;
@@ -33,6 +37,55 @@ Route::middleware(['auth'])->group(function () {
 
     // DASHBOARD
     Route::get('/', [DashboardController::class, 'index'])->name('index');
+
+    // FINANCIAL
+    Route::prefix('financeiro')->group(function () {
+
+        // DASHBOARD
+        Route::name('financial.')->group(function () {
+            Route::get('/', [FinancialController::class, 'index'])->name('index');
+        });
+
+        // CATEGORIES
+        Route::prefix('categorias')->group(function () {
+            Route::name('financial.categories.')->group(function () {
+                Route::get('/', [FinancialCategoryController::class, 'index'])->name('index');
+                Route::get('/adicionar', [FinancialCategoryController::class, 'create'])->name('create');
+                Route::post('/adicionar', [FinancialCategoryController::class, 'store'])->name('store');
+                Route::get('/visualizando/{id?}', [FinancialCategoryController::class, 'show'])->name('show');
+                Route::get('/desabilitar/{id}', [FinancialCategoryController::class, 'destroy'])->name('destroy');
+                Route::get('/editar/{id}', [FinancialCategoryController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [FinancialCategoryController::class, 'update'])->name('update');
+            });
+        });
+
+        // TRANSACTIONS
+        Route::prefix('transacoes')->group(function () {
+            Route::name('financial.transactions.')->group(function () {
+                Route::get('/', [FinancialTransactionsController::class, 'index'])->name('index');
+                Route::get('/adicionar', [FinancialTransactionsController::class, 'create'])->name('create');
+                Route::post('/adicionar', [FinancialTransactionsController::class, 'store'])->name('store');
+                Route::get('/visualizando/{id?}', [FinancialTransactionsController::class, 'show'])->name('show');
+                Route::get('/desabilitar/{id}', [FinancialTransactionsController::class, 'destroy'])->name('destroy');
+                Route::get('/editar/{id}', [FinancialTransactionsController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [FinancialTransactionsController::class, 'update'])->name('update');
+            });
+        });
+
+        // TRANSACTIONS
+        Route::prefix('carteiras')->group(function () {
+            Route::name('financial.wallets.')->group(function () {
+                Route::get('/', [FinancialWalletController::class, 'index'])->name('index');
+                Route::get('/adicionar', [FinancialWalletController::class, 'create'])->name('create');
+                Route::post('/adicionar', [FinancialWalletController::class, 'store'])->name('store');
+                Route::get('/visualizando/{id?}', [FinancialWalletController::class, 'show'])->name('show');
+                Route::get('/desabilitar/{id}', [FinancialWalletController::class, 'destroy'])->name('destroy');
+                Route::get('/editar/{id}', [FinancialWalletController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [FinancialWalletController::class, 'update'])->name('update');
+            });
+        });
+
+    });
 
     // PROFILE USER
     Route::prefix('catalogo')->group(function () {

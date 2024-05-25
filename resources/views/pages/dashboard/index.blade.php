@@ -2,7 +2,7 @@
 @section('title-page', 'Dashboard')
 @section('title-toolbar', 'Dashboard')
 @section('content')
-<div class="row pb-12 m-0" style="background: url('{{ asset('assets/media/images/bg_colors.jpg') }}'); background-position: center;">
+<div class="row pb-12 m-0 background-dashboard">
     <div class="col-12">
         <div class="toolbar py-15" id="kt_toolbar">
             <!--begin::Container-->

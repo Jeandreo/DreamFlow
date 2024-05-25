@@ -5,7 +5,7 @@
     </div>
     <div class="col-6 mb-5">
         <label class="required form-label fw-bold">URL:</label>
-        <input type="text" class="form-control form-control-solid only-url" placeholder="URL" name="url" value="{{ $content->url ?? old('url') }}"/>
+        <input type="text" class="form-control form-control-solid only-url" placeholder="URL" name="url" value="{{ $content->url ?? old('url') }}" required/>
     </div>
     <div class="col mb-5">
         <label class="required form-label fw-bold">Será um desafio:</label>

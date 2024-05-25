@@ -158,6 +158,10 @@ p:last-child {
     border: none !important;
 }
 
+.z-index-9 {
+    z-index: 9;
+}
+
 .ck-tiny .ck-balloon-panel {
     z-index: 99999 !important;
 }
@@ -304,4 +308,28 @@ input[type=text]:disabled {
   
 .rotate.rotate-90 {
     transform: rotate(90deg); /* Aplica a rotação de 90 graus quando a classe 'rotacionado' é adicionada */
+}
+
+.nav-line-tabs .nav-item .nav-link.active, .nav-line-tabs .nav-item .nav-link:hover:not(.disabled), .nav-line-tabs .nav-item.show .nav-link{
+    border-bottom: 2px solid var(--bs-primary);
+}
+
+.background-dashboard {
+    background: linear-gradient(45deg, #d405a5, #ff7800);
+    background-image: url(http://localhost/dreamflow/public/assets/media/images/bg_colors_03.jpg);
+    background-position: 0 0;
+    animation: animationBgDashboard 60s linear infinite;
+}
+
+@keyframes animationBgDashboard {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 3600px 0px;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
 }

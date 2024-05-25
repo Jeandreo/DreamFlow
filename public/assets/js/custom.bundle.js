@@ -124,6 +124,7 @@ function loadDataTable(tableSelector = '.dmk-datatables', items = 25, order = un
     const dataTableOptions = {
         pageLength: items,
         order: order,
+        aaSorting: [],
         language: {
             search: 'Pesquisar:',
             lengthMenu: 'Mostrando _MENU_ registros por página',
