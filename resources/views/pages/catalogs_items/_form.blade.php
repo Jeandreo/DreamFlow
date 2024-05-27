@@ -22,7 +22,7 @@
     </div>
     <div class="col-12 mb-5">
         <label class="form-label fw-bold">Descrição:</label>
-        <textarea name="content" class="form-control form-control-solid load-editor" placeholder="Alguma observação sobre este projeto?">@if(isset($content->content)){{$content->content}}@endif</textarea>
+        <textarea name="content" class="form-control form-control-solid load-editor" placeholder="Conteúdo sobre o item...">@if(isset($content->content)){{$content->content}}@endif</textarea>
     </div>
 </div>
 

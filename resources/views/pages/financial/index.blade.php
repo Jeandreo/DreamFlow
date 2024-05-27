@@ -82,7 +82,7 @@
                             <h2 class="fs-2x text-uppercase text-gray-700 mb-0">
                                 {{ date('H:m') }}
                             </h2>
-                            <p class="text-capitalize text-gray-600 m-0 fs-4 m-0">{{ \Carbon\Carbon::parse('2024-05-22')->locale('pt_BR')->isoFormat('dddd, D [de] MMMM') }}</p>
+                            <p class="text-capitalize text-gray-600 m-0 fs-4 m-0">{{ \Carbon\Carbon::parse(now())->locale('pt_BR')->isoFormat('dddd, D [de] MMMM') }}</p>
                         </div>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <h2 class="fs-3 text-uppercase text-gray-600 fw-normal mb-0">
-                                                {{ \Carbon\Carbon::parse('2024-05-22')->locale('pt_BR')->isoFormat('MMMM') }}
+                                                {{ \Carbon\Carbon::parse(now())->locale('pt_BR')->isoFormat('MMMM') }}
                                             </h2>
                                             <h2 class="fs-2x text-uppercase text-gray-700 mb-0">
                                                 Previsto
@@ -166,84 +166,44 @@
                             <div class="d-flex flex-stack mb-5">
                                 <div class="d-flex align-items-center position-relative my-1">
                                     <i class="ki-duotone ki-magnifier fs-1 position-absolute ms-6"><span class="path1"></span><span class="path2"></span></i>
-                                    <input type="text" data-kt-docs-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Customers"/>
+                                    <input type="text" data-kt-docs-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Procurar transações"/>
                                 </div>
                                 <div class="d-flex justify-content-end" data-kt-docs-table-toolbar="base">
-                                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="tooltip" title="Coming Soon">
+                                    <button type="button" class="btn btn-light-primary me-3">
                                         <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i>
-                                        Filter
+                                        Filtrar
                                     </button>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" title="Coming Soon">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_trasaction">
                                         <i class="ki-duotone ki-plus fs-2"></i>
-                                        Add Customer
+                                        Adicionar Transação
                                     </button>
                                 </div>
                                 <div class="d-flex justify-content-end align-items-center d-none" data-kt-docs-table-toolbar="selected">
                                     <div class="fw-bold me-5">
                                         <span class="me-2" data-kt-docs-table-select="selected_count"></span> Selected
                                     </div>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="tooltip" title="Coming Soon">
+                                    <button type="button" class="btn btn-danger">
                                         Selection Action
                                     </button>
                                 </div>
                             </div>
-
-                            <table id="kt_datatable_example_1" class="table align-middle table-row-dashed fs-6 gy-5">
+                            <table id="datatables-transactions" class="table align-middle table-row-dashed fs-6 gy-3">
                                 <thead>
-                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                    <th class="w-10px pe-2">
-                                        <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                            <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_datatable_example_1 .form-check-input" value="1"/>
-                                        </div>
-                                    </th>
-                                    <th>O que foi</th>
-                                    <th>Categoria</th>
-                                    <th>Dia</th>
-                                    <th>Pago?</th>
-                                    <th class="text-end min-w-100px">Ações</th>
-                                </tr>
-                                </thead>
-                                <tbody class="text-gray-600 fw-semibold">
-                                    <tr>
-                                        <td>
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="334">
-                                            </div>
-                                        </td>
-                                        <td>Wren Meegin</td>
-                                        <td>wmeegin99@netscape.com</td>
-                                        <td>12 Apr 2020, 2:44 am</td>
-                                        <td data-filter="american-express">
-                                            <img src="{{ asset('assets/media/svg/card-logos/american-express.svg') }}" class="w-35px me-3" alt="american-express">**** 5580</td>
-                                                <td class="text-end">
-                                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
-                                                    Actions
-                                                    <span class="svg-icon fs-5 m-0">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                                <polygon points="0 0 24 0 24 24 0 24"></polygon>
-                                                                <path d="M6.70710678,15.7071068 C6.31658249,16.0976311 5.68341751,16.0976311 5.29289322,15.7071068 C4.90236893,15.3165825 4.90236893,14.6834175 5.29289322,14.2928932 L11.2928932,8.29289322 C11.6714722,7.91431428 12.2810586,7.90106866 12.6757246,8.26284586 L18.6757246,13.7628459 C19.0828436,14.1360383 19.1103465,14.7686056 18.7371541,15.1757246 C18.3639617,15.5828436 17.7313944,15.6103465 17.3242754,15.2371541 L12.0300757,10.3841378 L6.70710678,15.7071068 Z" fill="currentColor" fill-rule="nonzero" transform="translate(12.000003, 11.999999) rotate(-180.000000) translate(-12.000003, -11.999999)"></path>
-                                                            </g>
-                                                        </svg>
-                                                    </span>
-                                                </a>
-                                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                                <div class="menu-item px-3">
-                                                    <a href="#" class="menu-link px-3" data-kt-docs-table-filter="edit_row">
-                                                        Edit
-                                                    </a>
-                                                </div>
-                                                <div class="menu-item px-3">
-                                                    <a href="#" class="menu-link px-3" data-kt-docs-table-filter="delete_row">
-                                                        Delete
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
+                                    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                        <th class="w-10px pe-2">-</th>
+                                        <th class="w-100px">Dia</th>
+                                        <th>O que foi</th>
+                                        <th>Categoria</th>
+                                        <th>Valor</th>
+                                        <th>Ações</th>
                                     </tr>
+                                </thead>
+                                <tbody class="table-pd text-gray-600 fw-semibold">
+                                    {{-- RESULTS HERE --}}
+                                    {{-- RESULTS HERE --}}
+                                    {{-- RESULTS HERE --}}
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
@@ -252,22 +212,139 @@
     </div>
 </div>
 
-<div class="modal fade" data-bs-focus="false" id="modal_task">
-    <div class="modal-dialog modal-dialog-centered rounded">
-        <div class="modal-content rounded bg-transparent" id="load-task">
-            {{-- LOAD TASK HERE --}}
-            {{-- LOAD TASK HERE --}}
-            {{-- LOAD TASK HERE --}}
-        </div>
+<div class="modal fade" data-bs-focus="false" id="modal_trasaction">
+    <div class="modal-dialog modal-dialog-centered rounded mw-750px">
+        <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="type" value="expense">
+            <div class="modal-content rounded">
+                <div class="modal-header">
+                    <h3 class="modal-title">Adicionar Despesa</h3>
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6 mb-5">
+                            <label class="required form-label fw-bold">Descrição:</label>
+                            <input type="text" class="form-control form-control-solid" placeholder="Descreva a compra..." name="name" value="{{ $content->name ?? old('name') }}" required/>
+                        </div>
+                        <div class="col-6 mb-5">
+                            <label class="required form-label fw-bold">Valor:</label>
+                            <input type="text" class="form-control form-control-solid input-money" placeholder="R$ 00,00" name="value" value="{{ $content->value ?? old('value') }}" required/>
+                        </div>
+                        <div class="col-4 mb-5">
+                            <label class="required form-label fw-bold">Data:</label>
+                            <input type="text" class="form-control form-control-solid flatpickr" placeholder="00/00/0000" name="venciment" value="{{ $content->venciment ?? old('venciment') }}" required/>
+                        </div>
+                        <div class="col-4 mb-5">
+                            <label class="required form-label fw-bold">Conta/Cartão:</label>
+                            <select class="form-select form-select-solid" name="wallet_id" data-control="select2" data-placeholder="Selecione" required>
+                                <option value=""></option>
+                                @foreach ($wallets as $wallet)
+                                <option value="{{ $wallet->id }}" @if(isset($content) && $content->wallet_id == $wallet->id) selected @endif>{{ $wallet->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-4 mb-5">
+                            <label class="required form-label fw-bold">Categoria:</label>
+                            <select class="form-select form-select-solid" name="category_id" data-control="select2" data-placeholder="Selecione" required>
+                                <option value=""></option>
+                                @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" @if(isset($content) && $content->category_id == $category->id) selected @endif>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-12 mb-5">
+                            <label class="form-label fw-bold">Descrição:</label>
+                            <textarea name="description" class="form-control form-control-solid" placeholder="Alguma observação sobre este cartão?">@if(isset($content->description)){{$content->description}}@endif</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 @endsection
 
-
-
 @section('custom-footer')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+
+    // SELECT TABLE
+    const table = $('#datatables-transactions');
+
+    // CONFIG TABLE
+    const dataTableOptions = {
+        serverSide: true,
+        ajax: {
+            url: '{{ route("financial.processing") }}',
+            data: function (data) {
+                data.searchBy = data.search.value;
+                data.order_by = data.columns[data.order[0].column].data;
+                data.per_page = data.length;
+            },
+        },
+        buttons: false,
+        searching: true,
+        order: [[1, 'DESC']],
+        pageLength: 25,
+        columns: [
+            { targets: 0, data: "checked" },
+            { targets: 1, data: "date" },
+            { targets: 2, data: "name" },
+            { targets: 3, data: "category_id" },
+            { targets: 4, data: "value" },
+            { targets: 5, data: "actions" },
+        ],
+        language: {
+            "search": "Pesquisar:",
+            "lengthMenu": "Mostrando _MENU_ registros por página",
+            "zeroRecords": "Ops, não encontramos nenhum resultado :(",
+            "info": "Mostrando _START_ até _END_ de _TOTAL_ registros",
+            "infoEmpty": "Nenhum registro disponível",
+            "infoFiltered": "(Filtrando _MAX_ registros)",
+            "processing": "Filtrando dados",
+            "paginate": {
+                "previous": "Anterior",
+                "next": "Próximo",
+            }
+        },
+        dom:
+            "<'row'" +
+            "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
+            "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
+            ">" +
+
+            "<'table-responsive'tr>" +
+
+            "<'row'" +
+            "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+            "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
+            ">" ,
+        columnDefs: [
+            {   
+                targets: 1,
+                className: '',
+            },
+        ],
+        createdRow: function (row, data, dataIndex) {
+            $(row).addClass(data.trClass);
+        },
+    };
+
+    // MAKE TABLE
+    table.DataTable(dataTableOptions);
+
+    // Inicia Flatpicker
+    generateFlatpickr();
+
+    // CONFIGS CHARTS
     var element = document.getElementById('tasksChart');
     var height = parseInt(KTUtil.css(element, 'height'));
 
@@ -380,7 +457,5 @@
 
     var chart = new ApexCharts(element, options);
     chart.render();
-
-
 </script>
 @endsection

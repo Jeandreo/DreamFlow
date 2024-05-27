@@ -8,76 +8,14 @@ Inputmask(["9999 9999 9999 9999"], {
     "clearIncomplete": true,
 }).mask(".input-card");
 
-Inputmask(["9999"], {
-    "placeholder": "",
-    "numericInput": true,
-}).mask(".input-year");
-
-Inputmask(["99/99"], {
-}).mask(".input-month-year");
-
-Inputmask(["999"], {
-    "placeholder": "",
-    "numericInput": true,
-}).mask(".input-ccv");
-
-Inputmask(["99.999.999/9999-99"], {
-    "clearIncomplete": true,
-}).mask(".input-cnpj");
-
-Inputmask(["999.999.999-99"], {
-    "clearIncomplete": true,
-}).mask(".input-cpf");
-
-Inputmask(["99999-999"], {
-    "clearIncomplete": true,
-}).mask(".input-cep");
-
 Inputmask(["99/99/9999"], {
     "clearIncomplete": true,
 }).mask(".input-date");
-
-Inputmask(["99/99/9999 99:99:99"], {
-    "clearIncomplete": true,
-}).mask(".input-date-time");
-
-Inputmask(["99:99:99"], {
-    "clearIncomplete": true,
-}).mask(".input-duration");
-
-Inputmask(["99:99"], {
-    "clearIncomplete": true,
-}).mask(".input-time");
-
-Inputmask(["9999.99.99"], {
-    "clearIncomplete": true,
-}).mask(".input-ncm");
-
-Inputmask(["9.99", "99.99"], {
-    "numericInput": true,
-    "clearIncomplete": true,
-}).mask(".input-comission");
-
-Inputmask(["9.999g", "99.999g", "999.999g"], {
-    "numericInput": true,
-    "clearIncomplete": true,
-}).mask(".input-weight");
-
-Inputmask(["9.9cm", "99.9cm", "999.9cm"], {
-    "numericInput": true,
-    "clearIncomplete": true,
-}).mask(".input-cm");
 
 Inputmask(["R$ 9", "R$ 99", "R$ 9,99", "R$ 99,99", "R$ 999,99", "R$ 9.999,99", "R$ 99.999,99", "R$ 999.999,99", "R$ 9.999.999,99"], {
     "numericInput": true,
     "clearIncomplete": true,
 }).mask(".input-money");
-
-Inputmask(["$ 9", "$ 99", "$ 9.99", "$ 99.99", "$ 999.99", "$ 9,999.99", "$ 99,999.99", "$ 999,999.99", "$ 9,999,999.99"], {
-    "numericInput": true,
-    "clearIncomplete": true,
-}).mask(".input-money-usd");
-
 
 // MARK ALL TRUE
 $('.select-all').click(function () {
@@ -160,7 +98,7 @@ function generateFlatpickr(calendar = '.flatpickr') {
     $(calendar).flatpickr({
         altInput: true,
         altFormat: "d/m/Y",
-        dateFormat: "Y-m-d H:i:S",
+        dateFormat: "Y-m-d",
         locale: "pt",
     });
 }

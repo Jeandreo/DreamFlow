@@ -30,7 +30,7 @@
     </div>
     <div class="col-12 mb-5">
         <label class="form-label fw-bold">Descrição:</label>
-        <textarea name="description" class="form-control form-control-solid" placeholder="Alguma observação sobre este projeto?">@if(isset($content->description)){{$content->description}}@endif</textarea>
+        <textarea name="description" class="form-control form-control-solid" placeholder="Alguma observação sobre esta categoria?">@if(isset($content->description)){{$content->description}}@endif</textarea>
     </div>
 </div>
 

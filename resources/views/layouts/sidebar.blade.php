@@ -107,17 +107,19 @@
                <!--end:Menu item-->
                <!--begin:Menu item-->
                <div  class="menu-item">
-                  <!--begin:Menu link--><a class="menu-link"  href="{{ route('financial.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Financeiro</span></a><!--end:Menu link-->
+                  <!--begin:Menu link-->
+                  <a class="menu-link" href="{{ route('financial.index') }}">
+                     <span class="menu-bullet">
+                        <span class="bullet bullet-dot"></span>
+                     </span>
+                     <span  class="menu-title" >Financeiro</span>
+                  </a>
+                  <!--end:Menu link-->
                </div>
                <!--end:Menu item-->
                <!--begin:Menu item-->
                <div  class="menu-item">
                   <!--begin:Menu link--><a class="menu-link"  href="{{ route('projects.show') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
-               </div>
-               <!--end:Menu item-->
-               <!--begin:Menu item-->
-               <div  class="menu-item">
-                  <!--begin:Menu link--><a class="menu-link"  href="{{ route('catalogs.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Listas</span></a><!--end:Menu link-->
                </div>
                <!--end:Menu item-->
                <div class="menu menu-rounded menu-column">
@@ -146,10 +148,10 @@
                   <!--begin::Menu Item-->
                   <div class="menu-item">
                      <!--begin::Menu link-->
-                     <a class="menu-link" href="#">
+                     <a class="menu-link" href="{{ route('financial.credit.cards.index') }}">
                         <!--begin::Title-->
                         <span class="menu-title ms-4">
-                           Valores Fixos
+                           Cartões de Crédito
                         </span>
                         <!--end::Title-->                           
                      </a>
@@ -211,7 +213,10 @@
                   <!--begin:Menu item-->
                   <div  class="menu-item pt-5" >
                      <!--begin:Menu content-->
-                     <div  class="menu-content" ><span class="menu-heading fw-bold text-uppercase fs-7">Negócios</span></div>
+                     <div class="menu-content justify-content-between d-flex align-items-center">
+                        <span class="menu-heading fw-bold text-uppercase fs-7">Negócios</span>
+                        <i class="fa-solid fa-circle-plus text-white"></i>
+                     </div>
                      <!--end:Menu content-->
                   </div>
                   <!--end:Menu item-->
@@ -303,25 +308,30 @@
                   <div  class="menu-sub menu-sub-accordion">
                      <!--begin:Menu item-->
                      <div  class="menu-item">
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('projects.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
+                        <!--begin:Menu link--><a class="menu-link" href="{{ route('projects.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Projetos</span></a><!--end:Menu link-->
+                     </div>
+                     <!--end:Menu item-->
+                     <!--begin:Menu item-->
+                     <div  class="menu-item">
+                        <!--begin:Menu link--><a class="menu-link" href="{{ route('catalogs.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Listas</span></a><!--end:Menu link-->
                      </div>
                      <!--end:Menu item-->
                      <!--begin:Menu item-->
                      <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('statuses.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Status</span></a><!--end:Menu link-->
+                        <!--begin:Menu link--><a class="menu-link" href="{{ route('statuses.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Status</span></a><!--end:Menu link-->
                      </div>
                      <!--end:Menu item-->
                      <!--begin:Menu item-->
                      <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('categories.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Categorias</span></a><!--end:Menu link-->
+                        <!--begin:Menu link--><a class="menu-link" href="{{ route('categories.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Categorias</span></a><!--end:Menu link-->
                      </div>
                      <!--end:Menu item--><!--begin:Menu item-->
                      <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('challenges.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Metas Semanais e Mensais</span></a><!--end:Menu link-->
+                        <!--begin:Menu link--><a class="menu-link" href="{{ route('challenges.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Metas Semanais e Mensais</span></a><!--end:Menu link-->
                      </div>
                      <!--end:Menu item--><!--begin:Menu item-->
                      <div  class="menu-item" >
-                        <!--begin:Menu link--><a class="menu-link"  href="{{ route('users.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Usuários</span></a><!--end:Menu link-->
+                        <!--begin:Menu link--><a class="menu-link" href="{{ route('users.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Usuários</span></a><!--end:Menu link-->
                      </div>
                      <!--end:Menu item-->
                      <div class="row mt-4">

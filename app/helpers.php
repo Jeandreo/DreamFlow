@@ -72,6 +72,20 @@ function resizeAndSaveImage($base64Image, $sizes, $name, $path){
 
 }
 
+// MONEY BRL TO DECIMAL
+function toDecimal($value){
+
+    // REMOVE R$ AND REPLACE POINTS
+    $value = str_replace(array('R$', '.'), '', $value);
+    $value = str_replace(',', '.', $value);
+
+    // CONVERT TO DECIMAL
+    $value = number_format($value, 2, '.', '');
+
+    // RETURN
+    return $value;
+}
+
 
 function findImage($pathAndFile, $default = 'user'){
 

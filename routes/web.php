@@ -8,6 +8,7 @@ use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FinancialCategoryController;
 use App\Http\Controllers\FinancialController;
+use App\Http\Controllers\FinancialCreditCardController;
 use App\Http\Controllers\FinancialTransactionsController;
 use App\Http\Controllers\FinancialWalletController;
 use App\Http\Controllers\ProfileController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\UserController;
 use App\Models\ChallengeMonthly;
+use App\Models\FinancialCreditCard;
 use App\Models\ProjectTask;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
         // DASHBOARD
         Route::name('financial.')->group(function () {
             Route::get('/', [FinancialController::class, 'index'])->name('index');
+            Route::get('/processar', [FinancialController::class, 'processing'])->name('processing');
         });
 
         // CATEGORIES
@@ -62,13 +65,7 @@ Route::middleware(['auth'])->group(function () {
         // TRANSACTIONS
         Route::prefix('transacoes')->group(function () {
             Route::name('financial.transactions.')->group(function () {
-                Route::get('/', [FinancialTransactionsController::class, 'index'])->name('index');
-                Route::get('/adicionar', [FinancialTransactionsController::class, 'create'])->name('create');
                 Route::post('/adicionar', [FinancialTransactionsController::class, 'store'])->name('store');
-                Route::get('/visualizando/{id?}', [FinancialTransactionsController::class, 'show'])->name('show');
-                Route::get('/desabilitar/{id}', [FinancialTransactionsController::class, 'destroy'])->name('destroy');
-                Route::get('/editar/{id}', [FinancialTransactionsController::class, 'edit'])->name('edit');
-                Route::put('/editar/{id}', [FinancialTransactionsController::class, 'update'])->name('update');
             });
         });
 
@@ -82,6 +79,19 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/desabilitar/{id}', [FinancialWalletController::class, 'destroy'])->name('destroy');
                 Route::get('/editar/{id}', [FinancialWalletController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [FinancialWalletController::class, 'update'])->name('update');
+            });
+        });
+
+        // TRANSACTIONS
+        Route::prefix('cartoes-de-credito')->group(function () {
+            Route::name('financial.credit.cards.')->group(function () {
+                Route::get('/', [FinancialCreditCardController::class, 'index'])->name('index');
+                Route::get('/adicionar', [FinancialCreditCardController::class, 'create'])->name('create');
+                Route::post('/adicionar', [FinancialCreditCardController::class, 'store'])->name('store');
+                Route::get('/visualizando/{id?}', [FinancialCreditCardController::class, 'show'])->name('show');
+                Route::get('/desabilitar/{id}', [FinancialCreditCardController::class, 'destroy'])->name('destroy');
+                Route::get('/editar/{id}', [FinancialCreditCardController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [FinancialCreditCardController::class, 'update'])->name('update');
             });
         });
 
