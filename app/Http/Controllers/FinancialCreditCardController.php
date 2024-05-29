@@ -130,7 +130,7 @@ class FinancialCreditCardController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('financial.wallets.edit', $id)
+            ->route('financial.wallets.index')
             ->with('message', 'Carteira editada com sucesso.');
 
     }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('financial_credit_cards', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('last_numbers')->nullable();
             $table->decimal('limit', 10, 2);
             $table->integer('wallet_id');
             $table->integer('closing_day');

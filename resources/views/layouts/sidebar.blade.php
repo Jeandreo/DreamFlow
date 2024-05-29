@@ -119,6 +119,18 @@
                <!--end:Menu item-->
                <!--begin:Menu item-->
                <div  class="menu-item">
+                  <!--begin:Menu link-->
+                  <a class="menu-link" href="{{ route('financial.transactions.index') }}">
+                     <span class="menu-bullet">
+                        <span class="bullet bullet-dot"></span>
+                     </span>
+                     <span  class="menu-title" >Transações</span>
+                  </a>
+                  <!--end:Menu link-->
+               </div>
+               <!--end:Menu item-->
+               <!--begin:Menu item-->
+               <div  class="menu-item">
                   <!--begin:Menu link--><a class="menu-link"  href="{{ route('projects.show') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
                </div>
                <!--end:Menu item-->

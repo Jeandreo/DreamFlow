@@ -18,6 +18,7 @@ class FinancialCreditCard extends Model
         'name',
         'limit',
         'wallet_id',
+        'last_numbers',
         'closing_day',
         'due_day',
         'description',

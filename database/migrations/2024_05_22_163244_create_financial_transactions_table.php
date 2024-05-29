@@ -13,7 +13,8 @@ return new class extends Migration
     {        
         Schema::create('financial_transactions', function (Blueprint $table) {
             $table->id();
-            $table->integer('wallet_id');
+            $table->integer('wallet_id')->nullable();
+            $table->integer('credit_card_id')->nullable();
             $table->integer('category_id');
             $table->string('name');
             $table->integer('hitching')->nullable();

@@ -8,7 +8,9 @@ use App\Models\Catalog;
 use App\Models\Challenge;
 use App\Models\Financial;
 use App\Models\FinancialCategory;
+use App\Models\FinancialCreditCard;
 use App\Models\FinancialInstitution;
+use App\Models\FinancialTransactions;
 use App\Models\FinancialWallet;
 use App\Models\Project;
 use App\Models\ProjectCategory;
@@ -28,7 +30,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'Jeandreo Furquim',
-            'email' => 'atendimento@dreamake.com.br',
+            'email' => 'jeandreofur@gmail.com',
             'role_id' => 1,
             'password' => Hash::make('Inc@ns4v3l_2024'),
             'created_by' => 0,
@@ -734,7 +736,7 @@ class DatabaseSeeder extends Seeder
         FinancialWallet::create([
             'name' => 'NuBank',
             'url' => 'nubank',
-            'color' => '#333',
+            'color' => '#9d00e6',
             'institution_id' => 1,
             'description' => 'Conta para movimentações gerais',
             'created_by' => 1,
@@ -743,7 +745,7 @@ class DatabaseSeeder extends Seeder
         FinancialWallet::create([
             'name' => 'Mercado Pago',
             'url' => 'mercado-pago',
-            'color' => '#333',
+            'color' => '#00b4f0',
             'institution_id' => 3,
             'description' => 'Conta salário Eduarda',
             'created_by' => 1,
@@ -752,7 +754,7 @@ class DatabaseSeeder extends Seeder
         FinancialWallet::create([
             'name' => 'Itaú',
             'url' => 'itau',
-            'color' => '#333',
+            'color' => '#0f0f0f',
             'institution_id' => 2,
             'description' => 'Conta Salário Jeandreo',
             'created_by' => 1,
@@ -761,7 +763,7 @@ class DatabaseSeeder extends Seeder
         FinancialWallet::create([
             'name' => 'Nubank (Caixinha)',
             'url' => 'nubank-caixinha',
-            'color' => '#333',
+            'color' => '#6603c9',
             'institution_id' => 1,
             'description' => 'Conta para aportes',
             'created_by' => 1,
@@ -854,9 +856,50 @@ class DatabaseSeeder extends Seeder
             'color' => '#6610f2',
             'created_by' => 1,
         ]);
+
+        FinancialCreditCard::create([
+            'name' => 'C&A',
+            'limit' => 750.00,
+            'wallet_id' => 1,
+            'last_numbers' => '0531',
+            'closing_day' => 5,
+            'due_day' => 10,
+            'description' => 'Cartão para emergencias',
+            'created_by' => 1,
+        ]);
         
 
-        \App\Models\User::factory(10)->create();
-        \App\Models\FinancialTransactions::factory(100)->create();
+        FinancialTransactions::create([
+            'wallet_id' => 1,
+            'category_id' => 2,
+            'name' => 'Mercado',
+            'value' => 10,
+            'date_venciment' => now(),
+            'created_by' => 1,
+        ]);
+        
+
+        FinancialTransactions::create([
+            'wallet_id' => 1,
+            'category_id' => 9,
+            'name' => 'Netflix',
+            'recurrent' => true,
+            'value' => 10,
+            'date_venciment' => now(),
+            'created_by' => 1,
+        ]);
+
+        FinancialTransactions::create([
+            'wallet_id' => 1,
+            'category_id' => 9,
+            'name' => 'TaekWondo',
+            'recurrent' => true,
+            'value' => 2,
+            'date_venciment' => now(),
+            'created_by' => 1,
+        ]);
+
+        \App\Models\User::factory(1)->create();
+        // \App\Models\FinancialTransactions::factory(10)->create();
     }
 }

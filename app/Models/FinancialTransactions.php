@@ -16,6 +16,7 @@ class FinancialTransactions extends Model
      */
     protected $fillable = [
         'wallet_id',
+        'credit_card_id',
         'category_id',
         'name',
         'hitching',

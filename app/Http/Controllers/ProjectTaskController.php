@@ -138,7 +138,7 @@ class ProjectTaskController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('projects.edit', $id)
+            ->route('projects.index')
             ->with('message', 'Projeto editado com sucesso.');
 
     }

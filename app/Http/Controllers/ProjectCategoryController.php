@@ -118,7 +118,7 @@ class ProjectCategoryController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('index.edit', $id)
+            ->route('index.index')
             ->with('message', 'Categoria editada com sucesso.');
 
     }

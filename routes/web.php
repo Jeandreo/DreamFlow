@@ -46,7 +46,6 @@ Route::middleware(['auth'])->group(function () {
         // DASHBOARD
         Route::name('financial.')->group(function () {
             Route::get('/', [FinancialController::class, 'index'])->name('index');
-            Route::get('/processar', [FinancialController::class, 'processing'])->name('processing');
         });
 
         // CATEGORIES
@@ -65,7 +64,9 @@ Route::middleware(['auth'])->group(function () {
         // TRANSACTIONS
         Route::prefix('transacoes')->group(function () {
             Route::name('financial.transactions.')->group(function () {
+                Route::get('/', [FinancialTransactionsController::class, 'index'])->name('index');
                 Route::post('/adicionar', [FinancialTransactionsController::class, 'store'])->name('store');
+                Route::get('/processar', [FinancialTransactionsController::class, 'processing'])->name('processing');
             });
         });
 

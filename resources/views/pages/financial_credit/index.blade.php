@@ -19,6 +19,7 @@
 											<tr class="fw-bold fs-6 text-gray-800 px-7">
 												<th width="4%" class="pe-0 ps-5">ID</th>
 												<th>Nome</th>
+												<th>Últimos dig.</th>
 												<th>Descrição</th>
 												<th>Fechamento</th>
 												<th>Vencimento</th>
@@ -40,6 +41,11 @@
 												<td>
 													<a href="{{ route('financial.credit.cards.edit', $content->id) }}" class="text-gray-800 text-hover-primary fs-6 fw-normal">
 														{{ $content->name }}
+													</a>
+												</td>
+												<td>
+													<a class="text-gray-700 fs-6 fw-normal">
+														{{ $content->last_numbers }}
 													</a>
 												</td>
 												<td>

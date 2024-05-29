@@ -143,7 +143,7 @@ class FinancialCategoryController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('financial.categories.edit', $id)
+            ->route('financial.categories.index')
             ->with('message', 'Catálogo editado com sucesso.');
 
     }

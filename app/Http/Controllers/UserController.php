@@ -164,7 +164,7 @@ class UserController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('index.edit', $id)
+            ->route('index.index')
             ->with('message', 'Usuário editado com sucesso.');
 
     }

@@ -321,6 +321,19 @@ input[type=text]:disabled {
     animation: animationBgDashboard 60s linear infinite;
 }
 
+.dataTables_info {
+    color: var(--bs-gray-600) !important;
+}
+
+.table-odd-light tbody tr:hover {
+    box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, .02);
+}
+
+.table-odd-light tr:hover .form-check-input:not(:checked) {
+    border: solid 1px #e9e9e9 !important;
+}
+
+
 @keyframes animationBgDashboard {
     0% {
         background-position: 0 0;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FinancialInstitution;
 use App\Models\FinancialWallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,8 +45,14 @@ class FinancialWalletController extends Controller
      */
     public function create()
     {
+
+        // GET DATA
+        $institutions = FinancialInstitution::where('status', 1)->get();
+
         // RENDER VIEW
-        return view('pages.financial_wallets.create');
+        return view('pages.financial_wallets.create')->with([
+            'institutions' => $institutions,
+        ]);
     } 
 
     /**
@@ -100,6 +107,7 @@ class FinancialWalletController extends Controller
     {
         // GET ALL DATA
         $content = $this->repository->find($id);
+        $institutions = FinancialInstitution::where('status', 1)->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
@@ -107,6 +115,7 @@ class FinancialWalletController extends Controller
         // GENERATES DISPLAY WITH DATA
         return view('pages.financial_wallets.edit')->with([
             'content' => $content,
+            'institutions' => $institutions,
         ]);
     }
 
@@ -135,7 +144,7 @@ class FinancialWalletController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('financial.wallets.edit', $id)
+            ->route('financial.wallets.index')
             ->with('message', 'Carteira editada com sucesso.');
 
     }

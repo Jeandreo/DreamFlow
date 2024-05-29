@@ -19,6 +19,7 @@
 											<tr class="fw-bold fs-6 text-gray-800 px-7">
 												<th width="4%" class="pe-0 ps-5">ID</th>
 												<th>Nome</th>
+												<th>Preview</th>
 												<th>Instituição</th>
 												<th class="text-center">Status</th>
 												<th class="text-center" width="165px">
@@ -35,9 +36,12 @@
 													</span>
 												</td>
 												<td>
-													<a href="{{ route('financial.wallets.show', $content->id) }}" class="text-gray-800 text-hover-primary fs-6 fw-normal">
+													<a href="{{ route('financial.wallets.edit', $content->id) }}" class="text-gray-800 text-hover-primary fs-6 fw-normal">
 														{{ $content->name }}
 													</a>
+												</td>
+												<td>
+													<span class="badge py-2 fw-bold fs-8 px-3" style="background: {{ hex2rgb($content->color, 7) }}; color: {{ $content->color, 100 }}">{{ $content->name }}</span>
 												</td>
 												<td>
 													<span class="text-gray-700">

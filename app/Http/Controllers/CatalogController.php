@@ -135,7 +135,7 @@ class CatalogController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('catalogs.edit', $id)
+            ->route('catalogs.index')
             ->with('message', 'Catálogo editado com sucesso.');
 
     }
