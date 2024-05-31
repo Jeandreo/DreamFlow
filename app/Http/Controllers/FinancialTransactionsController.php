@@ -67,17 +67,16 @@ class FinancialTransactionsController extends Controller
 
     }
     
-    /**
-     * Display a listing of the resource.   
+   /**
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-    */
+     */
     public function processing(Request $request)
     {
-
         // BEGIN QUERY
         $query = DB::table('financial_transactions');
-
+        
         // JOIN IN CATEGORIES
         $query->leftJoin('financial_categories', function($join) {
             $join->on('financial_transactions.category_id', '=', 'financial_categories.id');
@@ -98,11 +97,12 @@ class FinancialTransactionsController extends Controller
             $join->on('financial_transactions.credit_card_id', '=', 'financial_credit_cards.id');
         });
 
-        // DATE SELECTED
+        // DATE BEGIN SELECTED
         if ($request->date_begin) {
             $query->whereDate('financial_transactions.date_venciment', '>=', $request->date_begin);
         }
 
+        // DATE END SELECTED
         if ($request->date_end) {
             $query->whereDate('financial_transactions.date_venciment', '<=', $request->date_end);
         }
@@ -123,12 +123,10 @@ class FinancialTransactionsController extends Controller
             $query->orWhere(function ($query) use ($request) {
                 $query->where('financial_categories.name', 'like', "%$request->searchBy%");
             });
-
         }
 
         // ORDER BY
         if ($request->order_by) {
-
             // ORDER & COLUMN
             $direction = $request->order[0]['dir'];
             $orderThis = $request->order_by;
@@ -139,68 +137,33 @@ class FinancialTransactionsController extends Controller
                 case 'name':
                     $column = 'financial_transactions.name';
                     break;
-                
                 case 'date':
                     $column = 'financial_transactions.date_venciment';
                     break;
-        
                 case 'value':
                     $column = 'financial_transactions.value';
                     break;
-    
                 case 'category_id':
                     $column = 'financial_transactions.category_id';
                     break;
-
                 case 'relationship':
                     $query->orderByRaw('CASE 
-                                            WHEN users.name IS NOT NULL THEN users.name
-                                            WHEN suppliers.name IS NOT NULL THEN suppliers.name
-                                            WHEN clients.name IS NOT NULL THEN clients.name
-                                            ELSE financial_transactions.relationship END ' . $direction);
+                        WHEN users.name IS NOT NULL THEN users.name
+                        WHEN suppliers.name IS NOT NULL THEN suppliers.name
+                        WHEN clients.name IS NOT NULL THEN clients.name
+                        ELSE financial_transactions.relationship END ' . $direction);
                     break;
-                            
                 default:
                     $column = 'financial_transactions.id';
                     break;
             }
             $query->orderBy($column, $direction);
-
         }
-        
-        // COUNT TOTAL RECORDS
-        $totalRecords = $query->select('financial_transactions.id')->count();
-
-
-
-
-        // DATE SELECTED
-        if ($request->date_begin) {
-            $query->whereDate('financial_transactions.date_venciment', '>=', $request->date_begin);
-        }
-
-        if ($request->date_end) {
-            $query->whereDate('financial_transactions.date_venciment', '<=', $request->date_end);
-        }
-
-        // Filtrar transações recorrentes
-        $recurringTransactions = DB::table('financial_transactions')
-            ->where('recurrent', 1)
-            ->get();
-
-
-        // Converta as datas para objetos Carbon
-        $dateBegin = Carbon::parse($request->date_begin);
-        $dateEnd = Carbon::parse($request->date_end);
-
-        // Calcule a diferença de meses
-        $monthsDifference = $dateBegin->diffInMonths($dateEnd);
-
-        dd($recurringTransactions, $monthsDifference);
 
         // ITENS PER PAGE AND PAGINATE
-        $pages = $query->paginate($request->per_page);
+        $query->paginate($request->per_page);
 
+        // SELECT DATA 
         $query->select(
             'financial_transactions.id              as id',
             'financial_transactions.name            as name',
@@ -208,6 +171,8 @@ class FinancialTransactionsController extends Controller
             'financial_transactions.value           as value',
             'financial_transactions.paid            as paid',
             'financial_transactions.wallet_id       as has_wallet',
+            'financial_transactions.recurrent       as recurrent',
+            'financial_transactions.hitching        as hitching',
             'financial_categories.name              as category',
             'financial_categories.category_id       as has_father',
             'financial_categories.color             as category_color',
@@ -215,75 +180,133 @@ class FinancialTransactionsController extends Controller
             'category_father.color                  as father_color',
             'financial_wallets.name                 as wallet_name',
             'financial_wallets.color                as wallet_color',
+            'financial_transactions.credit_card_id  as has_credit',
             'financial_credit_cards.name            as card_name',
         );
 
-        // MAKE COLUMNS
-        return FacadesDataTables::of($query)
-        ->addColumn('checked', function($row){
-            $html = "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3'>
-                        <input class='form-check-input' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) .">
-                    </div>";
-            return $html;
-        })
-        ->addColumn('name', function($row){
-            $html = "<span class='show'data-id='$row->id'>$row->name</span>";
-            return $html;
-        })
-        ->addColumn('category_id', function($row){
+        // EXECUTE THE QUERY TO GET THE RESULTS
+        $data = $query->get()->toArray();
 
-            // VERIFY IF HAS FATHER
-            $color = $row->has_father ? $row->father_color : $row->category_color;
+        // Obtém todas as transações recorrentes
+        $recurringTransactions = collect($data)->where('recurrent', true)->values();
 
-            $html = "<span class='d-flex align-items-center fs-6 fw-normal'>
-                        <div class='w-25px h-25px rounded-circle d-flex justify-content-center align-items-center me-2' style='background: $color;'>
-                            <i class='fa-solid fa-home fs-7 text-white'></i>
-                        </div>
-                        <span class='text-gray-600'>
-                        $row->category
-                        </span>
-                    </span>";
-            return $html;
-        })
-        ->addColumn('date', function($row){
-            $html = date('d/m/Y', strtotime($row->date));
-            return $html;
-        })
-        ->addColumn('value', function($row){
-            $class = $row->value < 0 ? 'text-danger' : 'text-success';
-            $html = "<span class='$class'>R$ " . number_format($row->value, 2, ',', '.') . "</span>";
-            return $html;
-        })
-        ->addColumn('wallet_credit', function($row){
+        // CONVERT TO CARBON
+        $dateBegin = Carbon::parse($request->date_begin);
+        $dateEnd = Carbon::parse($request->date_end);
 
-            // SE FOR CARTEIRA
-            if($row->has_wallet){
-                $html = "
+        // GET DIFERENCE
+        $monthsDifference = $dateBegin->diffInMonths($dateEnd);
+
+        // Adicione os dados de $additionalData diretamente ao array $data
+        foreach ($recurringTransactions as $transaction) {
+
+            // VERIFY CATEGORY
+            $hasFather = $fatherColor = false;
+            if ($transaction->has_father) {
+                $hasFather = true;
+                $fatherColor = $transaction->father_color;
+            }
+
+            // LOOP IN DIFFERENCE
+            for ($i = 1; $i <= $monthsDifference; $i++) {
+
+                // GET DATE AND ADD MONTHS BASED ON LOOP ITERATION
+                $newDate = Carbon::parse($transaction->date)->addMonths($i);
+
+                // CONFIRM DATE BETWEEN DATE SELECTED
+                if ($newDate->between($dateBegin, $dateEnd)) {
+
+                    // CHECK IF THERE IS ALREADY A TRANSACTION WITH THE SAME HITCHING IN THE SAME MONTH
+                    $existingTransaction = collect($data)->first(function ($item) use ($transaction, $newDate) {
+                        return $item->hitching == $transaction->hitching && Carbon::parse($item->date)->isSameMonth($newDate);
+                    });
+
+                    // IF NO EXISTING TRANSACTION, ADD NEW ONE
+                    if (!$existingTransaction) {
+                        // MAKE OBJECT
+                        $additionalData = (object) [
+                            'id' => null,
+                            'name' => $transaction->name,
+                            'date' => $newDate->format('Y-m-d'),
+                            'value' => $transaction->value,
+                            'paid' => 0,
+                            'has_wallet' => $transaction->has_wallet,
+                            'hitching' => $transaction->hitching,
+                            'category' => $transaction->category,
+                            'has_father' => $hasFather,
+                            'category_color' => $transaction->category_color,
+                            'father_color' => $fatherColor,
+                            'wallet_name' => $transaction->wallet_name,
+                            'wallet_color' => $transaction->wallet_color,
+                            'has_credit' => $transaction->has_credit,
+                            'card_name' => $transaction->card_name,
+                        ];
+
+                        // INSERT IN DATA
+                        $data[] = $additionalData;
+                    }
+                }
+            }
+        }
+
+        // COUNT TOTAL RECORDS
+        $totalRecords = count($data);
+
+        // OBTEM TOTAL
+        $totalValue = collect($data)->sum('value');
+
+        // Configurar as colunas usando a função editColumn
+        return FacadesDataTables::of($data)
+            ->editColumn('checked', function($row) {
+                return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3'>
+                            <input class='form-check-input' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
+                        </div>";
+            })
+            ->editColumn('name', function($row) {
+                return "<span data-search='$row->name' class='show' data-id='$row->id'>$row->name</span>";
+            })
+            ->editColumn('category_id', function($row) {
+                $color = $row->has_father ? $row->father_color : $row->category_color;
+                return "<span class='d-flex align-items-center fs-6 fw-normal'>
+                            <div class='w-25px h-25px rounded-circle d-flex justify-content-center align-items-center me-2' style='background: $color;'>
+                                <i class='fa-solid fa-home fs-7 text-white'></i>
+                            </div>
+                            <span class='text-gray-600'>$row->category</span>
+                        </span>";
+            })
+            ->editColumn('date', function($row) {
+                return date('d/m/Y', strtotime($row->date));
+            })
+            ->editColumn('value', function($row) {
+                $class = $row->value < 0 ? 'text-danger' : 'text-success';
+                return "<span class='$class'>R$ " . number_format($row->value, 2, ',', '.') . "</span>";
+            })
+            ->editColumn('wallet_credit', function($row) {
+                if ($row->id && $row->has_wallet) {
+                    return "
                     <span class='badge py-2 fw-bold fs-8 px-3' style='background: " . hex2rgb($row->wallet_color, 7) . "; color: " . $row->wallet_color . "'>
                         <i class='fa-solid fa-wallet fs-9 me-1' style='color: " . hex2rgb($row->wallet_color, 70) . "'></i>
                         $row->wallet_name
                     </span>";
-            } else {
-                $html = "<span class='badge badge-light-danger py-2 fw-bold fs-8 px-3'>
-                            <div class='d-flex align-items-center'>
-                                <i class='fa-solid fa-credit-card text-danger fs-9 me-1'></i>
-                                <span>$row->card_name</span>
-                            </div>
-                        </span>";
-            }
-
-            return $html;
-        })
-        ->addColumn('actions', function($row){
-            $html = "<a href='#' class='btn btn-light btn-active-light-primary btn-sm me-3'>
-                        Ações
-                    </a>";
-            return $html;
-        })
-        ->rawColumns(['checked', 'name', 'category_id', 'date', 'value', 'wallet_credit', 'actions'])
-        ->setTotalRecords($totalRecords)
-        ->setFilteredRecords($pages->total())
-        ->toJson();
-
+                } elseif($row->id && $row->has_credit) {
+                    return "<span class='badge badge-light-danger py-2 fw-bold fs-8 px-3'>
+                                <div class='d-flex align-items-center'>
+                                    <i class='fa-solid fa-credit-card text-danger fs-9 me-1'></i>
+                                    <span>$row->card_name</span>
+                                </div>
+                            </span>";
+                } else {
+                    return '<span class="badge badge-light">Não informado</span>';
+                }
+            })
+            ->editColumn('actions', function($row) {
+                return "<a href='#' class='btn btn-light btn-active-light-primary btn-sm me-3'>Ações</a>";
+            })
+            ->rawColumns(['checked', 'name', 'category_id', 'date', 'value', 'wallet_credit', 'actions'])
+            ->setTotalRecords($totalRecords)
+            ->setFilteredRecords($totalRecords)
+            ->with(['totalSum' => $totalValue])
+            ->toJson();
     }
 }
+

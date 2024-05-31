@@ -770,42 +770,27 @@ class DatabaseSeeder extends Seeder
         ]);
 
         FinancialCategory::create([
-            'name' => 'Salário',
-            'type' => 'revenue',
-            'color' => '#a4d100',
-            'icon' => 'fa-solid fa-sack-dollar',
-            'created_by' => 1,
-        ]);
-
-        FinancialCategory::create([
-            'name' => 'Despesas de casa',
+            'name' => 'Despesas de Casa',
             'type' => 'expense',
             'color' => '#911901',
             'icon' => 'fa-solid fa-sack-dollar',
-            'created_by' => 1,
-        ]);
-
-        FinancialCategory::create([
-            'name' => 'Luz',
-            'type' => 'expense',
-            'category_id' => 2,
-            'color' => '#cf2200',
-            'created_by' => 1,
-        ]);
-
-        FinancialCategory::create([
-            'name' => 'Investimentos',
-            'type' => 'revenue',
-            'color' => '#3a9d9a',
-            'icon' => 'fa-solid fa-chart-line',
             'created_by' => 1,
         ]);
         
         FinancialCategory::create([
             'name' => 'Aluguel',
             'type' => 'expense',
+            'category_id' => 1, // Despesas de Casa
             'color' => '#6b6b6b',
             'icon' => 'fa-solid fa-home',
+            'created_by' => 1,
+        ]);
+        
+        FinancialCategory::create([
+            'name' => 'Entreterimento',
+            'type' => 'expense',
+            'category_id' => 1, // Despesas de Casa
+            'color' => '#cf2200',
             'created_by' => 1,
         ]);
         
@@ -820,8 +805,16 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Combustível',
             'type' => 'expense',
-            'category_id' => 5,
+            'category_id' => 4, // Transporte
             'color' => '#ffc107',
+            'created_by' => 1,
+        ]);
+        
+        FinancialCategory::create([
+            'name' => 'Manutenção do Carro',
+            'type' => 'expense',
+            'category_id' => 4, // Transporte
+            'color' => '#28a745',
             'created_by' => 1,
         ]);
         
@@ -836,15 +829,15 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Supermercado',
             'type' => 'expense',
-            'category_id' => 6,
+            'category_id' => 7, // Alimentação
             'color' => '#6610f2',
             'created_by' => 1,
         ]);
         
         FinancialCategory::create([
             'name' => 'Lanche',
-            'category_id' => 6,
             'type' => 'expense',
+            'category_id' => 7, // Alimentação
             'color' => '#6610f2',
             'created_by' => 1,
         ]);
@@ -852,10 +845,44 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Viagem',
             'type' => 'expense',
-            'category_id' => 6,
             'color' => '#6610f2',
+            'icon' => 'fa-solid fa-plane',
             'created_by' => 1,
         ]);
+        
+        FinancialCategory::create([
+            'name' => 'Hospedagem',
+            'type' => 'expense',
+            'category_id' => 10, // Viagem
+            'color' => '#17a2b8',
+            'created_by' => 1,
+        ]);
+        
+        FinancialCategory::create([
+            'name' => 'Passagens',
+            'type' => 'expense',
+            'category_id' => 10, // Viagem
+            'color' => '#ffc107',
+            'created_by' => 1,
+        ]);
+
+
+        FinancialCategory::create([
+            'name' => 'Salário',
+            'type' => 'revenue',
+            'color' => '#a4d100',
+            'icon' => 'fa-solid fa-sack-dollar',
+            'created_by' => 1,
+        ]);
+
+        FinancialCategory::create([
+            'name' => 'Investimentos',
+            'type' => 'revenue',
+            'color' => '#3a9d9a',
+            'icon' => 'fa-solid fa-chart-line',
+            'created_by' => 1,
+        ]);
+        
 
         FinancialCreditCard::create([
             'name' => 'C&A',
@@ -869,19 +896,19 @@ class DatabaseSeeder extends Seeder
         ]);
         
 
-        FinancialTransactions::create([
-            'wallet_id' => 1,
-            'category_id' => 2,
-            'name' => 'Mercado',
-            'value' => 10,
-            'date_venciment' => now(),
-            'created_by' => 1,
-        ]);
+        // FinancialTransactions::create([
+        //     'wallet_id' => 1,
+        //     'category_id' => 8,
+        //     'name' => 'Mercado',
+        //     'value' => 10,
+        //     'date_venciment' => now(),
+        //     'created_by' => 1,
+        // ]);
         
 
         FinancialTransactions::create([
             'wallet_id' => 1,
-            'category_id' => 9,
+            'category_id' => 3,
             'name' => 'Netflix',
             'recurrent' => true,
             'value' => 10,
@@ -891,7 +918,7 @@ class DatabaseSeeder extends Seeder
 
         FinancialTransactions::create([
             'wallet_id' => 1,
-            'category_id' => 9,
+            'category_id' => 3,
             'name' => 'TaekWondo',
             'recurrent' => true,
             'value' => 2,

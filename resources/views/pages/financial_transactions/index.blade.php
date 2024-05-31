@@ -158,13 +158,10 @@
     var dateBegin = $('.date-begin').val();
     var dateEnd = $('.date-end').val();
 
-    console.log(dateBegin, dateEnd);
-
     // ON CHANGE
     $('.input-date-transaction').change(function() {
         // RELOAD WITH PARAMETERS
         table.DataTable().ajax.reload();
-
     });
 
     // INPUT OF SEARCH
@@ -237,14 +234,23 @@
         },
     };
 
+    // Adicione um ouvinte para o evento 'xhr.dt'
+    table.on('xhr.dt', function (e, settings, json) {
+        // Os dados retornados estão disponíveis em 'json'
+        console.log('Tabela atualizada', json);
+    });
+
     // MAKE TABLE
     table.DataTable(dataTableOptions);
 
-    // ON KEY UP
-    searchInput.on('keyup', function () {
-        table.DataTable().ajax.reload();
-    });
+    let timeout;
 
+    searchInput.on('keyup', function() {
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+            table.DataTable().ajax.reload();
+        }, 200);
+    });
 
     
     // REGISTER TRANSACTION
@@ -276,6 +282,7 @@
                 description: description,
             },
             success: function(response){
+
 
                 // HIDE MODAL
                 $('#modal_trasaction').modal('hide');
