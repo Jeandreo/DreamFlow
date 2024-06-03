@@ -28,7 +28,7 @@ class FinancialCategoryController extends Controller
     {
 
         // GET ALL DATA
-        $contents = $this->repository->orderBy('name', 'ASC')->whereNull('category_id')->where('created_by', Auth::id())->get()->groupBy('type');
+        $contents = $this->repository->orderBy('name', 'ASC')->whereNull('father_id')->where('created_by', Auth::id())->get()->groupBy('type');
 
         // RETURN VIEW WITH DATA
         return view('pages.financial_categories.index')->with([
@@ -46,7 +46,7 @@ class FinancialCategoryController extends Controller
     {
 
         // GET FORM DATA
-        $categories = $this->repository->where('status', 1)->whereNull('category_id')->get();
+        $categories = $this->repository->where('status', 1)->whereNull('father_id')->get();
 
         // RENDER VIEW
         return view('pages.financial_categories.create')->with([
@@ -106,7 +106,7 @@ class FinancialCategoryController extends Controller
     {
         // GET ALL DATA
         $content = $this->repository->find($id);
-        $categories = $this->repository->where('status', 1)->whereNull('category_id')->get();
+        $categories = $this->repository->where('status', 1)->whereNull('father_id')->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();

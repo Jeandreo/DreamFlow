@@ -58,13 +58,42 @@ class FinancialTransactionsController extends Controller
 
         // FORMAT DATA
         $data['value'] = toDecimal($data['value']);
-        
+
+        // IF EXPENSE
+        if($data['type'] == 'expense'){
+            $data['value'] = -$data['value'];
+        }
+
         // SEND DATA
         $this->repository->create($data);
 
         // REDIRECT AND MESSAGES
         return response()->json('Sucess', 200);
 
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        // GET ALL DATA
+        $content = $this->repository->find($id);
+        $wallets = FinancialWallet::where('status', 1)->get();
+        $categories = FinancialCategory::where('status', 1)->get();
+
+        // VERIFY IF EXISTS
+        if(!$content) return redirect()->back();
+
+        // GENERATES DISPLAY WITH DATA
+        return view('pages.financial_transactions._form')->with([
+            'content' => $content,
+            'wallets' => $wallets,
+            'categories' => $categories,
+        ]);
     }
     
    /**
@@ -84,7 +113,7 @@ class FinancialTransactionsController extends Controller
 
         // JOIN FIND FATHER OF CATEGORY
         $query->leftJoin('financial_categories as category_father', function($join) {
-            $join->on('category_father.id', '=', 'financial_categories.category_id');
+            $join->on('category_father.id', '=', 'financial_categories.father_id');
         });
 
         // JOIN IN WALLETS
@@ -174,7 +203,7 @@ class FinancialTransactionsController extends Controller
             'financial_transactions.recurrent       as recurrent',
             'financial_transactions.hitching        as hitching',
             'financial_categories.name              as category',
-            'financial_categories.category_id       as has_father',
+            'financial_categories.father_id         as has_father',
             'financial_categories.color             as category_color',
             'category_father.name                   as father_name',
             'category_father.color                  as father_color',
@@ -188,27 +217,26 @@ class FinancialTransactionsController extends Controller
         $data = $query->get()->toArray();
 
         // Obtém todas as transações recorrentes
-        $recurringTransactions = collect($data)->where('recurrent', true)->values();
+        $recurringTransactions = FinancialTransactions::where('recurrent', true)->get()->values();
+
+        // Adicione os dados de $additionalData diretamente ao array $data
+        foreach ($recurringTransactions as $transaction) {
 
         // CONVERT TO CARBON
-        $dateBegin = Carbon::parse($request->date_begin);
+        $dateBegin = Carbon::parse($transaction->date_venciment);
         $dateEnd = Carbon::parse($request->date_end);
 
         // GET DIFERENCE
         $monthsDifference = $dateBegin->diffInMonths($dateEnd);
 
-        // Adicione os dados de $additionalData diretamente ao array $data
-        foreach ($recurringTransactions as $transaction) {
-
             // VERIFY CATEGORY
-            $hasFather = $fatherColor = false;
+            $hasFather = false;
             if ($transaction->has_father) {
                 $hasFather = true;
-                $fatherColor = $transaction->father_color;
             }
 
             // LOOP IN DIFFERENCE
-            for ($i = 1; $i <= $monthsDifference; $i++) {
+            for ($i = 0; $i <= $monthsDifference; $i++) {
 
                 // GET DATE AND ADD MONTHS BASED ON LOOP ITERATION
                 $newDate = Carbon::parse($transaction->date)->addMonths($i);
@@ -230,15 +258,15 @@ class FinancialTransactionsController extends Controller
                             'date' => $newDate->format('Y-m-d'),
                             'value' => $transaction->value,
                             'paid' => 0,
-                            'has_wallet' => $transaction->has_wallet,
+                            'has_wallet' => false,
                             'hitching' => $transaction->hitching,
-                            'category' => $transaction->category,
+                            'category' => $transaction->category->name,
                             'has_father' => $hasFather,
-                            'category_color' => $transaction->category_color,
-                            'father_color' => $fatherColor,
+                            'category_color' => $transaction->category->color,
+                            'father_color' => $transaction->category->father->color ?? null,
                             'wallet_name' => $transaction->wallet_name,
-                            'wallet_color' => $transaction->wallet_color,
-                            'has_credit' => $transaction->has_credit,
+                            'wallet_color' => null,
+                            'has_credit' => false,
                             'card_name' => $transaction->card_name,
                         ];
 
@@ -247,6 +275,19 @@ class FinancialTransactionsController extends Controller
                     }
                 }
             }
+        }
+
+        // FILTER DATA BASED ON DATE AGAIN
+        if ($request->date_begin) {
+            $data = array_filter($data, function ($item) use ($request) {
+                return Carbon::parse($item->date)->gte($request->date_begin);
+            });
+        }
+
+        if ($request->date_end) {
+            $data = array_filter($data, function ($item) use ($request) {
+                return Carbon::parse($item->date)->lte($request->date_end);
+            });
         }
 
         // COUNT TOTAL RECORDS

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('financial_categories', function (Blueprint $table) {
             $table->id();
-            $table->integer('category_id')->nullable();
+            $table->integer('father_id')->nullable();
             $table->string('name');
             $table->enum('type', ['expense', 'revenue']);
             $table->string('color')->default('#009ef7');

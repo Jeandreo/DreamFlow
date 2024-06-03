@@ -780,7 +780,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Aluguel',
             'type' => 'expense',
-            'category_id' => 1, // Despesas de Casa
+            'father_id' => 1, // Despesas de Casa
             'color' => '#6b6b6b',
             'icon' => 'fa-solid fa-home',
             'created_by' => 1,
@@ -789,7 +789,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Entreterimento',
             'type' => 'expense',
-            'category_id' => 1, // Despesas de Casa
+            'father_id' => 1, // Despesas de Casa
             'color' => '#cf2200',
             'created_by' => 1,
         ]);
@@ -805,7 +805,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Combustível',
             'type' => 'expense',
-            'category_id' => 4, // Transporte
+            'father_id' => 4, // Transporte
             'color' => '#ffc107',
             'created_by' => 1,
         ]);
@@ -813,7 +813,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Manutenção do Carro',
             'type' => 'expense',
-            'category_id' => 4, // Transporte
+            'father_id' => 4, // Transporte
             'color' => '#28a745',
             'created_by' => 1,
         ]);
@@ -829,7 +829,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Supermercado',
             'type' => 'expense',
-            'category_id' => 7, // Alimentação
+            'father_id' => 7, // Alimentação
             'color' => '#6610f2',
             'created_by' => 1,
         ]);
@@ -837,7 +837,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Lanche',
             'type' => 'expense',
-            'category_id' => 7, // Alimentação
+            'father_id' => 7, // Alimentação
             'color' => '#6610f2',
             'created_by' => 1,
         ]);
@@ -853,7 +853,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Hospedagem',
             'type' => 'expense',
-            'category_id' => 10, // Viagem
+            'father_id' => 10, // Viagem
             'color' => '#17a2b8',
             'created_by' => 1,
         ]);
@@ -861,7 +861,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Passagens',
             'type' => 'expense',
-            'category_id' => 10, // Viagem
+            'father_id' => 10, // Viagem
             'color' => '#ffc107',
             'created_by' => 1,
         ]);
@@ -906,25 +906,25 @@ class DatabaseSeeder extends Seeder
         // ]);
         
 
-        FinancialTransactions::create([
-            'wallet_id' => 1,
-            'category_id' => 3,
-            'name' => 'Netflix',
-            'recurrent' => true,
-            'value' => 10,
-            'date_venciment' => now(),
-            'created_by' => 1,
-        ]);
+        // FinancialTransactions::create([
+        //     'wallet_id' => 1,
+        //     'category_id' => 3,
+        //     'name' => 'Netflix',
+        //     'recurrent' => true,
+        //     'value' => 10,
+        //     'date_venciment' => now(),
+        //     'created_by' => 1,
+        // ]);
 
-        FinancialTransactions::create([
-            'wallet_id' => 1,
-            'category_id' => 3,
-            'name' => 'TaekWondo',
-            'recurrent' => true,
-            'value' => 2,
-            'date_venciment' => now(),
-            'created_by' => 1,
-        ]);
+        // FinancialTransactions::create([
+        //     'wallet_id' => 1,
+        //     'category_id' => 3,
+        //     'name' => 'TaekWondo',
+        //     'recurrent' => true,
+        //     'value' => 2,
+        //     'date_venciment' => now(),
+        //     'created_by' => 1,
+        // ]);
 
         \App\Models\User::factory(1)->create();
         // \App\Models\FinancialTransactions::factory(10)->create();

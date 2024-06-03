@@ -17,7 +17,7 @@ class FinancialCategory extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'category_id',
+        'father_id',
         'name',
         'type',
         'color',
@@ -33,7 +33,7 @@ class FinancialCategory extends Model
      */
     public function childrens(): HasMany
     {
-        return $this->hasMany(FinancialCategory::class, 'category_id', 'id');
+        return $this->hasMany(FinancialCategory::class, 'father_id', 'id');
     }
 
     /**
@@ -41,6 +41,6 @@ class FinancialCategory extends Model
      */
     public function father(): HasOne
     {
-        return $this->hasOne(FinancialCategory::class, 'id', 'category_id');
+        return $this->hasOne(FinancialCategory::class, 'id', 'father_id');
     }
 }

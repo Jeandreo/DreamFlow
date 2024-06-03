@@ -66,6 +66,8 @@ Route::middleware(['auth'])->group(function () {
             Route::name('financial.transactions.')->group(function () {
                 Route::get('/', [FinancialTransactionsController::class, 'index'])->name('index');
                 Route::post('/adicionar', [FinancialTransactionsController::class, 'store'])->name('store');
+                Route::get('/editar/{id}', [FinancialTransactionsController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [FinancialTransactionsController::class, 'update'])->name('update');
                 Route::get('/processar', [FinancialTransactionsController::class, 'processing'])->name('processing');
             });
         });

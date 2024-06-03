@@ -22,6 +22,7 @@ class FinancialTransactions extends Model
         'name',
         'hitching',
         'recurrent',
+        'recurrence',
         'value',
         'value_paid',
         'date_venciment',

@@ -97,52 +97,43 @@
             <input type="hidden" name="type" value="expense">
             <div class="modal-content rounded">
                 <div class="modal-header">
-                    <h3 class="modal-title">Adicionar Despesa</h3>
+                    <h3 class="modal-title">Adicionar Trasação</h3>
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                         <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                     </div>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-6 mb-5">
-                            <label class="required form-label fw-bold">Descrição:</label>
-                            <input type="text" class="form-control form-control-solid" placeholder="Descreva a compra..." name="name" value="{{ $content->name ?? old('name') }}" required/>
-                        </div>
-                        <div class="col-6 mb-5">
-                            <label class="required form-label fw-bold">Valor:</label>
-                            <input type="text" class="form-control form-control-solid input-money" placeholder="R$ 0,00" name="value" value="{{ $content->value ?? old('value') }}" required/>
-                        </div>
-                        <div class="col-4 mb-5">
-                            <label class="required form-label fw-bold">Data:</label>
-                            <input type="text" class="form-control form-control-solid flatpickr" placeholder="00/00/0000" name="date_venciment" value="{{ $content->venciment ?? date('Y-m-d') }}" required/>
-                        </div>
-                        <div class="col-4 mb-5">
-                            <label class="required form-label fw-bold">Conta/Cartão:</label>
-                            <select class="form-select form-select-solid" name="wallet_id" data-control="select2" data-placeholder="Selecione" required>
-                                <option value=""></option>
-                                @foreach ($wallets as $wallet)
-                                <option value="{{ $wallet->id }}" @if(isset($content) && $content->wallet_id == $wallet->id) selected @endif>{{ $wallet->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-4 mb-5">
-                            <label class="required form-label fw-bold">Categoria:</label>
-                            <select class="form-select form-select-solid" name="category_id" data-control="select2" data-placeholder="Selecione" required>
-                                <option value=""></option>
-                                @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" @if(isset($content) && $content->category_id == $category->id) selected @endif>{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-12 mb-5">
-                            <label class="form-label fw-bold">Descrição:</label>
-                            <textarea name="description" class="form-control form-control-solid" placeholder="Alguma observação sobre este cartão?">@if(isset($content->description)){{$content->description}}@endif</textarea>
-                        </div>
-                    </div>
+                    @include('pages.financial_transactions._form')
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
                     <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="edit_trasaction">
+    <div class="modal-dialog modal-dialog-centered rounded mw-750px">
+        <form action="" method="POST" enctype="multipart/form-data" id="update-transactions">
+            @csrf
+            <input type="hidden" name="type" value="expense">
+            <div class="modal-content rounded">
+                <div class="modal-header">
+                    <h3 class="modal-title">Editar Transação</h3>
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                </div>
+                <div class="modal-body" id="load-transaction">
+                    {{-- LOAD TRANSACTION HERE --}}
+                    {{-- LOAD TRANSACTION HERE --}}
+                    {{-- LOAD TRANSACTION HERE --}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Atualizar</button>
                 </div>
             </div>
         </form>
@@ -243,8 +234,10 @@
     // MAKE TABLE
     table.DataTable(dataTableOptions);
 
+    // TIMER
     let timeout;
 
+    // ON END SEARCH
     searchInput.on('keyup', function() {
         clearTimeout(timeout);
         timeout = setTimeout(function() {
@@ -259,30 +252,23 @@
         e.preventDefault();
 
         // GET VALUES
-        var form = $(this)
-        var name  = form.find('[name="name"]').val();
-        var value = form.find('[name="value"]').val();
-        var date  = form.find('[name="date_venciment"]').val();
-        var wallet = form.find('[name="wallet_id"]').val();
-        var category = form.find('[name="category_id"]').val();
-        var description = form.find('[name="description"]').val();
+        var form = $(this);
+        var formData = {};
+
+        form.find('input, select, textarea').each(function() {
+            var input = $(this);
+            var name = input.attr('name');
+            var value = input.val();
+            formData[name] = value;
+        });
 
         // AJAX
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:'POST',
             url: "{{ route('financial.transactions.store') }}",
-            data: {
-                _token: @json(csrf_token()), 
-                name: name, 
-                value: value, 
-                date_venciment: date,
-                wallet_id: wallet,
-                category_id: category,
-                description: description,
-            },
+            data: formData,
             success: function(response){
-
 
                 // HIDE MODAL
                 $('#modal_trasaction').modal('hide');
@@ -299,8 +285,28 @@
         
         // GET ID OF TRANSACTIONS
         var id = $(this).find('.show').data('id');
+
+        // AJAX
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type:'GET',
+            url: "{{ route('financial.transactions.edit', '') }}/" + id,
+            success: function(response){
+
+                // REPLACE CONTENT
+                $('#load-transaction').html(response);
+
+                // RELOAD SELECTS
+                $('#load-transaction select').select2({
+                    dropdownParent: $('#edit_trasaction')
+                });
+
+                // HIDE MODAL
+                $('#edit_trasaction').modal('show');
+
+            }
+        });
         
-        alert('Axooo ' + id);
     });
 
     // Inicia Flatpicker
