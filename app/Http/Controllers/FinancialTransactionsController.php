@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FinancialCategory;
+use App\Models\FinancialCreditCard;
 use App\Models\FinancialTransactions;
 use App\Models\FinancialWallet;
 use Carbon\Carbon;
@@ -33,9 +34,11 @@ class FinancialTransactionsController extends Controller
 
         // GET DATA
         $wallets = FinancialWallet::where('status', 1)->get();
+        $credits = FinancialCreditCard::where('status', 1)->get();
         $categories = FinancialCategory::where('status', 1)->get();
         return view('pages.financial_transactions.index')->with([
             'wallets' => $wallets,
+            'credits' => $credits,
             'categories' => $categories,
         ]);
 
@@ -64,11 +67,74 @@ class FinancialTransactionsController extends Controller
             $data['value'] = -$data['value'];
         }
 
+        // GET METHOD
+        $method = explode('_', $data['wallet_or_credit']);
+
+        // IF CREDIT
+        if($method[0] == 'credit'){
+            $data['credit_card_id'] = $method[1];
+        } else {
+            $data['wallet_id'] = $method[1];
+        }
+
         // SEND DATA
         $this->repository->create($data);
 
         // REDIRECT AND MESSAGES
-        return response()->json('Sucess', 200);
+        return response()->json('Transaction created with success', 200);
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+
+        // VERIFY IF EXISTS
+        if(!$content = $this->repository->find($id))
+        return redirect()->back();
+
+        // GET FORM DATA
+        $data = $request->all();
+
+        // FORMAT DATA
+        $data['value'] = toDecimal($data['value']);
+
+        // IF EXPENSE
+        if($data['type'] == 'expense'){
+            $data['value'] = -$data['value'];
+        }
+
+        // GET METHOD
+        $method = explode('_', $data['wallet_or_credit']);
+
+        // IF CREDIT
+        if($method[0] == 'credit'){
+            $data['wallet_id'] = null;
+            $data['credit_card_id'] = $method[1];
+        } else {
+            $data['wallet_id'] = $method[1];
+            $data['credit_card_id'] = null;
+        }
+
+        // UPDATE OR MAKE NEW
+        if($request->preview == 'false'){
+            // STORING NEW DATA
+            $data['updated_by'] = Auth::id();
+            $content->update($data);
+        } else {
+            // STORING NEW DATA
+            $data['created_by'] = Auth::id();
+            $content->create($data);
+        }
+
+        // REDIRECT AND MESSAGES
+        return response()->json('Transaction updated with success', 200);
 
     }
 
@@ -83,6 +149,7 @@ class FinancialTransactionsController extends Controller
         // GET ALL DATA
         $content = $this->repository->find($id);
         $wallets = FinancialWallet::where('status', 1)->get();
+        $credits = FinancialCreditCard::where('status', 1)->get();
         $categories = FinancialCategory::where('status', 1)->get();
 
         // VERIFY IF EXISTS
@@ -92,8 +159,49 @@ class FinancialTransactionsController extends Controller
         return view('pages.financial_transactions._form')->with([
             'content' => $content,
             'wallets' => $wallets,
+            'credits' => $credits,
             'categories' => $categories,
         ]);
+    }
+
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function checked(Request $request)
+    {
+
+        // VERIFY IF EXISTS
+        if(!$content = $this->repository->find($request->id))
+        return redirect()->back();
+
+        // GET FORM DATA
+        $data = $content->toArray();
+
+        // FORMAT CHECKED
+        $data['paid'] = $request->paid == 'true' ? true : false;
+
+        // UPDATE OR MAKE NEW
+        if($request->preview == 'false'){
+            // STORING NEW DATA
+            $data['updated_by'] = Auth::id();
+            $content->update($data);
+        } else {
+            // STORING NEW DATA
+            $data['date_venciment'] = $request->date;
+            $data['updated_by'] = null;
+            $data['created_by'] = Auth::id();
+            $content->create($data);
+        }
+
+        // REDIRECT AND MESSAGES
+        return response()->json('Transaction updated with success', 200);
+
     }
     
    /**
@@ -253,7 +361,7 @@ class FinancialTransactionsController extends Controller
                     if (!$existingTransaction) {
                         // MAKE OBJECT
                         $additionalData = (object) [
-                            'id' => null,
+                            'id' => $transaction->id,
                             'name' => $transaction->name,
                             'date' => $newDate->format('Y-m-d'),
                             'value' => $transaction->value,
@@ -261,6 +369,7 @@ class FinancialTransactionsController extends Controller
                             'has_wallet' => false,
                             'hitching' => $transaction->hitching,
                             'category' => $transaction->category->name,
+                            'recurrent' => true,
                             'has_father' => $hasFather,
                             'category_color' => $transaction->category->color,
                             'father_color' => $transaction->category->father->color ?? null,
@@ -268,6 +377,7 @@ class FinancialTransactionsController extends Controller
                             'wallet_color' => null,
                             'has_credit' => false,
                             'card_name' => $transaction->card_name,
+                            'preview' => true,
                         ];
 
                         // INSERT IN DATA
@@ -299,12 +409,17 @@ class FinancialTransactionsController extends Controller
         // Configurar as colunas usando a função editColumn
         return FacadesDataTables::of($data)
             ->editColumn('checked', function($row) {
-                return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3'>
-                            <input class='form-check-input' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
+                return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
+                            <input class='form-check-input cursor-pointer' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
                         </div>";
             })
             ->editColumn('name', function($row) {
-                return "<span data-search='$row->name' class='show' data-id='$row->id'>$row->name</span>";
+                $isPreview = isset($row->preview) ? 'true' : 'false';
+                $recurrent = $row->recurrent ? '<i class="fa-solid fa-retweet '. (isset($row->preview) ? 'text-danger' : 'text-primary') .'"></i>' : '<span></span>';
+                $date = date('Y-m-d', strtotime($row->date));
+                return "<span data-search='$row->name' class='show' data-id='$row->id' data-preview='$isPreview' data-date='$date'>
+                    $row->name $recurrent
+                </span>";
             })
             ->editColumn('category_id', function($row) {
                 $color = $row->has_father ? $row->father_color : $row->category_color;

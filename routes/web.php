@@ -69,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/editar/{id}', [FinancialTransactionsController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [FinancialTransactionsController::class, 'update'])->name('update');
                 Route::get('/processar', [FinancialTransactionsController::class, 'processing'])->name('processing');
+                Route::post('/concluida', [FinancialTransactionsController::class, 'checked'])->name('checked');
             });
         });
 

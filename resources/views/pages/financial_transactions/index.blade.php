@@ -76,7 +76,7 @@
                                         <th class="text-end">Ações</th>
                                     </tr>
                                 </thead>
-                                <tbody class="table-pd text-gray-600 fw-semibold">
+                                <tbody class="table-pd text-gray-600 fw-semibold cursor-pointer">
                                     {{-- RESULTS HERE --}}
                                     {{-- RESULTS HERE --}}
                                     {{-- RESULTS HERE --}}
@@ -92,9 +92,8 @@
 
 <div class="modal fade" tabindex="-1" id="modal_trasaction">
     <div class="modal-dialog modal-dialog-centered rounded mw-750px">
-        <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data" id="send-transactions">
+        <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data" id="create-transaction">
             @csrf
-            <input type="hidden" name="type" value="expense">
             <div class="modal-content rounded">
                 <div class="modal-header">
                     <h3 class="modal-title">Adicionar Trasação</h3>
@@ -116,9 +115,9 @@
 
 <div class="modal fade" tabindex="-1" id="edit_trasaction">
     <div class="modal-dialog modal-dialog-centered rounded mw-750px">
-        <form action="" method="POST" enctype="multipart/form-data" id="update-transactions">
+        <form action="" method="POST" enctype="multipart/form-data" id="update-transaction">
             @csrf
-            <input type="hidden" name="type" value="expense">
+            @method('PUT')
             <div class="modal-content rounded">
                 <div class="modal-header">
                     <h3 class="modal-title">Editar Transação</h3>
@@ -212,10 +211,6 @@
             ">" ,
         columnDefs: [
             {   
-                targets: 2,
-                className: 'cursor-pointer',
-            },
-            {   
                 targets: 6,
                 className: 'text-end',
             },
@@ -227,8 +222,7 @@
 
     // Adicione um ouvinte para o evento 'xhr.dt'
     table.on('xhr.dt', function (e, settings, json) {
-        // Os dados retornados estão disponíveis em 'json'
-        console.log('Tabela atualizada', json);
+        // console.log('Tabela atualizada', json);
     });
 
     // MAKE TABLE
@@ -247,7 +241,7 @@
 
     
     // REGISTER TRANSACTION
-    $('#send-transactions').submit(function(e){
+    $('#create-transaction').submit(function(e){
 
         e.preventDefault();
 
@@ -280,18 +274,75 @@
         });
 
     });
-
-    $(document).on('click', 'td:nth-child(3)', function(){
         
-        // GET ID OF TRANSACTIONS
-        var id = $(this).find('.show').data('id');
+    // UPDATE TRANSACTION
+    $('#update-transaction').submit(function(e){
 
+        e.preventDefault();
+
+        // GET VALUES
+        var form = $(this);
+        var formData = {};
+        
+        // GET URL
+        var url = $(this).attr('action');
+
+        form.find('input, select, textarea').each(function() {
+            var input = $(this);
+            var name = input.attr('name');
+            var value = input.val();
+            formData[name] = value;
+        });
+
+        // AJAX
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type:'PUT',
+            url: url,
+            data: formData,
+            success: function(response){
+
+                // HIDE MODAL
+                $('#edit_trasaction').modal('hide');
+
+                // RELOAD TABLE
+                table.DataTable().ajax.reload();
+
+            }
+        });
+
+    });
+
+    $(document).on('click', 'tbody tr', function(e){
+
+        // GET ID OF TRANSACTIONS
+        var task    = $(this).find('.show');
+        var id      = task.data('id');
+        var preview = task.data('preview');
+        var date    = task.data('date');
+
+        // IS CHECKBOX
+        if ($(e.target).is('input[type="checkbox"]')) {
+
+            // SAVE WITH CHECKED
+            var paid = $(e.target).is(':checked')
+            checkPayment(id, date, paid, preview);
+
+            return;
+        }
+        
         // AJAX
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:'GET',
             url: "{{ route('financial.transactions.edit', '') }}/" + id,
             success: function(response){
+
+                // MAKE NEW URL
+                var url = "{{ route('financial.transactions.update', '') }}/" + id;
+
+                // UPDATE URL EDIT
+                $('#update-transaction').attr('action', url);
 
                 // REPLACE CONTENT
                 $('#load-transaction').html(response);
@@ -301,6 +352,20 @@
                     dropdownParent: $('#edit_trasaction')
                 });
 
+                Inputmask(["R$ 9", "R$ 99", "R$ 9,99", "R$ 99,99", "R$ 999,99", "R$ 9.999,99", "R$ 99.999,99", "R$ 999.999,99", "R$ 9.999.999,99"], {
+                    "numericInput": true,
+                    "clearIncomplete": true,
+                }).mask(".input-money");
+
+                // SET IS PREVIEW OR NOT
+                $('[name="preview"]').val(preview);
+
+                // SET DATE
+                $('#edit_trasaction [name="date_venciment"]').val(date);
+
+                // START FLATPICKR
+                generateFlatpickr();
+
                 // HIDE MODAL
                 $('#edit_trasaction').modal('show');
 
@@ -308,6 +373,22 @@
         });
         
     });
+
+
+    // DATE CHECKED
+    function checkPayment(id, date, paid, preview){
+        // AJAX
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type:'POST',
+            url: "{{ route('financial.transactions.checked') }}",
+            data: {id: id, date: date, paid: paid, preview: preview},
+            success: function(response){
+                // RELOAD TABLE
+                table.DataTable().ajax.reload();
+            }
+        });
+    }
 
     // Inicia Flatpicker
     generateFlatpickr();
