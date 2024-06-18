@@ -313,8 +313,10 @@ class FinancialTransactionsController extends Controller
             'financial_categories.name              as category',
             'financial_categories.father_id         as has_father',
             'financial_categories.color             as category_color',
+            'financial_categories.icon              as category_icon',
             'category_father.name                   as father_name',
             'category_father.color                  as father_color',
+            'category_father.icon                   as father_icon',
             'financial_wallets.name                 as wallet_name',
             'financial_wallets.color                as wallet_color',
             'financial_transactions.credit_card_id  as has_credit',
@@ -374,7 +376,9 @@ class FinancialTransactionsController extends Controller
                             'recurrent' => true,
                             'has_father' => $hasFather,
                             'category_color' => $transaction->category->color,
+                            'category_icon' => $transaction->category->icon,
                             'father_color' => $transaction->category->father->color ?? null,
+                            'father_icon' => $transaction->category->father->icon ?? null,
                             'wallet_name' => $transaction->wallet_name,
                             'wallet_color' => null,
                             'has_credit' => false,
@@ -406,33 +410,50 @@ class FinancialTransactionsController extends Controller
         $transactionsWallet = collect($data)->where('has_wallet', true);
 
         // Agrupa as compras no cartão de crédito em uma fatura
-        $faturesCredit = collect($data)->where('has_credit', true)->groupBy('card_name');
+        $faturesCredit = collect($data)->where('has_credit', true);
+
+        // Agrupar por mês e por cartão de crédito
+        $faturesByMonth = $faturesCredit->groupBy(function ($item) {
+            return Carbon::parse($item->date)->format('Y-m-');
+        })->map(function ($items) {
+            return $items->groupBy('card_name');
+        });
+
 
         // Gera as faturas dos cartões
-        foreach ($faturesCredit as $cardName => $card) {
+        foreach ($faturesByMonth as $month => $cards) {
 
-            $fatura = (object) [
-                'id' => 1,
-                'name' => 'Fatura de ' . Carbon::parse('2024-06-17')->addMonth()->format('F') . ' - ' . $cardName,
-                'date' => date('Y-m-' . $card[0]->due_date),
-                'value' => $card->sum('value'),
-                'paid' => 1,
-                'has_wallet' => null,
-                'recurrent' => null,
-                'hitching' => null,
-                'category' => 'Pagamento',
-                'has_father' => null,
-                'category_color' => '#007bff',
-                'father_name' => null,
-                'father_color' => null,
-                'wallet_name' => null,
-                'wallet_color' => null,
-                'has_credit' => 1,
-                'card_name' => $cardName,
-                'extra_transactions' => $card->toArray(),
-            ];
+            // Faz looping entre as faturas
+            foreach($cards as $card => $transactions){
 
-            $transactionsWallet->push($fatura);
+                // Data de pagamento
+                $date = ucfirst(Carbon::parse(date($month . $transactions[0]->due_date))->addMonth()->locale('pt_BR')->isoFormat('MMMM'));
+
+                $fatura = (object) [
+                    'id' => 1,
+                    'name' => 'Fatura de ' . $date . ' - ' . $card,
+                    'date' => date($month . $transactions[0]->due_date),
+                    'value' => $transactions->sum('value'),
+                    'paid' => false,
+                    'has_wallet' => null,
+                    'recurrent' => null,
+                    'hitching' => null,
+                    'category' => 'Fatura',
+                    'has_father' => false,
+                    'category_color' => '#007bff',
+                    'category_icon' => 'fa-solid fa-receipt',
+                    'father_name' => null,
+                    'father_color' => null,
+                    'wallet_name' => null,
+                    'wallet_color' => null,
+                    'has_credit' => $transactions[0]->has_credit,
+                    'card_name' => $card,
+                    'extra_transactions' => $transactions->toArray(),
+                ];
+
+                $transactionsWallet->push($fatura);
+
+            }
 
         }
 
@@ -449,7 +470,7 @@ class FinancialTransactionsController extends Controller
         return FacadesDataTables::of($transactionsWallet)
             ->editColumn('checked', function($row) {
                 return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
-                            <input class='form-check-input cursor-pointer no-open' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
+                            <input class='form-check-input cursor-pointer transaction-paid' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
                         </div>";
             })
             ->editColumn('name', function($row) {
@@ -462,9 +483,10 @@ class FinancialTransactionsController extends Controller
             })
             ->editColumn('category_id', function($row) {
                 $color = $row->has_father ? $row->father_color : $row->category_color;
+                $icon = $row->has_father ? $row->father_icon : $row->category_icon;
                 return "<span class='d-flex align-items-center fs-6 fw-normal'>
                             <div class='w-25px h-25px rounded-circle d-flex justify-content-center align-items-center me-2' style='background: $color;'>
-                                <i class='fa-solid fa-home fs-7 text-white'></i>
+                                <i class='$icon fs-7 text-white'></i>
                             </div>
                             <span class='text-gray-600'>$row->category</span>
                         </span>";
@@ -496,7 +518,7 @@ class FinancialTransactionsController extends Controller
             })
             ->editColumn('actions', function($row) {
                 if(isset($row->extra_transactions)){
-                    $showTransactios = " <button type='button' class='show-sub-transactions btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px me-3'
+                    $showTransactios = " <button type='button' class='show-sub-transactions btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px me-3' data-fature='$row->has_credit-$row->date'
                                             <span data-transactions='". json_encode($row->extra_transactions) ."'><i class='fa-solid fa-circle-plus'></i></span>
                                         </button>";
                 } else {
@@ -505,7 +527,7 @@ class FinancialTransactionsController extends Controller
 
                 return $showTransactios  . "<a href='#' class='btn btn-light btn-active-light-primary btn-sm me-3'>Ações</a>";
             })
-            ->rawColumns(['checked', 'name', 'category_id', 'date', 'value', 'wallet_credit', 'actions', 'expand', 'details-control'])
+            ->rawColumns(['checked', 'name', 'category_id', 'date', 'value', 'wallet_credit', 'actions'])
             ->setTotalRecords($totalRecords)
             ->setFilteredRecords($totalRecords)
             ->with([

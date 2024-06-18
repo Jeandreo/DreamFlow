@@ -190,6 +190,15 @@
         return 'R$ '+ number.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
+     // Função para formatar a data para o formato DD/MM/YYYY
+     function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
     // Recuperar valores do Local Storage ao carregar a página
     if(localStorage.getItem('date-begin')) {
         $('.date-begin').val(localStorage.getItem('date-begin'));
@@ -206,14 +215,64 @@
         localStorage.setItem('date-end', $(this).val());
     });
 
-    // 
+    // Exibe ou esconde as trasações da fatura
     $(document).on('click', '.show-sub-transactions', function(){
 
-        var tr = $(this).closest('tr');
+        // Obtém botão
+        var btn = $(this);
 
-        tr.after(123);
+        // Troca o botão
+        var open = btn.find('i').hasClass('fa-circle-plus');
 
-        console.log('123')
+        // Obtém linha
+        var tr = btn.closest('tr');
+
+        // Se for para abrir as transações
+        if(open){
+            
+            // Altera botão
+            btn.find('i').removeClass('fa-circle-plus').addClass('fa-circle-minus');
+
+            // Obtém transações
+            var transactions = btn.data('transactions');
+
+            // Se tiver transações
+            if(transactions && transactions.length > 0) {
+                var newRow = '';
+                $.each(transactions, function(index, transaction) {
+
+                    // Verifica se a categoria possui pai
+                    if(transaction.has_father){
+                        var color = transaction.father_color;
+                    } else {
+                        var color = transaction.category_color;
+                    }
+
+                    newRow += '<tr class="text-gray-700 sub-transaction open-transaction fature-' + transaction.has_credit + '-' + transaction.date + '">';
+                        newRow += '<td class="w-30px"></td>';
+                        newRow += '<td>' + formatDate(transaction.date) + '</td>';
+                        newRow += '<td>' + transaction.name + '</td>';
+                        newRow += '<td><span class="d-flex align-items-center fs-6 fw-normal"> <div class="w-10px h-10px rounded-circle d-flex justify-content-center align-items-center me-2" style="background: ' + color + ';"></div> <span class="text-gray-600">' + transaction.category + '</span> </span></td>';
+                        newRow += '<td>' + formatBRL(transaction.value) + '</td>';
+                        newRow += '<td>-</td>';
+                        newRow += '<td></td>';
+                    newRow += '</tr>';
+                });
+                newRow += '';
+
+                tr.after(newRow);
+            }
+
+        } else {
+            // Obtém fatura
+            var fature = btn.data('fature');
+
+            $('.fature-' + fature).remove();
+
+            // Altera botão
+            btn.find('i').removeClass('fa-circle-minus').addClass('fa-circle-plus');
+        }
+
     });
 
     // DEFINE AS VARIAVEIS
@@ -281,12 +340,17 @@
             "<'col-sm-6 d-flex align-items-center justify-content-center justify-content-md-end h-30px text-gray-600'i>" +
             "<'col-sm-12 d-flex align-items-center justify-content-center h-30px text-gray-600'p>" +
             ">" ,
-        columnDefs: [
-            {   
-                targets: 6,
-                className: 'text-end no-open',
-            },
-        ],
+            columnDefs: [
+                { 
+                    targets: [1, 2, 3, 4, 5],
+                    className: 'open-transaction',
+                },
+                { 
+                    targets: 6,
+                    className: 'text-end',
+                },
+            ],
+
         createdRow: function (row, data, dataIndex) {
             $(row).addClass(data.trClass);
         },
@@ -387,7 +451,8 @@
 
     });
 
-    $(document).on('click', 'tbody td', function(e){
+
+    $(document).on('click', '.transaction-paid', function(e){
 
         // GET ID OF TRANSACTIONS
         var task    = $(this).closest('tr').find('.show');
@@ -395,21 +460,20 @@
         var preview = task.data('preview');
         var date    = task.data('date');
 
-        // IS CHECKBOX
-        if ($(this).hasClass('no-open')) {
-            console.log($(this).attr('class'));
-            return;
-        }
+        // SAVE WITH CHECKED
+        var paid = $(e.target).is(':checked');
 
-        // IS CHECKBOX
-        if ($(e.target).is(':checked')) {
+        checkPayment(id, date, paid, preview);
 
-            // SAVE WITH CHECKED
-            var paid = $(e.target).is(':checked')
-            checkPayment(id, date, paid, preview);
+    });
 
-            return;
-        }
+    $(document).on('click', '.open-transaction', function(){
+
+        // GET ID OF TRANSACTIONS
+        var task    = $(this).closest('tr').find('.show');
+        var id      = task.data('id');
+        var preview = task.data('preview');
+        var date    = task.data('date');
         
         // AJAX
         $.ajax({
