@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="472px" height="472px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 107.36 107.36"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil0 {fill:#4C4B4D;fill-rule:nonzero}
+    .fil2 {fill:white;fill-rule:nonzero}
+    .fil1 {fill:url(#id0);fill-rule:nonzero}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="-61.09" y1="28.42" x2="1.92" y2="91.54">
+   <stop offset="0" style="stop-opacity:1; stop-color:black"/>
+   <stop offset="0.478431" style="stop-opacity:0.517647; stop-color:#090909"/>
+   <stop offset="1" style="stop-opacity:0; stop-color:#181818"/>
+  </linearGradient>
+ </defs>
+ <g id="Camada_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="Background">
+   <circle id="bg_1_" class="fil0" cx="53.68" cy="53.68" r="53.68"/>
+  </g>
+  <path id="Shadow" class="fil1" d="M57.64 107.34l-34.78 -34.78 0 -38.07 0.38 -0.58 60.88 0 23.14 23.13c0,0 -0.19,3.12 -0.6,5.37 -0.41,2.25 -0.39,2.33 -0.77,3.83 -0.38,1.5 -0.87,3.34 -1.29,4.54 -0.42,1.19 -0.65,1.92 -1.11,3.03 -0.47,1.11 -0.85,2.02 -1.27,2.88 -0.42,0.87 -0.6,1.28 -1.07,2.15 -0.48,0.88 -1.84,3.2 -2.45,4.17 -0.62,0.97 -1.61,2.38 -2.35,3.33 -0.75,0.95 -1.31,1.67 -1.92,2.37 -0.61,0.7 -1.08,1.24 -1.72,1.9 -0.64,0.67 -0.8,0.85 -1.48,1.51 -0.68,0.66 -1.05,1.02 -1.67,1.57 -0.61,0.54 -2.05,1.74 -2.74,2.31 -0.69,0.56 -1.69,1.29 -2.59,1.91 -0.91,0.62 -3.01,1.97 -4.06,2.55 -1.05,0.59 -2.92,1.59 -4.16,2.13 -1.23,0.55 -2.64,1.17 -3.91,1.61 -1.27,0.45 -1.96,0.69 -3.3,1.09 -1.33,0.39 -2.94,0.79 -3.9,0.99 -0.97,0.19 -0.97,0.24 -1.89,0.4 -0.92,0.15 -1.33,0.22 -1.98,0.31 -0.64,0.08 -1.12,0.15 -1.75,0.21 -0.63,0.06 -1.11,0.11 -1.64,0.14z"/>
+  <g id="Mail">
+   <polygon class="fil2" points="61.94,55.58 53.68,62.35 45.42,55.58 38.69,61.1 23.7,73.39 53.68,73.39 83.66,73.39 68.67,61.1 "/>
+   <polygon class="fil2" points="42.47,53.52 32.67,44.01 22.86,34.49 22.86,53.52 22.86,72.56 32.67,63.04 "/>
+   <polygon class="fil2" points="53.68,60.09 68.9,47 84.12,33.91 53.68,33.91 23.24,33.91 38.46,47 "/>
+   <polygon class="fil2" points="74.69,44.01 64.88,53.52 74.69,63.04 84.5,72.56 84.5,53.52 84.5,34.49 "/>
+  </g>
+ </g>
+</svg>

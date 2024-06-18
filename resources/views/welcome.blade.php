@@ -1721,7 +1721,7 @@
 								<!--begin::Symbol-->
 								<div class="symbol symbol-50px me-5">
 									<span class="symbol-label">
-										<img src="assets/media/svg/brand-logos/plurk.svg" class="h-50 align-self-center" alt="" />
+										<img src="{{ asset('assets/media/svg/brand-logos/plurk.svg') }}" class="h-50 align-self-center" alt="" />
 									</span>
 								</div>
 								<!--end::Symbol-->
@@ -1741,7 +1741,7 @@
 								<!--begin::Symbol-->
 								<div class="symbol symbol-50px me-5">
 									<span class="symbol-label">
-										<img src="assets/media/svg/brand-logos/telegram.svg" class="h-50 align-self-center" alt="" />
+										<img src="{{ asset('assets/media/svg/brand-logos/telegram.svg') }}" class="h-50 align-self-center" alt="" />
 									</span>
 								</div>
 								<!--end::Symbol-->
@@ -1761,7 +1761,7 @@
 								<!--begin::Symbol-->
 								<div class="symbol symbol-50px me-5">
 									<span class="symbol-label">
-										<img src="assets/media/svg/brand-logos/vimeo.svg" class="h-50 align-self-center" alt="" />
+										<img src="{{ asset('assets/media/svg/brand-logos/vimeo.svg') }}" class="h-50 align-self-center" alt="" />
 									</span>
 								</div>
 								<!--end::Symbol-->
@@ -1781,7 +1781,7 @@
 								<!--begin::Symbol-->
 								<div class="symbol symbol-50px me-5">
 									<span class="symbol-label">
-										<img src="assets/media/svg/brand-logos/bebo.svg" class="h-50 align-self-center" alt="" />
+										<img src="{{ asset('assets/media/svg/brand-logos/bebo.svg') }}" class="h-50 align-self-center" alt="" />
 									</span>
 								</div>
 								<!--end::Symbol-->
@@ -1801,7 +1801,7 @@
 								<!--begin::Symbol-->
 								<div class="symbol symbol-50px me-5">
 									<span class="symbol-label">
-										<img src="assets/media/svg/brand-logos/kickstarter.svg" class="h-50 align-self-center" alt="" />
+										<img src="{{ asset('assets/media/svg/brand-logos/kickstarter.svg') }}" class="h-50 align-self-center" alt="" />
 									</span>
 								</div>
 								<!--end::Symbol-->
@@ -1946,7 +1946,7 @@
 										<!--begin::Symbol-->
 										<div class="symbol symbol-50px me-3">
 											<div class="symbol-label bg-light">
-												<img src="assets/media/svg/brand-logos/plurk.svg" class="h-50" alt="" />
+												<img src="{{ asset('assets/media/svg/brand-logos/plurk.svg') }}" class="h-50" alt="" />
 											</div>
 										</div>
 										<!--end::Symbol-->
@@ -1970,7 +1970,7 @@
 										<!--begin::Symbol-->
 										<div class="symbol symbol-50px me-3">
 											<div class="symbol-label bg-light">
-												<img src="assets/media/svg/brand-logos/figma-1.svg" class="h-50" alt="" />
+												<img src="{{ asset('assets/media/svg/brand-logos/figma-1.svg') }}" class="h-50" alt="" />
 											</div>
 										</div>
 										<!--end::Symbol-->
@@ -1994,7 +1994,7 @@
 										<!--begin::Symbol-->
 										<div class="symbol symbol-50px me-3">
 											<div class="symbol-label bg-light">
-												<img src="assets/media/svg/brand-logos/vimeo.svg" class="h-50" alt="" />
+												<img src="{{ asset('assets/media/svg/brand-logos/vimeo.svg') }}" class="h-50" alt="" />
 											</div>
 										</div>
 										<!--end::Symbol-->
@@ -2070,7 +2070,7 @@
 													<td>
 														<div class="symbol symbol-45px me-2">
 															<span class="symbol-label">
-																<img src="assets/media/svg/brand-logos/plurk.svg" class="h-50 align-self-center" alt="" />
+																<img src="{{ asset('assets/media/svg/brand-logos/plurk.svg') }}" class="h-50 align-self-center" alt="" />
 															</span>
 														</div>
 													</td>
@@ -2099,7 +2099,7 @@
 													<td>
 														<div class="symbol symbol-45px me-2">
 															<span class="symbol-label">
-																<img src="assets/media/svg/brand-logos/telegram.svg" class="h-50 align-self-center" alt="" />
+																<img src="{{ asset('assets/media/svg/brand-logos/telegram.svg') }}" class="h-50 align-self-center" alt="" />
 															</span>
 														</div>
 													</td>
@@ -2128,7 +2128,7 @@
 													<td>
 														<div class="symbol symbol-45px me-2">
 															<span class="symbol-label">
-																<img src="assets/media/svg/brand-logos/vimeo.svg" class="h-50 align-self-center" alt="" />
+																<img src="{{ asset('assets/media/svg/brand-logos/vimeo.svg') }}" class="h-50 align-self-center" alt="" />
 															</span>
 														</div>
 													</td>
@@ -2157,7 +2157,7 @@
 													<td>
 														<div class="symbol symbol-45px me-2">
 															<span class="symbol-label">
-																<img src="assets/media/svg/brand-logos/bebo.svg" class="h-50 align-self-center" alt="" />
+																<img src="{{ asset('assets/media/svg/brand-logos/bebo.svg') }}" class="h-50 align-self-center" alt="" />
 															</span>
 														</div>
 													</td>
@@ -2186,7 +2186,7 @@
 													<td>
 														<div class="symbol symbol-45px me-2">
 															<span class="symbol-label">
-																<img src="assets/media/svg/brand-logos/kickstarter.svg" class="h-50 align-self-center" alt="" />
+																<img src="{{ asset('assets/media/svg/brand-logos/kickstarter.svg') }}" class="h-50 align-self-center" alt="" />
 															</span>
 														</div>
 													</td>
@@ -2241,7 +2241,7 @@
 													<td>
 														<div class="symbol symbol-45px me-2">
 															<span class="symbol-label">
-																<img src="assets/media/svg/brand-logos/plurk.svg" class="h-50 align-self-center" alt="" />
+																<img src="{{ asset('assets/media/svg/brand-logos/plurk.svg') }}" class="h-50 align-self-center" alt="" />
 															</span>
 														</div>
 													</td>
@@ -2270,7 +2270,7 @@
 													<td>
 														<div class="symbol symbol-45px me-2">
 															<span class="symbol-label">
-																<img src="assets/media/svg/brand-logos/telegram.svg" class="h-50 align-self-center" alt="" />
+																<img src="{{ asset('assets/media/svg/brand-logos/telegram.svg') }}" class="h-50 align-self-center" alt="" />
 															</span>
 														</div>
 													</td>
@@ -2299,7 +2299,7 @@
 													<td>
 														<div class="symbol symbol-45px me-2">
 															<span class="symbol-label">
-																<img src="assets/media/svg/brand-logos/bebo.svg" class="h-50 align-self-center" alt="" />
+																<img src="{{ asset('assets/media/svg/brand-logos/bebo.svg') }}" class="h-50 align-self-center" alt="" />
 															</span>
 														</div>
 													</td>
@@ -2354,7 +2354,7 @@
 													<td>
 														<div class="symbol symbol-45px me-2">
 															<span class="symbol-label">
-																<img src="assets/media/svg/brand-logos/kickstarter.svg" class="h-50 align-self-center" alt="" />
+																<img src="{{ asset('assets/media/svg/brand-logos/kickstarter.svg') }}" class="h-50 align-self-center" alt="" />
 															</span>
 														</div>
 													</td>
@@ -2383,7 +2383,7 @@
 													<td>
 														<div class="symbol symbol-45px me-2">
 															<span class="symbol-label">
-																<img src="assets/media/svg/brand-logos/bebo.svg" class="h-50 align-self-center" alt="" />
+																<img src="{{ asset('assets/media/svg/brand-logos/bebo.svg') }}" class="h-50 align-self-center" alt="" />
 															</span>
 														</div>
 													</td>
@@ -2412,7 +2412,7 @@
 													<td>
 														<div class="symbol symbol-45px me-2">
 															<span class="symbol-label">
-																<img src="assets/media/svg/brand-logos/vimeo.svg" class="h-50 align-self-center" alt="" />
+																<img src="{{ asset('assets/media/svg/brand-logos/vimeo.svg') }}" class="h-50 align-self-center" alt="" />
 															</span>
 														</div>
 													</td>
@@ -2441,7 +2441,7 @@
 													<td>
 														<div class="symbol symbol-45px me-2">
 															<span class="symbol-label">
-																<img src="assets/media/svg/brand-logos/telegram.svg" class="h-50 align-self-center" alt="" />
+																<img src="{{ asset('assets/media/svg/brand-logos/telegram.svg') }}" class="h-50 align-self-center" alt="" />
 															</span>
 														</div>
 													</td>
