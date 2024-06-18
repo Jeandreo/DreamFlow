@@ -236,14 +236,12 @@ class FinancialTransactionsController extends Controller
 
         // DATE BEGIN SELECTED
         if ($request->date_begin) {
-            $query->whereDate('financial_transactions.date_purchase', '>=', $request->date_begin)
-              ->orWhereDate('financial_transactions.date_payment', '>=', $request->date_begin);
+            $query->whereDate('financial_transactions.date_purchase', '>=', $request->date_begin)->orWhereDate('financial_transactions.date_payment', '>=', $request->date_begin);
         }
 
         // DATE END SELECTED
         if ($request->date_end) {
-            $query->whereDate('financial_transactions.date_purchase', '<=', $request->date_end)
-              ->orWhereDate('financial_transactions.date_payment', '<=', $request->date_end);
+            $query->whereDate('financial_transactions.date_purchase', '<=', $request->date_end)->orWhereDate('financial_transactions.date_payment', '>=', $request->date_begin);
         }
 
         // SEARCH BY
@@ -299,7 +297,7 @@ class FinancialTransactionsController extends Controller
         $query->select(
             'financial_transactions.id              as id',
             'financial_transactions.name            as name',
-            'financial_transactions.date_purchase   as date',
+            'financial_transactions.date_purchase   as date_purchase',
             'financial_transactions.date_payment    as date_payment',
             'financial_transactions.date_purchase   as date_purchase',
             'financial_transactions.value           as value',
@@ -323,6 +321,7 @@ class FinancialTransactionsController extends Controller
 
         // EXECUTE THE QUERY TO GET THE RESULTS
         $data = $query->get()->toArray();
+
         // Obtém todas as transações recorrentes
         $recurringTransactions = FinancialTransactions::where('recurrent', true)->get()->values();
 
@@ -346,7 +345,7 @@ class FinancialTransactionsController extends Controller
             for ($i = 0; $i <= $monthsDifference; $i++) {
 
                 // GET DATE AND ADD MONTHS BASED ON LOOP ITERATION
-                $newDate = Carbon::parse($transaction->date)->addMonths($i);
+                $newDate = Carbon::parse($transaction->date_purchase)->addMonths($i);
 
                 // CONFIRM DATE BETWEEN DATE SELECTED
                 if ($newDate->between($dateBegin, $dateEnd)) {
@@ -355,7 +354,7 @@ class FinancialTransactionsController extends Controller
                     $existingTransaction = collect($data)->first(function ($item) use ($transaction, $newDate) {
 
                         // Importante Hitching estar cadastrado
-                        return $item->hitching == $transaction->hitching && Carbon::parse($item->date)->isSameMonth($newDate);
+                        return $item->hitching == $transaction->hitching && Carbon::parse($item->date_purchase)->isSameMonth($newDate);
                     });
 
 
@@ -394,17 +393,8 @@ class FinancialTransactionsController extends Controller
             }
         }
 
-        // FILTER DATA BASED ON DATE AGAIN
-        $data = array_filter($data, function ($item) use ($request) {
-            return Carbon::parse($item->date_purchase)->gte($request->date_begin);
-        });
-
-        $data = array_filter($data, function ($item) use ($request) {
-            return Carbon::parse($item->date_purchase)->lte($request->date_end);
-        });
-
         // // Obtém as transações de carteira e Crédito
-        $transactionsWallet = collect($data);
+        $data = collect($data);
 
         // Agrupa as compras no cartão de crédito em uma fatura
         $faturesCredit = collect($data)->where('has_credit', true);
@@ -429,8 +419,8 @@ class FinancialTransactionsController extends Controller
                 $fatura = (object) [
                     'id' => 1,
                     'name' => 'Fatura de ' . $date . ' - ' . $card,
-                    'date' => date($month . $transactions[0]->due_date),
                     'date_purchase' => date($month . $transactions[0]->due_date),
+                    'date_payment' => date($month . $transactions[0]->due_date),
                     'value' => $transactions->sum('value'),
                     'paid' => false,
                     'has_wallet' => null,
@@ -449,13 +439,20 @@ class FinancialTransactionsController extends Controller
                     'extra_transactions' => $transactions->toArray(),
                 ];
 
-                $transactionsWallet->push($fatura);
+                $data->push($fatura);
 
             }
 
         }
 
-        $dateToView = collect($transactionsWallet)->where('date', '>=', $request->date_purchase);
+        $data = array_filter($data->toArray(), function ($item) use ($request) {
+            return Carbon::parse($item->date_purchase)->gte($request->date_begin);
+        });
+
+        $data = array_filter($data, function ($item) use ($request) {
+            return Carbon::parse($item->date_purchase)->lte($request->date_end);
+        });
+
 
         // COUNT TOTAL RECORDS
         $totalRecords = count($data);
@@ -465,37 +462,10 @@ class FinancialTransactionsController extends Controller
         $totalRevenue = collect($data)->where('value', '>', 0)->sum('value');
         $totalExpense= collect($data)->where('value', '<', 0)->sum('value');
         $totalPaidValue = collect($data)->where('paid', 1)->sum('value');
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
-        
-        // VERIFICAR POR QUE AS FATURAS N˜AO EST˜AO INDO PARA O MES SEGUINTE
+
 
         // Configurar as colunas usando a função editColumn
-        return FacadesDataTables::of($dateToView)
+        return FacadesDataTables::of($data)
             ->editColumn('checked', function($row) {
                 return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
                             <input class='form-check-input cursor-pointer transaction-paid' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
@@ -504,7 +474,7 @@ class FinancialTransactionsController extends Controller
             ->editColumn('name', function($row) {
                 $isPreview = isset($row->preview) ? 'true' : 'false';
                 $recurrent = $row->recurrent ? '<i class="fa-solid fa-retweet '. (isset($row->preview) ? 'text-danger' : 'text-primary') .'"></i>' : '<span></span>';
-                $date = date('Y-m-d', strtotime($row->date));
+                $date = date('Y-m-d', strtotime($row->date_purchase));
                 return "<span data-search='$row->name' class='show' data-id='$row->id' data-preview='$isPreview' data-date='$date'>
                     $row->name $recurrent
                 </span>";
@@ -520,7 +490,7 @@ class FinancialTransactionsController extends Controller
                         </span>";
             })
             ->editColumn('date', function($row) {
-                return date('d/m/Y', strtotime($row->date));
+                return date('d/m/Y', strtotime($row->date_purchase));
             })
             ->editColumn('value', function($row) {
                 $class = $row->value < 0 ? 'text-danger' : 'text-success';
@@ -546,7 +516,7 @@ class FinancialTransactionsController extends Controller
             })
             ->editColumn('actions', function($row) {
                 if(isset($row->extra_transactions)){
-                    $showTransactios = " <button type='button' class='show-sub-transactions btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px me-3' data-fature='$row->has_credit-$row->date'
+                    $showTransactios = " <button type='button' class='show-sub-transactions btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px me-3' data-fature='$row->has_credit-$row->date_purchase'
                                             <span data-transactions='". json_encode($row->extra_transactions) ."'><i class='fa-solid fa-circle-plus'></i></span>
                                         </button>";
                 } else {
