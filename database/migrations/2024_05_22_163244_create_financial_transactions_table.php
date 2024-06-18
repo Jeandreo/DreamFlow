@@ -22,8 +22,9 @@ return new class extends Migration
             $table->string('recurrence')->nullable();
             $table->decimal('value', 10, 2)->default(0);
             $table->decimal('value_paid', 10, 2)->default(0);
-            $table->date('date_venciment')->nullable();
-            $table->date('date_payment')->nullable();
+            $table->date('date_purchase');
+            $table->date('date_payment');
+            $table->date('date_paid')->nullable();
             $table->boolean('paid')->default(false);
             $table->decimal('fees', 10, 2)->default(0);
             $table->text('description')->nullable();

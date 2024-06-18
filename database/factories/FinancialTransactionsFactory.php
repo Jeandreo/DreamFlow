@@ -58,7 +58,7 @@ class FinancialTransactionsFactory extends Factory
             'recurrent' => fake()->boolean,
             'value' => $signal . fake()->randomFloat(2, 10, 1000),
             'value_paid' => fake()->randomFloat(2, 0, 1000),
-            'date_venciment' => fake()->dateTimeBetween(Carbon::now()->startOfYear(), Carbon::now()->endOfYear())->format('Y-m-d'),
+            'date_purchase' => fake()->dateTimeBetween(Carbon::now()->startOfYear(), Carbon::now()->endOfYear())->format('Y-m-d'),
             'date_payment' => $datePayment ? $datePayment->format('Y-m-d') : null,
             'fees' => fake()->randomFloat(2, 0, 100),
             'description' => fake()->sentence,

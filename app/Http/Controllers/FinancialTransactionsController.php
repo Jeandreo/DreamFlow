@@ -193,7 +193,7 @@ class FinancialTransactionsController extends Controller
             $content->update($data);
         } else {
             // STORING NEW DATA
-            $data['date_venciment'] = $request->date;
+            $data['date_payment'] = $request->date;
             $data['updated_by'] = null;
             $data['created_by'] = Auth::id();
             $content->create($data);
@@ -236,12 +236,12 @@ class FinancialTransactionsController extends Controller
 
         // DATE BEGIN SELECTED
         if ($request->date_begin) {
-            $query->whereDate('financial_transactions.date_venciment', '>=', $request->date_begin);
+            $query->whereDate('financial_transactions.date_payment', '>=', $request->date_begin);
         }
 
         // DATE END SELECTED
         if ($request->date_end) {
-            $query->whereDate('financial_transactions.date_venciment', '<=', $request->date_end);
+            $query->whereDate('financial_transactions.date_payment', '<=', $request->date_end);
         }
 
         // SEARCH BY
@@ -275,7 +275,7 @@ class FinancialTransactionsController extends Controller
                     $column = 'financial_transactions.name';
                     break;
                 case 'date':
-                    $column = 'financial_transactions.date_venciment';
+                    $column = 'financial_transactions.date_payment';
                     break;
                 case 'value':
                     $column = 'financial_transactions.value';
@@ -304,7 +304,7 @@ class FinancialTransactionsController extends Controller
         $query->select(
             'financial_transactions.id              as id',
             'financial_transactions.name            as name',
-            'financial_transactions.date_venciment  as date',
+            'financial_transactions.date_payment  as date',
             'financial_transactions.value           as value',
             'financial_transactions.paid            as paid',
             'financial_transactions.wallet_id       as has_wallet',
@@ -319,6 +319,7 @@ class FinancialTransactionsController extends Controller
             'financial_wallets.color                as wallet_color',
             'financial_transactions.credit_card_id  as has_credit',
             'financial_credit_cards.name            as card_name',
+            'financial_credit_cards.due_day         as due_date',
         );
 
         // EXECUTE THE QUERY TO GET THE RESULTS
@@ -330,12 +331,12 @@ class FinancialTransactionsController extends Controller
         // Adicione os dados de $additionalData diretamente ao array $data
         foreach ($recurringTransactions as $transaction) {
 
-        // CONVERT TO CARBON
-        $dateBegin = Carbon::parse($transaction->date_venciment);
-        $dateEnd = Carbon::parse($request->date_end);
+            // CONVERT TO CARBON
+            $dateBegin = Carbon::parse($transaction->date_payment);
+            $dateEnd = Carbon::parse($request->date_end);
 
-        // GET DIFERENCE
-        $monthsDifference = $dateBegin->diffInMonths($dateEnd);
+            // GET DIFERENCE
+            $monthsDifference = $dateBegin->diffInMonths($dateEnd);
 
             // VERIFY CATEGORY
             $hasFather = false;
@@ -359,6 +360,7 @@ class FinancialTransactionsController extends Controller
 
                     // IF NO EXISTING TRANSACTION, ADD NEW ONE
                     if (!$existingTransaction) {
+                        
                         // MAKE OBJECT
                         $additionalData = (object) [
                             'id' => $transaction->id,
@@ -400,17 +402,54 @@ class FinancialTransactionsController extends Controller
             });
         }
 
+        // Obtém as transações de carteira e Crédito
+        $transactionsWallet = collect($data)->where('has_wallet', true);
+
+        // Agrupa as compras no cartão de crédito em uma fatura
+        $faturesCredit = collect($data)->where('has_credit', true)->groupBy('card_name');
+
+        // Gera as faturas dos cartões
+        foreach ($faturesCredit as $cardName => $card) {
+
+            $fatura = (object) [
+                'id' => 1,
+                'name' => 'Fatura de ' . Carbon::parse('2024-06-17')->addMonth()->format('F') . ' - ' . $cardName,
+                'date' => date('Y-m-' . $card[0]->due_date),
+                'value' => $card->sum('value'),
+                'paid' => 1,
+                'has_wallet' => null,
+                'recurrent' => null,
+                'hitching' => null,
+                'category' => 'Pagamento',
+                'has_father' => null,
+                'category_color' => '#007bff',
+                'father_name' => null,
+                'father_color' => null,
+                'wallet_name' => null,
+                'wallet_color' => null,
+                'has_credit' => 1,
+                'card_name' => $cardName,
+                'extra_transactions' => $card->toArray(),
+            ];
+
+            $transactionsWallet->push($fatura);
+
+        }
+
         // COUNT TOTAL RECORDS
         $totalRecords = count($data);
 
         // OBTEM TOTAL
         $totalValue = collect($data)->sum('value');
+        $totalRevenue = collect($data)->where('value', '>', 0)->sum('value');
+        $totalExpense= collect($data)->where('value', '<', 0)->sum('value');
+        $totalPaidValue = collect($data)->where('paid', 1)->sum('value');
 
         // Configurar as colunas usando a função editColumn
-        return FacadesDataTables::of($data)
+        return FacadesDataTables::of($transactionsWallet)
             ->editColumn('checked', function($row) {
                 return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
-                            <input class='form-check-input cursor-pointer' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
+                            <input class='form-check-input cursor-pointer no-open' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
                         </div>";
             })
             ->editColumn('name', function($row) {
@@ -456,12 +495,25 @@ class FinancialTransactionsController extends Controller
                 }
             })
             ->editColumn('actions', function($row) {
-                return "<a href='#' class='btn btn-light btn-active-light-primary btn-sm me-3'>Ações</a>";
+                if(isset($row->extra_transactions)){
+                    $showTransactios = " <button type='button' class='show-sub-transactions btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px me-3'
+                                            <span data-transactions='". json_encode($row->extra_transactions) ."'><i class='fa-solid fa-circle-plus'></i></span>
+                                        </button>";
+                } else {
+                    $showTransactios = '';
+                }
+
+                return $showTransactios  . "<a href='#' class='btn btn-light btn-active-light-primary btn-sm me-3'>Ações</a>";
             })
-            ->rawColumns(['checked', 'name', 'category_id', 'date', 'value', 'wallet_credit', 'actions'])
+            ->rawColumns(['checked', 'name', 'category_id', 'date', 'value', 'wallet_credit', 'actions', 'expand', 'details-control'])
             ->setTotalRecords($totalRecords)
             ->setFilteredRecords($totalRecords)
-            ->with(['totalSum' => $totalValue])
+            ->with([
+                'totalSum' => $totalValue,
+                'totalRevenue' => $totalRevenue,
+                'totalExpense' => $totalExpense,
+                'totalPaidValue' => $totalPaidValue,
+            ])
             ->toJson();
     }
 }

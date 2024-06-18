@@ -37,7 +37,7 @@
 <div class="row">
     <div class="col-4 mb-5">
         <label class="required form-label fw-bold">Data:</label>
-        <input type="text" class="form-control form-control-solid flatpickr" placeholder="00/00/0000" name="date_venciment" value="{{ $content->venciment ?? date('Y-m-d') }}" required/>
+        <input type="text" class="form-control form-control-solid flatpickr" placeholder="00/00/0000" name="date_purchase" value="{{ $content->venciment ?? date('Y-m-d') }}" required/>
     </div>
     <div class="col-4 mb-5">
         <label class="required form-label fw-bold">Categoria:</label>

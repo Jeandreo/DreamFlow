@@ -17,6 +17,7 @@ use App\Models\ProjectCategory;
 use App\Models\ProjectStatus;
 use App\Models\ProjectTask;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -890,31 +891,74 @@ class DatabaseSeeder extends Seeder
             'wallet_id' => 1,
             'last_numbers' => '0531',
             'closing_day' => 5,
-            'due_day' => 10,
+            'due_day' => 15,
             'description' => 'Cartão para emergencias',
             'created_by' => 1,
         ]);
         
 
-        // FinancialTransactions::create([
-        //     'wallet_id' => 1,
-        //     'category_id' => 8,
-        //     'name' => 'Mercado',
-        //     'value' => 10,
-        //     'date_venciment' => now(),
-        //     'created_by' => 1,
-        // ]);
-        
+        FinancialCreditCard::create([
+            'name' => 'SENFF',
+            'limit' => 750.00,
+            'wallet_id' => 1,
+            'last_numbers' => '0531',
+            'closing_day' => 5,
+            'due_day' => 10,
+            'description' => 'Cartão para emergencias',
+            'created_by' => 1,
+        ]);
 
-        // FinancialTransactions::create([
-        //     'wallet_id' => 1,
-        //     'category_id' => 3,
-        //     'name' => 'Netflix',
-        //     'recurrent' => true,
-        //     'value' => 10,
-        //     'date_venciment' => now(),
-        //     'created_by' => 1,
-        // ]);
+        FinancialTransactions::create([
+            'wallet_id' => 1,
+            'category_id' => 3,
+            'name' => 'Netflix',
+            'recurrent' => true,
+            'value' => 10,
+            'date_purchase' => now(),
+            'date_payment' => now(),
+            'created_by' => 1,
+        ]);
+
+        FinancialTransactions::create([
+            'wallet_id' => 1,
+            'category_id' => 3,
+            'name' => 'Google',
+            'recurrent' => true,
+            'value' => 10,
+            'date_purchase' => now(),
+            'date_payment' => now(),
+            'created_by' => 1,
+        ]);
+
+        FinancialTransactions::create([
+            'credit_card_id' => 1,
+            'category_id' => 8,
+            'name' => 'Tênis para corrida',
+            'value' => 10,
+            'date_purchase' => now(),
+            'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
+            'created_by' => 1,
+        ]);
+
+        FinancialTransactions::create([
+            'credit_card_id' => 2,
+            'category_id' => 8,
+            'name' => 'Uber',
+            'value' => 10,
+            'date_purchase' => now(),
+            'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(9),
+            'created_by' => 1,
+        ]);
+
+        FinancialTransactions::create([
+            'credit_card_id' => 1,
+            'category_id' => 8,
+            'name' => 'Comida',
+            'value' => 10,
+            'date_purchase' => now(),
+            'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
+            'created_by' => 1,
+        ]);
 
         // FinancialTransactions::create([
         //     'wallet_id' => 1,
@@ -922,7 +966,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'TaekWondo',
         //     'recurrent' => true,
         //     'value' => 2,
-        //     'date_venciment' => now(),
+        //     'date_purchase' => now(),
         //     'created_by' => 1,
         // ]);
 

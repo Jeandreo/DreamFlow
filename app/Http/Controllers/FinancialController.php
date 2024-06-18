@@ -51,10 +51,10 @@ class FinancialController extends Controller
 
         // Consultar o banco de dados para obter os totais mensais de entradas e saídas
         $transactions = FinancialTransactions::select(
-            DB::raw('MONTH(date_venciment) as month'),
+            DB::raw('MONTH(date_purchase) as month'),
             DB::raw('SUM(value) as total')
         )
-        ->whereYear('date_venciment', date('Y')) // Filtra o ano atual, pode ser modificado conforme necessário
+        ->whereYear('date_purchase', date('Y')) // Filtra o ano atual, pode ser modificado conforme necessário
         ->groupBy('month')
         ->get();
 
@@ -88,11 +88,11 @@ class FinancialController extends Controller
 
         // Filtrar transações pelo mês atual e calcular as somas das entradas e saídas
         $entriesSum = FinancialTransactions::where('value', '>=', 0)
-            ->where('date_venciment', 'like', $currentMonth . '%')
+            ->where('date_purchase', 'like', $currentMonth . '%')
             ->sum('value');
     
         $exitsSum = FinancialTransactions::where('value', '<', 0)
-            ->where('date_venciment', 'like', $currentMonth . '%')
+            ->where('date_purchase', 'like', $currentMonth . '%')
             ->sum('value');
     
         // Calcula a diferença

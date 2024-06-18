@@ -33,6 +33,48 @@
 <div class="d-flex flex-column flex-column-fluid">
     <div id="kt_app_content" class="app-content  flex-column-fluid py-6" >
         <div id="kt_app_content_container" class="app-container container-fluid ">
+            <div class="row mt-n20">
+                <div class="col-2">
+                </div>
+                <div class="col">
+                    <div class="card mb-4 shadow">
+                        <div class="card-body">
+                            <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="total-revenue">
+                                R$ 0,00
+                            </h3>
+                            <h2 class="fs-5 text-uppercase text-primary mb-0">
+                                Entrada
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-4 shadow">
+                        <div class="card-body">
+                            <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="total-expense">
+                                R$ 0,00
+                            </h3>
+                            <h2 class="fs-5 text-uppercase text-primary mb-0">
+                                Saída
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-4 shadow">
+                        <div class="card-body">
+                            <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="total">
+                                R$ 0,00
+                            </h3>
+                            <h2 class="fs-5 text-uppercase text-primary mb-0">
+                                Resultado
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <div class="card shadow mb-4">
@@ -144,6 +186,36 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
+    function formatBRL(number){
+        return 'R$ '+ number.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // Recuperar valores do Local Storage ao carregar a página
+    if(localStorage.getItem('date-begin')) {
+        $('.date-begin').val(localStorage.getItem('date-begin'));
+    }
+    if(localStorage.getItem('date-end')) {
+        $('.date-end').val(localStorage.getItem('date-end'));
+    }
+
+    // Salvar valores no Local Storage ao alterar os campos
+    $('.date-begin').on('change', function() {
+        localStorage.setItem('date-begin', $(this).val());
+    });
+    $('.date-end').on('change', function() {
+        localStorage.setItem('date-end', $(this).val());
+    });
+
+    // 
+    $(document).on('click', '.show-sub-transactions', function(){
+
+        var tr = $(this).closest('tr');
+
+        tr.after(123);
+
+        console.log('123')
+    });
+
     // DEFINE AS VARIAVEIS
     var dateBegin = $('.date-begin').val();
     var dateEnd = $('.date-end').val();
@@ -212,7 +284,7 @@
         columnDefs: [
             {   
                 targets: 6,
-                className: 'text-end',
+                className: 'text-end no-open',
             },
         ],
         createdRow: function (row, data, dataIndex) {
@@ -222,7 +294,9 @@
 
     // Adicione um ouvinte para o evento 'xhr.dt'
     table.on('xhr.dt', function (e, settings, json) {
-        // console.log('Tabela atualizada', json);
+        $('#total-revenue').text(formatBRL(json.totalRevenue));
+        $('#total-expense').text(formatBRL(json.totalExpense));
+        $('#total').text(formatBRL(json.totalSum));
     });
 
     // MAKE TABLE
@@ -313,16 +387,22 @@
 
     });
 
-    $(document).on('click', 'tbody tr', function(e){
+    $(document).on('click', 'tbody td', function(e){
 
         // GET ID OF TRANSACTIONS
-        var task    = $(this).find('.show');
+        var task    = $(this).closest('tr').find('.show');
         var id      = task.data('id');
         var preview = task.data('preview');
         var date    = task.data('date');
 
         // IS CHECKBOX
-        if ($(e.target).is('input[type="checkbox"]')) {
+        if ($(this).hasClass('no-open')) {
+            console.log($(this).attr('class'));
+            return;
+        }
+
+        // IS CHECKBOX
+        if ($(e.target).is(':checked')) {
 
             // SAVE WITH CHECKED
             var paid = $(e.target).is(':checked')
@@ -361,7 +441,7 @@
                 $('[name="preview"]').val(preview);
 
                 // SET DATE
-                $('#edit_trasaction [name="date_venciment"]').val(date);
+                $('#edit_trasaction [name="date_purchase"]').val(date);
 
                 // START FLATPICKR
                 generateFlatpickr();
