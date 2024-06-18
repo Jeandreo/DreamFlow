@@ -248,9 +248,9 @@
                         var color = transaction.category_color;
                     }
 
-                    newRow += '<tr class="text-gray-700 sub-transaction open-transaction fature-' + transaction.has_credit + '-' + transaction.date + '">';
+                    newRow += '<tr class="text-gray-700 sub-transaction open-transaction fature-' + transaction.has_credit + '-' + transaction.date_payment + '">';
                         newRow += '<td class="w-30px"></td>';
-                        newRow += '<td>' + formatDate(transaction.date) + '</td>';
+                        newRow += '<td>' + formatDate(transaction.date_purchase) + '</td>';
                         newRow += '<td>' + transaction.name + '</td>';
                         newRow += '<td><span class="d-flex align-items-center fs-6 fw-normal"> <div class="w-10px h-10px rounded-circle d-flex justify-content-center align-items-center me-2" style="background: ' + color + ';"></div> <span class="text-gray-600">' + transaction.category + '</span> </span></td>';
                         newRow += '<td>' + formatBRL(transaction.value) + '</td>';
@@ -264,6 +264,7 @@
             }
 
         } else {
+
             // Obtém fatura
             var fature = btn.data('fature');
 

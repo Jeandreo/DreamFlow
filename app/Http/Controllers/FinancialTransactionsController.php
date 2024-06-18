@@ -72,8 +72,10 @@ class FinancialTransactionsController extends Controller
 
         // IF CREDIT
         if($method[0] == 'credit'){
+            $data['date_payment'] = Carbon::parse($data['date_purchase'])->addMonths(1);
             $data['credit_card_id'] = $method[1];
         } else {
+            $data['date_payment'] = $data['date_purchase'];
             $data['wallet_id'] = $method[1];
         }
 
@@ -295,11 +297,11 @@ class FinancialTransactionsController extends Controller
 
         // SELECT DATA 
         $query->select(
+            DB::raw('"Wallet"                       as type'),
             'financial_transactions.id              as id',
             'financial_transactions.name            as name',
             'financial_transactions.date_purchase   as date_purchase',
             'financial_transactions.date_payment    as date_payment',
-            'financial_transactions.date_purchase   as date_purchase',
             'financial_transactions.value           as value',
             'financial_transactions.paid            as paid',
             'financial_transactions.wallet_id       as has_wallet',
@@ -337,7 +339,8 @@ class FinancialTransactionsController extends Controller
 
             // VERIFY CATEGORY
             $hasFather = false;
-            if ($transaction->has_father) {
+
+            if ($transaction->category->father_id) {
                 $hasFather = true;
             }
 
@@ -363,27 +366,28 @@ class FinancialTransactionsController extends Controller
                         
                         // MAKE OBJECT
                         $additionalData = (object) [
-                            'id' => $transaction->id,
-                            'name' => $transaction->name,
-                            'date' => $newDate->format('Y-m-d'),
-                            'date_payment' => $newDate->format('Y-m-d'),
-                            'date_purchase' => $newDate->format('Y-m-d'),
-                            'value' => $transaction->value,
-                            'paid' => 0,
-                            'has_wallet' => false,
-                            'hitching' => $transaction->hitching,
-                            'category' => $transaction->category->name,
-                            'recurrent' => true,
-                            'has_father' => $hasFather,
+                            'type'           => 'Recurrent',
+                            'id'             => $transaction->id,
+                            'name'           => $transaction->name,
+                            'date'           => $newDate->format('Y-m-d'),
+                            'date_payment'   => $newDate->format('Y-m-d'),
+                            'date_purchase'  => $newDate->format('Y-m-d'),
+                            'value'          => $transaction->value,
+                            'paid'           => 0,
+                            'has_wallet'     => false,
+                            'hitching'       => $transaction->hitching,
+                            'category'       => $transaction->category->name,
+                            'recurrent'      => true,
+                            'has_father'     => $hasFather,
                             'category_color' => $transaction->category->color,
-                            'category_icon' => $transaction->category->icon,
-                            'father_color' => $transaction->category->father->color ?? null,
-                            'father_icon' => $transaction->category->father->icon ?? null,
-                            'wallet_name' => $transaction->wallet_name,
-                            'wallet_color' => null,
-                            'has_credit' => false,
-                            'card_name' => $transaction->card_name,
-                            'preview' => true,
+                            'category_icon'  => $transaction->category->icon,
+                            'father_color'   => $transaction->category->father->color ?? null,
+                            'father_icon'    => $transaction->category->father->icon ?? null,
+                            'wallet_name'    => $transaction->wallet_name,
+                            'wallet_color'   => null,
+                            'has_credit'     => false,
+                            'card_name'      => $transaction->card_name,
+                            'preview'        => true,
                         ];
 
                         // INSERT IN DATA
@@ -417,6 +421,7 @@ class FinancialTransactionsController extends Controller
                 $date = ucfirst(Carbon::parse(date($month . $transactions[0]->due_date))->locale('pt_BR')->isoFormat('MMMM'));
 
                 $fatura = (object) [
+                    'type' => 'Credit',
                     'id' => 1,
                     'name' => 'Fatura de ' . $date . ' - ' . $card,
                     'date_purchase' => date($month . $transactions[0]->due_date),
@@ -458,18 +463,33 @@ class FinancialTransactionsController extends Controller
         $totalRecords = count($data);
 
         // OBTEM TOTAL
-        $totalValue = collect($data)->sum('value');
-        $totalRevenue = collect($data)->where('value', '>', 0)->sum('value');
-        $totalExpense= collect($data)->where('value', '<', 0)->sum('value');
-        $totalPaidValue = collect($data)->where('paid', 1)->sum('value');
+        $totalValue = collect($data)->where('paid', true)->sum('value');
+        $totalRevenue = collect($data)->where('paid', true)->where('value', '>', 0)->sum('value');
+        $totalExpense= collect($data)->where('paid', true)->where('value', '<', 0)->sum('value');
+        $totalPaidValue = collect($data)->where('paid', true)->where('paid', 1)->sum('value');
 
 
         // Configurar as colunas usando a função editColumn
         return FacadesDataTables::of($data)
             ->editColumn('checked', function($row) {
-                return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
-                            <input class='form-check-input cursor-pointer transaction-paid' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
-                        </div>";
+
+                if($row->type == 'Wallet' && !$row->has_credit){
+                    
+                    return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
+                                <input class='form-check-input cursor-pointer transaction-paid' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
+                            </div>";
+
+                } elseif($row->type == 'Credit'){
+
+                    return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
+                                <input class='form-check-input cursor-pointer transaction-paid' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
+                            </div>";
+
+                } else {
+                    return '-';
+                }
+
+                
             })
             ->editColumn('name', function($row) {
                 $isPreview = isset($row->preview) ? 'true' : 'false';
