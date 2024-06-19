@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('hitching')->nullable();
             $table->boolean('recurrent')->default(false);
-            $table->string('recurrence')->nullable();
+            $table->boolean('fature')->default(false);
             $table->decimal('value', 10, 2)->default(0);
             $table->decimal('value_paid', 10, 2)->default(0);
             $table->date('date_purchase');

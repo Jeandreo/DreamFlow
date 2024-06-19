@@ -188,18 +188,43 @@ class FinancialTransactionsController extends Controller
         // FORMAT CHECKED
         $data['paid'] = $request->paid == 'true' ? true : false;
 
+
         // UPDATE OR MAKE NEW
-        if($request->preview == 'false'){
+        if($request->type == 'Fature') {
+
+            // Cartão
+            $card = FinancialCreditCard::find($request->id);
+                
+            // Data de pagamento
+            $monthName = ucfirst(Carbon::parse(date($request->date))->locale('pt_BR')->isoFormat('MMMM'));
+
+            $this->repository->create([
+                'credit_card_id' => $request->id,
+                'category_id' => 0,
+                'name' => 'Fatura de ' . $monthName . ' - ' . $card->name,
+                'fature' => true,
+                'date_purchase' => $request->date,
+                'date_payment' => $request->date,
+                'date_paid' => now(),
+                'paid' => true,
+                'created_by' => Auth::id(),
+            ]);
+
+
+        } elseif ($request->preview == 'true') {
             // STORING NEW DATA
-            $data['updated_by'] = Auth::id();
-            $content->update($data);
-        } else {
-            // STORING NEW DATA
+            $data['date_purchase'] = $request->date;
             $data['date_payment'] = $request->date;
+            $data['date_paid'] = now();
             $data['updated_by'] = null;
             $data['created_by'] = Auth::id();
             $content->create($data);
-        }
+        } else {
+            // STORING NEW DATA
+            $data['updated_by'] = Auth::id();
+            $data['date_paid'] = now();
+            $content->update($data);
+        } 
 
         // REDIRECT AND MESSAGES
         return response()->json('Transaction updated with success', 200);
@@ -213,65 +238,69 @@ class FinancialTransactionsController extends Controller
      */
     public function processing(Request $request)
     {
-        // BEGIN QUERY
+        // Inicia a consulta
         $query = DB::table('financial_transactions');
-        
-        // JOIN IN CATEGORIES
+
+        // Junta com a tabela de categorias
         $query->leftJoin('financial_categories', function($join) {
             $join->on('financial_transactions.category_id', '=', 'financial_categories.id');
         });
 
-        // JOIN FIND FATHER OF CATEGORY
+        // Verifica se a categoria possui uma categoria pai
         $query->leftJoin('financial_categories as category_father', function($join) {
             $join->on('category_father.id', '=', 'financial_categories.father_id');
         });
 
-        // JOIN IN WALLETS
+        // Junta com a tabela de carteiras
         $query->leftJoin('financial_wallets', function($join) {
             $join->on('financial_transactions.wallet_id', '=', 'financial_wallets.id');
         });
 
-        // JOIN IN CREDIT
+        // Junta aos cartões de crédito
         $query->leftJoin('financial_credit_cards', function($join) {
             $join->on('financial_transactions.credit_card_id', '=', 'financial_credit_cards.id');
         });
 
-        // DATE BEGIN SELECTED
+        // Data inicial selecionada
         if ($request->date_begin) {
-            $query->whereDate('financial_transactions.date_purchase', '>=', $request->date_begin)->orWhereDate('financial_transactions.date_payment', '>=', $request->date_begin);
+            $query->whereDate('financial_transactions.date_purchase', '>=', $request->date_begin)
+                ->orWhereDate('financial_transactions.date_payment', '>=', $request->date_begin);
         }
 
-        // DATE END SELECTED
+        // Data final selecionada
         if ($request->date_end) {
-            $query->whereDate('financial_transactions.date_purchase', '<=', $request->date_end)->orWhereDate('financial_transactions.date_payment', '>=', $request->date_begin);
+            $query->whereDate('financial_transactions.date_purchase', '<=', $request->date_end)
+                ->orWhereDate('financial_transactions.date_payment', '<=', $request->date_end);
         }
 
-        // SEARCH BY
+        // Pesquisa por termos
         if ($request->searchBy != '') {
             
-            // SEPARE TERMS
+            // Separa os termos
             $searchTerms = explode(' ', $request->searchBy);
             
-            // SEARCH BY NAME 
+            // Pesquisa por nome
             $query->where(function ($query) use ($searchTerms) {
                 foreach ($searchTerms as $term) {
                     $query->whereRaw("LOWER(financial_transactions.name) LIKE ?", ['%' . strtolower($term) . '%']);
                 }
             });
 
+            // Ou pesquisa pelo nome da categoria
             $query->orWhere(function ($query) use ($request) {
                 $query->where('financial_categories.name', 'like', "%$request->searchBy%");
             });
         }
 
-        // ORDER BY
+        // Ordenação
         if ($request->order_by) {
-            // ORDER & COLUMN
+
+            // Ordem e coluna
             $direction = $request->order[0]['dir'];
             $orderThis = $request->order_by;
             $column = $orderThis;
 
-            // FORMATA COLUNAS
+            // Formata as colunas
             switch ($column) {
                 case 'name':
                     $column = 'financial_transactions.name';
@@ -289,13 +318,16 @@ class FinancialTransactionsController extends Controller
                     $column = 'financial_transactions.id';
                     break;
             }
+
+            // Executa
             $query->orderBy($column, $direction);
+
         }
 
-        // ITENS PER PAGE AND PAGINATE
+        // Itens por página e paginação
         $query->paginate($request->per_page);
 
-        // SELECT DATA 
+        // Seleciona colunas 
         $query->select(
             DB::raw('"Wallet"                       as type'),
             'financial_transactions.id              as id',
@@ -307,6 +339,7 @@ class FinancialTransactionsController extends Controller
             'financial_transactions.wallet_id       as has_wallet',
             'financial_transactions.recurrent       as recurrent',
             'financial_transactions.hitching        as hitching',
+            'financial_transactions.fature          as fature',
             'financial_categories.name              as category',
             'financial_categories.father_id         as has_father',
             'financial_categories.color             as category_color',
@@ -316,56 +349,52 @@ class FinancialTransactionsController extends Controller
             'category_father.icon                   as father_icon',
             'financial_wallets.name                 as wallet_name',
             'financial_wallets.color                as wallet_color',
-            'financial_transactions.credit_card_id  as has_credit',
+            'financial_transactions.credit_card_id  as credit_card_id',
             'financial_credit_cards.name            as card_name',
             'financial_credit_cards.due_day         as due_date',
         );
 
-        // EXECUTE THE QUERY TO GET THE RESULTS
+        // Executa consulta em trás array
         $data = $query->get()->toArray();
 
         // Obtém todas as transações recorrentes
         $recurringTransactions = FinancialTransactions::where('recurrent', true)->get()->values();
 
-        // Adicione os dados de $additionalData diretamente ao array $data
+        // Faz loop entre transações recorrentes
         foreach ($recurringTransactions as $transaction) {
 
-            // CONVERT TO CARBON
+            // Formata data
             $dateBegin = Carbon::parse($transaction->date_payment);
             $dateEnd = Carbon::parse($request->date_end);
 
-            // GET DIFERENCE
+            // Obtém a diferença dos meses
             $monthsDifference = $dateBegin->diffInMonths($dateEnd);
 
-            // VERIFY CATEGORY
-            $hasFather = false;
+            // Verifica se tem categorias
+            $hasFather = $transaction->category->father_id ? false : true;
 
-            if ($transaction->category->father_id) {
-                $hasFather = true;
-            }
-
-            // LOOP IN DIFFERENCE
+            // Realiza loop entre a diferença dos meses
             for ($i = 0; $i <= $monthsDifference; $i++) {
 
-                // GET DATE AND ADD MONTHS BASED ON LOOP ITERATION
+                // Obtém a data e adiciona meses com base na iteração do loop
                 $newDate = Carbon::parse($transaction->date_purchase)->addMonths($i);
 
-                // CONFIRM DATE BETWEEN DATE SELECTED
+                // Confirma se a data está entre a data inicial e final selecionada
                 if ($newDate->between($dateBegin, $dateEnd)) {
 
-                    // CHECK IF THERE IS ALREADY A TRANSACTION WITH THE SAME HITCHING IN THE SAME MONTH
+                    // Verifica se já existe uma transação com o mesmo vínculo no mesmo mês
                     $existingTransaction = collect($data)->first(function ($item) use ($transaction, $newDate) {
 
-                        // Importante Hitching estar cadastrado
+                        // Importante o vínculo (hitching) estar cadastrado
                         return $item->hitching == $transaction->hitching && Carbon::parse($item->date_purchase)->isSameMonth($newDate);
+
                     });
 
-
-                    // IF NO EXISTING TRANSACTION, ADD NEW ONE
+                    // Se não houver transação criada, simula uma ficticia
                     if (!$existingTransaction) {
                         
-                        // MAKE OBJECT
-                        $additionalData = (object) [
+                        // Cria o objeto
+                        $trasactionSimulated = (object) [
                             'type'           => 'Recurrent',
                             'id'             => $transaction->id,
                             'name'           => $transaction->name,
@@ -385,23 +414,23 @@ class FinancialTransactionsController extends Controller
                             'father_icon'    => $transaction->category->father->icon ?? null,
                             'wallet_name'    => $transaction->wallet_name,
                             'wallet_color'   => null,
-                            'has_credit'     => false,
+                            'credit_card_id'     => false,
                             'card_name'      => $transaction->card_name,
                             'preview'        => true,
                         ];
 
-                        // INSERT IN DATA
-                        $data[] = $additionalData;
+                        // Insere os dados
+                        $data[] = $trasactionSimulated;
                     }
                 }
             }
         }
 
-        // // Obtém as transações de carteira e Crédito
+        // Obtém as transações de carteira e Crédito
         $data = collect($data);
 
         // Agrupa as compras no cartão de crédito em uma fatura
-        $faturesCredit = collect($data)->where('has_credit', true);
+        $faturesCredit = collect($data)->where('credit_card_id', true);
 
         // Agrupar por mês e por cartão de crédito
         $faturesByMonth = $faturesCredit->groupBy(function ($item) {
@@ -410,59 +439,58 @@ class FinancialTransactionsController extends Controller
             return $items->groupBy('card_name');
         });
 
-
-        // Gera as faturas dos cartões
+        // Faz looping entre faturas 
         foreach ($faturesByMonth as $month => $cards) {
 
-            // Faz looping entre as faturas
+            // Faz looping entre as cartões
             foreach($cards as $card => $transactions){
 
-                // Data de pagamento
-                $date = ucfirst(Carbon::parse(date($month . $transactions[0]->due_date))->locale('pt_BR')->isoFormat('MMMM'));
+                // Verifica se já existe uma fatura criada
+                $existFature = collect($transactions)->where('fature', true)->isNotEmpty();
 
-                $fatura = (object) [
-                    'type' => 'Credit',
-                    'id' => 1,
-                    'name' => 'Fatura de ' . $date . ' - ' . $card,
-                    'date_purchase' => date($month . $transactions[0]->due_date),
-                    'date_payment' => date($month . $transactions[0]->due_date),
-                    'value' => $transactions->sum('value'),
-                    'paid' => false,
-                    'has_wallet' => null,
-                    'recurrent' => null,
-                    'hitching' => null,
-                    'category' => 'Fatura',
-                    'has_father' => false,
-                    'category_color' => '#007bff',
-                    'category_icon' => 'fa-solid fa-receipt',
-                    'father_name' => null,
-                    'father_color' => null,
-                    'wallet_name' => null,
-                    'wallet_color' => null,
-                    'has_credit' => $transactions[0]->has_credit,
-                    'card_name' => $card,
-                    'extra_transactions' => $transactions->toArray(),
-                ];
+                // Se não existir
+                if(!$existFature){
 
-                $data->push($fatura);
+                    // Formaata nome do mês
+                    $monthName = ucfirst(Carbon::parse(date($month . $transactions[0]->due_date))->locale('pt_BR')->isoFormat('MMMM'));
+
+                    // Cria objeto
+                    $fature = (object) [
+                        'type' => 'Fature',
+                        'id' => $transactions[0]->credit_card_id,
+                        'name' => 'Fatura de ' . $monthName . ' - ' . $card,
+                        'date_purchase' => date($month . $transactions[0]->due_date),
+                        'date_payment' => date($month . $transactions[0]->due_date),
+                        'value' => $transactions->sum('value'),
+                        'paid' => false,
+                        'has_wallet' => null,
+                        'recurrent' => null,
+                        'fature' => true,
+                        'category' => 'Fatura',
+                        'has_father' => false,
+                        'credit_card_id' => $transactions[0]->credit_card_id,
+                        'card_name' => $card,
+                        'extra_transactions' => $transactions->toArray(),
+                    ];
+
+                    // Insere ftura
+                    $data->push($fature);
+                }
 
             }
 
         }
 
+        // Filtra para que as faturas a serem exibidas estejam dentro do filtro
         $data = array_filter($data->toArray(), function ($item) use ($request) {
-            return Carbon::parse($item->date_purchase)->gte($request->date_begin);
+            $date = Carbon::parse($item->date_purchase);
+            return $date->gte($request->date_begin) && $date->lte($request->date_end);
         });
-
-        $data = array_filter($data, function ($item) use ($request) {
-            return Carbon::parse($item->date_purchase)->lte($request->date_end);
-        });
-
 
         // COUNT TOTAL RECORDS
         $totalRecords = count($data);
 
-        // OBTEM TOTAL
+        // Obtém valores
         $totalValue = collect($data)->where('paid', true)->sum('value');
         $totalRevenue = collect($data)->where('paid', true)->where('value', '>', 0)->sum('value');
         $totalExpense= collect($data)->where('paid', true)->where('value', '<', 0)->sum('value');
@@ -473,18 +501,10 @@ class FinancialTransactionsController extends Controller
         return FacadesDataTables::of($data)
             ->editColumn('checked', function($row) {
 
-                if($row->type == 'Wallet' && !$row->has_credit){
-                    
+                if($row->type == 'Wallet' && !$row->credit_card_id || $row->type == 'Wallet' && $row->fature || $row->type == 'Fature' || $row->type == 'Recurrent'){
                     return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
                                 <input class='form-check-input cursor-pointer transaction-paid' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
                             </div>";
-
-                } elseif($row->type == 'Credit'){
-
-                    return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
-                                <input class='form-check-input cursor-pointer transaction-paid' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
-                            </div>";
-
                 } else {
                     return '-';
                 }
@@ -495,19 +515,31 @@ class FinancialTransactionsController extends Controller
                 $isPreview = isset($row->preview) ? 'true' : 'false';
                 $recurrent = $row->recurrent ? '<i class="fa-solid fa-retweet '. (isset($row->preview) ? 'text-danger' : 'text-primary') .'"></i>' : '<span></span>';
                 $date = date('Y-m-d', strtotime($row->date_purchase));
-                return "<span data-search='$row->name' class='show' data-id='$row->id' data-preview='$isPreview' data-date='$date'>
+                return "<span data-search='$row->name' class='show' data-id='$row->id' data-preview='$isPreview' data-type='$row->type' data-date='$date'>
                     $row->name $recurrent
                 </span>";
             })
             ->editColumn('category_id', function($row) {
-                $color = $row->has_father ? $row->father_color : $row->category_color;
-                $icon = $row->has_father ? $row->father_icon : $row->category_icon;
+
+                // Se não for fatura pega os ícones personalizados
+                if(!isset($row->fature) || $row->fature == false){
+                    $color = $row->has_father ? $row->father_color : $row->category_color;
+                    $icon = $row->has_father ? $row->father_icon : $row->category_icon;
+                    $category = $row->category;
+                } else {
+                    $color = '#007bff';
+                    $icon = 'fa-solid fa-receipt';
+                    $category = 'Fatura';
+                }
+
+                // Gera HTML
                 return "<span class='d-flex align-items-center fs-6 fw-normal'>
                             <div class='w-25px h-25px rounded-circle d-flex justify-content-center align-items-center me-2' style='background: $color;'>
                                 <i class='$icon fs-7 text-white'></i>
                             </div>
-                            <span class='text-gray-600'>$row->category</span>
+                            <span class='text-gray-600'>$category</span>
                         </span>";
+
             })
             ->editColumn('date', function($row) {
                 return date('d/m/Y', strtotime($row->date_purchase));
@@ -523,7 +555,7 @@ class FinancialTransactionsController extends Controller
                         <i class='fa-solid fa-wallet fs-9 me-1' style='color: " . hex2rgb($row->wallet_color, 70) . "'></i>
                         $row->wallet_name
                     </span>";
-                } elseif($row->id && $row->has_credit) {
+                } elseif($row->id && $row->credit_card_id) {
                     return "<span class='badge badge-light-danger py-2 fw-bold fs-8 px-3'>
                                 <div class='d-flex align-items-center'>
                                     <i class='fa-solid fa-credit-card text-danger fs-9 me-1'></i>
@@ -536,7 +568,7 @@ class FinancialTransactionsController extends Controller
             })
             ->editColumn('actions', function($row) {
                 if(isset($row->extra_transactions)){
-                    $showTransactios = " <button type='button' class='show-sub-transactions btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px me-3' data-fature='$row->has_credit-$row->date_purchase'
+                    $showTransactios = " <button type='button' class='show-sub-transactions btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px me-3' data-fature='$row->credit_card_id-$row->date_purchase'
                                             <span data-transactions='". json_encode($row->extra_transactions) ."'><i class='fa-solid fa-circle-plus'></i></span>
                                         </button>";
                 } else {

@@ -459,12 +459,13 @@
         var task    = $(this).closest('tr').find('.show');
         var id      = task.data('id');
         var preview = task.data('preview');
+        var type = task.data('type');
         var date    = task.data('date');
 
         // SAVE WITH CHECKED
         var paid = $(e.target).is(':checked');
 
-        checkPayment(id, date, paid, preview);
+        checkPayment(id, date, paid, preview, type);
 
     });
 
@@ -521,13 +522,13 @@
 
 
     // DATE CHECKED
-    function checkPayment(id, date, paid, preview){
+    function checkPayment(id, date, paid, preview, type){
         // AJAX
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:'POST',
             url: "{{ route('financial.transactions.checked') }}",
-            data: {id: id, date: date, paid: paid, preview: preview},
+            data: {id: id, date: date, paid: paid, preview: preview, type: type},
             success: function(response){
                 // RELOAD TABLE
                 table.DataTable().ajax.reload();
