@@ -36,6 +36,7 @@
 													</tr>
 												</thead>
 												<tbody>
+												@if ($contents[$tab])
 													@foreach ($contents[$tab] as $content)
 													<tr>
 														<td>
@@ -88,6 +89,7 @@
 														</tr>
 														@endforeach
 													@endforeach
+												@endif
 												</tbody>
 											</table>
 										</div>
