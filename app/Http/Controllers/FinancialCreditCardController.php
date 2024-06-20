@@ -78,8 +78,8 @@ class FinancialCreditCardController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-                ->route('financial.wallets.index')
-                ->with('message', 'Carteira adicionada com sucesso.');
+                ->route('financial.credit.cards.index')
+                ->with('message', 'Cartão adicionado com sucesso.');
 
     }
 
@@ -122,6 +122,9 @@ class FinancialCreditCardController extends Controller
         // GET FORM DATA
         $data = $request->all();
 
+        // FORMAT DATA
+        $data['limit'] = toDecimal($data['limit']);
+
         // UPDATE BY
         $data['updated_by'] = Auth::id();
         
@@ -130,8 +133,8 @@ class FinancialCreditCardController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('financial.wallets.index')
-            ->with('message', 'Carteira editada com sucesso.');
+            ->route('financial.credit.cards.index')
+            ->with('message', 'Cartão editado com sucesso.');
 
     }
 
@@ -153,8 +156,8 @@ class FinancialCreditCardController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('financial.wallets.index')
-            ->with('message', 'Carteira ' . ($status == false ? 'desativada' : 'habiliitada') . ' com sucesso.');
+            ->route('financial.credit.cards.index')
+            ->with('message', 'Cartão ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
 
     }
 }
