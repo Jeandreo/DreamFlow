@@ -3,16 +3,7 @@
 <input type="hidden" name="preview" value="">
 @endif
 <div class="row">
-    @if(!isset($content))
-    <div class="col-12 mb-5">
-        <label class="required form-label fw-bold">Tipo:</label>
-        <select class="form-select form-select-solid" name="type" data-control="select2" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="#modal_trasaction" @endif required>
-            <option value=""></option>
-            <option value="revenue">Receita</option>
-            <option value="expense">Despesa</option>
-        </select>
-    </div>
-    @endif
+    @if(!isset($content)) <input type="hidden" name="type" value="" id="type-transaction"> @endif
     <div class="col-4 mb-5">
         <label class="required form-label fw-bold">Descrição:</label>
         <input type="text" class="form-control form-control-solid" placeholder="Descreva a compra..." name="name" value="{{ $content->name ?? old('name') }}" required/>

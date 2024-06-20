@@ -84,6 +84,10 @@
                                     <div class="d-flex align-items-center position-relative my-1">
                                         <i class="ki-duotone ki-magnifier fs-1 position-absolute ms-6"><span class="path1"></span><span class="path2"></span></i>
                                         <input type="text" class="form-control form-control-solid w-250px ps-15" placeholder="Procurar transações" id="search-in-datatable"/>
+                                        <button type="button" class="btn btn-light-primary ms-2">
+                                            <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i>
+                                            Filtrar
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="col-4 text-center">
@@ -95,13 +99,17 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="d-flex justify-content-end">
-                                        <button type="button" class="btn btn-light-primary me-3">
-                                            <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i>
-                                            Filtrar
-                                        </button>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_trasaction">
+                                        <button type="button" class="btn btn-primary me-2 add-transaction" data-type="transference">
                                             <i class="ki-duotone ki-plus fs-2"></i>
-                                            Adicionar Transação
+                                            Trânsferencia
+                                        </button>
+                                        <button type="button" class="btn btn-success me-2 add-transaction" data-type="renevue">
+                                            <i class="ki-duotone ki-plus fs-2"></i>
+                                            Receita
+                                        </button>
+                                        <button type="button" class="btn btn-danger me-2 add-transaction" data-type="expense">
+                                            <i class="ki-duotone ki-plus fs-2"></i>
+                                            Desepesa
                                         </button>
                                     </div>
                                 </div>
@@ -213,6 +221,20 @@
     });
     $('.date-end').on('change', function() {
         localStorage.setItem('date-end', $(this).val());
+    });
+
+    // Adiciona transação
+    $('.add-transaction').click(function(){
+
+        // Obtém o tipo
+        var type = $(this).data('type');
+        
+        // Inser qual o tipo no modal de transação
+        $('#type-transaction').val(type);
+
+        // Abre modal
+        $('#modal_trasaction').modal('show');
+
     });
 
     // Exibe ou esconde as trasações da fatura
@@ -459,7 +481,7 @@
         var task    = $(this).closest('tr').find('.show');
         var id      = task.data('id');
         var preview = task.data('preview');
-        var type = task.data('type');
+        var type    = task.data('type');
         var date    = task.data('date');
 
         // SAVE WITH CHECKED

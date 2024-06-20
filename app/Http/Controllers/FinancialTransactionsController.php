@@ -178,31 +178,61 @@ class FinancialTransactionsController extends Controller
     public function checked(Request $request)
     {
 
-        // VERIFY IF EXISTS
-        if(!$content = $this->repository->find($request->id))
-        return redirect()->back();
+        if($request->type != 'Fature'){
 
-        // GET FORM DATA
-        $data = $content->toArray();
+            // Obtém transação
+            $transaction = $this->repository->find($request->id);
 
-        // FORMAT CHECKED
-        $data['paid'] = $request->paid == 'true' ? true : false;
+            // GET FORM DATA
+            $data = $transaction->toArray();
 
+            // FORMAT CHECKED
+            $data['paid'] = $request->paid == 'true' ? true : false;
+        
+            if($request->preview == 'true') {
+    
+                // STORING NEW DATA
+                $data['date_purchase'] = $request->date;
+                $data['date_payment'] = $request->date;
+                $data['date_paid'] = now();
+                $data['updated_by'] = null;
+                $data['created_by'] = Auth::id();
+                $transaction->create($data);
+    
+            } else {
+                // STORING NEW DATA
+                $data['updated_by'] = Auth::id();
+                $data['date_paid'] = now();
+                $transaction->update($data);
+            } 
 
-        // UPDATE OR MAKE NEW
-        if($request->type == 'Fature') {
+        } else {
+            // Obtém cartão
+            $cardId = $request->id;
 
             // Cartão
-            $card = FinancialCreditCard::find($request->id);
-                
-            // Data de pagamento
-            $monthName = ucfirst(Carbon::parse(date($request->date))->locale('pt_BR')->isoFormat('MMMM'));
+            $card = FinancialCreditCard::find($cardId);
 
-            $this->repository->create([
-                'credit_card_id' => $request->id,
+            // Separa ano e mes
+            $arrayDate = explode('-', $request->date);
+            $year = $arrayDate[0];
+            $month = $arrayDate[1];
+
+            // Obtém total dos valores do mês
+            $totalValue = FinancialTransactions::where('credit_card_id', $cardId)
+                ->whereYear('date_payment', $year)
+                ->whereMonth('date_payment', $month)
+                ->sum('value');
+
+            // Data de pagamento
+            $yearMonthName = ucfirst(Carbon::parse(date($request->date))->locale('pt_BR')->isoFormat('MMMM'));
+
+            $createFature = $this->repository->create([
+                'credit_card_id' => $cardId,
                 'category_id' => 0,
-                'name' => 'Fatura de ' . $monthName . ' - ' . $card->name,
+                'name' => 'Fatura de ' . $yearMonthName . ' - ' . $card->name,
                 'fature' => true,
+                'value' => $totalValue,
                 'date_purchase' => $request->date,
                 'date_payment' => $request->date,
                 'date_paid' => now(),
@@ -210,21 +240,13 @@ class FinancialTransactionsController extends Controller
                 'created_by' => Auth::id(),
             ]);
 
+            // Obtém total dos valores do mês
+            FinancialTransactions::where('credit_card_id', $cardId)
+                ->whereYear('date_payment', $year)
+                ->whereMonth('date_payment', $month)
+                ->update(['fature_id' => $createFature->id]);
+        }
 
-        } elseif ($request->preview == 'true') {
-            // STORING NEW DATA
-            $data['date_purchase'] = $request->date;
-            $data['date_payment'] = $request->date;
-            $data['date_paid'] = now();
-            $data['updated_by'] = null;
-            $data['created_by'] = Auth::id();
-            $content->create($data);
-        } else {
-            // STORING NEW DATA
-            $data['updated_by'] = Auth::id();
-            $data['date_paid'] = now();
-            $content->update($data);
-        } 
 
         // REDIRECT AND MESSAGES
         return response()->json('Transaction updated with success', 200);
@@ -368,13 +390,13 @@ class FinancialTransactionsController extends Controller
             $dateEnd = Carbon::parse($request->date_end);
 
             // Obtém a diferença dos meses
-            $monthsDifference = $dateBegin->diffInMonths($dateEnd);
+            $yearMonthsDifference = $dateBegin->diffInMonths($dateEnd);
 
             // Verifica se tem categorias
-            $hasFather = $transaction->category->father_id ? false : true;
+            $hasFather = $transaction->category->father_id ? true : false;
 
             // Realiza loop entre a diferença dos meses
-            for ($i = 0; $i <= $monthsDifference; $i++) {
+            for ($i = 0; $i <= $yearMonthsDifference; $i++) {
 
                 // Obtém a data e adiciona meses com base na iteração do loop
                 $newDate = Carbon::parse($transaction->date_purchase)->addMonths($i);
@@ -410,8 +432,8 @@ class FinancialTransactionsController extends Controller
                             'has_father'     => $hasFather,
                             'category_color' => $transaction->category->color,
                             'category_icon'  => $transaction->category->icon,
-                            'father_color'   => $transaction->category->father->color ?? null,
-                            'father_icon'    => $transaction->category->father->icon ?? null,
+                            'father_color'   => $transaction->father->color ?? null,
+                            'father_icon'    => $transaction->father->icon ?? null,
                             'wallet_name'    => $transaction->wallet_name,
                             'wallet_color'   => null,
                             'credit_card_id'     => false,
@@ -440,7 +462,7 @@ class FinancialTransactionsController extends Controller
         });
 
         // Faz looping entre faturas 
-        foreach ($faturesByMonth as $month => $cards) {
+        foreach ($faturesByMonth as $yearMonth => $cards) {
 
             // Faz looping entre as cartões
             foreach($cards as $card => $transactions){
@@ -452,15 +474,15 @@ class FinancialTransactionsController extends Controller
                 if(!$existFature){
 
                     // Formaata nome do mês
-                    $monthName = ucfirst(Carbon::parse(date($month . $transactions[0]->due_date))->locale('pt_BR')->isoFormat('MMMM'));
+                    $monthName = ucfirst(Carbon::parse(date($yearMonth . $transactions[0]->due_date))->locale('pt_BR')->isoFormat('MMMM'));
 
                     // Cria objeto
                     $fature = (object) [
                         'type' => 'Fature',
                         'id' => $transactions[0]->credit_card_id,
                         'name' => 'Fatura de ' . $monthName . ' - ' . $card,
-                        'date_purchase' => date($month . $transactions[0]->due_date),
-                        'date_payment' => date($month . $transactions[0]->due_date),
+                        'date_purchase' => date($yearMonth . $transactions[0]->due_date),
+                        'date_payment' => date($yearMonth . $transactions[0]->due_date),
                         'value' => $transactions->sum('value'),
                         'paid' => false,
                         'has_wallet' => null,
@@ -471,6 +493,7 @@ class FinancialTransactionsController extends Controller
                         'credit_card_id' => $transactions[0]->credit_card_id,
                         'card_name' => $card,
                         'extra_transactions' => $transactions->toArray(),
+                        'year_month' => $yearMonth,
                     ];
 
                     // Insere ftura
@@ -568,7 +591,7 @@ class FinancialTransactionsController extends Controller
             })
             ->editColumn('actions', function($row) {
                 if(isset($row->extra_transactions)){
-                    $showTransactios = " <button type='button' class='show-sub-transactions btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px me-3' data-fature='$row->credit_card_id-$row->date_purchase'
+                    $showTransactios = "<button type='button' class='show-sub-transactions btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px me-3' data-fature='$row->credit_card_id-$row->date_purchase'
                                             <span data-transactions='". json_encode($row->extra_transactions) ."'><i class='fa-solid fa-circle-plus'></i></span>
                                         </button>";
                 } else {
