@@ -36,7 +36,7 @@
 													</tr>
 												</thead>
 												<tbody>
-												@if ($contents[$tab])
+												@if (isset($contents[$tab]))
 													@foreach ($contents[$tab] as $content)
 													<tr>
 														<td>
