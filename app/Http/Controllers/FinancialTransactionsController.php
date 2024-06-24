@@ -671,7 +671,7 @@ class FinancialTransactionsController extends Controller
             ->editColumn('actions', function($row) {
 
                 // Adiciona buscar transações
-                if($row->fature){
+                if(isset($row->fature) && $row->fature){
                     $showTransactios = "<button type='button' class='show-sub-transactions btn btn-sm btn-light btn-active-light-primary toggle h-35px me-3'
                                             <span data-credit-card='". $row->credit_card_id ."'><i class='fa-solid fa-circle-plus'></i> Ver Transações</span>
                                         </button>";
