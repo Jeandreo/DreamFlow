@@ -196,6 +196,10 @@ p:last-child {
     opacity: 1 !important;
 }
 
+.odd:hover .opacity-0 {
+    opacity: 1 !important;
+}
+
 .show-image-div img {
     cursor: pointer;
 }

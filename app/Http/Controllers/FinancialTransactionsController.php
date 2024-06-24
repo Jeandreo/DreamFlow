@@ -252,6 +252,27 @@ class FinancialTransactionsController extends Controller
         return response()->json('Transaction updated with success', 200);
 
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request)
+    {
+
+        // VERIFY IF EXISTS
+        if(!$content = $this->repository->find($request->id))
+        return redirect()->back();
+
+        // GET FORM DATA
+        $content->delete();
+
+        // REDIRECT AND MESSAGES
+        return response()->json('Transaction updated with success', 200);
+
+    }
     
    /**
      * Display a listing of the resource.
@@ -362,6 +383,7 @@ class FinancialTransactionsController extends Controller
             'financial_transactions.recurrent       as recurrent',
             'financial_transactions.hitching        as hitching',
             'financial_transactions.fature          as fature',
+            'financial_transactions.adjustment      as adjustment',
             'financial_categories.name              as category',
             'financial_categories.father_id         as has_father',
             'financial_categories.color             as category_color',
@@ -380,7 +402,7 @@ class FinancialTransactionsController extends Controller
         $data = $query->get()->toArray();
 
         // Obtém todas as transações recorrentes
-        $recurringTransactions = FinancialTransactions::where('recurrent', true)->get()->values();
+        $recurringTransactions = FinancialTransactions::where('recurrent', true)->where('status', 1)->get()->values();
 
         // Faz loop entre transações recorrentes
         foreach ($recurringTransactions as $transaction) {
@@ -524,13 +546,23 @@ class FinancialTransactionsController extends Controller
         return FacadesDataTables::of($data)
             ->editColumn('checked', function($row) {
 
-                if($row->type == 'Wallet' && !$row->credit_card_id || $row->type == 'Wallet' && $row->fature || $row->type == 'Fature' || $row->type == 'Recurrent'){
+                // Se for um ajuste ou uma transação ed fatura não permite "Pagar"
+                if(isset($row->adjustment) && $row->adjustment == true || $row->type == 'Wallet' && $row->credit_card_id){
+                    return '-';
+                } else {
                     return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
                                 <input class='form-check-input cursor-pointer transaction-paid' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
                             </div>";
-                } else {
-                    return '-';
                 }
+
+                // É uma transação e não é de uma fatura
+                // if($row->type == 'Wallet' && !$row->credit_card_id || $row->type == 'Wallet' && $row->fature || $row->type == 'Fature' || $row->type == 'Recurrent'){
+                //     return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
+                //                 <input class='form-check-input cursor-pointer transaction-paid' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
+                //             </div>";
+                // } else {
+                //     return '-';
+                // }
 
                 
             })
@@ -546,12 +578,12 @@ class FinancialTransactionsController extends Controller
 
                 // Se não for fatura pega os ícones personalizados
                 if(!isset($row->fature) || $row->fature == false){
-                    $color = $row->has_father ? $row->father_color : $row->category_color;
-                    $icon = $row->has_father ? $row->father_icon : $row->category_icon;
+                    $color    = $row->has_father ? $row->father_color : $row->category_color;
+                    $icon     = $row->has_father ? $row->father_icon  : $row->category_icon;
                     $category = $row->category;
                 } else {
-                    $color = '#007bff';
-                    $icon = 'fa-solid fa-receipt';
+                    $color    = '#007bff';
+                    $icon     = 'fa-solid fa-receipt';
                     $category = 'Fatura';
                 }
 
@@ -591,14 +623,18 @@ class FinancialTransactionsController extends Controller
             })
             ->editColumn('actions', function($row) {
                 if(isset($row->extra_transactions)){
-                    $showTransactios = "<button type='button' class='show-sub-transactions btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px me-3' data-fature='$row->credit_card_id-$row->date_purchase'
+                    $showTransactios = "<button type='button' class='show-sub-transactions btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-35px w-35px me-3' data-fature='$row->credit_card_id-$row->date_purchase'
                                             <span data-transactions='". json_encode($row->extra_transactions) ."'><i class='fa-solid fa-circle-plus'></i></span>
                                         </button>";
                 } else {
                     $showTransactios = '';
                 }
 
-                return $showTransactios  . "<a href='#' class='btn btn-light btn-active-light-primary btn-sm me-3'>Ações</a>";
+                return $showTransactios . "
+                        <button class='btn btn-sm btn-icon btn-light-danger btn-active-light-primary text-hover-white h-35px w-35px me-3 remove-transaction' data-transaction='$row->id'>
+                            <i class='fa-solid fa-trash-can text-danger'></i>
+                        </button>
+                        <button class='btn btn-light btn-active-light-primary btn-sm me-3'>Ações</button>";
             })
             ->rawColumns(['checked', 'name', 'category_id', 'date', 'value', 'wallet_credit', 'actions'])
             ->setTotalRecords($totalRecords)

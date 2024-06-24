@@ -151,6 +151,40 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-2 mb-4">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            @foreach ($wallets as $wallet)
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="fw-bold">
+                                        {{ $wallet->name }}
+                                    </span>
+                                    <span class="text-gray-600">
+                                        R$ {{ number_format($wallet->total(), 2, ',', '.') }}
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 mb-4">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            @foreach ($credits as $credit)
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="fw-bold">
+                                        {{ $credit->name }}
+                                    </span>
+                                    <span class="text-gray-600">
+                                        R$ {{ number_format($credit->total(), 2, ',', '.') }}
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-12">
                     <div class="card shadow mb-4">
                         <div class="card-body">

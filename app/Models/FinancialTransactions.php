@@ -22,6 +22,7 @@ class FinancialTransactions extends Model
         'name',
         'hitching',
         'recurrent',
+        'adjustment',
         'fature',
         'fature_id',
         'value',

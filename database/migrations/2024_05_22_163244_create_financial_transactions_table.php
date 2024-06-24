@@ -29,7 +29,7 @@ return new class extends Migration
             $table->boolean('paid')->default(false);
             $table->decimal('fees', 10, 2)->default(0);
             $table->text('description')->nullable();
-            $table->boolean('status')->default(false);
+            $table->boolean('status')->default(true);
             $table->integer('created_by');
             $table->integer('filed_by')->nullable();
             $table->integer('updated_by')->nullable();

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Financial;
+use App\Models\FinancialCategory;
+use App\Models\FinancialCreditCard;
 use App\Models\FinancialTransactions;
+use App\Models\FinancialWallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -105,10 +108,18 @@ class FinancialController extends Controller
             'difference' => $difference,
         ];
 
+        // Obtém cartões de crédito
+        $wallets = FinancialWallet::where('status', 1)->get();
+        $credits = FinancialCreditCard::where('status', 1)->get();
+        $categories = FinancialCategory::where('status', 1)->get();
+
         return view('pages.financial.index')->with([
             'values' => $values,
             'series' => $series,
             'monthNames' => array_values($monthNames),
+            'wallets' => $wallets,
+            'credits' => $credits,
+            'categories' => $categories,
         ]);
 
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FinancialInstitution;
+use App\Models\FinancialTransactions;
 use App\Models\FinancialWallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -138,6 +139,37 @@ class FinancialWalletController extends Controller
 
         // UPDATE BY
         $data['updated_by'] = Auth::id();
+
+        // Corrige o valor da carteira caso necessário
+        $actualAmount = $content->total();
+        $newAmount = toDecimal($request->balance);
+        
+        // Se for diferente
+        if($actualAmount != $newAmount){
+
+            // Obtém diferença
+            $diference = $actualAmount - $newAmount;
+
+            // Inverte o sinal
+            $diference = -$diference;
+
+            // Cria transação de diferença no banco de dados
+            FinancialTransactions::create([
+                'wallet_id' => $id,
+                'category_id' => 0,
+                'name' => 'Ajuste de saldo na carteira ' . $content->name,
+                'adjustment' => true,
+                'value' => $diference,
+                'value_paid' => $diference,
+                'paid' => true,
+                'date_purchase' => now(),
+                'date_payment' => now(),
+                'date_paid' => now(),
+                'created_by' => Auth::id(),
+            ]);
+
+        }
+
         
         // STORING NEW DATA
         $content->update($data);

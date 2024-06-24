@@ -83,10 +83,13 @@
                                 <div class="col-4">
                                     <div class="d-flex align-items-center position-relative my-1">
                                         <i class="ki-duotone ki-magnifier fs-1 position-absolute ms-6"><span class="path1"></span><span class="path2"></span></i>
-                                        <input type="text" class="form-control form-control-solid w-250px ps-15" placeholder="Procurar transações" id="search-in-datatable"/>
+                                        <input type="text" class="form-control form-control-solid w-225px ps-15" placeholder="Procurar transações" id="search-in-datatable"/>
                                         <button type="button" class="btn btn-light-primary ms-2">
                                             <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i>
                                             Filtrar
+                                        </button>
+                                        <button type="button" class="btn btn-light-primary btn-icon ms-2">
+                                            <i class="fa-solid fa-calendar-days"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -99,17 +102,14 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="d-flex justify-content-end">
-                                        <button type="button" class="btn btn-primary me-2 add-transaction" data-type="transference">
-                                            <i class="ki-duotone ki-plus fs-2"></i>
+                                        <button type="button" class="btn btn-primary me-2 add-transaction text-uppercase fw-bold" data-type="transference">
                                             Trânsferencia
                                         </button>
-                                        <button type="button" class="btn btn-success me-2 add-transaction" data-type="renevue">
-                                            <i class="ki-duotone ki-plus fs-2"></i>
+                                        <button type="button" class="btn btn-success me-2 add-transaction text-uppercase fw-bold" data-type="renevue">
                                             Receita
                                         </button>
-                                        <button type="button" class="btn btn-danger me-2 add-transaction" data-type="expense">
-                                            <i class="ki-duotone ki-plus fs-2"></i>
-                                            Desepesa
+                                        <button type="button" class="btn btn-danger me-2 add-transaction text-uppercase fw-bold" data-type="expense">
+                                            Despesas
                                         </button>
                                     </div>
                                 </div>
@@ -234,6 +234,29 @@
 
         // Abre modal
         $('#modal_trasaction').modal('show');
+
+    });
+
+    
+    // Remove transação
+    $(document).on('click', '.remove-transaction', function(){
+
+        // Obtém ID da transação
+        var transactionID = $(this).data('transaction');
+
+        // AJAX
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type:'PUT',
+            url: "{{ route('financial.transactions.destroy') }}",
+            data: {id: transactionID},
+            success: function(response){
+
+                // RELOAD TABLE
+                table.DataTable().ajax.reload();
+
+            }
+        });
 
     });
 
@@ -370,7 +393,7 @@
                 },
                 { 
                     targets: 6,
-                    className: 'text-end',
+                    className: 'd-flex justify-content-end',
                 },
             ],
 

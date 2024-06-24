@@ -25,8 +25,8 @@
         <input type="color" class="form-control form-control-solid" placeholder="Selecione uma cor" name="color" value="{{ $content->color ?? '#009ef7' }}" required/>
     </div>
     <div class="col-6 mb-5 has-father" style="@if(isset($content) && $content->father_id) display:none; @endif">
-        <label class="required form-label fw-bold">Ícone:</label> <a href="https://fontawesome.com/search?o=r&m=free" class="fs-7 fw-normal" target="_blank">Font Awesome</a>
-        <input type="text" class="form-control form-control-solid" placeholder="fa-solid fa-pen-to-square" name="icon" value="{{ $content->icon ?? old('icon')}}" required/>
+        <label class="form-label fw-bold">Ícone:</label> <a href="https://fontawesome.com/search?o=r&m=free" class="fs-7 fw-normal" target="_blank">Font Awesome</a>
+        <input type="text" class="form-control form-control-solid" placeholder="fa-solid fa-pen-to-square" name="icon" value="{{ $content->icon ?? old('icon')}}"/>
     </div>
     <div class="col-12 mb-5">
         <label class="form-label fw-bold">Descrição:</label>

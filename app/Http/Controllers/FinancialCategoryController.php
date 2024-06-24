@@ -75,7 +75,7 @@ class FinancialCategoryController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
                 ->route('financial.categories.index')
-                ->with('message', 'Catálogo adicionado com sucesso.');
+                ->with('message', 'Categoria adicionada com sucesso.');
 
     }
 
@@ -144,7 +144,7 @@ class FinancialCategoryController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('financial.categories.index')
-            ->with('message', 'Catálogo editado com sucesso.');
+            ->with('message', 'Categoria editada com sucesso.');
 
     }
 
@@ -167,7 +167,7 @@ class FinancialCategoryController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('financial.categories.index')
-            ->with('message', 'Catálogo ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->with('message', 'Categoria ' . ($status == false ? 'desativada' : 'habiliitada') . ' com sucesso.');
 
     }
 }

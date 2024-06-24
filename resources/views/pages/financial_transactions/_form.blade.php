@@ -39,6 +39,7 @@
             @endforeach
         </select>
     </div>
+    @if (!isset($content))
     <div class="col-4 mb-5">
         <label class="required form-label fw-bold">Recorrente:</label>
         <select class="form-select form-select-solid" name="recurrent" data-control="select2" data-hide-search="true" data-placeholder="Selecione" required>
@@ -47,6 +48,7 @@
             <option value="0" @if(isset($content) && $content->recurrent == false) selected @endif>Não</option>
         </select>
     </div>
+    @endif
     <div class="col-12 mb-5">
         <label class="form-label fw-bold">Observação:</label>
         <textarea name="description" class="form-control form-control-solid" placeholder="Alguma observação sobre este cartão?">@if(isset($content->description)){{$content->description}}@endif</textarea>

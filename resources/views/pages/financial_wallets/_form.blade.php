@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-3 mb-5">
+    <div class="col-4 mb-5">
         <label class="form-label fw-bold">Banco:</label>
         <select class="form-select form-select-solid" name="institution_id" data-control="select2" data-placeholder="Selecione" data-allow-clear="true">
             <option value=""></option>
@@ -8,18 +8,24 @@
             @endforeach
         </select>
     </div>
-    <div class="col-3 mb-5">
+    <div class="col-4 mb-5">
         <label class="required form-label fw-bold">Nome:</label>
         <input type="text" class="form-control form-control-solid get-to-url" placeholder="Nome do Projeto" name="name" value="{{ $content->name ?? old('name') }}" required/>
     </div>
-    <div class="col-3 mb-5">
+    <div class="col-4 mb-5">
         <label class="required form-label fw-bold">URL:</label>
         <input type="text" class="form-control form-control-solid only-url" placeholder="URL" name="url" value="{{ $content->url ?? old('url') }}" required/>
     </div>
-    <div class="col-3 mb-5">
+    <div class="col mb-5">
         <label class="form-label fw-bold">Cor:</label>
         <input type="color" class="form-control form-control-solid" placeholder="Selecione uma cor" name="color" value="{{ $content->color ?? '#009ef7' }}"/>
     </div>
+    @if(isset($content))
+    <div class="col mb-5">
+        <label class="form-label fw-bold required">Correção de saldo:</label>
+        <input type="text" class="form-control form-control-solid input-money" placeholder="R$ 0,00" name="balance" value="{{ number_format($content->total(), 2, '.', '') ?? old('balance') }}"/>
+    </div>
+    @endif
     <div class="col-12 mb-5">
         <label class="form-label fw-bold">Descrição:</label>
         <textarea name="description" class="form-control form-control-solid" placeholder="Alguma observação sobre esta carteira?">@if(isset($content->description)){{$content->description}}@endif</textarea>
