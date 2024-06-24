@@ -26,11 +26,11 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-4 mb-5">
+    <div class="col-6 mb-5">
         <label class="required form-label fw-bold">Data da compra:</label>
         <input type="text" class="form-control form-control-solid flatpickr" placeholder="00/00/0000" name="date_purchase" value="{{ $content->venciment ?? date('Y-m-d') }}" required/>
     </div>
-    <div class="col-4 mb-5">
+    <div class="col-6 mb-5">
         <label class="required form-label fw-bold">Categoria:</label>
         <select class="form-select form-select-solid" name="category_id" data-control="select2" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="#modal_trasaction" @endif required>
             <option value=""></option>
@@ -39,18 +39,32 @@
             @endforeach
         </select>
     </div>
-    @if (!isset($content))
-    <div class="col-4 mb-5">
+</div>
+@if (!isset($content))
+<div class="row">
+    <div class="col mb-5">
+        <label class="required form-label fw-bold">Parcelamento:</label>
+        <select class="form-select form-select-solid" name="installments" data-control="select2" data-hide-search="true" data-placeholder="Selecione" required>
+            <option value=""></option>
+            <option value="1">Sim</option>
+            <option value="0" selected>Não</option>
+        </select>
+    </div>
+    <div class="col-4 mb-5 installments-quantity-div" style="display: none;">
+        <label class="required form-label fw-bold">Parcelas:</label>
+        <input type="number" class="form-control form-control-solid" placeholder="2" min="2" max="999" name="installments_quantity" value=""/>
+    </div>
+    <div class="col mb-5 recurrent-div">
         <label class="required form-label fw-bold">Recorrente:</label>
         <select class="form-select form-select-solid" name="recurrent" data-control="select2" data-hide-search="true" data-placeholder="Selecione" required>
             <option value=""></option>
-            <option value="1" @if(isset($content) && $content->recurrent == true) selected @endif>Sim</option>
-            <option value="0" @if(isset($content) && $content->recurrent == false) selected @endif>Não</option>
+            <option value="1">Sim</option>
+            <option value="0" selected>Não</option>
         </select>
     </div>
-    @endif
-    <div class="col-12 mb-5">
-        <label class="form-label fw-bold">Observação:</label>
-        <textarea name="description" class="form-control form-control-solid" placeholder="Alguma observação sobre este cartão?">@if(isset($content->description)){{$content->description}}@endif</textarea>
-    </div>
+</div>
+@endif
+<div class="col-12 mb-5">
+    <label class="form-label fw-bold">Observação:</label>
+    <textarea name="description" class="form-control form-control-solid" placeholder="Alguma observação sobre este cartão?">@if(isset($content->description)){{$content->description}}@endif</textarea>
 </div>

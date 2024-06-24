@@ -101,7 +101,7 @@ button:focus {
 
 .draggable {
     transition: all 0.5s ease;
-  }
+}
 
 .slide-up {
     transform: translateY(-100%);

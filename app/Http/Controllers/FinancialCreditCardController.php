@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FinancialCreditCard;
+use App\Models\FinancialTransactions;
 use App\Models\FinancialWallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -135,6 +136,33 @@ class FinancialCreditCardController extends Controller
         return redirect()
             ->route('financial.credit.cards.index')
             ->with('message', 'Cartão editado com sucesso.');
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function transactions(Request $request)
+    {
+
+        // VERIFY IF EXISTS
+        if(!$content = $this->repository->find($request->credit_card_id))
+        return redirect()->back();
+
+        $transactions = FinancialTransactions::where('date_payment', '>=', $request->dateBegin)
+                                                ->where('date_payment', '<=', $request->dateEnd)
+                                                ->where('credit_card_id', $request->credit_card_id)
+                                                ->where('fature', false)
+                                                ->get();
+
+       // RETURN VIEW WITH DATA
+       return view('pages.financial_credit._transactions')->with([
+            'transactions' => $transactions,
+        ]);
 
     }
 

@@ -97,6 +97,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/desabilitar/{id}', [FinancialCreditCardController::class, 'destroy'])->name('destroy');
                 Route::get('/editar/{id}', [FinancialCreditCardController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [FinancialCreditCardController::class, 'update'])->name('update');
+                Route::post('/transactions', [FinancialCreditCardController::class, 'transactions'])->name('transactions');
             });
         });
 

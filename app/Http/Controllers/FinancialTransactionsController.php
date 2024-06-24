@@ -72,11 +72,63 @@ class FinancialTransactionsController extends Controller
 
         // IF CREDIT
         if($method[0] == 'credit'){
-            $data['date_payment'] = Carbon::parse($data['date_purchase'])->addMonths(1);
+
+            // Get Card
+            $card = FinancialCreditCard::find($method[1]);
+
+            // Date to Payment
+            $yearMonth = Carbon::parse($data['date_purchase'])->addMonths(1)->format('Y-m-');
+            $dateFature = $yearMonth . $card->due_day;
+            $data['date_payment'] = $dateFature;
+
+            // CardId
             $data['credit_card_id'] = $method[1];
+
         } else {
             $data['date_payment'] = $data['date_purchase'];
             $data['wallet_id'] = $method[1];
+        }
+
+        if($data['installments'] ==  true){
+
+            // Obtém parcelas
+            $installments = $data['installments_quantity'];
+
+            $name = $data['name'];
+
+            for ($i = 1; $i <= $installments; $i++) { 
+
+                // Pula o primeiro mês
+                if($i != 1){
+                    $data['date_payment'] = Carbon::parse($data['date_payment'])->addMonths(1)->format('Y-m-d');
+                }
+
+                // Ajusta nome
+                $data['name'] = "$name - ($i/$installments)";
+                
+                // SEND DATA
+                $this->repository->create($data);
+                
+            }
+
+            // REDIRECT AND MESSAGES
+            return response()->json('Transaction created with success', 200);
+
+        }
+
+        // IF RECURRENT
+        if($data['recurrent'] == true){
+
+            // Get Last Hitching
+            $last = FinancialTransactions::max('hitching');
+
+            if(!$last){
+                $hitching = 1;
+            } else {
+                $hitching = ++$last;
+            }
+
+            $data['hitching'] = $hitching;
         }
 
         // SEND DATA
@@ -240,11 +292,12 @@ class FinancialTransactionsController extends Controller
                 'created_by' => Auth::id(),
             ]);
 
-            // Obtém total dos valores do mês
+            // Salva em qual fatura foi paga
             FinancialTransactions::where('credit_card_id', $cardId)
                 ->whereYear('date_payment', $year)
                 ->whereMonth('date_payment', $month)
                 ->update(['fature_id' => $createFature->id]);
+
         }
 
 
@@ -514,11 +567,10 @@ class FinancialTransactionsController extends Controller
                         'has_father' => false,
                         'credit_card_id' => $transactions[0]->credit_card_id,
                         'card_name' => $card,
-                        'extra_transactions' => $transactions->toArray(),
                         'year_month' => $yearMonth,
                     ];
 
-                    // Insere ftura
+                    // Insere fatura
                     $data->push($fature);
                 }
 
@@ -528,7 +580,7 @@ class FinancialTransactionsController extends Controller
 
         // Filtra para que as faturas a serem exibidas estejam dentro do filtro
         $data = array_filter($data->toArray(), function ($item) use ($request) {
-            $date = Carbon::parse($item->date_purchase);
+            $date = Carbon::parse($item->date_payment);
             return $date->gte($request->date_begin) && $date->lte($request->date_end);
         });
 
@@ -538,8 +590,13 @@ class FinancialTransactionsController extends Controller
         // Obtém valores
         $totalValue = collect($data)->where('paid', true)->sum('value');
         $totalRevenue = collect($data)->where('paid', true)->where('value', '>', 0)->sum('value');
-        $totalExpense= collect($data)->where('paid', true)->where('value', '<', 0)->sum('value');
+        $totalExpense = collect($data)->where('paid', true)->where('value', '<', 0)->sum('value');
         $totalPaidValue = collect($data)->where('paid', true)->where('paid', 1)->sum('value');
+
+        // Remove as transações de cartão
+        $data = array_filter($data, function($transaction) {
+            return !($transaction->credit_card_id && $transaction->fature == 0);
+        });
 
 
         // Configurar as colunas usando a função editColumn
@@ -547,7 +604,7 @@ class FinancialTransactionsController extends Controller
             ->editColumn('checked', function($row) {
 
                 // Se for um ajuste ou uma transação ed fatura não permite "Pagar"
-                if(isset($row->adjustment) && $row->adjustment == true || $row->type == 'Wallet' && $row->credit_card_id){
+                if(isset($row->adjustment) && $row->adjustment == true || $row->type == 'Wallet' && $row->credit_card_id && $row->type == 'Wallet' && !$row->fature){
                     return '-';
                 } else {
                     return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
@@ -555,16 +612,6 @@ class FinancialTransactionsController extends Controller
                             </div>";
                 }
 
-                // É uma transação e não é de uma fatura
-                // if($row->type == 'Wallet' && !$row->credit_card_id || $row->type == 'Wallet' && $row->fature || $row->type == 'Fature' || $row->type == 'Recurrent'){
-                //     return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
-                //                 <input class='form-check-input cursor-pointer transaction-paid' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
-                //             </div>";
-                // } else {
-                //     return '-';
-                // }
-
-                
             })
             ->editColumn('name', function($row) {
                 $isPreview = isset($row->preview) ? 'true' : 'false';
@@ -597,7 +644,7 @@ class FinancialTransactionsController extends Controller
 
             })
             ->editColumn('date', function($row) {
-                return date('d/m/Y', strtotime($row->date_purchase));
+                return date('d/m/Y', strtotime($row->date_payment));
             })
             ->editColumn('value', function($row) {
                 $class = $row->value < 0 ? 'text-danger' : 'text-success';
@@ -622,9 +669,11 @@ class FinancialTransactionsController extends Controller
                 }
             })
             ->editColumn('actions', function($row) {
-                if(isset($row->extra_transactions)){
-                    $showTransactios = "<button type='button' class='show-sub-transactions btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-35px w-35px me-3' data-fature='$row->credit_card_id-$row->date_purchase'
-                                            <span data-transactions='". json_encode($row->extra_transactions) ."'><i class='fa-solid fa-circle-plus'></i></span>
+
+                // Adiciona buscar transações
+                if($row->fature){
+                    $showTransactios = "<button type='button' class='show-sub-transactions btn btn-sm btn-light btn-active-light-primary toggle h-35px me-3'
+                                            <span data-credit-card='". $row->credit_card_id ."'><i class='fa-solid fa-circle-plus'></i> Ver Transações</span>
                                         </button>";
                 } else {
                     $showTransactios = '';

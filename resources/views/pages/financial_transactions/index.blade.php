@@ -88,13 +88,13 @@
                                             <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i>
                                             Filtrar
                                         </button>
-                                        <button type="button" class="btn btn-light-primary btn-icon ms-2">
+                                        {{-- <button type="button" class="btn btn-light-primary btn-icon ms-2">
                                             <i class="fa-solid fa-calendar-days"></i>
-                                        </button>
+                                        </button> --}}
                                     </div>
                                 </div>
                                 <div class="col-4 text-center">
-                                    <div class="d-flex jusify-content-center align-items-center">
+                                    <div class="d-flex justifyjustify-content-center align-items-center">
                                         <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-begin" placeholder="Início" value="{{ date("Y-m-01") }}"/>
                                         <span class="text-gray-600 fs-5 text-uppercase fw-bold px-8">Até</span>
                                         <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-end" placeholder="Fim"  value="{{ date("Y-m-t") }}"/>
@@ -188,6 +188,29 @@
         </form>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" id="load_fature">
+    <div class="modal-dialog modal-dialog-centered rounded mw-750px">
+        @csrf
+        @method('PUT')
+        <div class="modal-content rounded">
+            <div class="modal-header">
+                <h3 class="modal-title">Transações</h3>
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+            </div>
+            <div id="load-fature">
+                {{-- LOAD TRANSACTION HERE --}}
+                {{-- LOAD TRANSACTION HERE --}}
+                {{-- LOAD TRANSACTION HERE --}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('custom-footer')
@@ -222,6 +245,10 @@
     $('.date-end').on('change', function() {
         localStorage.setItem('date-end', $(this).val());
     });
+    
+    // DEFINE AS VARIAVEIS
+    var dateBegin = $('.date-begin').val();
+    var dateEnd = $('.date-end').val();
 
     // Adiciona transação
     $('.add-transaction').click(function(){
@@ -263,67 +290,25 @@
     // Exibe ou esconde as trasações da fatura
     $(document).on('click', '.show-sub-transactions', function(){
 
-        // Obtém botão
-        var btn = $(this);
+        // Credit Card
+        var card = $(this).data('credit-card');
 
-        // Troca o botão
-        var open = btn.find('i').hasClass('fa-circle-plus');
+        // AJAX
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type:'POST',
+            url: "{{ route('financial.credit.cards.transactions') }}",
+            data: {credit_card_id: card, dateBegin: dateBegin, dateEnd: dateEnd},
+            success: function(response){
 
-        // Obtém linha
-        var tr = btn.closest('tr');
+                $('#load-fature').html(response);
 
-        // Se for para abrir as transações
-        if(open){
-            
-            // Altera botão
-            btn.find('i').removeClass('fa-circle-plus').addClass('fa-circle-minus');
+                $('#load_fature').modal('show');
 
-            // Obtém transações
-            var transactions = btn.data('transactions');
-
-            // Se tiver transações
-            if(transactions && transactions.length > 0) {
-                var newRow = '';
-                $.each(transactions, function(index, transaction) {
-
-                    // Verifica se a categoria possui pai
-                    if(transaction.has_father){
-                        var color = transaction.father_color;
-                    } else {
-                        var color = transaction.category_color;
-                    }
-
-                    newRow += '<tr class="text-gray-700 sub-transaction open-transaction fature-' + transaction.has_credit + '-' + transaction.date_payment + '">';
-                        newRow += '<td class="w-30px"></td>';
-                        newRow += '<td>' + formatDate(transaction.date_purchase) + '</td>';
-                        newRow += '<td>' + transaction.name + '</td>';
-                        newRow += '<td><span class="d-flex align-items-center fs-6 fw-normal"> <div class="w-10px h-10px rounded-circle d-flex justify-content-center align-items-center me-2" style="background: ' + color + ';"></div> <span class="text-gray-600">' + transaction.category + '</span> </span></td>';
-                        newRow += '<td>' + formatBRL(transaction.value) + '</td>';
-                        newRow += '<td>-</td>';
-                        newRow += '<td></td>';
-                    newRow += '</tr>';
-                });
-                newRow += '';
-
-                tr.after(newRow);
             }
-
-        } else {
-
-            // Obtém fatura
-            var fature = btn.data('fature');
-
-            $('.fature-' + fature).remove();
-
-            // Altera botão
-            btn.find('i').removeClass('fa-circle-minus').addClass('fa-circle-plus');
-        }
-
+        });
+    
     });
-
-    // DEFINE AS VARIAVEIS
-    var dateBegin = $('.date-begin').val();
-    var dateEnd = $('.date-end').val();
 
     // ON CHANGE
     $('.input-date-transaction').change(function() {
@@ -497,6 +482,44 @@
 
     });
 
+    // Se for parcelado
+    $(document).on('change', '[name="installments"]', function(){
+
+        // Obtém o valor
+        var value = $(this).val();
+
+        // Se for parcelado
+        if(value == true){
+            allowInstalltments(true);
+            allowReccurent(false);
+        } else {
+            allowReccurent(true);
+            allowInstalltments(false);
+        }
+
+    });
+
+    // Libera ou bloqueia reccorencia
+    function allowReccurent(allow = true){
+        if(allow){
+            $('.recurrent-div').show();
+            $('[name="recurrent"]').prop('required', true);
+        } else {
+            $('.recurrent-div').hide();
+            $('[name="recurrent"]').prop('required', false);
+        }
+    }
+
+    // Libera ou bloqueia parcelamento
+    function allowInstalltments(allow = true){
+        if(allow){
+            $('.installments-quantity-div').show();
+            $('[name="installments_quantity"]').prop('required', true);
+        } else {
+            $('.installments-quantity-div').hide();
+            $('[name="installments_quantity"]').prop('required', false);
+        }
+    }
 
     $(document).on('click', '.transaction-paid', function(e){
 
