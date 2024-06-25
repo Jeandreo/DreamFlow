@@ -89,11 +89,20 @@ class FinancialTransactionsController extends Controller
             $data['wallet_id'] = $method[1];
         }
 
+        // IF RECURRENT OR INSTALLMENTS
+        if($data['recurrent'] == true || $data['installments'] ==  true){
+            $data['hitching'] = $this->getHitching();
+        }
+
         if($data['installments'] ==  true){
+
+            // Informa que não será recorrente:
+            $data['recurrent'] = false;
 
             // Obtém parcelas
             $installments = $data['installments_quantity'];
 
+            // Salva nome
             $name = $data['name'];
 
             for ($i = 1; $i <= $installments; $i++) { 
@@ -116,27 +125,26 @@ class FinancialTransactionsController extends Controller
 
         }
 
-        // IF RECURRENT
-        if($data['recurrent'] == true){
-
-            // Get Last Hitching
-            $last = FinancialTransactions::max('hitching');
-
-            if(!$last){
-                $hitching = 1;
-            } else {
-                $hitching = ++$last;
-            }
-
-            $data['hitching'] = $hitching;
-        }
-
         // SEND DATA
         $this->repository->create($data);
 
         // REDIRECT AND MESSAGES
         return response()->json('Transaction created with success', 200);
 
+    }
+
+    public function getHitching(){
+
+        // Get Last Hitching
+        $last = FinancialTransactions::max('hitching');
+
+        if(!$last){
+            $hitching = 1;
+        } else {
+            $hitching = ++$last;
+        }
+
+        return $hitching;
     }
 
     /**
@@ -172,6 +180,7 @@ class FinancialTransactionsController extends Controller
             $data['wallet_id'] = null;
             $data['credit_card_id'] = $method[1];
         } else {
+            $data['date_payment'] = $data['date_purchase'];
             $data['wallet_id'] = $method[1];
             $data['credit_card_id'] = null;
         }
@@ -511,7 +520,7 @@ class FinancialTransactionsController extends Controller
                             'father_icon'    => $transaction->father->icon ?? null,
                             'wallet_name'    => $transaction->wallet_name,
                             'wallet_color'   => null,
-                            'credit_card_id'     => false,
+                            'credit_card_id' => false,
                             'card_name'      => $transaction->card_name,
                             'preview'        => true,
                         ];
@@ -673,7 +682,7 @@ class FinancialTransactionsController extends Controller
                 // Adiciona buscar transações
                 if(isset($row->fature) && $row->fature){
                     $showTransactios = "<button type='button' class='show-sub-transactions btn btn-sm btn-light btn-active-light-primary toggle h-35px me-3'
-                                            <span data-credit-card='". $row->credit_card_id ."'><i class='fa-solid fa-circle-plus'></i> Ver Transações</span>
+                                            <span data-credit-card='". $row->credit_card_id ."'><i class='fa-solid fa-circle-plus'></i></span>
                                         </button>";
                 } else {
                     $showTransactios = '';

@@ -969,6 +969,7 @@ class DatabaseSeeder extends Seeder
         //     'recurrent' => true,
         //     'value' => 2,
         //     'date_purchase' => now(),
+        //     'date_payment' => now(),
         //     'created_by' => 1,
         // ]);
 

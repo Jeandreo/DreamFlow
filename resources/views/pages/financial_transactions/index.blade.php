@@ -84,20 +84,30 @@
                                     <div class="d-flex align-items-center position-relative my-1">
                                         <i class="ki-duotone ki-magnifier fs-1 position-absolute ms-6"><span class="path1"></span><span class="path2"></span></i>
                                         <input type="text" class="form-control form-control-solid w-225px ps-15" placeholder="Procurar transações" id="search-in-datatable"/>
-                                        <button type="button" class="btn btn-light-primary ms-2">
+                                        {{-- <button type="button" class="btn btn-light-primary ms-2">
                                             <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i>
                                             Filtrar
-                                        </button>
-                                        {{-- <button type="button" class="btn btn-light-primary btn-icon ms-2">
-                                            <i class="fa-solid fa-calendar-days"></i>
                                         </button> --}}
+                                        <button type="button" class="btn btn-light-primary btn-icon ms-2">
+                                            <i class="fa-solid fa-calendar-days"></i>
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="col-4 text-center">
-                                    <div class="d-flex justifyjustify-content-center align-items-center">
-                                        <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-begin" placeholder="Início" value="{{ date("Y-m-01") }}"/>
-                                        <span class="text-gray-600 fs-5 text-uppercase fw-bold px-8">Até</span>
-                                        <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-end" placeholder="Fim"  value="{{ date("Y-m-t") }}"/>
+                                    <div style="display: none;">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-begin" placeholder="Início" value="{{ date("Y-m-01") }}"/>
+                                            <span class="text-gray-600 fs-5 text-uppercase fw-bold px-8">Até</span>
+                                            <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-end" placeholder="Fim"  value="{{ date("Y-m-t") }}"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <span class="badge badge-light-primary cursor-pointer" id="previous-month">RETROCEDER</span>
+                                            <span id="current-month" class="text-gray-600 fs-5 text-uppercase fw-bold px-8">{{ ucfirst(\Carbon\Carbon::parse(date('Y-m-d'))->locale('pt_BR')->isoFormat('MMMM')) }} de {{ date('Y') }}</span>
+                                            <input type="hidden" id="date_to_filter" name="date_to_filter" value="{{ date('Y-m-d') }}">
+                                            <span class="badge badge-light-primary cursor-pointer" id="next-month">AVANÇAR</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-4">
@@ -217,6 +227,63 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
+    
+    // DEFINE AS VARIAVEIS
+    var dateBegin = $('.date-begin').val();
+    var dateEnd = $('.date-end').val();
+
+
+    // Função para atualizar o display do mês
+    function updateMonthDisplay(date) {
+        let options = { year: 'numeric', month: 'long' };
+        $('#current-month').text(date.toLocaleDateString('pt-BR', options));
+        $('#date_to_filter').val(date.toISOString().split('T')[0]);
+    }
+
+    // Função para obter a data atual do campo hidden
+    function getCurrentDate() {
+        return new Date($('#date_to_filter').val());
+    }
+
+    // Evento ao clicar em "Retroceder"
+    $('#previous-month').click(function() {
+
+        let currentDate = getCurrentDate();
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        updateMonthDisplay(currentDate);
+
+        // Adicione nesses campos o primeiro e último dia do currentDate
+        dateBegin = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).toISOString().split('T')[0];
+        dateEnd = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).toISOString().split('T')[0];
+
+        $('.date-begin').val(dateBegin);
+        $('.date-end').val(dateEnd);
+
+        // RELOAD TABLE
+        table.DataTable().ajax.reload();
+
+    });
+
+    // Evento ao clicar em "Avançar"
+    $('#next-month').click(function() {
+
+        let currentDate = getCurrentDate();
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        updateMonthDisplay(currentDate);
+
+        // Adicione nesses campos o primeiro e último dia do currentDate
+        dateBegin = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).toISOString().split('T')[0];
+        dateEnd = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).toISOString().split('T')[0];
+
+        $('.date-begin').val(dateBegin);
+        $('.date-end').val(dateEnd);
+
+        // RELOAD TABLE
+        table.DataTable().ajax.reload();
+
+    });
+
+
     function formatBRL(number){
         return 'R$ '+ number.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
@@ -245,10 +312,6 @@
     $('.date-end').on('change', function() {
         localStorage.setItem('date-end', $(this).val());
     });
-    
-    // DEFINE AS VARIAVEIS
-    var dateBegin = $('.date-begin').val();
-    var dateEnd = $('.date-end').val();
 
     // Adiciona transação
     $('.add-transaction').click(function(){
