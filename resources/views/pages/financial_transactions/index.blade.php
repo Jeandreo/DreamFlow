@@ -299,22 +299,6 @@
         return `${day}/${month}/${year}`;
     }
 
-    // Recuperar valores do Local Storage ao carregar a página
-    if(localStorage.getItem('date-begin')) {
-        $('.date-begin').val(localStorage.getItem('date-begin'));
-    }
-    if(localStorage.getItem('date-end')) {
-        $('.date-end').val(localStorage.getItem('date-end'));
-    }
-
-    // Salvar valores no Local Storage ao alterar os campos
-    $('.date-begin').on('change', function() {
-        localStorage.setItem('date-begin', $(this).val());
-    });
-    $('.date-end').on('change', function() {
-        localStorage.setItem('date-end', $(this).val());
-    });
-
     // Adiciona transação
     $('.add-transaction').click(function(){
 
