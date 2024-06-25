@@ -365,19 +365,7 @@ class FinancialTransactionsController extends Controller
         $query->leftJoin('financial_credit_cards', function($join) {
             $join->on('financial_transactions.credit_card_id', '=', 'financial_credit_cards.id');
         });
-
-        // Data inicial selecionada
-        if ($request->date_begin) {
-            $query->whereDate('financial_transactions.date_purchase', '>=', $request->date_begin)
-                ->orWhereDate('financial_transactions.date_payment', '>=', $request->date_begin);
-        }
-
-        // Data final selecionada
-        if ($request->date_end) {
-            $query->whereDate('financial_transactions.date_purchase', '<=', $request->date_end)
-                ->orWhereDate('financial_transactions.date_payment', '<=', $request->date_end);
-        }
-
+        
         // Pesquisa por termos
         if ($request->searchBy != '') {
             
@@ -587,6 +575,17 @@ class FinancialTransactionsController extends Controller
 
         }
 
+        $previewTotalValue = collect($data)->sum('value');
+        $previewTotalRevenue = collect($data)->where('value', '>', 0)->sum('value');
+        $previewTotalExpense = collect($data)->where('value', '<', 0)->sum('value');
+        $previewTotalPaidValue = collect($data)->where('paid', 1)->sum('value');
+
+        // Obtém valores
+        $totalValue = collect($data)->where('paid', true)->sum('value');
+        $totalRevenue = collect($data)->where('paid', true)->where('value', '>', 0)->sum('value');
+        $totalExpense = collect($data)->where('paid', true)->where('value', '<', 0)->sum('value');
+        $totalPaidValue = collect($data)->where('paid', true)->where('paid', 1)->sum('value');
+
         // Filtra para que as faturas a serem exibidas estejam dentro do filtro
         $data = array_filter($data->toArray(), function ($item) use ($request) {
             $date = Carbon::parse($item->date_payment);
@@ -595,12 +594,6 @@ class FinancialTransactionsController extends Controller
 
         // COUNT TOTAL RECORDS
         $totalRecords = count($data);
-
-        // Obtém valores
-        $totalValue = collect($data)->where('paid', true)->sum('value');
-        $totalRevenue = collect($data)->where('paid', true)->where('value', '>', 0)->sum('value');
-        $totalExpense = collect($data)->where('paid', true)->where('value', '<', 0)->sum('value');
-        $totalPaidValue = collect($data)->where('paid', true)->where('paid', 1)->sum('value');
 
         // Remove as transações de cartão
         $data = array_filter($data, function($transaction) {
@@ -702,6 +695,11 @@ class FinancialTransactionsController extends Controller
                 'totalRevenue' => $totalRevenue,
                 'totalExpense' => $totalExpense,
                 'totalPaidValue' => $totalPaidValue,
+                
+                'previewTotalSum' => $previewTotalValue,
+                'previewTotalRevenue' => $previewTotalRevenue,
+                'previewTotalExpense' => $previewTotalExpense,
+                'previewTotalPaidValue' => $previewTotalPaidValue,
             ])
             ->toJson();
     }

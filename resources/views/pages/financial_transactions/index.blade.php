@@ -43,7 +43,7 @@
                                 R$ 0,00
                             </h3>
                             <h2 class="fs-5 text-uppercase text-primary mb-0">
-                                Entrada
+                                Entrada <span id="preview-total-revenue"></span>
                             </h2>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                                 R$ 0,00
                             </h3>
                             <h2 class="fs-5 text-uppercase text-primary mb-0">
-                                Saída
+                                Saída <span id="preview-total-expense"></span>
                             </h2>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                                 R$ 0,00
                             </h3>
                             <h2 class="fs-5 text-uppercase text-primary mb-0">
-                                Resultado
+                                Resultado <span id="preview-total"></span>
                             </h2>
                         </div>
                     </div>
@@ -88,20 +88,20 @@
                                             <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i>
                                             Filtrar
                                         </button> --}}
-                                        <button type="button" class="btn btn-light-primary btn-icon ms-2">
+                                        <button type="button" class="btn btn-light-primary btn-icon ms-2 change-calendar-picker">
                                             <i class="fa-solid fa-calendar-days"></i>
                                         </button>
                                     </div>
                                 </div>
                                 <div class="col-4 text-center">
-                                    <div style="display: none;">
+                                    <div class="calendar-dates" style="display: none2;">
                                         <div class="d-flex justify-content-center align-items-center">
                                             <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-begin" placeholder="Início" value="{{ date("Y-m-01") }}"/>
                                             <span class="text-gray-600 fs-5 text-uppercase fw-bold px-8">Até</span>
                                             <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-end" placeholder="Fim"  value="{{ date("Y-m-t") }}"/>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="calendar-months">
                                         <div class="d-flex justify-content-center align-items-center">
                                             <span class="badge badge-light-primary cursor-pointer" id="previous-month">RETROCEDER</span>
                                             <span id="current-month" class="text-gray-600 fs-5 text-uppercase fw-bold px-8">{{ ucfirst(\Carbon\Carbon::parse(date('Y-m-d'))->locale('pt_BR')->isoFormat('MMMM')) }} de {{ date('Y') }}</span>
@@ -227,11 +227,13 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
-    
+    $(document).on('click', '.change-calendar-picker', function(){
+        $('.calendar-months, .calendar-dates').toggle();
+    });
+
     // DEFINE AS VARIAVEIS
     var dateBegin = $('.date-begin').val();
     var dateEnd = $('.date-end').val();
-
 
     // Função para atualizar o display do mês
     function updateMonthDisplay(date) {
@@ -455,6 +457,12 @@
         $('#total-revenue').text(formatBRL(json.totalRevenue));
         $('#total-expense').text(formatBRL(json.totalExpense));
         $('#total').text(formatBRL(json.totalSum));
+
+
+        
+        $('#preview-total-revenue').text(formatBRL(json.previewTotalRevenue));
+        $('#preview-total-expense').text(formatBRL(json.previewTotalExpense));
+        $('#preview-total').text(formatBRL(json.previewTotalSum));
     });
 
     // MAKE TABLE
