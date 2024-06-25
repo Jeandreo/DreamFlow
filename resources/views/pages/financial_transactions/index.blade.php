@@ -94,7 +94,7 @@
                                     </div>
                                 </div>
                                 <div class="col-4 text-center">
-                                    <div class="calendar-dates" style="display: none2;">
+                                    <div class="calendar-dates" style="display: none;">
                                         <div class="d-flex justify-content-center align-items-center">
                                             <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-begin" placeholder="Início" value="{{ date("Y-m-01") }}"/>
                                             <span class="text-gray-600 fs-5 text-uppercase fw-bold px-8">Até</span>
