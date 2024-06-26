@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FinancialCreditCard;
+use App\Models\FinancialInstitution;
 use App\Models\FinancialTransactions;
 use App\Models\FinancialWallet;
 use Illuminate\Http\Request;
@@ -49,10 +50,12 @@ class FinancialCreditCardController extends Controller
 
         // GET DATA
         $wallets = FinancialWallet::where('status', 1)->get();
+        $institutions = FinancialInstitution::where('status', 1)->get();
 
         // RENDER VIEW
         return view('pages.financial_credit.create')->with([
             'wallets' => $wallets,
+            'institutions' => $institutions,
         ]);
     } 
 
@@ -95,6 +98,7 @@ class FinancialCreditCardController extends Controller
         // GET ALL DATA
         $content = $this->repository->find($id);
         $wallets = FinancialWallet::where('status', 1)->get();
+        $institutions = FinancialInstitution::where('status', 1)->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
@@ -103,6 +107,7 @@ class FinancialCreditCardController extends Controller
         return view('pages.financial_credit.edit')->with([
             'content' => $content,
             'wallets' => $wallets,
+            'institutions' => $institutions,
         ]);
     }
 

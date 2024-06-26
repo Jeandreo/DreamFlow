@@ -28,23 +28,17 @@
             @endforeach
         </select>
     </div>
+    <div class="col-4 mb-5">
+        <label class="form-label fw-bold">Instituição:</label>
+        <select class="form-select form-select-solid" name="institution_id" data-control="select2" data-placeholder="Selecione" data-allow-clear="true">
+            <option value=""></option>
+            @foreach ($institutions as $institution)
+            <option value="{{ $institution->id }}" @if(isset($content) && $content->institution_id == $institution->id) selected @endif>{{ $institution->name }}</option>
+            @endforeach
+        </select>
+    </div>
     <div class="col-12 mb-5">
         <label class="form-label fw-bold">Descrição:</label>
         <textarea name="description" class="form-control form-control-solid" placeholder="Alguma observação sobre este cartão?">@if(isset($content->description)){{$content->description}}@endif</textarea>
     </div>
 </div>
-
-@section('custom-footer')
-<script>
-    // REPLACE NAME OF INSTITUTION
-    $('[name="institution_id"]').change(function(){
-
-        // GET NAME
-        var name = $(this).find('option:selected').text().trim();
-
-        // REPLACE IN NAME
-        $('[name="name"]').val(name);
-
-    });
-</script>
-@endsection
