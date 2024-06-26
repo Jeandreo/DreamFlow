@@ -10,13 +10,13 @@
     </div>
     <div class="col-4 mb-5">
         <label class="required form-label fw-bold">Método:</label>
-        <select class="form-select form-select-solid" name="wallet_or_credit" data-control="select2" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="#modal_trasaction" @endif required>
+        <select class="form-select form-select-solid select-cards" name="wallet_or_credit" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="#modal_trasaction" @endif required>
             <option value=""></option>
             @foreach ($wallets as $wallet)
-            <option value="wallet_{{ $wallet->id }}" @if(isset($content) && $content->wallet_id == $wallet->id) selected @endif>{{ $wallet->name }}</option>
+            <option value="wallet_{{ $wallet->id }}" @if(isset($content) && $content->wallet_id == $wallet->id) selected @endif data-type="wallet">{{ $wallet->name }}</option>
             @endforeach
             @foreach ($credits as $credit)
-            <option value="credit_{{ $credit->id }}" @if(isset($content) && $content->credit_card_id == $credit->id) selected @endif>{{ $credit->name }}</option>
+            <option value="credit_{{ $credit->id }}" @if(isset($content) && $content->credit_card_id == $credit->id) selected @endif data-type="credit">{{ $credit->name }}</option>
             @endforeach
         </select>
     </div>
@@ -32,10 +32,10 @@
     </div>
     <div class="col-6 mb-5">
         <label class="required form-label fw-bold">Categoria:</label>
-        <select class="form-select form-select-solid" name="category_id" data-control="select2" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="#modal_trasaction" @endif required>
-            <option value=""></option>
+        <select class="form-select form-select-solid select-categories" name="category_id" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="#modal_trasaction" @endif required>
+            <option></option>
             @foreach ($categories as $category)
-            <option value="{{ $category->id }}" @if(isset($content) && $content->category_id == $category->id) selected @endif>{{ $category->name }}</option>
+            <option value="{{ $category->id }}" @if(isset($content) && $content->category_id == $category->id) selected @endif data-color="@if($category->father){{ $category->father->color }}@else{{ $category->color }}@endif" data-icon="@if($category->father){{ str_replace(' ', ',', $category->father->icon) }}@else{{ str_replace(' ', ',', $category->icon) }}@endif">{{ $category->name }}</option>
             @endforeach
         </select>
     </div>

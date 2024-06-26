@@ -151,10 +151,10 @@
 </div>
 
 <div class="modal fade" tabindex="-1" id="modal_trasaction">
-    <div class="modal-dialog modal-dialog-centered rounded mw-750px">
-        <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data" id="create-transaction">
-            @csrf
-            <div class="modal-content rounded">
+    <div class="modal-dialog modal-dialog-centered rounded">
+        <div class="modal-content rounded">
+            <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data" id="create-transaction">
+                @csrf
                 <div class="modal-header">
                     <h3 class="modal-title">Adicionar Trasação</h3>
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -168,17 +168,17 @@
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
                     <button type="submit" class="btn btn-primary">Adicionar</button>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 
 <div class="modal fade" tabindex="-1" id="edit_trasaction">
-    <div class="modal-dialog modal-dialog-centered rounded mw-750px">
-        <form action="" method="POST" enctype="multipart/form-data" id="update-transaction">
-            @csrf
-            @method('PUT')
-            <div class="modal-content rounded">
+    <div class="modal-dialog modal-dialog-centered rounded">
+        <div class="modal-content rounded">
+            <form action="" method="POST" enctype="multipart/form-data" id="update-transaction">
+                @csrf
+                @method('PUT')
                 <div class="modal-header">
                     <h3 class="modal-title">Editar Transação</h3>
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -194,15 +194,13 @@
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
                     <button type="submit" class="btn btn-primary">Atualizar</button>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 
 <div class="modal fade" tabindex="-1" id="load_fature">
     <div class="modal-dialog modal-dialog-centered rounded mw-750px">
-        @csrf
-        @method('PUT')
         <div class="modal-content rounded">
             <div class="modal-header">
                 <h3 class="modal-title">Transações</h3>
@@ -226,6 +224,7 @@
 @section('custom-footer')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+
 
     $(document).on('click', '.change-calendar-picker', function(){
         $('.calendar-months, .calendar-dates').toggle();
@@ -592,7 +591,7 @@
 
     });
 
-    $(document).on('click', '.open-transaction', function(){
+    $(document).on('click', '#datatables-transactions tbody .open-transaction', function(){
 
         // GET ID OF TRANSACTIONS
         var task    = $(this).closest('tr').find('.show');
@@ -617,9 +616,8 @@
                 $('#load-transaction').html(response);
 
                 // RELOAD SELECTS
-                $('#load-transaction select').select2({
-                    dropdownParent: $('#edit_trasaction')
-                });
+                select2WalletsCards();
+                select2Categories();
 
                 Inputmask(["R$ 9", "R$ 99", "R$ 9,99", "R$ 99,99", "R$ 999,99", "R$ 9.999,99", "R$ 99.999,99", "R$ 999.999,99", "R$ 9.999.999,99"], {
                     "numericInput": true,

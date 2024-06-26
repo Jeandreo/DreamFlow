@@ -378,7 +378,55 @@ function select2Images(selector = '.select-with-images'){
 
 }
 
+function select2Categories(selector = '.select-categories'){
+    var optionFormat = function(item) {
+        
+        if ( !item.id ) { return item.text; }
+        var color = item.element.getAttribute('data-color');
+        var icon  = item.element.getAttribute('data-icon');
+        icon = icon.split(",");
+
+        var option = '<div class="p-0 m-0 d-flex align-items-center"><div class="min-h-20px min-w-20px me-3 rounded-sm d-flex align-items-center justify-content-center" style="background: '+color+';"><i class="'+icon[0] + ' ' + icon[1]+' text-white fs-8"></i></div>'+item.text+'</div></div>'
+        return $(option);
+
+    }
+
+    $(selector).select2({
+        templateSelection: optionFormat,
+        templateResult: optionFormat,
+        dropdownParent: '#edit_trasaction',
+    });
+
+}
+
+function select2WalletsCards(selector = '.select-cards'){
+    var optionFormat = function(item) {
+        
+        if ( !item.id ) { return item.text; }
+        var type = item.element.getAttribute('data-type');
+
+        if(type == 'wallet'){
+            var badge = '<span class="badge badge-success me-3">CARTEIRA</span>';
+        } else {
+            var badge = '<span class="badge badge-danger me-3">CARTÃO</span>';
+        }
+
+        var option = '<div>'+badge+item.text+'</div>'
+        return $(option);
+
+    }
+
+    $(selector).select2({
+        templateSelection: optionFormat,
+        templateResult: optionFormat,
+        dropdownParent: '#edit_trasaction',
+    });
+
+}
+
 // CALL FUNCTIONS
+select2WalletsCards();
+select2Categories();
 loadDataTable();
 generateFlatpickr();
 onlyUrl();
