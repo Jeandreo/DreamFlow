@@ -80,23 +80,6 @@ class FinancialCategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        // GET ALL DATA
-        $contents = $this->repository->find($id);
-
-        // RETURN VIEW WITH DATA
-        return view('pages.financial_categories.show')->with([
-            'contents' => $contents,
-        ]);
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id

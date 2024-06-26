@@ -16,7 +16,6 @@ class FinancialInstitution extends Model
      */
     protected $fillable = [
         'name',
-        'color',
         'status',
         'created_by',
         'updated_by',

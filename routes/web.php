@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FinancialCategoryController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\FinancialCreditCardController;
+use App\Http\Controllers\FinancialInstitutionController;
 use App\Http\Controllers\FinancialTransactionsController;
 use App\Http\Controllers\FinancialWalletController;
 use App\Http\Controllers\ProfileController;
@@ -54,7 +55,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [FinancialCategoryController::class, 'index'])->name('index');
                 Route::get('/adicionar', [FinancialCategoryController::class, 'create'])->name('create');
                 Route::post('/adicionar', [FinancialCategoryController::class, 'store'])->name('store');
-                Route::get('/visualizando/{id?}', [FinancialCategoryController::class, 'show'])->name('show');
                 Route::get('/desabilitar/{id}', [FinancialCategoryController::class, 'destroy'])->name('destroy');
                 Route::get('/editar/{id}', [FinancialCategoryController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [FinancialCategoryController::class, 'update'])->name('update');
@@ -71,6 +71,18 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/processar', [FinancialTransactionsController::class, 'processing'])->name('processing');
                 Route::post('/concluida', [FinancialTransactionsController::class, 'checked'])->name('checked');
                 Route::put('/remove', [FinancialTransactionsController::class, 'destroy'])->name('destroy');
+            });
+        });
+
+        // TRANSACTIONS
+        Route::prefix('instituicoes')->group(function () {
+            Route::name('financial.institutions.')->group(function () {
+                Route::get('/', [FinancialInstitutionController::class, 'index'])->name('index');
+                Route::get('/adicionar', [FinancialInstitutionController::class, 'create'])->name('create');
+                Route::post('/adicionar', [FinancialInstitutionController::class, 'store'])->name('store');
+                Route::get('/desabilitar/{id}', [FinancialCategoryController::class, 'destroy'])->name('destroy');
+                Route::get('/editar/{id}', [FinancialInstitutionController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [FinancialInstitutionController::class, 'update'])->name('update');
             });
         });
 

@@ -151,34 +151,56 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-2 mb-4">
+                <div class="col-3 mb-4">
                     <div class="card shadow">
-                        <div class="card-body">
+                        <div class="card-body py-5">
                             @foreach ($wallets as $wallet)
-                                <div class="d-flex justify-content-between mb-1">
-                                    <span class="fw-bold">
-                                        {{ $wallet->name }}
-                                    </span>
-                                    <span class="text-gray-600">
-                                        R$ {{ number_format($wallet->total(), 2, ',', '.') }}
-                                    </span>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex">
+                                    <img src="{{ findImage('instituicoes/' .$wallet->institution_id . '/logo-150px.jpg', 'image') }}" class="h-40px w-40px me-3 rounded-sm" alt="">
+                                    <div>
+                                        <p class="fw-bold mb-0">
+                                            {{ $wallet->name }}
+                                        </p>
+                                        <p class="text-gray-600 mb-0">
+                                           Carteira
+                                        </p>
+                                    </div>
                                 </div>
+                                <p class="text-primary fs-6 fw-bold mb-0 text-end">
+                                    R$ {{ number_format($wallet->total(), 2, ',', '.') }}
+                                </p>
+                            </div>
+                            @if (!$loop->last)
+                                <div class="separator my-3"></div>
+                            @endif
                             @endforeach
                         </div>
                     </div>
                 </div>
-                <div class="col-2 mb-4">
+                <div class="col-3 mb-4">
                     <div class="card shadow">
                         <div class="card-body">
                             @foreach ($credits as $credit)
-                                <div class="d-flex justify-content-between mb-1">
-                                    <span class="fw-bold">
-                                        {{ $credit->name }}
-                                    </span>
-                                    <span class="text-gray-600">
-                                        R$ {{ number_format($credit->total(), 2, ',', '.') }}
-                                    </span>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex">
+                                    <img src="{{ findImage('instituicoes/' .$credit->institution_id . '/logo-150px.jpg', 'image') }}" class="h-40px w-40px me-3 rounded-sm" alt="">
+                                    <div>
+                                        <p class="fw-bold mb-0">
+                                            {{ $credit->name }}
+                                        </p>
+                                        <p class="text-gray-600 mb-0">
+                                           Cartões de crédito
+                                        </p>
+                                    </div>
                                 </div>
+                                <p class="text-primary fs-6 fw-bold mb-0 text-end">
+                                    R$ {{ number_format($credit->total(), 2, ',', '.') }}
+                                </p>
+                            </div>
+                            @if (!$loop->last)
+                                <div class="separator my-3"></div>
+                            @endif
                             @endforeach
                         </div>
                     </div>

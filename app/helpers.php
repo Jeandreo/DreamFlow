@@ -9,7 +9,8 @@ use App\Models\ChallenngeMonthly;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 function randomEmoji(){
     $emojis = ["😊", "😄", "😃", "😁", "😆", "😍", "😋", "😎", "😸", "🌟", "🎉", "🥳", "🎈", "🌈", "💖"];
@@ -52,22 +53,23 @@ function resizeAndSaveImage($base64Image, $sizes, $name, $path){
     // Create the directory if it doesn't exist
     if (!file_exists($uploadDir)) mkdir($uploadDir, 0777, true);
 
-    foreach ($sizes as $value) {
+    // IMAGEM ORIGINAL
+    $manager = new ImageManager(new Driver());
 
-        // GET TYPE AND IMAGE ENCRYPTED AND DECRYPT HER
-        $image_parts = explode(";base64,", $base64Image);
-        $image_base64 = base64_decode($image_parts[1]);
+    foreach($sizes as $value) {
 
-        // Resize the image
-        $img = imagecreatefromstring($image_base64);
-        $resized = imagescale($img, $value);
+        // Obtém imagem
+        $image = $manager->read($base64Image);
 
-        // Save the resized image
-        imagejpeg($resized, $uploadDir . $name . '-' . $value . 'px.jpg');
+        // Nome do arquivo
+        $nameFile = $name . '-' . $value . 'px.jpg';
 
-        // Free up memory
-        imagedestroy($img);
-        imagedestroy($resized);
+        // REDIMENSIONAR
+        $image->cover($value, $value);
+
+        // SALVE A IMAGEM REDIMENSIONADA
+        $image->save('storage/'. $path . $nameFile, 95);
+
     }
 
 }
@@ -94,6 +96,8 @@ function findImage($pathAndFile, $default = 'user'){
     } else {
         if($default == 'landscape'){
             $url = asset('/assets/media/images/default.png');
+        } elseif($default == 'image') {
+            $url = asset('/assets/media/images/blank_file.png');
         } else {
             $url = asset('/assets/media/avatars/blank.png');
         }

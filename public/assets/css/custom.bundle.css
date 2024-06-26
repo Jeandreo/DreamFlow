@@ -80,6 +80,10 @@ body {
     border-radius: 15px !important;
 }
 
+.rounded-sm {
+    border-radius: 5px !important;
+}
+
 /* PROJECTS */
 
 .separator-vertical{
