@@ -105,7 +105,7 @@
                                                 <h2 class="fs-4 text-gray-700 fw-normal mb-1">
                                                     (+) Entrada
                                                 </h2>
-                                                <span class="text-gray-400">(100%)</span>
+                                                <span class="text-gray-400">-</span>
                                             </div>
                                             <div class="col">
                                                 <h2 class="fs-1 text-uppercase text-success mb-0">
@@ -114,9 +114,12 @@
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <h2 class="fs-4 text-gray-700 fw-normal mb-1">
-                                                (-) Saída
-                                            </h2>
+                                            <div class="d-flex justify-content-between me-12">
+                                                <h2 class="fs-4 text-gray-700 fw-normal mb-1">
+                                                    (-) Saída
+                                                </h2>
+                                                <span class="text-gray-400">({{ $values['expenses'] != 0 ? ($values['expenses'] / $values['revenues']) * 100 : 0}}%)</span>
+                                            </div>
                                             <div class="col">
                                                 <h2 class="fs-1 text-uppercase text-danger mb-0">
                                                     R$ {{ number_format($values['expenses'], 2, ',', '.') }}
@@ -124,9 +127,12 @@
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <h2 class="fs-4 text-gray-700 fw-normal mb-1">
-                                                (%) Aporte
-                                            </h2>
+                                            <div class="d-flex justify-content-between me-12">
+                                                <h2 class="fs-4 text-gray-700 fw-normal mb-1">
+                                                    (%) Aporte
+                                                </h2>
+                                                <span class="text-gray-400">0%</span>
+                                            </div>
                                             <div class="col">
                                                 <h2 class="fs-1 text-uppercase text-primary mb-0">
                                                     R$ 0,00
