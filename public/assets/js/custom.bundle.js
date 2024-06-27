@@ -378,7 +378,7 @@ function select2Images(selector = '.select-with-images'){
 
 }
 
-function select2Categories(selector = '.select-categories'){
+function select2Categories(selector = '.select-categories', dropdown = false){
     var optionFormat = function(item) {
         
         if ( !item.id ) { return item.text; }
@@ -391,11 +391,21 @@ function select2Categories(selector = '.select-categories'){
 
     }
 
-    $(selector).select2({
-        templateSelection: optionFormat,
-        templateResult: optionFormat,
-        dropdownParent: '#edit_trasaction',
-    });
+    if(dropdown === true){
+        $(selector).select2({
+            templateSelection: optionFormat,
+            templateResult: optionFormat,
+            dropdownParent: '#edit_trasaction',
+            allowClear: true,
+        });
+    } else {
+        $(selector).select2({
+            templateSelection: optionFormat,
+            templateResult: optionFormat,
+            allowClear: true,
+        });
+    }
+
 
 }
 

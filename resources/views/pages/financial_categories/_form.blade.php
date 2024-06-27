@@ -13,10 +13,10 @@
     </div>
     <div class="col-4 mb-5">
         <label class="form-label fw-bold">Categoria:</label>
-        <select class="form-select form-select-solid" name="father_id" data-control="select2" data-placeholder="Selecione" data-allow-clear="true">
-            <option value=""></option>
+        <select class="form-select form-select-solid select-categories" name="father_id" data-placeholder="Selecione" required>
+            <option></option>
             @foreach ($categories as $category)
-            <option value="{{ $category->id }}" @if(isset($content) && $content->father_id == $category->id) selected @endif>{{ $category->name }}</option>
+            <option value="{{ $category->id }}" @if(isset($content) && $content->father_id == $category->id) selected @endif data-color="@if($category->father){{ $category->father->color }}@else{{ $category->color }}@endif" data-icon="@if($category->father){{ str_replace(' ', ',', $category->father->icon) }}@else{{ str_replace(' ', ',', $category->icon) }}@endif">{{ $category->name }}</option>
             @endforeach
         </select>
     </div>
@@ -37,6 +37,10 @@
 
 @section('custom-footer')
 <script>
+
+    // SELECTOR CATEGORIES
+    select2Categories();
+
     // IF HAS CATEGORY FATHER
     $('[name="father_id"]').change(function(){
 

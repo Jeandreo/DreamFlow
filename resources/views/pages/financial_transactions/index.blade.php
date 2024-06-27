@@ -617,7 +617,7 @@
 
                 // RELOAD SELECTS
                 select2WalletsCards();
-                select2Categories();
+                select2Categories(true);
 
                 Inputmask(["R$ 9", "R$ 99", "R$ 9,99", "R$ 99,99", "R$ 999,99", "R$ 9.999,99", "R$ 99.999,99", "R$ 999.999,99", "R$ 9.999.999,99"], {
                     "numericInput": true,
