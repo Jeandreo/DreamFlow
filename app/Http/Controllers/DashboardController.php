@@ -47,10 +47,8 @@ class DashboardController extends Controller
                                             ->whereNotIn('task_id', $already);
                                     });
                             })
+                            ->where('designated_id', Auth::id())
                             ->orderBy('date')
-                            ->where('designated_id', Auth::id())
-                            ->orWhereNull('date')
-                            ->where('designated_id', Auth::id())
                             ->get();
 
         // CHALLENGES
