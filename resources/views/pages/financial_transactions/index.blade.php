@@ -593,6 +593,7 @@
 
     $(document).on('click', '#datatables-transactions tbody .open-transaction', function(){
 
+
         // GET ID OF TRANSACTIONS
         var task    = $(this).closest('tr').find('.show');
         var id      = task.data('id');
@@ -615,10 +616,6 @@
                 // REPLACE CONTENT
                 $('#load-transaction').html(response);
 
-                // RELOAD SELECTS
-                select2WalletsCards();
-                select2Categories(true);
-
                 Inputmask(["R$ 9", "R$ 99", "R$ 9,99", "R$ 99,99", "R$ 999,99", "R$ 9.999,99", "R$ 99.999,99", "R$ 999.999,99", "R$ 9.999.999,99"], {
                     "numericInput": true,
                     "clearIncomplete": true,
@@ -629,6 +626,10 @@
 
                 // SET DATE
                 $('#edit_trasaction [name="date_purchase"]').val(date);
+
+                // RELOAD SELECTS
+                select2WalletsCards();
+                select2Categories('.select-categories', true);
 
                 // START FLATPICKR
                 generateFlatpickr();
