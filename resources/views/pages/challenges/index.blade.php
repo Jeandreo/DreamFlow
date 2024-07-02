@@ -19,6 +19,7 @@
 											<tr class="fw-bold fs-6 text-gray-800 px-7">
 												<th width="4%" class="pe-0 ps-5">ID</th>
 												<th>Nome</th>
+												<th>Desempenho</th>
 												<th>Tipo</th>
 												<th>Mês</th>
 												<th class="text-center">Status</th>
@@ -39,6 +40,13 @@
 													<a href="{{ route('challenges.edit', $content->id) }}" class="text-gray-800 text-hover-primary fs-6 fw-normal">
 														{{ $content->name }}
 													</a>
+												</td>
+												<td>
+													<div class="d-flex w-225px flex-wrap">
+														@foreach ($content->getDays() as $day)
+														<div class="rounded-circle min-h-10px min-w-10px h-10px w-10px me-1 mb-1 @if($day['completed'] === 1) bg-success @elseif($day['completed'] === 0) bg-danger @elseif ($day['completed'] === null && now() < $day['date']) bg-gray-300 @else bg-primary @endif" data-bs-toggle="tooltip" title="{{ date('d/m/Y', strtotime($day['date'])) }}"></div>
+														@endforeach
+													</div>
 												</td>
 												<td>
 													<span class="text-gray-700">

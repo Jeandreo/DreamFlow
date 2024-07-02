@@ -211,6 +211,31 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <a class="menu-link" href="{{ route('financial.wallets.index') }}">
+                                Carteiras
+                            </a>
+                            <br>
+                            <a class="menu-link" href="{{ route('financial.transactions.index') }}">
+                                Transações
+                            </a>
+                            <br>
+                            <a class="menu-link" href="{{ route('financial.institutions.index') }}">
+                                Instituições
+                            </a>
+                            <br>
+                            <a class="menu-link" href="{{ route('financial.credit.cards.index') }}">
+                                Cartões de Crédito
+                            </a>
+                            <br>
+                            <a class="menu-link" href="{{ route('financial.categories.index') }}">
+                                Categorias
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12">

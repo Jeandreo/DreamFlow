@@ -59,7 +59,7 @@ class ProjectTaskController extends Controller
         $data = $request->all();
 
         // CREATED BY
-        $data['date']           = now();
+        // $data['date']           = now();
         $data['created_by']     = Auth::id();
         $data['designated_id']  = Auth::id();
         
@@ -180,11 +180,14 @@ class ProjectTaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request, $id = null)
     {
+
+        // GET BY POST
+        if($id == null) $id = $request->task_id;
         
         // GET DATA
-        $content = $this->repository->find($request->task_id);
+        $content = $this->repository->find($id);
 
         // UPDATE
         if($content->status == 1){
@@ -196,7 +199,7 @@ class ProjectTaskController extends Controller
         }
 
         // STORING NEW DATA
-        $this->repository->where('id', $request->task_id)->update(['status' => $status, 'updated_by' => Auth::id()]);
+        $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
         // REDIRECT AND MESSAGES
         return redirect()
@@ -242,9 +245,7 @@ class ProjectTaskController extends Controller
     {
         
         // GET BY POST
-        if($id == null){
-            $id = $request->task_id;
-        }
+        if($id == null) $id = $request->task_id;
 
         // GET DATA
         $content = $this->repository->find($id);

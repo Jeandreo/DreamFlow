@@ -170,6 +170,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/visualizando', [ProjectTaskController::class, 'show'])->name('show');
                 Route::post('/visualizando-lista', [ProjectTaskController::class, 'showOne'])->name('show.one');
                 Route::post('/desabilitar', [ProjectTaskController::class, 'destroy'])->name('destroy');
+                Route::get('/desabilitar/{id?}', [ProjectTaskController::class, 'destroy'])->name('destroy');
                 Route::post('/exibir-subtarefas', [ProjectTaskController::class, 'showSubtasks'])->name('show.subtasks');
                 Route::post('/stand-by', [ProjectTaskController::class, 'standBy'])->name('stand.by');
                 Route::get('/stand-by/{id}', [ProjectTaskController::class, 'standBy'])->name('stand.by.active');

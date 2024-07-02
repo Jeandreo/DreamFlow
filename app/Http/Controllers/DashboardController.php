@@ -49,6 +49,8 @@ class DashboardController extends Controller
                             })
                             ->orderBy('date')
                             ->where('designated_id', Auth::id())
+                            ->orWhereNull('date')
+                            ->where('designated_id', Auth::id())
                             ->get();
 
         // CHALLENGES

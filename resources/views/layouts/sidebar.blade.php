@@ -119,84 +119,8 @@
                <!--end:Menu item-->
                <!--begin:Menu item-->
                <div  class="menu-item">
-                  <!--begin:Menu link-->
-                  <a class="menu-link" href="{{ route('financial.transactions.index') }}">
-                     <span class="menu-bullet">
-                        <span class="bullet bullet-dot"></span>
-                     </span>
-                     <span  class="menu-title" >Transações</span>
-                  </a>
-                  <!--end:Menu link-->
-               </div>
-               <!--end:Menu item-->
-               <!--begin:Menu item-->
-               <div  class="menu-item">
-                  <!--begin:Menu link-->
-                  <a class="menu-link" href="{{ route('financial.institutions.index') }}">
-                     <span class="menu-bullet">
-                        <span class="bullet bullet-dot"></span>
-                     </span>
-                     <span  class="menu-title" >Instituições</span>
-                  </a>
-                  <!--end:Menu link-->
-               </div>
-               <!--end:Menu item-->
-               <!--begin:Menu item-->
-               <div  class="menu-item">
                   <!--begin:Menu link--><a class="menu-link"  href="{{ route('projects.show') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
                </div>
-               <!--end:Menu item-->
-               <div class="menu menu-rounded menu-column">
-                  <!--begin::Heading-->
-                  <!--begin:Menu item-->
-                  <div  class="menu-item pt-5" >
-                     <!--begin:Menu content-->
-                     <div  class="menu-content" ><span class="menu-heading fw-bold text-uppercase fs-7">Financeiro</span></div>
-                     <!--end:Menu content-->
-                  </div>
-                  <!--end:Menu item-->
-                  <!--end::Heading-->
-                  <!--begin::Menu Item-->
-                  <div class="menu-item">
-                     <!--begin::Menu link-->
-                     <a class="menu-link" href="{{ route('financial.wallets.index') }}">
-                        <!--begin::Title-->
-                        <span class="menu-title ms-4">
-                           Carteiras
-                        </span>
-                        <!--end::Title-->                           
-                     </a>
-                     <!--end::Menu link-->                
-                  </div>
-                  <!--end::Menu Item-->
-                  <!--begin::Menu Item-->
-                  <div class="menu-item">
-                     <!--begin::Menu link-->
-                     <a class="menu-link" href="{{ route('financial.credit.cards.index') }}">
-                        <!--begin::Title-->
-                        <span class="menu-title ms-4">
-                           Cartões de Crédito
-                        </span>
-                        <!--end::Title-->                           
-                     </a>
-                     <!--end::Menu link-->                
-                  </div>
-                  <!--end::Menu Item-->
-                  <!--begin::Menu Item-->
-                  <div class="menu-item">
-                     <!--begin::Menu link-->
-                     <a class="menu-link" href="{{ route('financial.categories.index') }}">
-                        <!--begin::Title-->
-                        <span class="menu-title ms-4">
-                           Categorias
-                        </span>
-                        <!--end::Title-->                           
-                     </a>
-                     <!--end::Menu link-->                
-                  </div>
-                  <!--end::Menu Item-->
-               </div>
-               <!--begin:Menu item-->
                <!--end:Menu item-->
                <div class="menu menu-rounded menu-column">
                   <!--begin::Heading-->
