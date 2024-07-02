@@ -35,7 +35,8 @@ class FinancialTransactionsController extends Controller
         // GET DATA
         $wallets = FinancialWallet::where('status', 1)->get();
         $credits = FinancialCreditCard::where('status', 1)->get();
-        $categories = FinancialCategory::where('status', 1)->get();
+        $categories = FinancialCategory::where('status', 1)->whereNotNull('father_id')->get();
+
         return view('pages.financial_transactions.index')->with([
             'wallets' => $wallets,
             'credits' => $credits,
@@ -213,7 +214,7 @@ class FinancialTransactionsController extends Controller
         $content = $this->repository->find($id);
         $wallets = FinancialWallet::where('status', 1)->get();
         $credits = FinancialCreditCard::where('status', 1)->get();
-        $categories = FinancialCategory::where('status', 1)->get();
+        $categories = FinancialCategory::where('status', 1)->whereNotNull('father_id')->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
