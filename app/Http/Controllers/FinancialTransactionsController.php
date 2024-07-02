@@ -345,7 +345,7 @@ class FinancialTransactionsController extends Controller
     public function processing(Request $request)
     {
         // Inicia a consulta
-        $query = DB::table('financial_transactions');
+        $query = DB::table('financial_transactions')->orderBy('financial_transactions.date_purchase', 'ASC');
 
         // Junta com a tabela de categorias
         $query->leftJoin('financial_categories', function($join) {
