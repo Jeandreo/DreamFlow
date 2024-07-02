@@ -35,7 +35,7 @@
         <select class="form-select form-select-solid select-categories" name="category_id" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="#modal_trasaction" @endif required>
             <option></option>
             @foreach ($categories as $category)
-            <option value="{{ $category->id }}" @if(isset($content) && $content->father_id == $category->id) selected @endif data-color="@if($category->father){{ $category->father->color }}@else{{ $category->color }}@endif" data-icon="@if($category->father){{ str_replace(' ', ',', $category->father->icon) }}@else{{ str_replace(' ', ',', $category->icon) }}@endif">{{ $category->name }}</option>
+            <option value="{{ $category->id }}" @if(isset($content) && $content->category_id == $category->id) selected @endif data-color="@if($category->father){{ $category->father->color }}@else{{ $category->color }}@endif" data-icon="@if($category->father){{ str_replace(' ', ',', $category->father->icon) }}@else{{ str_replace(' ', ',', $category->icon) }}@endif">{{ $category->name }}</option>
             @endforeach
         </select>
     </div>
