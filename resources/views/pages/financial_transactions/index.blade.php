@@ -437,15 +437,15 @@
 
     // Adicione um ouvinte para o evento 'xhr.dt'
     table.on('xhr.dt', function (e, settings, json) {
-        $('#total-revenue').text(formatBRL(json.totalRevenue));
-        $('#total-expense').text(formatBRL(json.totalExpense));
-        $('#total').text(formatBRL(json.totalSum));
+        console.log(json.current);
+        console.log(json.expected);
+        $('#total-revenue').text(formatBRL(json.current.revenue));
+        $('#total-expense').text(formatBRL(json.current.expense));
+        $('#total').text(formatBRL(json.current.total));
 
-
-        
-        $('#preview-total-revenue').text(formatBRL(json.previewTotalRevenue));
-        $('#preview-total-expense').text(formatBRL(json.previewTotalExpense));
-        $('#preview-total').text(formatBRL(json.previewTotalSum));
+        $('#preview-total-revenue').text(formatBRL(json.expected.revenue));
+        $('#preview-total-expense').text(formatBRL(json.expected.expense));
+        $('#preview-total').text(formatBRL(json.expected.total));
     });
 
     // MAKE TABLE

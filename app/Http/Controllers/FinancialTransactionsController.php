@@ -337,271 +337,62 @@ class FinancialTransactionsController extends Controller
 
     }
     
-   /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function processing(Request $request)
     {
-        // Inicia a consulta
-        $query = DB::table('financial_transactions')->orderBy('financial_transactions.date_purchase', 'ASC');
 
-        // Junta com a tabela de categorias
-        $query->leftJoin('financial_categories', function($join) {
-            $join->on('financial_transactions.category_id', '=', 'financial_categories.id');
-        });
+        // Inicia a consulta com junções e seleções
+        $query = $this->transactions($request);
 
-        // Verifica se a categoria possui uma categoria pai
-        $query->leftJoin('financial_categories as category_father', function($join) {
-            $join->on('category_father.id', '=', 'financial_categories.father_id');
-        });
+        // Realiza pesquisa pelo input
+        $query = $this->search($query, $request);
 
-        // Junta com a tabela de carteiras
-        $query->leftJoin('financial_wallets', function($join) {
-            $join->on('financial_transactions.wallet_id', '=', 'financial_wallets.id');
-        });
-
-        // Junta aos cartões de crédito
-        $query->leftJoin('financial_credit_cards', function($join) {
-            $join->on('financial_transactions.credit_card_id', '=', 'financial_credit_cards.id');
-        });
-        
-        // Pesquisa por termos
-        if ($request->searchBy != '') {
-            
-            // Separa os termos
-            $searchTerms = explode(' ', $request->searchBy);
-            
-            // Pesquisa por nome
-            $query->where(function ($query) use ($searchTerms) {
-                foreach ($searchTerms as $term) {
-                    $query->whereRaw("LOWER(financial_transactions.name) LIKE ?", ['%' . strtolower($term) . '%']);
-                }
-            });
-
-            // Ou pesquisa pelo nome da categoria
-            $query->orWhere(function ($query) use ($request) {
-                $query->where('financial_categories.name', 'like', "%$request->searchBy%");
-            });
-        }
-
-        // Ordenação
-        if ($request->order_by) {
-
-            // Ordem e coluna
-            $direction = $request->order[0]['dir'];
-            $orderThis = $request->order_by;
-            $column = $orderThis;
-
-            // Formata as colunas
-            switch ($column) {
-                case 'name':
-                    $column = 'financial_transactions.name';
-                    break;
-                case 'date':
-                    $column = 'financial_transactions.date_purchase';
-                    break;
-                case 'value':
-                    $column = 'financial_transactions.value';
-                    break;
-                case 'category_id':
-                    $column = 'financial_transactions.category_id';
-                    break;
-                default:
-                    $column = 'financial_transactions.id';
-                    break;
-            }
-
-            // Executa
-            $query->orderBy($column, $direction);
-
-        }
+        // Aplica a ordenação
+        $query = $this->ordering($query, $request);
 
         // Itens por página e paginação
         $query->paginate($request->per_page);
 
-        // Seleciona colunas 
-        $query->select(
-            DB::raw('"Wallet"                       as type'),
-            'financial_transactions.id              as id',
-            'financial_transactions.name            as name',
-            'financial_transactions.date_purchase   as date_purchase',
-            'financial_transactions.date_payment    as date_payment',
-            'financial_transactions.value           as value',
-            'financial_transactions.paid            as paid',
-            'financial_transactions.wallet_id       as has_wallet',
-            'financial_transactions.recurrent       as recurrent',
-            'financial_transactions.hitching        as hitching',
-            'financial_transactions.fature          as fature',
-            'financial_transactions.adjustment      as adjustment',
-            'financial_categories.name              as category',
-            'financial_categories.father_id         as has_father',
-            'financial_categories.color             as category_color',
-            'financial_categories.icon              as category_icon',
-            'category_father.name                   as father_name',
-            'category_father.color                  as father_color',
-            'category_father.icon                   as father_icon',
-            'financial_wallets.name                 as wallet_name',
-            'financial_wallets.color                as wallet_color',
-            'financial_transactions.credit_card_id  as credit_card_id',
-            'financial_credit_cards.name            as card_name',
-            'financial_credit_cards.due_day         as due_date',
-        );
+        // Transações
+        $transactions = $query->get()->toArray();
 
-        // Executa consulta em trás array
-        $data = $query->get()->toArray();
+        // Obtém as transações recorrente
+        $recurrents = $this->recurringTransactions($request, $transactions);
 
-        // Obtém todas as transações recorrentes
-        $recurringTransactions = FinancialTransactions::where('recurrent', true)->where('status', 1)->get()->values();
+        // Mescla as duas coleções
+        $transactions = collect($transactions)->merge($recurrents);
 
-        // Faz loop entre transações recorrentes
-        foreach ($recurringTransactions as $transaction) {
-
-            // Formata data
-            $dateBegin = Carbon::parse($transaction->date_payment);
-            $dateEnd = Carbon::parse($request->date_end);
-
-            // Obtém a diferença dos meses
-            $yearMonthsDifference = $dateBegin->diffInMonths($dateEnd);
-
-            // Verifica se tem categorias
-            $hasFather = $transaction->category->father_id ? true : false;
-
-            // Realiza loop entre a diferença dos meses
-            for ($i = 0; $i <= $yearMonthsDifference; $i++) {
-
-                // Obtém a data e adiciona meses com base na iteração do loop
-                $newDate = Carbon::parse($transaction->date_purchase)->addMonths($i);
-
-                // Confirma se a data está entre a data inicial e final selecionada
-                if ($newDate->between($dateBegin, $dateEnd)) {
-
-                    // Verifica se já existe uma transação com o mesmo vínculo no mesmo mês
-                    $existingTransaction = collect($data)->first(function ($item) use ($transaction, $newDate) {
-
-                        // Importante o vínculo (hitching) estar cadastrado
-                        return $item->hitching == $transaction->hitching && Carbon::parse($item->date_purchase)->isSameMonth($newDate);
-
-                    });
-
-                    // Se não houver transação criada, simula uma ficticia
-                    if (!$existingTransaction) {
-                        
-                        // Cria o objeto
-                        $trasactionSimulated = (object) [
-                            'type'           => 'Recurrent',
-                            'id'             => $transaction->id,
-                            'name'           => $transaction->name,
-                            'date'           => $newDate->format('Y-m-d'),
-                            'date_payment'   => $newDate->format('Y-m-d'),
-                            'date_purchase'  => $newDate->format('Y-m-d'),
-                            'value'          => $transaction->value,
-                            'paid'           => 0,
-                            'has_wallet'     => false,
-                            'hitching'       => $transaction->hitching,
-                            'category'       => $transaction->category->name,
-                            'recurrent'      => true,
-                            'has_father'     => $hasFather,
-                            'category_color' => $transaction->category->color,
-                            'category_icon'  => $transaction->category->icon,
-                            'father_color'   => $transaction->father->color ?? null,
-                            'father_icon'    => $transaction->father->icon ?? null,
-                            'wallet_name'    => $transaction->wallet_name,
-                            'wallet_color'   => null,
-                            'credit_card_id' => false,
-                            'card_name'      => $transaction->card_name,
-                            'preview'        => true,
-                        ];
-
-                        // Insere os dados
-                        $data[] = $trasactionSimulated;
-                    }
-                }
-            }
-        }
-
-        // Obtém as transações de carteira e Crédito
-        $data = collect($data);
-
-        // Agrupa as compras no cartão de crédito em uma fatura
-        $faturesCredit = collect($data)->where('credit_card_id', true);
-
-        // Agrupar por mês e por cartão de crédito
-        $faturesByMonth = $faturesCredit->groupBy(function ($item) {
-            return Carbon::parse($item->date_payment)->format('Y-m-');
-        })->map(function ($items) {
-            return $items->groupBy('card_name');
-        });
-
-        // Faz looping entre faturas 
-        foreach ($faturesByMonth as $yearMonth => $cards) {
-
-            // Faz looping entre as cartões
-            foreach($cards as $card => $transactions){
-
-                // Verifica se já existe uma fatura criada
-                $existFature = collect($transactions)->where('fature', true)->isNotEmpty();
-
-                // Se não existir
-                if(!$existFature){
-
-                    // Formaata nome do mês
-                    $monthName = ucfirst(Carbon::parse(date($yearMonth . $transactions[0]->due_date))->locale('pt_BR')->isoFormat('MMMM'));
-
-                    // Cria objeto
-                    $fature = (object) [
-                        'type' => 'Fature',
-                        'id' => $transactions[0]->credit_card_id,
-                        'name' => 'Fatura de ' . $monthName . ' - ' . $card,
-                        'date_purchase' => date($yearMonth . $transactions[0]->due_date),
-                        'date_payment' => date($yearMonth . $transactions[0]->due_date),
-                        'value' => $transactions->sum('value'),
-                        'paid' => false,
-                        'has_wallet' => null,
-                        'recurrent' => null,
-                        'fature' => true,
-                        'category' => 'Fatura',
-                        'has_father' => false,
-                        'credit_card_id' => $transactions[0]->credit_card_id,
-                        'card_name' => $card,
-                        'year_month' => $yearMonth,
-                    ];
-
-                    // Insere fatura
-                    $data->push($fature);
-                }
-
-            }
-
-        }
-
-        $previewTotalValue = collect($data)->sum('value');
-        $previewTotalRevenue = collect($data)->where('value', '>', 0)->sum('value');
-        $previewTotalExpense = collect($data)->where('value', '<', 0)->sum('value');
-        $previewTotalPaidValue = collect($data)->where('paid', 1)->sum('value');
-
-        // Obtém valores
-        $totalValue = collect($data)->where('paid', true)->sum('value');
-        $totalRevenue = collect($data)->where('paid', true)->where('value', '>', 0)->sum('value');
-        $totalExpense = collect($data)->where('paid', true)->where('value', '<', 0)->sum('value');
-        $totalPaidValue = collect($data)->where('paid', true)->where('paid', 1)->sum('value');
-
-        // Filtra para que as faturas a serem exibidas estejam dentro do filtro
-        $data = array_filter($data->toArray(), function ($item) use ($request) {
-            $date = Carbon::parse($item->date_payment);
-            return $date->gte($request->date_begin) && $date->lte($request->date_end);
-        });
-
-        // COUNT TOTAL RECORDS
-        $totalRecords = count($data);
+        // Obtém Faturas
+        $data = $this->fatureTransactions($transactions); 
 
         // Remove as transações de cartão
-        $data = array_filter($data, function($transaction) {
+        $data = array_filter($data->toArray(), function($transaction) {
             return !($transaction->credit_card_id && $transaction->fature == 0);
         });
 
+        // Organiza a coleção
+        $collection = collect($data);
 
+        // Agrupamento dos resultados esperados e lançados
+        $expected = [
+            'total' => $collection->sum('value'),
+            'revenue' => $collection->where('value', '>', 0)->sum('value'),
+            'expense' => $collection->where('value', '<', 0)->sum('value'),
+        ];
+
+        $current = [
+            'total' => $collection->where('paid', true)->sum('value'),
+            'revenue' => $collection->where('paid', true)->where('value', '>', 0)->sum('value'),
+            'expense' => $collection->where('paid', true)->where('value', '<', 0)->sum('value'),
+        ];
+        
+        // COUNT TOTAL RECORDS
+        $totalRecords = count($data);
+        
         // Configurar as colunas usando a função editColumn
         return FacadesDataTables::of($data)
             ->editColumn('checked', function($row) {
@@ -687,22 +478,294 @@ class FinancialTransactionsController extends Controller
                             <i class='fa-solid fa-trash-can text-danger'></i>
                         </button>
                         <button class='btn btn-light btn-active-light-primary btn-sm me-3'>Ações</button>";
+
             })
             ->rawColumns(['checked', 'name', 'category_id', 'date', 'value', 'wallet_credit', 'actions'])
             ->setTotalRecords($totalRecords)
             ->setFilteredRecords($totalRecords)
             ->with([
-                'totalSum' => $totalValue,
-                'totalRevenue' => $totalRevenue,
-                'totalExpense' => $totalExpense,
-                'totalPaidValue' => $totalPaidValue,
-                
-                'previewTotalSum' => $previewTotalValue,
-                'previewTotalRevenue' => $previewTotalRevenue,
-                'previewTotalExpense' => $previewTotalExpense,
-                'previewTotalPaidValue' => $previewTotalPaidValue,
+                'expected' => $expected,
+                'current'  => $current,
             ])
             ->toJson();
+    }
+
+    /**
+     * Inicializa a consulta com junções e seleção de colunas.
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    protected function transactions($request){
+
+        // Inicia a consulta
+        $query = DB::table('financial_transactions')->orderBy('financial_transactions.date_purchase', 'ASC');
+
+        // Junta com a tabela de categorias
+        $query->leftJoin('financial_categories', function($join) {
+            $join->on('financial_transactions.category_id', '=', 'financial_categories.id');
+        });
+
+        // Verifica se a categoria possui uma categoria pai
+        $query->leftJoin('financial_categories as category_father', function($join) {
+            $join->on('category_father.id', '=', 'financial_categories.father_id');
+        });
+
+        // Junta com a tabela de carteiras
+        $query->leftJoin('financial_wallets', function($join) {
+            $join->on('financial_transactions.wallet_id', '=', 'financial_wallets.id');
+        });
+
+        // Junta aos cartões de crédito
+        $query->leftJoin('financial_credit_cards', function($join) {
+            $join->on('financial_transactions.credit_card_id', '=', 'financial_credit_cards.id');
+        });
+
+        // Seleciona colunas 
+        $query->select(
+            DB::raw('"Wallet"                       as type'),
+            'financial_transactions.id              as id',
+            'financial_transactions.name            as name',
+            'financial_transactions.date_purchase   as date_purchase',
+            'financial_transactions.date_payment    as date_payment',
+            'financial_transactions.value           as value',
+            'financial_transactions.paid            as paid',
+            'financial_transactions.wallet_id       as has_wallet',
+            'financial_transactions.recurrent       as recurrent',
+            'financial_transactions.hitching        as hitching',
+            'financial_transactions.fature          as fature',
+            'financial_transactions.adjustment      as adjustment',
+            'financial_categories.name              as category',
+            'financial_categories.father_id         as has_father',
+            'financial_categories.color             as category_color',
+            'financial_categories.icon              as category_icon',
+            'category_father.name                   as father_name',
+            'category_father.color                  as father_color',
+            'category_father.icon                   as father_icon',
+            'financial_wallets.name                 as wallet_name',
+            'financial_wallets.color                as wallet_color',
+            'financial_transactions.credit_card_id  as credit_card_id',
+            'financial_credit_cards.name            as card_name',
+            'financial_credit_cards.due_day         as due_date',
+        );
+
+        $dateBegin = $request->input('date_begin');
+        $dateEnd = $request->input('date_end');
+        $query->whereBetween('financial_transactions.date_payment', [$dateBegin, $dateEnd]);
+
+        // Executa consulta em trás array
+        return $query;
+    }
+
+    /**
+     * Agrupa as compras no cartão de crédito em uma fatura.
+     *
+     * @param \Illuminate\Support\Collection $data
+     * @return \Illuminate\Support\Collection
+     */
+    protected function fatureTransactions($data)
+    {
+        // Agrupa as compras no cartão de crédito em uma fatura
+        $faturesCredit = $data->where('credit_card_id', true);
+
+        // Agrupar por mês e por cartão de crédito
+        $faturesByMonth = $faturesCredit->groupBy(function ($item) {
+            return Carbon::parse($item->date_payment)->format('Y-m-');
+        })->map(function ($items) {
+            return $items->groupBy('card_name');
+        });
+
+        // Faz looping entre faturas 
+        foreach ($faturesByMonth as $yearMonth => $cards) {
+            // Faz looping entre os cartões
+            foreach ($cards as $card => $transactions) {
+                // Verifica se já existe uma fatura criada
+                $existFature = collect($transactions)->where('fature', true)->isNotEmpty();
+
+                // Se não existir
+                if (!$existFature) {
+                    // Formata nome do mês
+                    $monthName = ucfirst(Carbon::parse(date($yearMonth . $transactions[0]->due_date))->locale('pt_BR')->isoFormat('MMMM'));
+
+                    // Cria objeto
+                    $fature = (object)[
+                        'type' => 'Fature',
+                        'id' => $transactions[0]->credit_card_id,
+                        'name' => 'Fatura de ' . $monthName . ' - ' . $card,
+                        'date_purchase' => date($yearMonth . $transactions[0]->due_date),
+                        'date_payment' => date($yearMonth . $transactions[0]->due_date),
+                        'value' => $transactions->sum('value'),
+                        'paid' => false,
+                        'has_wallet' => null,
+                        'recurrent' => null,
+                        'fature' => true,
+                        'category' => 'Fatura',
+                        'has_father' => false,
+                        'credit_card_id' => $transactions[0]->credit_card_id,
+                        'card_name' => $card,
+                        'year_month' => $yearMonth,
+                    ];
+
+                    // Insere fatura
+                    $data->push($fature);
+                }
+            }
+        }
+
+        return collect($data);
+    }
+
+    /**
+     * Simula as transações recorrentes do mes atual.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function recurringTransactions($request, $data){
+
+        // Define a data de início do mês anterior
+        $dateBegin = Carbon::parse($request->date_begin)->startOfMonth();
+
+        // Obtém todas as transações recorrentes
+        $recurringTransactions = FinancialTransactions::where('recurrent', true)->where('status', 1)->get()->groupBy('hitching');
+
+        // Transações
+        $recurrentFilter = [];
+
+        foreach ($recurringTransactions as $transaction) {
+            $recurrentFilter[] = $transaction[0];
+        }
+
+        // Obtém apenas as recorrentes
+        $transactionsRecurrents = [];
+
+        // Faz loop entre transações recorrentes
+        foreach ($recurrentFilter as $transaction) {
+
+            $newDate = $dateBegin->format('Y-m-') . date('d', strtotime($transaction->date_payment));
+
+            // Verifica se tem categorias
+            $hasFather = $transaction->category->father_id ? true : false;
+
+            // Verifica se já existe uma transação com o mesmo vínculo no mesmo mês
+            $existingTransaction = collect($data)->first(function ($item) use ($transaction, $newDate) {
+
+                // Importante o vínculo (hitching) estar cadastrado
+                return $item->hitching == $transaction->hitching && Carbon::parse($item->date_purchase)->isSameMonth($newDate);
+
+            });
+
+            // Se não houver transação criada, simula uma ficticia
+            if (!$existingTransaction) {
+                
+                // Cria o objeto
+                $trasactionSimulated = (object) [
+                    'type'           => 'Recurrent',
+                    'id'             => $transaction->id,
+                    'name'           => $transaction->name,
+                    'date'           => $newDate,
+                    'date_payment'   => $newDate,
+                    'date_purchase'  => $newDate,
+                    'value'          => $transaction->value,
+                    'paid'           => 0,
+                    'has_wallet'     => false,
+                    'hitching'       => $transaction->hitching,
+                    'category'       => $transaction->category->name,
+                    'recurrent'      => true,
+                    'has_father'     => $hasFather,
+                    'category_color' => $transaction->category->color,
+                    'category_icon'  => $transaction->category->icon,
+                    'father_color'   => $transaction->father->color ?? null,
+                    'father_icon'    => $transaction->father->icon ?? null,
+                    'wallet_name'    => $transaction->wallet_name,
+                    'wallet_color'   => null,
+                    'credit_card_id' => false,
+                    'card_name'      => $transaction->card_name,
+                    'preview'        => true,
+                ];
+
+                // Insere os dados
+                $transactionsRecurrents[] = $trasactionSimulated;
+
+            }
+        }
+
+
+        return collect($transactionsRecurrents);
+        
+    }
+
+    /**
+     * Aplica filtros de pesquisa à consulta.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Database\Query\Builder
+     */
+    protected function search($query, $request)
+    {
+        // Pesquisa por termos
+        if ($request->searchBy != '') {
+            // Separa os termos
+            $searchTerms = explode(' ', $request->searchBy);
+
+            // Pesquisa por nome
+            $query->where(function ($query) use ($searchTerms) {
+                foreach ($searchTerms as $term) {
+                    $query->whereRaw("LOWER(financial_transactions.name) LIKE ?", ['%' . strtolower($term) . '%']);
+                }
+            });
+
+            // Ou pesquisa pelo nome da categoria
+            $query->orWhere(function ($query) use ($request) {
+                $query->where('financial_categories.name', 'like', "%$request->searchBy%");
+            });
+        }
+
+        return $query;
+    }
+
+    /**
+     * Aplica a ordenação à consulta.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Database\Query\Builder
+     */
+    protected function ordering($query, $request)
+    {
+        // Ordenação
+        if ($request->order_by) {
+
+            // Ordem e coluna
+            $direction = $request->order[0]['dir'];
+            $orderThis = $request->order_by;
+            $column = $orderThis;
+
+            // Formata as colunas
+            switch ($column) {
+                case 'name':
+                    $column = 'financial_transactions.name';
+                    break;
+                case 'date':
+                    $column = 'financial_transactions.date_purchase';
+                    break;
+                case 'value':
+                    $column = 'financial_transactions.value';
+                    break;
+                case 'category_id':
+                    $column = 'financial_transactions.category_id';
+                    break;
+                default:
+                    $column = 'financial_transactions.id';
+                    break;
+            }
+
+            // Executa
+            $query->orderBy($column, $direction);
+        }
+
+        return $query;
     }
 }
 
