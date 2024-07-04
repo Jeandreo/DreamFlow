@@ -7,13 +7,13 @@
         <label class="form-label fw-bold required">Tipo:</label>
         <select class="form-select form-select-solid" name="type" data-control="select2" data-placeholder="Selecione" required>
             <option value=""></option>
-            <option value="expense" selected>Despesa</option>
-            <option value="revenue">Receita</option>
+            <option value="expense" @if(isset($content) && $content->type == 'expense') selected @endif>Despesa</option>
+            <option value="revenue" @if(isset($content) && $content->type == 'revenue') selected @endif>Receita</option>
         </select>
     </div>
     <div class="col-4 mb-5">
         <label class="form-label fw-bold">Categoria:</label>
-        <select class="form-select form-select-solid select-categories" name="father_id" data-placeholder="Selecione" required>
+        <select class="form-select form-select-solid select-categories" name="father_id" data-placeholder="Selecione">
             <option></option>
             @foreach ($categories as $category)
             <option value="{{ $category->id }}" @if(isset($content) && $content->father_id == $category->id) selected @endif data-color="@if($category->father){{ $category->father->color }}@else{{ $category->color }}@endif" data-icon="@if($category->father){{ str_replace(' ', ',', $category->father->icon) }}@else{{ str_replace(' ', ',', $category->icon) }}@endif">{{ $category->name }}</option>

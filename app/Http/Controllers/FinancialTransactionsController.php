@@ -392,6 +392,9 @@ class FinancialTransactionsController extends Controller
         
         // COUNT TOTAL RECORDS
         $totalRecords = count($data);
+
+        // Remove os ajustes de carteira
+        // $data = collect($data)->where('adjustment', false);
         
         // Configurar as colunas usando a função editColumn
         return FacadesDataTables::of($data)
