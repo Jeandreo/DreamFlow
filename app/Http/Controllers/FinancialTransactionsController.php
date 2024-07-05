@@ -536,6 +536,7 @@ class FinancialTransactionsController extends Controller
             'financial_transactions.recurrent       as recurrent',
             'financial_transactions.hitching        as hitching',
             'financial_transactions.fature          as fature',
+            'financial_transactions.fature_id       as fature_id',
             'financial_transactions.adjustment      as adjustment',
             'financial_categories.name              as category',
             'financial_categories.father_id         as has_father',
@@ -567,8 +568,8 @@ class FinancialTransactionsController extends Controller
      */
     protected function fatureTransactions($data)
     {
-        // Agrupa as compras no cartão de crédito em uma fatura
-        $faturesCredit = $data->where('credit_card_id', true);
+        // Agrupa as compras no cartão de crédito em que não foram geradas em uma fatura
+        $faturesCredit = $data->where('credit_card_id', true)->whereNull('fature_id');
 
         // Agrupar por mês e por cartão de crédito
         $faturesByMonth = $faturesCredit->groupBy(function ($item) {
