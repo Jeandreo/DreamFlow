@@ -5,28 +5,9 @@
 <div class="row pb-12 m-0 background-dashboard">
     <div class="col-12">
         <div class="toolbar py-15" id="kt_toolbar">
-            <!--begin::Container-->
             <div id="kt_toolbar_container" class=" container-xxl  d-flex justify-content-center">
-                <!--begin::Page title-->
-                <div class="page-title">
-                    <!--begin::Title-->
-                    <h1 class="text-white fw-bold my-1 fs-2 text-center">
-                        Bom diiiiaa {{ Auth::user()->name }}! {{ randomEmoji() }}
-                    </h1>
-                    <!--end::Title-->
-                    <!--begin::Breadcrumb-->
-                    <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-6 my-1">
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item text-white fs-5 opacity-75">
-                            “Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal
-                        </li>
-                        <!--end::Item-->
-                    </ul>
-                    <!--end::Breadcrumb-->
-                </div>
-                <!--end::Page title-->
+                @include('includes.nav-admin', ['title' => "Bom diiiiaa ". Auth::user()->name ."! ". randomEmoji(), 'phrase' => "“Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal"])
             </div>
-            <!--end::Container-->
         </div>
     </div>
 </div>
@@ -158,7 +139,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6 d-grid align-items-stretch">
+                            <div class="col-12 col-md-4 d-grid align-items-stretch">
                                 <div class="card mb-4">
                                     <div class="card-header border-0 py-5">
                                         <h3 class="card-title align-items-start flex-column">
@@ -210,7 +191,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-2 d-none d-md-block">
+                            <div class="col-4 d-none d-md-block">
                                 <div class="card" style="background: url('{{ asset('assets/media/images/lion.avif') }}');background-size: cover;height: 96%; background-position: center;">
                                     <div class="card-body">
                                         

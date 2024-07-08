@@ -5,28 +5,9 @@
 <div class="row pb-12 m-0 background-dashboard">
     <div class="col-12">
         <div class="toolbar py-15" id="kt_toolbar">
-            <!--begin::Container-->
             <div id="kt_toolbar_container" class=" container-xxl  d-flex justify-content-center">
-                <!--begin::Page title-->
-                <div class="page-title">
-                    <!--begin::Title-->
-                    <h1 class="text-white fw-bold my-1 fs-2x text-center">
-                        Financeiro Furquim
-                    </h1>
-                    <!--end::Title-->
-                    <!--begin::Breadcrumb-->
-                    <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-6 my-1">
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item text-white fs-5 opacity-75">
-                            “Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal
-                        </li>
-                        <!--end::Item-->
-                    </ul>
-                    <!--end::Breadcrumb-->
-                </div>
-                <!--end::Page title-->
+                @include('includes.nav-admin', ['title' => "Financeiro Furquim", 'phrase' => "“Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal"])
             </div>
-            <!--end::Container-->
         </div>
     </div>
 </div>

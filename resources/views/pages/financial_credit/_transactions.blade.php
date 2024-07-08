@@ -10,18 +10,23 @@
 			</tr>
 		</thead>
 		<tbody>@foreach ($transactions as $transaction)
-			<tr>
+			<tr class="open-transaction">
 				<td>
-					<span class="fw-bold text-gray-600">{{ date('d/m/Y', strtotime($transaction->date_purchase)) }}</span>
+					<span class="fw-bold text-gray-600 fs-6 show" data-id="{{ $transaction->id }}" data-preview='false'>{{ date('d/m/Y', strtotime($transaction->date_purchase)) }}</span>
 				</td>
 				<td>
-					<span>{{ $transaction->name }}</span>
+					<span class="fw-bold text-gray-600 fs-6">{{ $transaction->name }}</span>
 				</td>
 				<td>
 					<span class="{{ $transaction->value < 0 ? 'text-danger' : 'text-success' }} fw-bolds">R$ {{ number_format($transaction->value, 2, ',', '.') }}</span>
 				</td>
 				<td>
-					<span>{{ $transaction->category->name }}</span>
+					<span class='d-flex align-items-center fs-6 fw-normal'>
+						<div class='w-25px h-25px rounded-circle d-flex justify-content-center align-items-center me-2' style='background: {{ $transaction->category->father_id ? $transaction->category->father->color  : $transaction->category->color }};'>
+							<i class='{{ $transaction->category->father_id ? $transaction->category->father->icon  : $transaction->category->icon }} fs-7 text-white'></i>
+						</div>
+						<span class='text-gray-600'>{{ $transaction->category->name }}</span>
+					</span>
 				</td>
 			</tr>
 		</tbody>

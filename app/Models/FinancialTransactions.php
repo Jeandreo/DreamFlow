@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class FinancialTransactions extends Model
@@ -45,4 +46,5 @@ class FinancialTransactions extends Model
     {
         return $this->HasOne(FinancialCategory::class, 'id', 'category_id');
     }
+
 }

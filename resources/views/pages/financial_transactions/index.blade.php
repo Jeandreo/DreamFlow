@@ -5,28 +5,9 @@
 <div class="row pb-12 m-0 background-dashboard">
     <div class="col-12">
         <div class="toolbar py-15" id="kt_toolbar">
-            <!--begin::Container-->
             <div id="kt_toolbar_container" class=" container-xxl  d-flex justify-content-center">
-                <!--begin::Page title-->
-                <div class="page-title">
-                    <!--begin::Title-->
-                    <h1 class="text-white fw-bold my-1 fs-2x text-center">
-                        Financeiro Furquim
-                    </h1>
-                    <!--end::Title-->
-                    <!--begin::Breadcrumb-->
-                    <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-6 my-1">
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item text-white fs-5 opacity-75">
-                            “Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal
-                        </li>
-                        <!--end::Item-->
-                    </ul>
-                    <!--end::Breadcrumb-->
-                </div>
-                <!--end::Page title-->
+                @include('includes.nav-admin', ['title' => "Transações Família", 'phrase' => "“Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal"])
             </div>
-            <!--end::Container-->
         </div>
     </div>
 </div>
@@ -112,7 +93,7 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="d-flex justify-content-end">
-                                        <button type="button" class="btn btn-primary me-2 add-transaction text-uppercase fw-bold" data-type="transference">
+                                        <button type="button" class="btn btn-primary me-2 add-transaction text-uppercase fw-bold d-none" data-type="transference">
                                             Trânsferencia
                                         </button>
                                         <button type="button" class="btn btn-success me-2 add-transaction text-uppercase fw-bold" data-type="renevue">
@@ -145,6 +126,27 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="load_fature">
+    <div class="modal-dialog modal-dialog-centered rounded mw-750px">
+        <div class="modal-content rounded">
+            <div class="modal-header">
+                <h3 class="modal-title">Transações</h3>
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+            </div>
+            <div id="load-fature">
+                {{-- LOAD TRANSACTION HERE --}}
+                {{-- LOAD TRANSACTION HERE --}}
+                {{-- LOAD TRANSACTION HERE --}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
             </div>
         </div>
     </div>
@@ -195,27 +197,6 @@
                     <button type="submit" class="btn btn-primary">Atualizar</button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" tabindex="-1" id="load_fature">
-    <div class="modal-dialog modal-dialog-centered rounded mw-750px">
-        <div class="modal-content rounded">
-            <div class="modal-header">
-                <h3 class="modal-title">Transações</h3>
-                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                </div>
-            </div>
-            <div id="load-fature">
-                {{-- LOAD TRANSACTION HERE --}}
-                {{-- LOAD TRANSACTION HERE --}}
-                {{-- LOAD TRANSACTION HERE --}}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
-            </div>
         </div>
     </div>
 </div>
@@ -341,6 +322,11 @@
         // Credit Card
         var card = $(this).data('credit-card');
 
+        loadFatureTransactions(card);
+    
+    });
+
+    function loadFatureTransactions(card){
         // AJAX
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -355,8 +341,7 @@
 
             }
         });
-    
-    });
+    }
 
     // ON CHANGE
     $('.input-date-transaction').change(function() {
@@ -591,7 +576,7 @@
 
     });
 
-    $(document).on('click', '#datatables-transactions tbody .open-transaction', function(){
+    $(document).on('click', 'tbody .open-transaction', function(){
 
 
         // GET ID OF TRANSACTIONS
@@ -599,7 +584,13 @@
         var id      = task.data('id');
         var preview = task.data('preview');
         var date    = task.data('date');
-        
+        var fature  = task.data('fature');
+
+        if(fature){
+            var card = $(this).closest('tr').find('.show-sub-transactions').data('credit-card');
+            return loadFatureTransactions(card);
+        }
+
         // AJAX
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},

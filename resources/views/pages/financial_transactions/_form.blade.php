@@ -4,7 +4,7 @@
 @endif
 <div class="row">
     @if(!isset($content)) <input type="hidden" name="type" value="" id="type-transaction"> @endif
-    <div class="col-4 mb-5">
+    <div class="col mb-5">
         <label class="required form-label fw-bold">Descrição:</label>
         <input type="text" class="form-control form-control-solid" placeholder="Descreva a compra..." name="name" value="{{ $content->name ?? old('name') }}" required/>
     </div>
@@ -20,16 +20,17 @@
             @endforeach
         </select>
     </div>
-    <div class="col-4 mb-5">
+    <div class="col mb-5">
         <label class="required form-label fw-bold">Valor:</label>
         <input type="text" class="form-control form-control-solid input-money" placeholder="R$ 0,00" name="value" value="{{ $content->value ?? old('value') }}" required/>
     </div>
 </div>
 <div class="row">
-    <div class="col-6 mb-5">
+    <div class="col mb-5">
         <label class="required form-label fw-bold">Data da compra:</label>
         <input type="text" class="form-control form-control-solid flatpickr" placeholder="00/00/0000" name="date_purchase" value="{{ $content->venciment ?? date('Y-m-d') }}" required/>
     </div>
+    @if (!isset($content) || $content->adjustment === 0 && $content->fature === 0)
     <div class="col-6 mb-5">
         <label class="required form-label fw-bold">Categoria:</label>
         <select class="form-select form-select-solid select-categories" name="category_id" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="#modal_trasaction" @endif required>
@@ -39,6 +40,7 @@
             @endforeach
         </select>
     </div>
+    @endif
 </div>
 @if (!isset($content))
 <div class="row">

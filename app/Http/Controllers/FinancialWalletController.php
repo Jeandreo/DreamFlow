@@ -157,7 +157,7 @@ class FinancialWalletController extends Controller
             FinancialTransactions::create([
                 'wallet_id' => $id,
                 'category_id' => 0,
-                'name' => 'Ajuste de saldo na carteira ' . $content->name,
+                'name' => $content->name,
                 'adjustment' => true,
                 'value' => $diference,
                 'value_paid' => $diference,
