@@ -144,10 +144,8 @@
                                     <div class="card-header border-0 py-5">
                                         <h3 class="card-title align-items-start flex-column">
                                             <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Quais são as próximas conquistas?</span>
-                                        </h3>
-                                        <div class="card-toolbar">
                                             <span class="text-muted fw-semibold fs-7">O maior risco é não correr risco algum.</span>
-                                        </div>
+                                        </h3>
                                     </div>
                                     <div class="card-body pt-0">
                                         @if ($challenges->count())
@@ -191,10 +189,63 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4 d-none d-md-block">
-                                <div class="card" style="background: url('{{ asset('assets/media/images/lion.avif') }}');background-size: cover;height: 96%; background-position: center;">
-                                    <div class="card-body">
-                                        
+                            <div class="col-12 col-md-4 d-grid align-items-stretch">
+                                <div class="card mb-4">
+                                    <div id="kt_carousel_1_carousel" class="card card-flush carousel carousel-custom carousel-stretch slide h-xl-100" data-bs-ride="carousel" data-bs-interval="5000">
+                                        <div class="card-header pt-5">
+                                            <h3 class="card-title align-items-start flex-column">
+                                                <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Minhas listas</span>
+                                                <span class="text-muted fw-semibold fs-7">O maior risco é não correr risco algum.</span>
+                                            </h3>
+                                            <div class="card-toolbar">            
+                                                <ol class="p-0 m-0 carousel-indicators carousel-indicators-bullet carousel-indicators-active-primary">
+                                                    @for ($i = 0; $i < $lists->count(); ++$i)
+                                                        <li data-bs-target="#kt_carousel_1_carousel" data-bs-slide-to="{{ $i }}" class="ms-1 @if($i == 0)active @endif"></li>
+                                                    @endfor
+                                                </ol>
+                                            </div>
+                                        </div>
+                                        <div class="card-body py-6">
+                                            <div class="carousel-inner mt-n5">
+                                            @foreach ($lists as $key => $list)
+                                            <div class="carousel-item @if($key == 0)active @endif">
+                                                <div class="row">
+                                                    @if ($list->items->count())
+                                                        @foreach ($list->items as $item)
+                                                        <div class="col-6 mb-3">
+                                                            <a href="{{ route('catalogs.items.show', $item->id) }}">
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="symbol symbol-50px me-3">                                                   
+                                                                        <img src="{{ findImage('catalogos/' .$list->id . '/' . $item->id . '/capa-600px.jpg', 'landscape') }}" class="" alt="">                                                    
+                                                                    </div>
+                                                                    <div class="d-flex justify-content-start flex-column">
+                                                                        <p class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">
+                                                                            {{ $list->name }}
+                                                                        </p>
+                                                                        <span class="text-gray-500 fw-semibold d-block fs-7">
+                                                                            {{ $list->created_at->format('d/m/Y') }}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                        @endforeach
+                                                    @else
+                                                    <div class="h-275px bg-light rounded w-100 d-flex align-items-center justify-content-center">
+                                                        <div class="text-center">
+                                                            <p class="fw-bold text-gray-700 fs-4 mb-0">SEM ITENS NA LISTA 🧐</p>
+                                                            <p class="text-gray-600 fs-6">Adicione seus items e gerencie suas ideias aqui.</p>
+                                                            <a href="{{ route('catalogs.show', $list->id) }}" class="btn btn-sm btn-primary btn-active-danger text-uppercase fw-bolder">
+                                                                Adicionar Itens
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            @endforeach
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

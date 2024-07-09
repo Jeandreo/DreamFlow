@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Catalog;
 use App\Models\Challenge;
 use App\Models\ProjectTask;
 use App\Models\User;
@@ -74,6 +75,9 @@ class DashboardController extends Controller
             'Sat' => 'Sáb',
         ];
 
+        // OBTÉM LISTAS
+        $lists = Catalog::where('status', 1)->orderBy('name', 'ASC')->where('created_by', Auth::id())->get();
+
         // RETURN VIEW WITH DATA
         return view('pages.dashboard.index')->with([
             'actualMonth' => $actualMonth,
@@ -84,6 +88,7 @@ class DashboardController extends Controller
             'daysOfWeek' => $daysOfWeek,
             'monthChallenge' => $monthChallenge,
             'weekChallenge' => $weekChallenge,
+            'lists' => $lists,
         ]);
 
     }

@@ -33,6 +33,9 @@
 							<div class="card">
 								<div class="card-body">
 									<div class="row">
+										<div class="col-12 text-center">
+											<img src="{{ findImage('catalogos/' .$contents->catalog->id . '/' . $contents->id . '/capa-600px.jpg', 'landscape') }}" class="rounded">
+										</div>
 										@if ($contents->link_video)
 										<div class="col-6 mb-4">
 											<p class="text-gray-700 fw-bold text-uppercase mb-1">Link do vídeo:</p>
