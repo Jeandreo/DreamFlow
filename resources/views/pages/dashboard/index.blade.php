@@ -211,7 +211,7 @@
                                             <div class="carousel-item @if($key == 0)active @endif">
                                                 <div class="row">
                                                     @if ($list->items->count())
-                                                        @foreach ($list->items as $item)
+                                                        @foreach ($list->items()->get()->take(8) as $item)
                                                         <div class="col-6 mb-3">
                                                             <a href="{{ route('catalogs.items.show', $item->id) }}">
                                                                 <div class="d-flex align-items-center">
