@@ -216,14 +216,14 @@
                                                             <a href="{{ route('catalogs.items.show', $item->id) }}">
                                                                 <div class="d-flex align-items-center">
                                                                     <div class="symbol symbol-50px me-3">                                                   
-                                                                        <img src="{{ findImage('catalogos/' .$list->id . '/' . $item->id . '/capa-600px.jpg', 'landscape') }}" class="" alt="">                                                    
+                                                                        <img src="{{ findImage('catalogos/' .$list->id . '/' . $item->id . '/capa-600px.jpg', 'landscape') }}" class="object-fit-cover" alt="">                                                    
                                                                     </div>
                                                                     <div class="d-flex justify-content-start flex-column">
                                                                         <p class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">
-                                                                            {{ $list->name }}
+                                                                            {{ $item->name }}
                                                                         </p>
                                                                         <span class="text-gray-500 fw-semibold d-block fs-7">
-                                                                            {{ $list->created_at->format('d/m/Y') }}
+                                                                            {{ $item->created_at->format('d/m/Y') }}
                                                                         </span>
                                                                     </div>
                                                                 </div>
