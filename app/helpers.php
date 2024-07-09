@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\AutoEncoder;
 
 function randomEmoji(){
     $emojis = ["😊", "😄", "😃", "😁", "😆", "😍", "😋", "😎", "😸", "🌟", "🎉", "🥳", "🎈", "🌈", "💖"];
@@ -63,9 +64,9 @@ function resizeAndSaveImage($base64Image, $sizes, $name, $path){
 
         // Nome do arquivo
         $nameFile = $name . '-' . $value . 'px.jpg';
+        $image = $image->scale(width: $value);
+        $image = $image->encode(new AutoEncoder(quality: 90));
 
-        // REDIMENSIONAR
-        $image->cover($value, $value);
 
         // SALVE A IMAGEM REDIMENSIONADA
         $image->save('storage/'. $path . $nameFile, 95);
@@ -98,6 +99,8 @@ function findImage($pathAndFile, $default = 'user'){
             $url = asset('/assets/media/images/default.png');
         } elseif($default == 'image') {
             $url = asset('/assets/media/images/blank_file.png');
+        } elseif($default == 'beautiful') {
+            $url = asset('/assets/media/images/img-beautiful.jpg');
         } else {
             $url = asset('/assets/media/avatars/blank.png');
         }

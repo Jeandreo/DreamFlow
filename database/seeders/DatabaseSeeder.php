@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Catalog;
+use App\Models\CatalogItem;
 use App\Models\Challenge;
 use App\Models\Financial;
 use App\Models\FinancialCategory;
@@ -631,6 +632,86 @@ class DatabaseSeeder extends Seeder
             'color' => '#fff700',
             'icon' => 'fa-solid fa-hand-fist',
             'description' => 1,
+            'created_by' => 1,
+        ]);
+
+        CatalogItem::create([
+            'catalog_id' => 1,
+            'name' => 'Massa',
+            'url' => 'Massa' . rand(0,9999),
+            'link_video' => 'Massa',
+            'link_blog' => 'Massa',
+            'content' => 'Massa',
+            'created_by' => 1,
+        ]);
+
+        CatalogItem::create([
+            'catalog_id' => 1,
+            'name' => 'Massa',
+            'url' => 'Massa' . rand(0,9999),
+            'link_video' => 'Massa',
+            'link_blog' => 'Massa',
+            'content' => 'Massa',
+            'created_by' => 1,
+        ]);
+
+        CatalogItem::create([
+            'catalog_id' => 1,
+            'name' => 'Massa',
+            'url' => 'Massa' . rand(0,9999),
+            'link_video' => 'Massa',
+            'link_blog' => 'Massa',
+            'content' => 'Massa',
+            'created_by' => 1,
+        ]);
+
+        CatalogItem::create([
+            'catalog_id' => 1,
+            'name' => 'Massa',
+            'url' => 'Massa' . rand(0,9999),
+            'link_video' => 'Massa',
+            'link_blog' => 'Massa',
+            'content' => 'Massa',
+            'created_by' => 1,
+        ]);
+
+        CatalogItem::create([
+            'catalog_id' => 1,
+            'name' => 'Massa',
+            'url' => 'Massa' . rand(0,9999),
+            'link_video' => 'Massa',
+            'link_blog' => 'Massa',
+            'content' => 'Massa',
+            'created_by' => 1,
+        ]);
+
+        CatalogItem::create([
+            'catalog_id' => 1,
+            'name' => 'Massa',
+            'url' => 'Massa' . rand(0,9999),
+            'link_video' => 'Massa',
+            'link_blog' => 'Massa',
+            'content' => 'Massa',
+            'created_by' => 1,
+        ]);
+
+        CatalogItem::create([
+            'catalog_id' => 1,
+            'name' => 'Massa',
+            'url' => 'Massa' . rand(0,9999),
+            'link_video' => 'Massa',
+            'link_blog' => 'Massa',
+            'content' => 'Massa',
+            'created_by' => 1,
+        ]);
+
+        CatalogItem::create([
+            'catalog_id' => 1,
+            'name' => 'Massa',
+            'url' => 'Massa' . rand(0,9999),
+            'link_video' => 'Massa',
+            'link_blog' => 'Massa',
+            'content' => 'Massa',
             'created_by' => 1,
         ]);
 

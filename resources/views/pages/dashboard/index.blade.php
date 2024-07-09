@@ -206,24 +206,22 @@
                                             </div>
                                         </div>
                                         <div class="card-body py-6">
-                                            <div class="carousel-inner mt-n5">
+                                            <div class="carousel-inner h-100">
                                             @foreach ($lists as $key => $list)
                                             <div class="carousel-item @if($key == 0)active @endif">
-                                                <div class="row">
+                                                <div class="row h-100">
                                                     @if ($list->items->count())
                                                         @foreach ($list->items()->get()->take(8) as $item)
-                                                        <div class="col-6 mb-3">
+                                                        <div class="col-6 mb-2">
                                                             <a href="{{ route('catalogs.items.show', $item->id) }}">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="symbol symbol-50px me-3">                                                   
-                                                                        <img src="{{ findImage('catalogos/' .$list->id . '/' . $item->id . '/capa-600px.jpg', 'landscape') }}" class="object-fit-cover" alt="">                                                    
-                                                                    </div>
+                                                                <div class="d-flex align-items-center">                                             
+                                                                    <img src="{{ findImage('catalogos/' .$list->id . '/' . $item->id . '/capa-300px.jpg', 'beautiful') }}" class="object-fit-cover h-40px w-60px rounded-sm me-3" alt="">
                                                                     <div class="d-flex justify-content-start flex-column">
-                                                                        <p class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">
+                                                                        <p class="text-gray-800 fw-bold text-hover-primary mb-0 fs-6">
                                                                             {{ $item->name }}
                                                                         </p>
                                                                         <span class="text-gray-500 fw-semibold d-block fs-7">
-                                                                            {{ $item->created_at->format('d/m/Y') }}
+                                                                            {{ $item->catalog->name }}
                                                                         </span>
                                                                     </div>
                                                                 </div>
@@ -231,7 +229,7 @@
                                                         </div>
                                                         @endforeach
                                                     @else
-                                                    <div class="h-275px bg-light rounded w-100 d-flex align-items-center justify-content-center">
+                                                    <div class="bg-light rounded d-flex align-items-center justify-content-center h-100">
                                                         <div class="text-center">
                                                             <p class="fw-bold text-gray-700 fs-4 mb-0">SEM ITENS NA LISTA 🧐</p>
                                                             <p class="text-gray-600 fs-6">Adicione seus items e gerencie suas ideias aqui.</p>
