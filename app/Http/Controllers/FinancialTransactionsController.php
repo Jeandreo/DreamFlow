@@ -472,7 +472,7 @@ class FinancialTransactionsController extends Controller
                     $icon     = $row->has_father ? $row->father_icon  : $row->category_icon;
                     $category = $row->category;
                 } else {
-                    $color    = '#007bff';
+                    $color    = '#0076f5';
                     $icon     = 'fa-solid fa-receipt';
                     $category = 'Fatura';
                 }
@@ -547,7 +547,7 @@ class FinancialTransactionsController extends Controller
     protected function transactions($request){
 
         // Inicia a consulta
-        $query = DB::table('financial_transactions')->orderBy('financial_transactions.date_purchase', 'ASC');
+        $query = DB::table('financial_transactions');
 
         // Junta com a tabela de categorias
         $query->leftJoin('financial_categories', function($join) {

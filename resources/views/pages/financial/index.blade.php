@@ -99,7 +99,7 @@
                                                 <h2 class="fs-4 text-gray-700 fw-normal mb-1">
                                                     (-) Saída
                                                 </h2>
-                                                <span class="text-gray-400">({{ $values['expenses'] != 0 ? ($values['expenses'] / $values['revenues']) * 100 : 0}}%)</span>
+                                                <span class="text-gray-400">({{ $values['expenses'] != 0 && $values['revenues'] != 0 ? ($values['expenses'] / $values['revenues']) * 100 : 0}}%)</span>
                                             </div>
                                             <div class="col">
                                                 <h2 class="fs-1 text-uppercase text-danger mb-0">
