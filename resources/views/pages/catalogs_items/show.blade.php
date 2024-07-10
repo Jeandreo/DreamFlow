@@ -49,7 +49,7 @@
 							<div class="card-body">
 								<div class="row">
 									<div class="col-12 text-center">
-										<img src="{{ findImage('catalogos/' .$contents->catalog->id . '/' . $contents->id . '/capa-600px.jpg', 'beautiful') }}" class="rounded mb-5">
+										<img src="{{ findImage('catalogos/' .$contents->catalog->id . '/' . $contents->id . '/capa-1200px.jpg', 'beautiful') }}" class="rounded mb-5">
 									</div>
 									@if ($contents->link_video)
 									<div class="col-6 mb-4">
