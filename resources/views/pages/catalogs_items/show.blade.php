@@ -12,6 +12,9 @@
 				<div class="page-title">
 					<h1 class="text-white fw-bold my-1 fs-2x text-center">
 						{!! $contents->name !!}
+						<a href="{{ route('catalogs.items.edit', $contents->id) }}" class="btn btn-icon btn-light rounded">
+							<i class="fa-solid fa-pen-to-square text-primary fs-2"></i>
+						</a>
 					</h1>
 				</div>
             </div>
