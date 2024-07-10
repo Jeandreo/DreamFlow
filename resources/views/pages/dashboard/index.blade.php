@@ -182,7 +182,7 @@
                                         <div class="bg-light rounded d-flex align-items-center justify-content-center h-100">
                                             <div class="text-center">
                                                 <p class="fw-bold text-gray-700 fs-3 mb-1">EIIIIITAAA VOCÊ ESTA SEM DESAFIOS 😱</p>
-                                                <p class="text-gray-600 fs-5">Para você ter um desafio, você precisa ter uma tarefa com subtarefas.</p>
+                                                <p class="text-gray-600 fs-5">Para você ter um desafio, você precisa ter uma tarefa.</p>
                                             </div>
                                         </div>
                                         @endif
@@ -218,10 +218,10 @@
                                                                     <img src="{{ findImage('catalogos/' .$list->id . '/' . $item->id . '/capa-300px.jpg', 'beautiful') }}" class="object-fit-cover h-40px w-60px rounded-sm me-3" alt="">
                                                                     <div class="d-flex justify-content-start flex-column">
                                                                         <p class="text-gray-800 fw-bold text-hover-primary mb-0 fs-6">
-                                                                            {{ $item->name }}
+                                                                            {{ Str::limit($item->name, 16) }}
                                                                         </p>
                                                                         <span class="text-gray-500 fw-semibold d-block fs-7">
-                                                                            {{ $item->catalog->name }}
+                                                                            {{ Str::limit($item->catalog->name, 18) }}
                                                                         </span>
                                                                     </div>
                                                                 </div>
