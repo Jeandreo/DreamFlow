@@ -163,7 +163,7 @@ class CatalogItemController extends Controller
             $sizes = [300, 600, 1200];
         
             // DIRETORY
-            $path = 'catalogos/' . $id . '/' . $id . '/';
+            $path = 'catalogos/' . $content->catalog_id . '/' . $id . '/';
         
             // RESIZE AND SAVE
             resizeAndSaveImage($request->cutImage, $sizes, 'capa', $path);
