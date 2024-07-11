@@ -5,17 +5,70 @@
 		KTMenu.createInstances();
 	}
 
+    // DRAGGABLE
+	function draggableSubTasks(zoneId){
+		var containers = document.querySelectorAll(zoneId);
+		if (containers.length === 0) return false;
+		var swappableSub = new Sortable.default(containers, {
+			draggable: ".draggable-sub",
+			handle: ".draggable-sub .draggable-sub-handle",
+			mirror: {
+				constrainDimensions: true,
+			},
+		});
+
+		// ON STOP DRAG
+		swappableSub.on('drag:stopped', function(event) {
+
+            
+            // GET DIV OF ELEMENT
+			var movedDiv = event.originalSource;
+
+			// GET PROJECT
+			var draggableDropped = $(movedDiv).closest('.subtasks-zone');
+
+			// START
+			var tasksOrderIds = [];
+
+			// GET IDS OF TASKS ONLY DRAGGABLE-ZONE
+			draggableDropped.find('.task-list').each(function() {
+				var item = $(this).data('task');
+				tasksOrderIds.push(item);
+			});
+
+			// AJAX
+			$.ajax({
+				headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+				type:'PUT',
+				url: "{{ route('tasks.order') }}",
+				data: {
+					_token: @json(csrf_token()),
+					tasksOrderIds: tasksOrderIds
+				},
+				success: function(response){
+				}
+			});
+
+
+        });
+
+	}
+    
+    $('.subtasks-zone').each(function() {
+        var zoneId = $(this).attr('id');
+        draggableSubTasks('#' + zoneId);
+    })
+
     $(document).on('click', '.show-tasks-fileds', function(){
         $('#card-to-fileds').toggle();
     });
 
+    // Sistema que transforma subtarefa em separador
     $(document).on('click', '.transform-in-separator', function(){
         // Encontra subtarefa
         var subtask = $(this).closest('.dmk-div-task');
         var subtaskId = subtask.find('.task-on-subtask').data('task');
         var isSeparator = subtask.data('separator');
-
-        console.log(isSeparator);
 
         if (isSeparator == 1) {
             subtask.find('.sub-task-icons').toggleClass('rounded rounded-start');
@@ -48,10 +101,6 @@
             type: 'PUT',
             url: "{!! route('tasks.separator', '') !!}/" + subtaskId,
         });
-
-
-        // Alterna o estado
-        subtask.data('isSeparator', !isSeparator);
     });
 
 

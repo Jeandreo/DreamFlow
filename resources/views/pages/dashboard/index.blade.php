@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('title-page', 'Dashboard')
 @section('title-toolbar', 'Dashboard')
+@section('custom-head')
+<script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
+@endsection
 @section('content')
 <div class="row pb-12 m-0 background-dashboard">
     <div class="col-12">

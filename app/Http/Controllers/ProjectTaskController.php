@@ -442,15 +442,25 @@ class ProjectTaskController extends Controller
 
         // START POSITION 0
         $position = 0;
+        
+        // RETURN
+        $return = [];
 
-        // GET TASK
-        $task = ProjectTask::find($request->task_id);
-        $startProject = $task->project_id;
-        $task->project_id = $request->project_id;
-        $task->save();
+        if($request->task_id){
+            // GET TASK
+            $task = ProjectTask::find($request->task_id);
+            $startProject = $task->project_id;
+            $task->project_id = $request->project_id;
+            $task->save();
+            $return['startProject'] = $startProject;
+        }
 
-        // PROJECT
-        $project = Project::find($request->project_id);
+
+        if($request->project_id){
+            // PROJECT
+            $project = Project::find($request->project_id);
+            $return['color'] = $project->color;
+        }
 
         // SAVE NEW ORDER
         foreach($request->tasksOrderIds as $id){
@@ -464,7 +474,7 @@ class ProjectTaskController extends Controller
         }
 
         // RETURN
-        return response()->json(['color' => $project->color, 'startProject' => $startProject], 200);
+        return response()->json($return, 200);
 
     }
 
