@@ -25,6 +25,7 @@ class ProjectTask extends Model
         'checked_at',
         'order',
         'priority',
+        'separator',
         'open_subtasks',
         'challenge',
         'date',

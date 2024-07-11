@@ -175,6 +175,34 @@ class ProjectTaskController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function separator(Request $request, $id)
+    {
+
+        // GET BY POST
+        if($id == null) $id = $request->task_id;
+
+        // GET DATA
+        $content = $this->repository->find($id);
+
+        // UPDATE
+        if($content->separator == 0){
+            $status = 1;
+        } else {
+            $status = 0;
+        }
+
+        // STORING NEW DATA
+        $this->repository->where('id', $id)->update(['separator' => $status, 'updated_by' => Auth::id()]);
+
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id

@@ -9,6 +9,52 @@
         $('#card-to-fileds').toggle();
     });
 
+    $(document).on('click', '.transform-in-separator', function(){
+        // Encontra subtarefa
+        var subtask = $(this).closest('.dmk-div-task');
+        var subtaskId = subtask.find('.task-on-subtask').data('task');
+        var isSeparator = subtask.data('separator');
+
+        console.log(isSeparator);
+
+        if (isSeparator == 1) {
+            subtask.find('.sub-task-icons').toggleClass('rounded rounded-start');
+            subtask.find('.separator-name').fadeOut('slow', function(){
+                subtask.find('.separator-name').css('width', '0');
+                subtask.find('.not-separator-after').fadeIn('slow', function(){
+                    subtask.find('.sub-task-icons').css('width', '');
+                    subtask.find('.not-separator').css('width', '');
+                    subtask.find('.not-separator').fadeIn('slow');
+                });
+            });
+            subtask.data('separator', 0);
+        } else {
+            // Transformar em separador
+            subtask.find('.sub-task-icons').toggleClass('rounded-start rounded');
+
+            subtask.find('.not-separator').fadeOut('slow', function(){
+                subtask.find('.sub-task-icons').css('width', '100%');
+                subtask.find('.not-separator-after').fadeOut('slow', function(){
+                    subtask.find('.separator-name').css('width', '100%');
+                    subtask.find('.separator-name').fadeIn('slow');
+                });
+            });
+            subtask.data('separator', 1);
+        }
+
+        // AJAX
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'PUT',
+            url: "{!! route('tasks.separator', '') !!}/" + subtaskId,
+        });
+
+
+        // Alterna o estado
+        subtask.data('isSeparator', !isSeparator);
+    });
+
+
     // SEND NEW TASK
     $(document).on('submit', '.send-tasks', function(e){
 

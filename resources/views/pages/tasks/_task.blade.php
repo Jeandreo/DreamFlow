@@ -19,7 +19,7 @@
             </div>
             <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
                 <div class="d-block min-w-md-300px w-100 px-3 px-md-0 ms-5">
-                    <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 input-name mb-1" maxlength="80" value="{{ $task->name }}" name="name" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">
+                    <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 input-name" maxlength="80" value="{{ $task->name }}" name="name" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">
                     <div class="input-phrase" @if($task->phrase == '') style="display: none;" @endif>
                         <input type="text" class="text-gray-500 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 fs-7 d-flex task-phrase z-index-9 h-15px mt-n1" maxlength="255" name="phrase" value="{{ $task->phrase }}" @if($task->phrase == '') style="border-bottom: dashed 1px #bbbdcb63 !important;" @endif data-task="{{ $task->id }}">
                     </div>

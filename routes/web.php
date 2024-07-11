@@ -177,6 +177,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/editar/{id}', [ProjectTaskController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [ProjectTaskController::class, 'update'])->name('update');
                 Route::put('/editar-ajax/{id}', [ProjectTaskController::class, 'updateAjax'])->name('update.ajax');
+                Route::put('/separador/{id}', [ProjectTaskController::class, 'separator'])->name('separator');
                 Route::get('/ajax/{id}', [ProjectTaskController::class, 'ajax'])->name('ajax');
                 Route::post('/check', [ProjectTaskController::class, 'check'])->name('check');
                 Route::put('/prioridade', [ProjectTaskController::class, 'priority'])->name('priority');
