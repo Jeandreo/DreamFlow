@@ -8,8 +8,8 @@
                      <div class="form-check form-check-custom form-check-solid">
                         <input class="form-check-input w-15px h-15px cursor-pointer check-task" data-task="{{ $subtask->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($subtask->checked == true) checked @endif/>
                      </div>
-                     <i class="fa-solid fa-eye p-1 fs-6 text-white ms-5 cursor-pointer zoom-hover zoom-hover-03 show-task" data-task="{{ $subtask->id }}"></i>
-                     <i class="fa-solid fa-trash-alt p-1 fs-6 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03 tasks-destroy" data-task="{{ $subtask->id }}"></i>
+                     <i class="fa-solid fa-eye p-1 fs-6 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03 show-task" data-task="{{ $subtask->id }}"></i>
+                     <i class="fa-solid fa-trash-alt p-1 fs-6 text-white ms-2 cursor-pointer zoom-hover zoom-hover-03 tasks-destroy" data-task="{{ $subtask->id }}"></i>
                   </div>
              </div>
              <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
