@@ -1,21 +1,21 @@
 
-<div class="mb-2 ms-12">
+<div class="mb-2 ms-12 dmk-div-task">
     <div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-35px task-list task-on-subtask z-index-1" data-task="{{ $subtask->id }}">
        <div class="d-flex align-items-center justify-content-between w-100 h-100">
           <div class="d-flex align-items-center h-100 w-100 task-left-side">
-             <div style="background: {{ $subtask->project->color }}" class="rounded-start h-100 min-w-40px d-flex align-items-center justify-content-center color-task">
-                   <div class="form-check form-check-custom form-check-solid">
-                      <input class="form-check-input w-15px h-15px cursor-pointer check-task" data-task="{{ $subtask->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($subtask->checked == true) checked @endif/>
-                   </div>
+             <div style="background: {{ $subtask->father->project->color }}" class="rounded-start h-100 min-w-40px color-task sub-task-icons">
+                  <div class="d-flex align-items-center h-100 ps-4">
+                     <div class="form-check form-check-custom form-check-solid">
+                        <input class="form-check-input w-15px h-15px cursor-pointer check-task" data-task="{{ $subtask->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($subtask->checked == true) checked @endif/>
+                     </div>
+                     <i class="fa-solid fa-eye p-1 fs-6 text-white ms-5 cursor-pointer zoom-hover zoom-hover-03 show-task" data-task="{{ $subtask->id }}"></i>
+                     <i class="fa-solid fa-trash-alt p-1 fs-6 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03 tasks-destroy" data-task="{{ $subtask->id }}"></i>
+                  </div>
              </div>
              <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
-               <label for="rename-subtask-{{ $subtask->id }}">
-                  <i class="fa-solid @if($subtask->name != '')fa-pen-to-square @else fa-eye @endif text-hover-primary cursor-pointer py-2 w-50px text-center fs-5 edit-name-task" data-task="{{ $subtask->task_id }}"></i>
-               </label>
                <div class="d-block min-w-md-300px w-100">
-                     <p class="text-gray-600 text-hover-primary fs-6 lh-1 fw-normal p-0 mb-0 cursor-pointer border-0 w-100 task-name show-task" data-task="{{ $subtask->id }}" style="margin-top: 1px;  @if($subtask->name == '') display: none; @endif">{{ $subtask->name }}</p>
-                     <input type="text" id="rename-subtask-{{ $subtask->id }}" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 input-name placeholder-02 @if($subtask->checked == true) text-decoration-line-through @endif" value="{{ $subtask->name }}" name="name" placeholder="Subtarefa" data-task="{{ $subtask->id }}" @if($subtask->name != '') style="display: none;" @endif>
-                  </div>
+                  <input type="text" id="rename-subtask-{{ $subtask->id }}" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 input-name placeholder-02 @if($subtask->checked == true) text-decoration-line-through @endif ms-5" value="{{ $subtask->name }}" name="name" placeholder="Subtarefa" data-task="{{ $subtask->id }}">
+               </div>
              </div>
           </div>
           @if ($subtask->comments->count())
@@ -23,18 +23,18 @@
              <i class="fa-regular fa-comments text-gray-300 p-2 ms-5"></i>
           </span>
           @endif
-          <span class="task-priority d-none d-md-flex" data-task="{{ $subtask->id }}">
-          <i class="fa-solid fa-font-awesome p-2 
-             @if ($subtask->priority == 0)
-             text-gray-300
-             @elseif($subtask->priority == 1)
-             text-warning
-             @elseif($subtask->priority == 2)
-             text-info
-             @elseif($subtask->priority == 3)
-             text-danger
-             @endif
-             cursor-pointer me-5"></i>
+          <span class="task-priority d-none d-md-flex bg-white ps-4" data-task="{{ $subtask->id }}" style="z-index: 999;">
+            <i class="fa-solid fa-font-awesome p-2 
+               @if ($subtask->priority == 0)
+               text-gray-300
+               @elseif($subtask->priority == 1)
+               text-warning
+               @elseif($subtask->priority == 2)
+               text-info
+               @elseif($subtask->priority == 3)
+               text-danger
+               @endif
+               cursor-pointer me-5"></i>
           </span>
        </div>
        <div class="d-none d-md-flex align-items-center h-100">

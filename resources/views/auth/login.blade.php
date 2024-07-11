@@ -76,7 +76,16 @@
                                 <!--end::Input group--->
                                 <div class="fv-row mb-3 fv-plugins-icon-container">
                                     <!--begin::Password-->
-                                    <input type="password" placeholder="Senha" name="password" autocomplete="off" class="form-control form-control-solid" required>
+                                    <div class="position-relative mb-3">
+                                        <input class="form-control form-control-lg form-control-solid" type="password" name="password" placeholder="Senha" required />
+                                        <!--begin::Visibility toggle-->
+                                        <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2 eye-password"
+                                            data-kt-password-meter-control="visibility">
+                                                <i class="ki-duotone ki-eye-slash fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+                                                <i class="ki-duotone ki-eye d-none fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                        </span>
+                                        <!--end::Visibility toggle-->
+                                    </div>
                                     <!--end::Password-->
                                 </div>
                                 <!--end::Input group--->
@@ -241,6 +250,14 @@
         <!--end::Global Javascript Bundle-->
         <!--begin::Custom Javascript(used for this page only)-->
         <script src="{{ asset('assets/js/custom/authentication/sign-in/general.js') }}"></script>
+        <script>
+           $('.eye-password').click(function(){
+                let passwordField = $('[name="password"]');
+                let fieldType = passwordField.attr('type') === 'password' ? 'text' : 'password';
+                passwordField.attr('type', fieldType);
+            });
+
+        </script>
         <!--end::Custom Javascript-->
         <!--end::Javascript-->
         <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">

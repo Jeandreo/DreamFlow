@@ -59,7 +59,7 @@ class ProjectTaskController extends Controller
         $data = $request->all();
 
         // CREATED BY
-        // $data['date']           = now();
+        $data['date']           = now();
         $data['created_by']     = Auth::id();
         $data['designated_id']  = Auth::id();
         

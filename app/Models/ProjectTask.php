@@ -56,6 +56,14 @@ class ProjectTask extends Model
     /**
      * Get the subtask associated with the tasks.
      */
+    public function father(): HasOne
+    {
+        return $this->hasOne(ProjectTask::class, 'id', 'task_id');
+    }
+
+    /**
+     * Get the subtask associated with the tasks.
+     */
     public function files(): HasMany
     {
         return $this->hasMany(ProjectFile::class);

@@ -127,7 +127,17 @@ button:focus {
 }
 
 .task-icons:hover {
-    width: 150px;
+    width: 180px;
+    border-radius: 15px !important;
+}
+
+.sub-task-icons {
+    transition: all 0.2s;
+    width: 45px;
+}
+
+.sub-task-icons:hover {
+    width: 140px;
     border-radius: 15px !important;
 }
 

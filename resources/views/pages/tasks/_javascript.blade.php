@@ -54,6 +54,7 @@
     var check = new Audio('{{ asset("assets/media/sounds/task-checked.mp3") }}');
     var stand = new Audio('{{ asset("assets/media/sounds/task-stand.mp3") }}');
     var remove = new Audio('{{ asset("assets/media/sounds/task-remove.mp3") }}');
+    var open = new Audio('{{ asset("assets/media/sounds/task-open.mp3") }}');
 
     // SAVE STATUS CHECKED
     $(document).on('click', '.check-task', function(){
@@ -94,19 +95,7 @@
         });
 
     });
-
-    // SAVE STATUS CHECKED
-    $(document).on('click', '.edit-name-task', function(){
-
-        var div = $(this).closest('.div-name-task');
-
-        $(this).toggleClass('fa-pen-to-square fa-eye');
-
-        div.find('.task-name').toggle();
-        div.find('.input-name').toggle();
-
-    });
-
+    
     // SAVE STATUS CHECKED
     $(document).on('click', '.add-subtasks', function(){
 
@@ -125,6 +114,7 @@
             data: {task_id: taskId, project_id: projectId},
             success: function(data){
                 divSubtasks.append(data);
+                generateFlatpickr();
             }
         });
 
@@ -384,6 +374,8 @@
         // GET DATA
         var taskId = $(this).data('task');
 
+        // open.play();
+
         // EXIBE TASK
         showTask(taskId);
 
@@ -509,6 +501,7 @@
             url: "{{ route('tasks.destroy') }}",
             data: {_token: @json(csrf_token()), task_id: task},
             success:function(data) {
+                
             }
         });
 

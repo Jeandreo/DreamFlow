@@ -5,7 +5,10 @@
             <div style="background: {{ $task->project->color }};" class="rounded-start h-100 d-flex align-items-center color-task task-icons">
                 <div class="form-check form-check-custom form-check-solid py-2 px-5">
                     <input class="form-check-input w-15px h-15px cursor-pointer check-task task-main" data-task="{{ $task->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($task->checked == true) checked @endif/>
-                    <i class="fa-solid p-1 fa-list-check fs-5 text-white ms-5 cursor-pointer add-subtasks zoom-hover zoom-hover-03" data-task="{{ $task->id }}" data-project="{{ $task->project->id }}"></i>
+                    <span class="show-task" data-task="{{ $task->id }}">
+                        <i class="fa-solid fa-eye p-1 fs-5 text-white ms-5 cursor-pointer zoom-hover zoom-hover-03"></i>
+                    </span>
+                    <i class="fa-solid p-1 fa-list-check p-1 fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03 add-subtasks" data-task="{{ $task->id }}" data-project="{{ $task->project->id }}"></i>
                     <span class="stand-by" data-task="{{ $task->id }}">
                         <i class="fa-solid fa-hourglass-start p-1 fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03"></i>
                     </span>
@@ -15,12 +18,8 @@
                 </div>
             </div>
             <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
-                <label for="rename-task-{{ $task->id }}" class="d-none d-md-flex">
-                    <i class="fa-solid fa-pen-to-square text-hover-primary cursor-pointer py-2 w-50px text-center fs-5 edit-name-task" data-task="{{ $task->id }}"></i>	
-                </label>
-                <div class="d-block min-w-md-300px w-100 px-3 px-md-0">
-                <p class="text-gray-600 text-hover-primary fs-6 lh-1 fw-normal p-0 mb-1 cursor-pointer border-0 w-100 task-name show-task" style="margin-top: 3px;" data-task="{{ $task->id }}">{{ $task->name }}</p>
-                <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 input-name" maxlength="80" value="{{ $task->name }}" name="name" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}" style="display: none; margin-bottom: 1px !important;">
+                <div class="d-block min-w-md-300px w-100 px-3 px-md-0 ms-5">
+                    <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 input-name mb-1" maxlength="80" value="{{ $task->name }}" name="name" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">
                     <div class="input-phrase" @if($task->phrase == '') style="display: none;" @endif>
                         <input type="text" class="text-gray-500 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 fs-7 d-flex task-phrase z-index-9 h-15px mt-n1" maxlength="255" name="phrase" value="{{ $task->phrase }}" @if($task->phrase == '') style="border-bottom: dashed 1px #bbbdcb63 !important;" @endif data-task="{{ $task->id }}">
                     </div>
