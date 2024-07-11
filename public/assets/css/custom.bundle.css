@@ -338,7 +338,6 @@ input[type=text]:disabled {
 
 .background-dashboard {
     background: linear-gradient(45deg, #d405a5, #ff7800);
-    background-image: url(/assets/media/images/bg_colors_03.jpg);
     background-position: 0 0;
     animation: animationBgDashboard 60s linear infinite;
 }

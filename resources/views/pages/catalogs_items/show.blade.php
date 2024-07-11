@@ -5,7 +5,7 @@
 @section('title-toolbar', $contents->name)
 
 @section('content')
-<div class="row pb-12 m-0 background-dashboard">
+<div class="row pb-12 m-0 background-dashboard" style="background-image: url('{{ asset('/assets/media/images/bg_colors_03.jpg') }}');">
     <div class="col-12">
         <div class="toolbar py-15" id="kt_toolbar">
             <div id="kt_toolbar_container" class=" container-xxl  d-flex justify-content-center">

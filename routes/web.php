@@ -46,7 +46,7 @@ Route::middleware(['auth'])->group(function () {
 
         // DASHBOARD
         Route::name('financial.')->group(function () {
-            Route::get('/', [FinancialController::class, 'index'])->name('index');
+            Route::get('/', [FinancialTransactionsController::class, 'dashboard'])->name('index');
         });
 
         // CATEGORIES

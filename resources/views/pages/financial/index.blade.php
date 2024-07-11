@@ -2,7 +2,7 @@
 @section('title-page', 'Dashboard')
 @section('title-toolbar', 'Dashboard')
 @section('content')
-<div class="row pb-12 m-0 background-dashboard">
+<div class="row pb-12 m-0 background-dashboard" style="background-image: url('{{ asset('/assets/media/images/bg_colors_03.jpg') }}');">
     <div class="col-12">
         <div class="toolbar py-15" id="kt_toolbar">
             <div id="kt_toolbar_container" class=" container-xxl  d-flex justify-content-center">
@@ -15,7 +15,7 @@
     <div id="kt_app_content" class="app-content  flex-column-fluid py-6" >
         <div id="kt_app_content_container" class="app-container  container-fluid ">
             <div class="row mt-n20">
-                <div class="col-2">
+                <div class="col-12 col-md-3">
                 </div>
                 <div class="col">
                     <div class="card mb-4 shadow">
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-12 col-md-3">
                 </div>
             </div>
             <div class="row">
