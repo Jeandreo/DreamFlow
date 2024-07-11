@@ -218,6 +218,10 @@ p:last-child {
     cursor: pointer;
 }
 
+.image img {
+    width: 100%;
+}
+
 .show-image-div img {
     transition: all 0.2s;
     cursor: pointer;
