@@ -135,20 +135,22 @@
                   @foreach (catalogs()->get() as $catalog)
                   <!--begin::Menu Item-->
                   <div class="menu-item">
-                     <!--begin::Menu link-->
-                     <a class="menu-link" href="{{ route('catalogs.show', $catalog->id) }}">
-                        <!--begin::Bullet--> 
-                        <span class="menu-icon">
-                           <i class="{{ $catalog->icon }} fs-5" style="color: {{ $catalog->color }}"></i>
-                        </span>
-                        <!--end::Bullet--> 
-                        <!--begin::Title-->
-                        <span class="menu-title">
-                           {{ $catalog->name }}
-                        </span>
-                        <!--end::Title-->                           
-                     </a>
-                     <!--end::Menu link-->                
+                        <!--begin::Menu link-->
+                        <a class="menu-link pb-0" href="{{ route('catalogs.show', $catalog->id) }}">
+                           <!--begin::Bullet--> 
+                           <div class="w-30px h-30px rounded-sm bg-white d-flex align-items-center justify-content-center me-3">
+                              <span class="menu-icon m-0">
+                                 <i class="{{ $catalog->icon }} fs-5" style="color: {{ $catalog->color }}"></i>
+                              </span>
+                           </div>               
+                           <!--end::Bullet--> 
+                           <!--begin::Title-->
+                           <span class="menu-title">
+                              {{ $catalog->name }}
+                           </span>
+                           <!--end::Title-->                           
+                        </a>
+                        <!--end::Menu link--> 
                   </div>
                   <!--end::Menu Item-->
                   @endforeach
