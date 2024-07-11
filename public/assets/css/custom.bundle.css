@@ -338,8 +338,9 @@ input[type=text]:disabled {
 
 .background-dashboard {
     background: linear-gradient(45deg, #d405a5, #ff7800);
-    background-image: url(http://localhost/dreamflow/public/assets/media/images/bg_colors_03.jpg);
+    background-image: url(/assets/media/images/bg_colors_03.jpg);
     background-position: 0 0;
+    animation: animationBgDashboard 60s linear infinite;
 }
 
 .dataTables_info {
@@ -352,6 +353,20 @@ input[type=text]:disabled {
 
 .table-odd-light tr:hover .form-check-input:not(:checked) {
     border: solid 1px #e9e9e9 !important;
+}
+
+
+@keyframes animationBgDashboard {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 3600px 0px;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
 }
 
 .sub-transaction td {
