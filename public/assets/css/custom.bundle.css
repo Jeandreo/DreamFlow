@@ -133,7 +133,7 @@ button:focus {
 
 .sub-task-icons {
     transition: all 0.2s;
-    width: 45px;
+    width: 40px;
 }
 
 .sub-task-icons:hover {
