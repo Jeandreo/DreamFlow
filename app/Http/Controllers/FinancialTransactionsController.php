@@ -64,6 +64,11 @@ class FinancialTransactionsController extends Controller
         // FORMAT DATA
         $data['value'] = toDecimal($data['value']);
 
+        // Se for recorrente
+        if($data['recurrent'] == true){
+            $data['recurrent_begin'] = $data['date_purchase'];
+        }
+
         // IF EXPENSE
         if($data['type'] == 'expense'){
             $data['value'] = -$data['value'];
@@ -96,7 +101,8 @@ class FinancialTransactionsController extends Controller
             $data['hitching'] = $this->getHitching();
         }
 
-        if($data['installments'] ==  true){
+        //
+        if($data['installments'] == true){
 
             // Informa que não será recorrente:
             $data['recurrent'] = false;
@@ -675,10 +681,10 @@ class FinancialTransactionsController extends Controller
     public function recurringTransactions($request, $data){
 
         // Define a data de início do mês anterior
-        $dateBegin = Carbon::parse($request->date_begin)->startOfMonth();
+        $date = Carbon::parse($request->date_begin);
 
         // Obtém todas as transações recorrentes
-        $recurringTransactions = FinancialTransactions::where('recurrent', true)->where('status', 1)->get()->groupBy('hitching');
+        $recurringTransactions = FinancialTransactions::where('recurrent', true)->where('recurrent_begin', '<=' ,$date->endOfMonth()->format('Y-m-d'))->where('status', 1)->get()->groupBy('hitching');
 
         // Transações
         $recurrentFilter = [];
@@ -693,7 +699,7 @@ class FinancialTransactionsController extends Controller
         // Faz loop entre transações recorrentes
         foreach ($recurrentFilter as $transaction) {
 
-            $newDate = $dateBegin->format('Y-m-') . date('d', strtotime($transaction->date_payment));
+            $newDate = $date->startOfMonth()->format('Y-m-') . date('d', strtotime($transaction->date_payment));
 
             // Verifica se tem categorias
             $hasFather = $transaction->category->father_id ? true : false;

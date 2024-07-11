@@ -82,9 +82,7 @@
          </div>
        </div>
        <div class="not-separator" @if($subtask->separator == true) style="display: none;" @endif>
-        <!-- SEPARATOR -->
         <div class="separator-vertical h-35px d-none d-md-flex"></div>
-        <!-- SEPARATOR -->
        </div>
         <div class="not-separator" @if($subtask->separator == true) style="display: none;" @endif>
            <i class="fa-solid fa-bars-staggered text-gray-300 py-2 px-3 mx-3 fs-6 d-none d-md-flex draggable-sub-handle"></i>

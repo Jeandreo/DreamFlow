@@ -49,9 +49,7 @@
         </span>
     </div>
     <div class="d-flex align-items-center h-100 d-none d-md-flex">
-        <!-- SEPARATOR -->
         <div class="separator-vertical h-100"></div>
-        <!-- SEPARATOR -->
         <div class="w-125px text-center designated-div">
             <div class="symbol symbol-30px symbol-circle cursor-pointer" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
                 <div class="symbol symbol-25px symbol-circle me-2">
@@ -102,9 +100,7 @@
             @endif" data-task="{{ $task->id }}" placeholder="Prazo da tarefa" value="@if($task->date) {{ date('Y-m-d H:i:s', strtotime($task->date)) }} @endif"/>
             <i class="fa-solid fa-calendar-xmark text-hover-primary text-gray-300 py-2 px-3 fs-7 position-absolute opacity-0 cursor-pointer remove-date" data-task={{ $task->id }}" style="top: 15%; right: 0"></i>
         </div>
-        <!-- SEPARATOR -->
         <div class="separator-vertical h-100"></div>
-        <!-- SEPARATOR -->
         <div>
             <i class="fa-solid fa-arrows-to-dot text-hover-primary py-2 px-3 mx-3 fs-6 draggable-handle"></i>
         </div>
