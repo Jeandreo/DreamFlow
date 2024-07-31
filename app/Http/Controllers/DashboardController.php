@@ -28,6 +28,7 @@ class DashboardController extends Controller
 
         // GET TASKS
         $tasks = ProjectTask::where('date', '<=', date('Y-m-d', strtotime('+2 days')))
+                            ->where('date', '>=', date('Y-m-d'))
                             ->whereNull('task_id')
                             ->where('checked', false)
                             ->where('status', 1)
