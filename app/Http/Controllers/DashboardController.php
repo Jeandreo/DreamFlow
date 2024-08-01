@@ -54,7 +54,7 @@ class DashboardController extends Controller
                             ->get();
 
         // CHALLENGES
-        $challenges = ProjectTask::where('date', '>=', now())->where('checked', false)->where('challenge', true)->where('created_by', Auth::id())->get();
+        $challenges = ProjectTask::where('status', 1)->where('date', '>=', now())->where('checked', false)->where('challenge', true)->where('created_by', Auth::id())->get();
 
         // GET USERS FOR TASK
         $users = User::where('status', 1)->get();
