@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Financial;
 use App\Models\FinancialInstitution;
 use App\Models\FinancialTransactions;
 use App\Models\FinancialWallet;
@@ -153,20 +154,38 @@ class FinancialWalletController extends Controller
             // Inverte o sinal
             $diference = -$diference;
 
-            // Cria transação de diferença no banco de dados
-            FinancialTransactions::create([
-                'wallet_id' => $id,
-                'category_id' => 0,
-                'name' => $content->name,
-                'adjustment' => true,
-                'value' => $diference,
-                'value_paid' => $diference,
-                'paid' => true,
-                'date_purchase' => now(),
-                'date_payment' => now(),
-                'date_paid' => now(),
-                'created_by' => Auth::id(),
-            ]);
+            // Procura se já existe uma transação de ajuste ess mês
+            $alreadyCorrection = FinancialTransactions::whereMonth('date_purchase', now()->month)
+                                                        ->where('adjustment', true)
+                                                        ->first();
+
+            if(!$alreadyCorrection){
+                // Cria transação de diferença no banco de dados
+                FinancialTransactions::create([
+                    'wallet_id' => $id,
+                    'category_id' => 0,
+                    'name' => $content->name,
+                    'adjustment' => true,
+                    'value' => $diference,
+                    'value_paid' => $diference,
+                    'paid' => true,
+                    'date_purchase' => now(),
+                    'date_payment' => now(),
+                    'date_paid' => now(),
+                    'created_by' => Auth::id(),
+                ]);
+            } else {
+                
+                // Pega a diferença e atualiza na correção
+                $value = $alreadyCorrection->value + $diference;
+
+                // Corrige valor
+                $alreadyCorrection->adjustment_count = ++$alreadyCorrection->adjustment_count;
+                $alreadyCorrection->value  = $value;
+                $alreadyCorrection->value_paid = $value;
+                $alreadyCorrection->save();
+
+            }
 
         }
 
@@ -176,8 +195,8 @@ class FinancialWalletController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('financial.wallets.index')
-            ->with('message', 'Carteira editada com sucesso.');
+                ->back()
+                ->with('message', 'Carteira editada com sucesso.');
 
     }
 

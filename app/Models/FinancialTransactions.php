@@ -25,6 +25,7 @@ class FinancialTransactions extends Model
         'recurrent',
         'recurrent_begin',
         'adjustment',
+        'adjustment_count',
         'fature',
         'fature_id',
         'value',

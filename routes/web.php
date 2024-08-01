@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FinancialCategoryController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\FinancialCreditCardController;
+use App\Http\Controllers\FinancialDebtsController;
 use App\Http\Controllers\FinancialInstitutionController;
 use App\Http\Controllers\FinancialTransactionsController;
 use App\Http\Controllers\FinancialWalletController;
@@ -110,6 +111,19 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/editar/{id}', [FinancialCreditCardController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [FinancialCreditCardController::class, 'update'])->name('update');
                 Route::post('/transactions', [FinancialCreditCardController::class, 'transactions'])->name('transactions');
+            });
+        });
+
+        // TRANSACTIONS
+        Route::prefix('debitos')->group(function () {
+            Route::name('financial.debits.')->group(function () {
+                Route::get('/', [FinancialDebtsController::class, 'index'])->name('index');
+                Route::get('/adicionar', [FinancialDebtsController::class, 'create'])->name('create');
+                Route::post('/adicionar', [FinancialDebtsController::class, 'store'])->name('store');
+                Route::get('/visualizando/{id?}', [FinancialDebtsController::class, 'show'])->name('show');
+                Route::get('/desabilitar/{id}', [FinancialDebtsController::class, 'destroy'])->name('destroy');
+                Route::get('/editar/{id}', [FinancialDebtsController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [FinancialDebtsController::class, 'update'])->name('update');
             });
         });
 

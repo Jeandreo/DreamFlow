@@ -18,7 +18,7 @@
                 <div class="col-12 col-md-3">
                 </div>
                 <div class="col">
-                    <div class="card mb-4 shadow">
+                    <div class="card mb-4 shadow-light">
                         <div class="card-body">
                             <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0">
                                 R$ 0,00
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card mb-4 shadow">
+                    <div class="card mb-4 shadow-light">
                         <div class="card-body">
                             <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0">
                                 R$ 0,00
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card mb-4 shadow">
+                    <div class="card mb-4 shadow-light">
                         <div class="card-body">
                             <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0">
                                 R$ 0,00
@@ -58,7 +58,7 @@
             </div>
             <div class="row">
                 <div class="col-2">
-                    <div class="card mb-4 shadow">
+                    <div class="card mb-4 shadow-light">
                         <div class="card-body">
                             <h2 class="fs-2x text-uppercase text-gray-700 mb-0">
                                 {{ date('H:m') }}
@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <div class="col-10">
-                    <div class="card mb-4 shadow">
+                    <div class="card mb-4 shadow-light">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
@@ -139,16 +139,16 @@
             </div>
             <div class="row">
                 <div class="col-3 mb-4">
-                    <div class="card shadow">
+                    <div class="card shadow-light">
                         <div class="card-body py-5">
                             @foreach ($wallets as $wallet)
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex">
                                     <img src="{{ findImage('instituicoes/' .$wallet->institution_id . '/logo-150px.jpg', 'image') }}" class="h-40px w-40px me-3 rounded-sm" alt="">
                                     <div>
-                                        <p class="fw-bold mb-0">
+                                        <a href="{{ route('financial.wallets.edit', $wallet->id) }}" class="text-gray-700 text-hover-primary fw-bold mb-0">
                                             {{ $wallet->name }}
-                                        </p>
+                                        </a>
                                         <p class="text-gray-600 mb-0">
                                            Carteira
                                         </p>
@@ -166,7 +166,7 @@
                     </div>
                 </div>
                 <div class="col-3 mb-4">
-                    <div class="card shadow">
+                    <div class="card shadow-light">
                         <div class="card-body">
                             @foreach ($credits as $credit)
                             <div class="d-flex justify-content-between align-items-center">
@@ -193,26 +193,30 @@
                     </div>
                 </div>
                 <div class="col-3">
-                    <div class="card">
+                    <div class="card shadow-light">
                         <div class="card-body">
-                            <a class="menu-link" href="{{ route('financial.wallets.index') }}">
+                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.wallets.index') }}">
                                 Carteiras
                             </a>
                             <br>
-                            <a class="menu-link" href="{{ route('financial.transactions.index') }}">
+                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.transactions.index') }}">
                                 Transações
                             </a>
                             <br>
-                            <a class="menu-link" href="{{ route('financial.institutions.index') }}">
+                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.institutions.index') }}">
                                 Instituições
                             </a>
                             <br>
-                            <a class="menu-link" href="{{ route('financial.credit.cards.index') }}">
+                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.credit.cards.index') }}">
                                 Cartões de Crédito
                             </a>
                             <br>
-                            <a class="menu-link" href="{{ route('financial.categories.index') }}">
+                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.categories.index') }}">
                                 Categorias
+                            </a>
+                            <br>
+                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.debits.index') }}">
+                                Débitos
                             </a>
                         </div>
                     </div>
@@ -220,7 +224,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="card shadow mb-4">
+                    <div class="card shadow-light mb-4">
                         <div class="card-body">
                             <div id="tasksChart" style="height: 350px;"></div>
                         </div>
