@@ -41,6 +41,7 @@ class DashboardController extends Controller
         $tasks = ProjectTask::where('status', 1)
                             ->where('date', '<=', date('Y-m-d', strtotime('+2 days')))
                             ->where('checked', false)
+                            ->whereNotNull('name')
                             ->where(function($query) use ($already) {
                                 $query->whereNull('task_id')
                                     ->orWhere(function($query) use ($already) {
