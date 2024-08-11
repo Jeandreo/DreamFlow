@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Catalog;
 use App\Models\Challenge;
+use App\Models\Project;
 use App\Models\ProjectTask;
 use App\Models\User;
 use Carbon\Carbon;
@@ -79,6 +80,9 @@ class DashboardController extends Controller
         // OBTÉM LISTAS
         $lists = Catalog::where('status', 1)->orderBy('name', 'ASC')->where('created_by', Auth::id())->get();
 
+        // OBTÉM PROJETOS
+        $projects = Project::where('status', 1)->get();
+
         // RETURN VIEW WITH DATA
         return view('pages.dashboard.index')->with([
             'actualMonth' => $actualMonth,
@@ -90,6 +94,7 @@ class DashboardController extends Controller
             'monthChallenge' => $monthChallenge,
             'weekChallenge' => $weekChallenge,
             'lists' => $lists,
+            'projects' => $projects,
         ]);
 
     }

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Catalog;
 use App\Models\CatalogItem;
@@ -85,6 +85,19 @@ class DatabaseSeeder extends Seeder
         ProjectCategory::create([
             'name' => 'Financias',
             'type' => 1,
+            'created_by' => 1,
+        ]);
+
+        Project::create([
+            'name' => 'Lembretes',
+            'reminder' => true,
+            'type' => 2,
+            'url' => 'lembrete',
+            'color' => '#5632a8',
+            'description' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+            'start_date' => now(),
+            'category_id' => 1,
+            'manager_id' => 1,
             'created_by' => 1,
         ]);
 
@@ -321,293 +334,293 @@ class DatabaseSeeder extends Seeder
             'created_by' => rand(1, 5),
         ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 1,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Testes de Usabilidade',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 1,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Testes de Usabilidade',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 1,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Implementação de novos recursos',
-        //     'phrase' => 'Adicionar funcionalidades solicitadas pelo cliente',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 1,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Implementação de novos recursos',
+            'phrase' => 'Adicionar funcionalidades solicitadas pelo cliente',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 1,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Revisão de código',
-        //     'phrase' => 'Verificar e corrigir erros no código-fonte',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 1,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Revisão de código',
+            'phrase' => 'Verificar e corrigir erros no código-fonte',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 1,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Preparação para entrega do projeto',
-        //     'phrase' => 'Garantir que todos os requisitos estejam atendidos antes da entrega ao cliente',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 1,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Preparação para entrega do projeto',
+            'phrase' => 'Garantir que todos os requisitos estejam atendidos antes da entrega ao cliente',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 2,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Implementação de funcionalidade de chat em tempo real',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Implementação de funcionalidade de chat em tempo real',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 2,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Otimização de desempenho da aplicação',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Otimização de desempenho da aplicação',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 2,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Implementação de sistema de notificações por e-mail',
-        //     'phrase' => 'Desenvolver um sistema de notificações por e-mail para alertar os usuários sobre eventos importantes',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Implementação de sistema de notificações por e-mail',
+            'phrase' => 'Desenvolver um sistema de notificações por e-mail para alertar os usuários sobre eventos importantes',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 2,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Refatoração do código-fonte',
-        //     'phrase' => 'Reestruturar o código para torná-lo mais legível e sustentável a longo prazo',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Refatoração do código-fonte',
+            'phrase' => 'Reestruturar o código para torná-lo mais legível e sustentável a longo prazo',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 6,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Testes de segurança da aplicação',
-        //     'phrase' => 'Realizar testes de segurança para identificar e corrigir possíveis vulnerabilidades',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 6,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Testes de segurança da aplicação',
+            'phrase' => 'Realizar testes de segurança para identificar e corrigir possíveis vulnerabilidades',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 2,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Desenvolvimento de interface de administração',
-        //     'phrase' => 'Criar uma interface de administração para gerenciar conteúdos e usuários do sistema',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Desenvolvimento de interface de administração',
+            'phrase' => 'Criar uma interface de administração para gerenciar conteúdos e usuários do sistema',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 3,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Integração com API de terceiros',
-        //     'phrase' => 'Integrar com API de terceiros para adicionar novos recursos ao sistema',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 3,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Integração com API de terceiros',
+            'phrase' => 'Integrar com API de terceiros para adicionar novos recursos ao sistema',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 3,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Melhoria na documentação do código',
-        //     'phrase' => 'Atualizar e aprimorar a documentação do código para facilitar a manutenção futura',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 3,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Melhoria na documentação do código',
+            'phrase' => 'Atualizar e aprimorar a documentação do código para facilitar a manutenção futura',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 3,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Implementação de sistema de cache',
-        //     'phrase' => 'Adicionar um sistema de cache para melhorar o desempenho e a escalabilidade da aplicação',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 3,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Implementação de sistema de cache',
+            'phrase' => 'Adicionar um sistema de cache para melhorar o desempenho e a escalabilidade da aplicação',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 2,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Configuração de servidor de produção',
-        //     'phrase' => 'Configurar o servidor de produção para garantir alta disponibilidade e segurança',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Configuração de servidor de produção',
+            'phrase' => 'Configurar o servidor de produção para garantir alta disponibilidade e segurança',
+            'created_by' => rand(1, 5),
+        ]);
 
 
 
 
-        // ProjectTask::create([
-        //     'project_id' => 4,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Desenvolvimento de campanha publicitária',
-        //     'phrase' => 'Criar estratégias de marketing para promover o produto/serviço',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 4,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Desenvolvimento de campanha publicitária',
+            'phrase' => 'Criar estratégias de marketing para promover o produto/serviço',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 4,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Análise de mercado e concorrência',
-        //     'phrase' => 'Realizar estudo de mercado para identificar oportunidades e ameaças',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 4,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Análise de mercado e concorrência',
+            'phrase' => 'Realizar estudo de mercado para identificar oportunidades e ameaças',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 4,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Desenvolvimento de materiais de vendas',
-        //     'phrase' => 'Elaborar apresentações, folhetos e outras ferramentas de vendas',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 4,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Desenvolvimento de materiais de vendas',
+            'phrase' => 'Elaborar apresentações, folhetos e outras ferramentas de vendas',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 6,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Treinamento da equipe de vendas',
-        //     'phrase' => 'Realizar treinamentos para melhorar habilidades de vendas e conhecimento do produto',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 6,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Treinamento da equipe de vendas',
+            'phrase' => 'Realizar treinamentos para melhorar habilidades de vendas e conhecimento do produto',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 5,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Gestão de redes sociais',
-        //     'phrase' => 'Gerenciar perfis em redes sociais para aumentar a visibilidade da marca',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 5,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Gestão de redes sociais',
+            'phrase' => 'Gerenciar perfis em redes sociais para aumentar a visibilidade da marca',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 5,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Desenvolvimento de parcerias estratégicas',
-        //     'phrase' => 'Identificar e estabelecer parcerias com outras empresas para aumentar as vendas',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 5,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Desenvolvimento de parcerias estratégicas',
+            'phrase' => 'Identificar e estabelecer parcerias com outras empresas para aumentar as vendas',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 5,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Otimização de funil de vendas',
-        //     'phrase' => 'Analisar e otimizar o funil de vendas para aumentar a conversão de leads em clientes',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 5,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Otimização de funil de vendas',
+            'phrase' => 'Analisar e otimizar o funil de vendas para aumentar a conversão de leads em clientes',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 6,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Participação em eventos do setor',
-        //     'phrase' => 'Representar a empresa em eventos do setor para criar networking e gerar leads',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 6,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Participação em eventos do setor',
+            'phrase' => 'Representar a empresa em eventos do setor para criar networking e gerar leads',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 2,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Análise de métricas de marketing',
-        //     'phrase' => 'Analisar métricas de marketing para avaliar o desempenho das campanhas',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Análise de métricas de marketing',
+            'phrase' => 'Analisar métricas de marketing para avaliar o desempenho das campanhas',
+            'created_by' => rand(1, 5),
+        ]);
         
-        // ProjectTask::create([
-        //     'project_id' => 2,
-        //     'status_id' => rand(1, 3),
-        //     'designated_id' => rand(1, 5),
-        //     'checked' => rand(0, 1),
-        //     'priority' => rand(0, 3),
-        //     'date' => now(),
-        //     'name' => 'Desenvolvimento de estratégia de pricing',
-        //     'phrase' => 'Desenvolver uma estratégia de precificação competitiva para maximizar lucros',
-        //     'created_by' => rand(1, 5),
-        // ]);
+        ProjectTask::create([
+            'project_id' => 2,
+            'status_id' => rand(1, 3),
+            'designated_id' => rand(1, 5),
+            'checked' => rand(0, 1),
+            'priority' => rand(0, 3),
+            'date' => now(),
+            'name' => 'Desenvolvimento de estratégia de pricing',
+            'phrase' => 'Desenvolver uma estratégia de precificação competitiva para maximizar lucros',
+            'created_by' => rand(1, 5),
+        ]);
         
         Challenge::create([
             'name' => 'Frutifera',
@@ -862,7 +875,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Aluguel',
             'type' => 'expense',
-            'father_id' => 1, // Despesas de Casa
+            'father_id' => 1,
             'color' => '#6b6b6b',
             'icon' => 'fa-solid fa-home',
             'created_by' => 1,
@@ -871,7 +884,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Entreterimento',
             'type' => 'expense',
-            'father_id' => 1, // Despesas de Casa
+            'father_id' => 1,
             'color' => '#cf2200',
             'created_by' => 1,
         ]);
@@ -887,7 +900,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Combustível',
             'type' => 'expense',
-            'father_id' => 4, // Transporte
+            'father_id' => 4,
             'color' => '#ffc107',
             'created_by' => 1,
         ]);
@@ -895,7 +908,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Manutenção do Carro',
             'type' => 'expense',
-            'father_id' => 4, // Transporte
+            'father_id' => 4,
             'color' => '#28a745',
             'created_by' => 1,
         ]);
@@ -911,7 +924,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Supermercado',
             'type' => 'expense',
-            'father_id' => 7, // Alimentação
+            'father_id' => 7,
             'color' => '#6610f2',
             'created_by' => 1,
         ]);
@@ -919,7 +932,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Lanche',
             'type' => 'expense',
-            'father_id' => 7, // Alimentação
+            'father_id' => 7,
             'color' => '#6610f2',
             'created_by' => 1,
         ]);
@@ -935,7 +948,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Hospedagem',
             'type' => 'expense',
-            'father_id' => 10, // Viagem
+            'father_id' => 10,
             'color' => '#17a2b8',
             'created_by' => 1,
         ]);
@@ -943,7 +956,7 @@ class DatabaseSeeder extends Seeder
         FinancialCategory::create([
             'name' => 'Passagens',
             'type' => 'expense',
-            'father_id' => 10, // Viagem
+            'father_id' => 10,
             'color' => '#ffc107',
             'created_by' => 1,
         ]);
@@ -989,72 +1002,72 @@ class DatabaseSeeder extends Seeder
             'created_by' => 1,
         ]);
 
-        // FinancialTransactions::create([
-        //     'wallet_id' => 1,
-        //     'category_id' => 3,
-        //     'name' => 'Netflix',
-        //     'recurrent' => true,
-        //     'hitching' => 1,
-        //     'value' => 10,
-        //     'date_purchase' => now(),
-        //     'date_payment' => now(),
-        //     'created_by' => 1,
-        // ]);
+        FinancialTransactions::create([
+            'wallet_id' => 1,
+            'category_id' => 3,
+            'name' => 'Netflix',
+            'recurrent' => true,
+            'hitching' => 1,
+            'value' => 10,
+            'date_purchase' => now(),
+            'date_payment' => now(),
+            'created_by' => 1,
+        ]);
 
-        // FinancialTransactions::create([
-        //     'wallet_id' => 1,
-        //     'category_id' => 3,
-        //     'name' => 'Google',
-        //     'recurrent' => true,
-        //     'hitching' => 2,
-        //     'value' => 10,
-        //     'date_purchase' => now(),
-        //     'date_payment' => now(),
-        //     'created_by' => 1,
-        // ]);
+        FinancialTransactions::create([
+            'wallet_id' => 1,
+            'category_id' => 3,
+            'name' => 'Google',
+            'recurrent' => true,
+            'hitching' => 2,
+            'value' => 10,
+            'date_purchase' => now(),
+            'date_payment' => now(),
+            'created_by' => 1,
+        ]);
 
-        // FinancialTransactions::create([
-        //     'credit_card_id' => 1,
-        //     'category_id' => 8,
-        //     'name' => 'Tênis para corrida',
-        //     'value' => 10,
-        //     'date_purchase' => now(),
-        //     'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
-        //     'created_by' => 1,
-        // ]);
+        FinancialTransactions::create([
+            'credit_card_id' => 1,
+            'category_id' => 8,
+            'name' => 'Tênis para corrida',
+            'value' => 10,
+            'date_purchase' => now(),
+            'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
+            'created_by' => 1,
+        ]);
 
-        // FinancialTransactions::create([
-        //     'credit_card_id' => 2,
-        //     'category_id' => 8,
-        //     'name' => 'Uber',
-        //     'value' => 10,
-        //     'date_purchase' => now(),
-        //     'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(9),
-        //     'created_by' => 1,
-        // ]);
+        FinancialTransactions::create([
+            'credit_card_id' => 2,
+            'category_id' => 8,
+            'name' => 'Uber',
+            'value' => 10,
+            'date_purchase' => now(),
+            'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(9),
+            'created_by' => 1,
+        ]);
 
-        // FinancialTransactions::create([
-        //     'credit_card_id' => 1,
-        //     'category_id' => 8,
-        //     'name' => 'Comida',
-        //     'value' => 10,
-        //     'date_purchase' => now(),
-        //     'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
-        //     'created_by' => 1,
-        // ]);
+        FinancialTransactions::create([
+            'credit_card_id' => 1,
+            'category_id' => 8,
+            'name' => 'Comida',
+            'value' => 10,
+            'date_purchase' => now(),
+            'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
+            'created_by' => 1,
+        ]);
 
-        // FinancialTransactions::create([
-        //     'wallet_id' => 1,
-        //     'category_id' => 3,
-        //     'name' => 'TaekWondo',
-        //     'recurrent' => true,
-        //     'value' => 2,
-        //     'date_purchase' => now(),
-        //     'date_payment' => now(),
-        //     'created_by' => 1,
-        // ]);
+        FinancialTransactions::create([
+            'wallet_id' => 1,
+            'category_id' => 3,
+            'name' => 'TaekWondo',
+            'recurrent' => true,
+            'value' => 2,
+            'date_purchase' => now(),
+            'date_payment' => now(),
+            'created_by' => 1,
+        ]);
 
-        \App\Models\User::factory(10)->create();
+        // \App\Models\User::factory(10)->create();
         // \App\Models\FinancialTransactions::factory(10)->create();
     }
 }

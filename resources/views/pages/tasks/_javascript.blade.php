@@ -324,6 +324,29 @@
             data: {_token: @json(csrf_token()), task_id: taskId, status_id: statusId},
             success:function(data) {
                 // CHANGE TO NEW COLOR AND NAME STATUS
+                status.find('.status-icon').css('background', data['color']);
+            }
+        });
+
+    });
+
+    // UPDATE STATUS
+    $(document).on('click', '.tasks-projects', function(e){
+        
+        // GET DATA
+        var taskId = $(this).data('task');
+        var statusId = $(this).data('status');
+
+        // GET ACTUAL STATUS
+        var status = $(this).closest('.actual-status');
+
+        // AJAX
+        $.ajax({
+            type:'PUT',
+            url: "{{ route('tasks.status') }}",
+            data: {_token: @json(csrf_token()), task_id: taskId, status_id: statusId},
+            success:function(data) {
+                // CHANGE TO NEW COLOR AND NAME STATUS
                 status.find('.status-name').text(data['name']);
                 status.css('background', data['color']);
             }

@@ -2,11 +2,13 @@
 @section('title-page', 'Dashboard')
 @section('title-toolbar', 'Dashboard')
 @section('content')
-<div class="row pb-12 m-0 background-dashboard" style="background-image: url('{{ asset('/assets/media/images/bg_colors_03.jpg') }}');">
-    <div class="col-12">
-        <div class="toolbar py-15" id="kt_toolbar">
-            <div id="kt_toolbar_container" class=" container-xxl  d-flex justify-content-center">
-                @include('includes.nav-admin', ['title' => "Financeiro Furquim", 'phrase' => "“Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal"])
+<div class="row m-0 background-dashboard" style="background-image: url('{{ asset('assets/media/logos/background-pattern.webp') }}'); background-size: cover;">
+    <div style="background: linear-gradient(0deg, #090c11, #18202bf0);">
+        <div class="col-12">
+            <div class="toolbar py-20 mb-10" id="kt_toolbar">
+                <div id="kt_toolbar_container" class=" container-xxl  d-flex justify-content-center">
+                    @include('includes.nav-admin', ['title' => "Financeiro Furquim!", 'phrase' => "“Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal"])
+                </div>
             </div>
         </div>
     </div>

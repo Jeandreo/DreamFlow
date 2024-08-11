@@ -73,9 +73,23 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-status" style="background: {{ $task->statusInfo->color }}">
+        <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-status" style="background: {{ $task->project->color }}">
             <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
-                <p class="text-white fw-bold m-0 status-name">{{ $task->statusInfo->name }}</p>
+                <p class="text-white fw-bold m-0 status-name">{{ $task->project->name }}</p>
+                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
+                    @foreach ($projects as $project)
+                    <div class="menu-item px-3 mb-2">
+                        <span data-task="{{ $task->id }}" data-project="{{ $project->id }}" class="menu-link px-3 d-block text-center tasks-status" style="background: {{ $project->color }}; color: white">
+                        <span class="">{{ $project->name }}</span>
+                        </span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        <div class="d-flex p-0 align-items-center cursor-pointer mx-4 actual-status">
+            <div class="w-100 h-100 d-flex align-items-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
+                <div class="h-15px w-15px rounded-sm status-icon" style="background: {{ $task->statusInfo->color }}"></div>
                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
                     @foreach ($task->project->statuses as $status)
                     <div class="menu-item px-3 mb-2">
@@ -87,6 +101,7 @@
                 </div>
             </div>
         </div>
+        <div class="separator-vertical h-100"></div>
         <div class="position-relative opacity-1">
             <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date task-date-{{ $task->id }} 
             @if(date('Y-m-d', strtotime($task->date)) == date('Y-m-d'))

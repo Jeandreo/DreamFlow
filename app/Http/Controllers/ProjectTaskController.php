@@ -591,11 +591,13 @@ class ProjectTaskController extends Controller
         // GET ALL DATA
         $contents = $this->repository->find($request->task_id);
         $users = User::where('status', 1)->get();
+        $projects = Project::where('status', 1)->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.tasks._tasks')->with([
             'task' => $contents,
             'users' => $users,
+            'projects' => $projects,
         ]);
     }
 

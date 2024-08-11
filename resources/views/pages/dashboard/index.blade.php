@@ -123,7 +123,7 @@
                                                     4
                                                 </span>
                                                 <span class="fw-bold text-gray-700">
-                                                   Gestão: Profissionalizar RDS!
+                                                   Gestão: Capacitação para Liderança!
                                                 </span>
                                             </div>
                                         </div>
@@ -173,9 +173,9 @@
                                                 @endfor
                                             </div>
                                             @else
-                                                <div class="h-125px bg-light rounded w-100 mx-10 d-flex align-items-center justify-content-center">
+                                                <div class="bg-light rounded py-3 px-7">
                                                     <div class="text-center">
-                                                        <p class="fw-bold text-gray-700 fs-4 mb-0">SEM DESAFIOS ESSA SEMANA 😔</p>
+                                                        <p class="fw-bold text-gray-700 fs-6 mb-0 lh-1">SEM DESAFIOS ESSA SEMANA 😔</p>
                                                         <p class="text-gray-600 fs-6">Que pena, parece que você não planejou nenhum desafio para si.</p>
                                                     </div>
                                                 </div>
@@ -192,12 +192,25 @@
                             <div class="col-12 col-md-5 d-grid align-items-stretch">
                                 <div class="card mb-4">
                                     <div class="card-body p-2 px-4">
-                                        <div class="row">
-                                            @for ($i = 1; $i <= 6; ++$i)
-                                                <div class="col-4 px-1 my-1">
-                                                    <img src="{{ asset('assets/media/stock/600x400/img-'.$i.'.jpg') }}" class="rounded-sm w-100">
-                                                </div>
-                                            @endfor
+                                        <div class="row h-100">
+                                            <div class="col-4 px-1 my-1">
+                                                <img src="{{ findImage('mural/amor.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image" style="height: 130px">
+                                            </div>
+                                            <div class="col-4 px-1 my-1">
+                                                <img src="{{ findImage('mural/porsche.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image" style="height: 130px">
+                                            </div>
+                                            <div class="col-4 px-1 my-1">
+                                                <img src="{{ findImage('mural/amor_3.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image" style="height: 130px">
+                                            </div>
+                                            <div class="col-4 px-1 my-1">
+                                                <img src="{{ findImage('mural/duda.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image" style="height: 130px">
+                                            </div>
+                                            <div class="col-4 px-1 my-1">
+                                                <img src="{{ findImage('mural/Jeandreo-Forbes.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image" style="height: 130px">
+                                            </div>
+                                            <div class="col-4 px-1 my-1">
+                                                <img src="{{ findImage('mural/maratona.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image" style="height: 130px">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -217,10 +230,10 @@
                                             @foreach ($challenges as $challenge)
                                                 <div class="bg-light rounded mb-3 p-3">
                                                     <div class="row">
-                                                        <div class="col-12 col-md-6 d-flex align-items-center">
+                                                        <div class="col-12 col-md-3 d-flex align-items-center">
                                                             <p class="m-0 fs-5 fw-bold text-gray-700">{{ $challenge->name }}</p>
                                                         </div>
-                                                        <div class="col-12 col-md-5 d-flex align-items-center">
+                                                        <div class="col-12 col-md-8 d-flex align-items-center">
                                                             <div class="d-flex hover-scroll-x">
                                                                 @foreach ($challenge->subtasks as $key => $mission)
                                                                 <div class="min-h-20px min-w-20px rounded-circle centered @if($mission->checked) bg-success text-white @elseif(!$mission->checked && $mission->date && strtotime($mission->date) < time()) bg-danger text-white @else bg-white text-primary @endif me-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="{{ $mission->name }} @if($mission->date) {{ '<br><b>' . date('d/m/Y', strtotime($mission->date)) . '</b>' }} @endif">
@@ -232,7 +245,7 @@
                                                         <div class="col-12 col-md-1 d-flex align-items-center">
                                                             @if ($challenge->date)
                                                                 <span class="badge badge-light-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<span class='text-primary fw-bold'>DEADLINE</span><br><b>{{ date('d/m/Y', strtotime($challenge->date)) }}</b>">
-                                                                    {{ ceil((strtotime($challenge->date) - time()) / (60 * 60 * 24)) }}
+                                                                    {{ ceil((strtotime($challenge->date) - time()) / (60 * 60 * 24)) }} dias
                                                                 </span>
                                                             @else
                                                                 <span class="badge badge-light">
