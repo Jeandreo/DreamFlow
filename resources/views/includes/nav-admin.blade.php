@@ -1,5 +1,5 @@
 <div class="page-title">
-    <h1 class="text-white fw-bold my-1 fs-2x text-center">
+    <h1 class="text-white fw-bold my-1 fs-3x text-center">
         {!! $title !!}
     </h1>
     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-6 my-1">
@@ -7,9 +7,9 @@
             {{ $phrase }}
         </li>
     </ul>
-    <div class="d-flex align-items-center justify-content-center">
+    {{-- <div class="d-flex align-items-center justify-content-center">
         <a href="{{ route('index') }}" class="btn btn-sm btn-light text-uppercase fw-bolder text-gray-700 m-2">Desempenho</a>
         <a href="{{ route('financial.index') }}" class="btn btn-sm btn-light text-uppercase fw-bolder text-gray-700 m-2">Financeiro</a>
         <a href="{{ route('financial.transactions.index') }}" class="btn btn-sm btn-light text-uppercase fw-bolder text-gray-700 m-2">Transações</a>
-    </div>
+    </div> --}}
 </div>

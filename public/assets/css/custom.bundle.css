@@ -270,7 +270,7 @@ input[type=text]:disabled {
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar {
-    background: linear-gradient(45deg, #1e1e2d, #001b5a);
+    background: linear-gradient(0deg, #090c11, #18202B);
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link.active {
@@ -337,9 +337,9 @@ input[type=text]:disabled {
 }
 
 .background-dashboard {
-    background: linear-gradient(45deg, #d405a5, #ff7800);
+    background: linear-gradient(linear-gradient(0deg, #090c11, #18202B));
     background-position: 0 0;
-    animation: animationBgDashboard 60s linear infinite;
+    animation: animationBgDashboard 500s linear infinite;
 }
 
 .dataTables_info {
@@ -375,4 +375,8 @@ input[type=text]:disabled {
 
 .shadow-light {
     box-shadow: 10px 10px 30px #0000000d;
+}
+
+.card {
+    box-shadow: 10px 10px 30px 0px rgb(76 87 125 / 8%);
 }

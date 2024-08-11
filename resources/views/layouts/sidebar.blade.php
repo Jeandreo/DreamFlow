@@ -5,8 +5,8 @@
    <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
       <!--begin::Logo image-->
       <a href="{{ route('index') }}">
-      <img alt="Logo" src="{{ asset('/assets/media/logos/dreamflow-pb.webp') }}" class="h-35px app-sidebar-logo-default"/>
-      <img alt="Logo" src="{{ asset('/assets/media/logos/favicon-pb.webp') }}" class="h-25px app-sidebar-logo-minimize"/>
+      <img alt="Logo" src="{{ asset('/assets/media/logos/logo-jeandreo.webp') }}" class="h-30px app-sidebar-logo-default"/>
+      <img alt="Logo" src="{{ asset('/assets/media/logos/favicon.webp') }}" class="h-35px app-sidebar-logo-minimize ms-n1"/>
       </a>
       <!--end::Logo image-->
       <!--begin::Sidebar toggle-->

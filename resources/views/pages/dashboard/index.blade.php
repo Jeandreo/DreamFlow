@@ -5,11 +5,13 @@
 <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
 @endsection
 @section('content')
-<div class="row pb-12 m-0 background-dashboard" style="background-image: url('{{ asset('/assets/media/images/bg_colors_03.jpg') }}');">
-    <div class="col-12">
-        <div class="toolbar py-15" id="kt_toolbar">
-            <div id="kt_toolbar_container" class=" container-xxl  d-flex justify-content-center">
-                @include('includes.nav-admin', ['title' => "Bom diiiiaa ". Auth::user()->name ."! ". randomEmoji(), 'phrase' => "“Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal"])
+<div class="row m-0 background-dashboard" style="background-image: url('{{ asset('assets/media/logos/background-pattern.webp') }}'); background-size: cover;">
+    <div style="background: linear-gradient(0deg, #090c11, #18202bf0);">
+        <div class="col-12">
+            <div class="toolbar py-20 mb-10" id="kt_toolbar">
+                <div id="kt_toolbar_container" class=" container-xxl  d-flex justify-content-center">
+                    @include('includes.nav-admin', ['title' => "Bom diiiiaa Capitão!", 'phrase' => "“Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal"])
+                </div>
             </div>
         </div>
     </div>
@@ -20,7 +22,7 @@
             <div id="kt_app_content_container" class="app-container  container-fluid ">
                 <div class="row mt-n20">
                     <div class="col-12">
-                        <div class="card mb-4 shadow">
+                        <div class="card mb-4">
                             <div class="card-body pb-5 px-2">
                                 <h2 class="fs-4 text-uppercase text-gray-700 text-center mb-5">
 									@if ($monthChallenge)
@@ -77,76 +79,136 @@
                     </div>
                     <div class="col">
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-3">
                                 <div class="row">
-                                    <div class="col-12">
-                                        <div class="card mb-4">
-                                            <div class="card-header border-0 py-5 d-block">
-                                                <h3 class="mb-0 text-center">
-                                                    <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">
-														@if($weekChallenge)
-														{{ $weekChallenge->name }}
-														@else
-														Sem <span class="text-danger">nada</span> para essa semana? 😑😡
-														@endif
-													</span>
-                                                </h3>
-                                                <p class="text-muted fw-semibold fs-7 text-center">
-                                                    Não tenha medo de desistir do bom para perseguir o ótimo.
-                                                </p>
-                                            </div>
-                                            <div class="card-body pt-0 px-2">
-                                                <div class="d-flex justify-content-center hover-scroll-x pb-3 pb-md-0">
-													@if ($weekChallenge)
-													<div class="d-flex">
-														@for ($currentDay = strtotime($weekChallenge->custom_start); $currentDay <= strtotime($weekChallenge->custom_end); $currentDay = strtotime('+1 day', $currentDay))
-                                                            @if (date('Y-m-d', $currentDay) <= date('Y-m-d'))
-															<div class="d-block @if(checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal') && checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal')->completed == true) bg-success @elseif(checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal') && checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal')->completed == false) bg-danger @else bg-primary @endif rounded py-2 px-2 mx-1 @if($weekChallenge) check-day @endif" data-day="{{ date('d', $currentDay) }}" data-type="semanal" data-challenge="{{ $weekChallenge->id }}">
-																<div class="h-25px w-25px min-h-25px min-w-25px rounded-circle d-flex align-items-center justify-content-center fw-bold bg-white text-primary">
-																	{{ str_pad(date('d', $currentDay), 2, '0', STR_PAD_LEFT) }}
-																</div>
-																<p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">
-																	{{ $daysOfWeek[date('D', $currentDay)] }}
-																</p>
-															</div>
-                                                            @else
-                                                                <div class="d-block bg-light rounded py-2 px-2 mx-1">
-                                                                    <div class="h-25px w-25px min-h-25px min-w-25px rounded-circle d-flex align-items-center justify-content-center fw-bold bg-white text-primary">
-                                                                        {{ str_pad(date('d', $currentDay), 2, '0', STR_PAD_LEFT) }}
-                                                                    </div>
-                                                                    <p class="fs-9 fw-bold text-center text-gray-700 mb-0 text-center mt-1 text-uppercase">
-                                                                        {{ $daysOfWeek[date('D', $currentDay)] }}
-                                                                    </p>
-                                                                </div>
-                                                            @endif
-														@endfor
-													</div>
-													@else
-														<div class="h-125px bg-light rounded w-100 mx-10 d-flex align-items-center justify-content-center">
-															<div class="text-center">
-																<p class="fw-bold text-gray-700 fs-4 mb-0">SEM DESAFIOS ESSA SEMANA 😔</p>
-																<p class="text-gray-600 fs-6">Que pena, parece que você não planejou nenhum desafio para si.</p>
-															</div>
-														</div>
-													@endif
-                                                </div>
-                                            </div>
+                                    <div class="col-12 mb-4">
+                                        <div class="d-flex align-items-center justify-content-center rounded p-5" style="background: linear-gradient(3deg, #e54a10, #f6a33d); box-shadow: 0px 0px 30px #ff9200a8;">
+                                            <span class="fw-bolder text-white fs-7 text-uppercase text-center">O Ano da Transformação para Prosperidade!</span>
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <div class="card mb-4">
-                                            <div class="card-body">
-                                                <textarea class="form-control form-control-solid" name="notes" rows="3" placeholder="Anotações aqui...">{{ Auth::user()->notes }}</textarea>
+                                        <div class="card mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-5">
+                                                    1
+                                                </span>
+                                                <span class="fw-bold text-gray-700">
+                                                   Saúde: Ter 86 Kg ou uma barriga tonificada!
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-5">
+                                                    2
+                                                </span>
+                                                <span class="fw-bold text-gray-700">
+                                                   MindSet: Ler 12 Livros no Ano!
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-5">
+                                                    3
+                                                </span>
+                                                <span class="fw-bold text-gray-700">
+                                                   Profissional: Profissionalizar RDS!
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-5">
+                                                    4
+                                                </span>
+                                                <span class="fw-bold text-gray-700">
+                                                   Gestão: Profissionalizar RDS!
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 d-grid align-items-stretch">
+                            <div class="col-12 col-md-4">
+                                <div class="card mb-4">
+                                    <div class="card-header border-0 py-5 d-block">
+                                        <h3 class="mb-0 text-center">
+                                            <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">
+                                                @if($weekChallenge)
+                                                {{ $weekChallenge->name }}
+                                                @else
+                                                Sem <span class="text-danger">nada</span> para essa semana? 😑😡
+                                                @endif
+                                            </span>
+                                        </h3>
+                                        <p class="text-muted fw-semibold fs-7 text-center">
+                                            Não tenha medo de desistir do bom para perseguir o ótimo.
+                                        </p>
+                                    </div>
+                                    <div class="card-body pt-0 px-2">
+                                        <div class="d-flex justify-content-center hover-scroll-x pb-3 pb-md-0">
+                                            @if ($weekChallenge)
+                                            <div class="d-flex">
+                                                @for ($currentDay = strtotime($weekChallenge->custom_start); $currentDay <= strtotime($weekChallenge->custom_end); $currentDay = strtotime('+1 day', $currentDay))
+                                                    @if (date('Y-m-d', $currentDay) <= date('Y-m-d'))
+                                                    <div class="d-block @if(checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal') && checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal')->completed == true) bg-success @elseif(checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal') && checkDayMonth(date('Y-m-' . date('d', $currentDay)), 'semanal')->completed == false) bg-danger @else bg-primary @endif rounded py-2 px-2 mx-1 @if($weekChallenge) check-day @endif" data-day="{{ date('d', $currentDay) }}" data-type="semanal" data-challenge="{{ $weekChallenge->id }}">
+                                                        <div class="h-25px w-25px min-h-25px min-w-25px rounded-circle d-flex align-items-center justify-content-center fw-bold bg-white text-primary">
+                                                            {{ str_pad(date('d', $currentDay), 2, '0', STR_PAD_LEFT) }}
+                                                        </div>
+                                                        <p class="fs-9 fw-bold text-center text-white mb-0 text-center mt-1 text-uppercase">
+                                                            {{ $daysOfWeek[date('D', $currentDay)] }}
+                                                        </p>
+                                                    </div>
+                                                    @else
+                                                        <div class="d-block bg-light rounded py-2 px-2 mx-1">
+                                                            <div class="h-25px w-25px min-h-25px min-w-25px rounded-circle d-flex align-items-center justify-content-center fw-bold bg-white text-primary">
+                                                                {{ str_pad(date('d', $currentDay), 2, '0', STR_PAD_LEFT) }}
+                                                            </div>
+                                                            <p class="fs-9 fw-bold text-center text-gray-700 mb-0 text-center mt-1 text-uppercase">
+                                                                {{ $daysOfWeek[date('D', $currentDay)] }}
+                                                            </p>
+                                                        </div>
+                                                    @endif
+                                                @endfor
+                                            </div>
+                                            @else
+                                                <div class="h-125px bg-light rounded w-100 mx-10 d-flex align-items-center justify-content-center">
+                                                    <div class="text-center">
+                                                        <p class="fw-bold text-gray-700 fs-4 mb-0">SEM DESAFIOS ESSA SEMANA 😔</p>
+                                                        <p class="text-gray-600 fs-6">Que pena, parece que você não planejou nenhum desafio para si.</p>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-body p-2">
+                                        <textarea class="form-control form-control-solid" name="notes" rows="4" placeholder="Anotações aqui...">{{ Auth::user()->notes }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-5 d-grid align-items-stretch">
+                                <div class="card mb-4">
+                                    <div class="card-body p-2 px-4">
+                                        <div class="row">
+                                            @for ($i = 1; $i <= 6; ++$i)
+                                                <div class="col-4 px-1 my-1">
+                                                    <img src="{{ asset('assets/media/stock/600x400/img-'.$i.'.jpg') }}" class="rounded-sm w-100">
+                                                </div>
+                                            @endfor
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-8 d-grid align-items-stretch">
                                 <div class="card mb-4">
                                     <div class="card-header border-0 py-5">
                                         <h3 class="card-title align-items-start flex-column">
-                                            <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Quais são as próximas conquistas?</span>
+                                            <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Próximas conquistas?</span>
                                             <span class="text-muted fw-semibold fs-7">O maior risco é não correr risco algum.</span>
                                         </h3>
                                     </div>
@@ -182,7 +244,7 @@
                                                 </div>
                                             @endforeach
                                         @else
-                                        <div class="bg-light rounded d-flex align-items-center justify-content-center h-100">
+                                        <div class="bg-light rounded d-flex align-items-center justify-content-center h-150px">
                                             <div class="text-center">
                                                 <p class="fw-bold text-gray-700 fs-3 mb-1">EIIIIITAAA VOCÊ ESTA SEM DESAFIOS 😱</p>
                                                 <p class="text-gray-600 fs-5">Para você ter um desafio, você precisa ter uma tarefa.</p>
@@ -212,9 +274,9 @@
                                             <div class="carousel-inner h-100">
                                             @foreach ($lists as $key => $list)
                                             <div class="carousel-item @if($key == 0)active @endif">
-                                                <div class="row h-100">
+                                                <div class="row h-150px">
                                                     @if ($list->items->count())
-                                                        @foreach ($list->items()->get()->take(8) as $item)
+                                                        @foreach ($list->items()->get()->take(6) as $item)
                                                         <div class="col-6 mb-2">
                                                             <a href="{{ route('catalogs.items.show', $item->id) }}">
                                                                 <div class="d-flex align-items-center">                                             
@@ -232,7 +294,7 @@
                                                         </div>
                                                         @endforeach
                                                     @else
-                                                    <div class="bg-light rounded d-flex align-items-center justify-content-center h-100">
+                                                    <div class="bg-light rounded d-flex align-items-center justify-content-center h-150px">
                                                         <div class="text-center">
                                                             <p class="fw-bold text-gray-700 fs-4 mb-0">SEM ITENS NA LISTA 🧐</p>
                                                             <p class="text-gray-600 fs-6">Adicione seus items e gerencie suas ideias aqui.</p>
@@ -273,7 +335,7 @@
                         <div class="card mb-4">
                             <div class="card-header border-0 py-5">
                                 <h3 class="card-title align-items-start flex-column">
-                                    <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Próximas tarefas</span>
+                                    <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Faça o que for preciso pela missão!</span>
                                     <span class="text-muted fw-semibold fs-7">Seja um destruidor de tarefas!</span>
                                 </h3>
                                 <div class="card-toolbar">
