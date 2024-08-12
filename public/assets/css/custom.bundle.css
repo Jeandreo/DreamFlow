@@ -380,3 +380,7 @@ input[type=text]:disabled {
 .card {
     box-shadow: 10px 10px 30px 0px rgb(76 87 125 / 8%);
 }
+
+.bg-gray-300 {
+    background-color: #e8e8e8;
+}

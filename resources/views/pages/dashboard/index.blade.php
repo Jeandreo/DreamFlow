@@ -194,22 +194,22 @@
                                     <div class="card-body p-2 px-4">
                                         <div class="row h-100">
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/amor.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image" style="height: 130px">
+                                                <img src="{{ findImage('mural/amor.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 130px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/porsche.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image" style="height: 130px">
+                                                <img src="{{ findImage('mural/porsche.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 130px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/amor_3.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image" style="height: 130px">
+                                                <img src="{{ findImage('mural/amor_3.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 130px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/duda.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image" style="height: 130px">
+                                                <img src="{{ findImage('mural/duda.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 130px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/Jeandreo-Forbes.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image" style="height: 130px">
+                                                <img src="{{ findImage('mural/Jeandreo-Forbes.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 130px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/maratona.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image" style="height: 130px">
+                                                <img src="{{ findImage('mural/maratona.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 130px">
                                             </div>
                                         </div>
                                     </div>
@@ -372,16 +372,32 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div>
-                              <!-- BEGIN: SEND TASKS -->
-                                @if (projects()->where('reminder', true)->first())
                                 <form action="#" method="POST" class="send-tasks">
                                     @csrf
-                                    <input type="hidden" name="project_id" value="{{ projects()->where('reminder', true)->first()->id }}">
-                                    <input type="text" name="name" class="form-control form-control-solid w-100 rounded mt-5" placeholder="Inserir nova tarefa">
+                                    <div class="d-flex h-40px mt-5">
+                                        <input type="text" name="name" class="form-control form-control-solid w-100 h-100 rounded-start border" placeholder="Inserir nova tarefa" style="border-radius: 10px 0px 0px 10px !important;">
+                                        <input type="text" class="form-control flatpickr rounded-0 text-center w-200px input bg-gray-300 border-0" placeholder="00/00/0000" name="date" value="{{ date('Y-m-d') }}" required/>
+                                        <input type="hidden" name="project_id" value="{{ projects()->where('reminder', true)->first()->id }}">
+                                        <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-200px rounded-0 background-project" style="background: {{ projects()->where('reminder', true)->first()->color }}">
+                                            <div class="w-200px h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
+                                                <p class="text-white fw-bold m-0 text-center project-name">{{ projects()->where('reminder', true)->first()->name }}</p>
+                                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
+                                                    @foreach ($projects as $project)
+                                                    <div class="menu-item px-3 mb-2">
+                                                        <span data-project="{{ $project->id }}" data-color="{{ $project->color }}" class="menu-link px-3 d-block text-center send-tasks-projects" style="background: {{ $project->color }}; color: white">
+                                                            {{ $project->name }}
+                                                        </span>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="w-50px bg-light"></div>
+                                        <button type="submit" class="border-0 w-60px bg-primary bg-hover-success rounded-end d-flex align-items-center justify-content-center">
+                                            <i class="fa-solid fa-paper-plane fs-4 text-white"></i>
+                                        </button>
+                                    </div>
                                 </form>
-                                @endif
-                              <!-- END: SEND TASKS -->
                             </div>
                         </div>
                     </div>

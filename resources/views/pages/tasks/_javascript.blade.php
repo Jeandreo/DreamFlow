@@ -103,6 +103,24 @@
         });
     });
 
+    // UPDATE STATUS
+    $(document).on('click', '.send-tasks-projects', function(e){
+        // GET DATA
+        var taskId = $(this).data('task');
+        var projectId = $(this).data('project');
+        var projectName = $(this).text();
+        var projectColor = $(this).data('color');
+
+        // GET ACTUAL PROJECT CONTAINER
+        var projectContainer = $(this).closest('.send-tasks');
+
+        // Altera nome e cor
+        projectContainer.find('[name="project_id"]').val(projectId);
+        projectContainer.find('.project-name').text(projectName);
+        projectContainer.find('.background-project').css('background', projectColor);
+
+    });
+
 
     // SEND NEW TASK
     $(document).on('submit', '.send-tasks', function(e){
@@ -113,6 +131,7 @@
         // GET TITLE OF TASK
         var inputName = $(this).find('[name="name"]');
         var project = $(this).find('[name="project_id"]').val();
+        var date = $(this).find('[name="date"]').val();
 
         // FIND WHERE INSERT
         var divNoTask = $(this).closest('.card-body').find('.no-tasks');
@@ -122,7 +141,7 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: 'POST',
             url: "{{ route('tasks.store') }}",
-            data: {project_id: project, name: inputName.val()},
+            data: {project_id: project, date: date, name: inputName.val()},
             success: function(data){
 
                 // CLEAN INPUT
@@ -332,26 +351,40 @@
 
     // UPDATE STATUS
     $(document).on('click', '.tasks-projects', function(e){
-        
         // GET DATA
         var taskId = $(this).data('task');
-        var statusId = $(this).data('status');
+        var projectId = $(this).data('project');
 
-        // GET ACTUAL STATUS
-        var status = $(this).closest('.actual-status');
+        // GET ACTUAL PROJECT CONTAINER
+        var projectContainer = $(this).closest('.actual-project');
 
         // AJAX
         $.ajax({
-            type:'PUT',
-            url: "{{ route('tasks.status') }}",
-            data: {_token: @json(csrf_token()), task_id: taskId, status_id: statusId},
-            success:function(data) {
+            type: 'PUT',
+            url: "{{ route('tasks.project') }}",
+            data: {_token: @json(csrf_token()), task_id: taskId, project_id: projectId},
+            success: function(data) {
                 // CHANGE TO NEW COLOR AND NAME STATUS
-                status.find('.status-name').text(data['name']);
-                status.css('background', data['color']);
+                projectContainer.find('.project-name').text(data['name']);
+                projectContainer.css('background', data['color']);
+
+                // CLEAR EXISTING STATUS OPTIONS
+                var statusMenu = projectContainer.next('.actual-status').find('.menu');
+
+                statusMenu.empty(); // Clear existing status options
+
+                // Populate new status options
+                data['statuses'].forEach(function(status) {
+                    statusMenu.append(
+                        '<div class="menu-item px-3 mb-2">' +
+                        '<span data-task="' + taskId + '" data-status="' + status.id + '" class="menu-link px-3 d-block text-center tasks-status" style="background: ' + status.color + '; color: white">' +
+                        '<span class="">' + status.name + '</span>' +
+                        '</span>' +
+                        '</div>'
+                    );
+                });
             }
         });
-
     });
 
     // UPDATE DATE
