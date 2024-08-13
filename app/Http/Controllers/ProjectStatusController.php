@@ -126,7 +126,7 @@ class ProjectStatusController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('index.index')
+            ->route('index')
             ->with('message', 'Status editado com sucesso.');
 
     }

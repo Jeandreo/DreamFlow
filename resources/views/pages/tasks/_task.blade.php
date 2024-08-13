@@ -31,7 +31,7 @@
             <i class="fa-regular fa-comments text-gray-300 p-2 ms-5"></i>
         </span>
         @endif
-        @if ($task->subtasks->count())
+        @if ($task->subtasks->where('status', true)->count())
         <i class="fa-solid fa-angle-right p-2 cursor-pointer text-gray-300 show-subtasks rotate @if($task->open_subtasks) rotate-90 @endif" data-task="{{ $task->id }}"></i>
         @endif
         <span class="task-priority d-none d-md-flex" data-task="{{ $task->id }}">
