@@ -40,8 +40,7 @@ class DashboardController extends Controller
         $already = $tasks->pluck('id')->toArray();
 
         // SEARCH
-        $tasks = ProjectTask::where('status', 1)
-                            ->where('date', '<=', date('Y-m-d'))
+        $tasks = ProjectTask::where('date', '<=', date('Y-m-d', strtotime('+1 days')))
                             ->where('checked', false)
                             ->whereNotNull('name')
                             ->where(function($query) use ($already) {
