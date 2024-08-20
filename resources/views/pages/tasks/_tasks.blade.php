@@ -1,5 +1,5 @@
 <!-- BEGIN:TASK AND SUBTASK -->
-<div class="draggable dmk-div-task" data-task="{{ $task->id }}">
+<div class="draggable dmk-div-task @if($task->date != now()) not-today @endif" @if($task->date != now()) style="display: none;" @endif data-task="{{ $task->id }}">
 	<div class="d-grid">
 		@include('pages.tasks._task')
 	</div>

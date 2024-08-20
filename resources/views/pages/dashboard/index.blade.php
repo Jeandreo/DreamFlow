@@ -352,9 +352,12 @@
                                     <span class="text-muted fw-semibold fs-7">Seja um destruidor de tarefas!</span>
                                 </h3>
                                 <div class="card-toolbar">
-                                    <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                    <i class="ki-duotone ki-category fs-6"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
-                                    </button>
+                                    <div class="form-check form-switch form-check-custom form-check-solid">
+                                        <label class="form-check-label cursor-pointer me-2 fw-bold text-danger text-gray-600 text-uppercase" for="tasks_today">
+                                            Todas
+                                        </label>
+                                        <input class="form-check-input h-20px cursor-pointer" type="checkbox" value="" id="tasks_today"/>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -439,12 +442,27 @@
                 url: "{{ route('users.notes') }}",
                 data: {_token: @json(csrf_token()), notes: notes},
                 success:function(data) {
-                    console.log(data);
                 }
             });
 
         }, doneTypingInterval);
     });
+
+    // Desmarca ou marca
+    $(document).on('change', '#tasks_today', function(){
+
+        // Verifica se esta checado
+        var checked = $(this).is(':checked');
+
+        // Verifica se esta checada
+        if(checked){
+            $('.not-today').show();
+        } else {
+            $('.not-today').hide();
+        }
+
+    });
+    
 </script>
 @include('pages.tasks._javascript')
 @endsection
