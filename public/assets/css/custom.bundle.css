@@ -384,3 +384,7 @@ input[type=text]:disabled {
 .bg-gray-300 {
     background-color: #e8e8e8;
 }
+
+.fc-event {
+    overflow: hidden;
+}

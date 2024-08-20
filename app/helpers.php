@@ -135,3 +135,21 @@ function checkDayMonth($date, $type){
     return $exists;
 
 }
+
+
+function formateDate($dataBrasileiro)
+{
+    // Divide a string da data em dia, mês e ano
+    $partes = explode('/', $dataBrasileiro);
+
+    // Verifica se as partes estão presentes e são válidas
+    if (count($partes) === 3 && checkdate($partes[1], $partes[0], $partes[2])) {
+        // Reorganiza as partes no formato americano (ano-mês-dia)
+        $dataAmericano = $partes[2] . '-' . $partes[1] . '-' . $partes[0];
+
+        return $dataAmericano;
+    } else {
+        // Caso a data brasileira seja inválida
+        return null;
+    }
+}

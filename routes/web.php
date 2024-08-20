@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CatalogItemController;
 use App\Http\Controllers\ChallengeController;
@@ -141,6 +142,22 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/desabilitar/{id}', [CatalogController::class, 'destroy'])->name('destroy');
             Route::get('/editar/{id}', [CatalogController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [CatalogController::class, 'update'])->name('update');
+        });
+
+    });
+
+    // PROFILE USER
+    Route::prefix('agendas')->group(function () {
+
+        // PROJECTS
+        Route::name('agenda.')->group(function () {
+            Route::get('/', [AgendaController::class, 'index'])->name('index');
+            Route::get('/adicionar', [AgendaController::class, 'create'])->name('create');
+            Route::post('/adicionar', [AgendaController::class, 'store'])->name('store');
+            Route::get('/visualizando/{id?}', [AgendaController::class, 'show'])->name('show');
+            Route::get('/desabilitar/{id}', [AgendaController::class, 'destroy'])->name('destroy');
+            Route::get('/editar/{id}', [AgendaController::class, 'edit'])->name('edit');
+            Route::put('/editar', [AgendaController::class, 'update'])->name('update');
         });
 
     });
