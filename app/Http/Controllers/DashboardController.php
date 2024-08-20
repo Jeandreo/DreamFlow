@@ -28,8 +28,8 @@ class DashboardController extends Controller
         $previousMonth = $actualMonth->copy()->subMonth();
 
         // GET TASKS
-        // $tasks = ProjectTask::where('date', '<=', date('Y-m-d', strtotime('+2 days')))
-        $tasks = ProjectTask::where('date', '<=', date('Y-m-d'))
+        // $tasks = ProjectTask::where('date', '<=', date('Y-m-d'))
+        $tasks = ProjectTask::where('date', '<=', date('Y-m-d', strtotime('+1 days')))
                             ->whereNull('task_id')
                             ->where('checked', false)
                             ->where('status', 1)
