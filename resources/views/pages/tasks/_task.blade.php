@@ -5,7 +5,7 @@
             <div style="background: {{ $task->project->color }};" class="rounded-start h-100 d-flex align-items-center color-task task-icons">
                 <div class="form-check form-check-custom form-check-solid py-2 px-5">
                     <input class="form-check-input w-15px h-15px cursor-pointer check-task task-main" data-task="{{ $task->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($task->checked == true) checked @endif/>
-                    <span class="show-task" data-task="{{ $task->id }}">
+                    <span class="show-task" data-task="{{ !$task->task_id ? $task->id : $task->task_id }}">
                         <i class="fa-solid fa-eye p-1 fs-5 text-white ms-5 cursor-pointer zoom-hover zoom-hover-03"></i>
                     </span>
                     <i class="fa-solid p-1 fa-list-check p-1 fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03 add-subtasks" data-task="{{ $task->id }}" data-project="{{ $task->project->id }}"></i>
@@ -33,6 +33,9 @@
         @endif
         @if ($task->subtasks->where('status', true)->count())
         <i class="fa-solid fa-angle-right p-2 cursor-pointer text-gray-300 show-subtasks rotate @if($task->open_subtasks) rotate-90 @endif" data-task="{{ $task->id }}"></i>
+        @endif
+        @if ($task->task_id)
+        <i class="fa-solid fa-diagram-predecessor pe-2 text-gray-300" data-bs-toggle="tooltip" title="{{ $task->father->name }}"></i>
         @endif
         <span class="task-priority d-none d-md-flex" data-task="{{ $task->id }}">
         <i class="fa-solid fa-font-awesome p-2 
