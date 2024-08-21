@@ -84,7 +84,9 @@ class DashboardController extends Controller
 
         // FILTER DATES
         if ($range == 'today') {
-            $tasks->where('date', '<=', date('Y-m-d', strtotime('+1 days')));
+            $tasks->whereDate('date', date('Y-m-d'));
+        } else {
+            $tasks->where('date', '<=', date('Y-m-d', strtotime('+2 days')));
         }
 
         // Executa a consulta para obter as tarefas principais
@@ -109,7 +111,9 @@ class DashboardController extends Controller
 
         // FILTER DATES
         if ($range == 'today') {
-            $subtasksAndTasks->where('date', '<=', date('Y-m-d', strtotime('+1 days')));
+            $subtasksAndTasks->whereDate('date', date('Y-m-d'));
+        } else {
+            $subtasksAndTasks->where('date', '<=', date('Y-m-d', strtotime('+2 days')));
         }
 
         // Encerra a consulta para obter as subtarefas
