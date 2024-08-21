@@ -128,7 +128,7 @@
                     <option></option>
                     @if(isset($users))
                         @foreach ($users as $user)
-                        <option value="{{ $user->id }}" data-kt-select2-user="{{ searchImage('users', $user->id) }}" @if(isset($content) && in_array($user->id, $content->usersParticipants->pluck('id')->all())) selected @endif>{{ Str::limit($user->name, 25) }}</option>
+                        <option value="{{ $user->id }}" data-kt-select2-user="{{ findImage('users', $user->id) }}" @if(isset($content) && in_array($user->id, $content->usersParticipants->pluck('id')->all())) selected @endif>{{ Str::limit($user->name, 25) }}</option>
                         @endforeach
                     @endif
                 </select>

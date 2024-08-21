@@ -107,12 +107,13 @@
                 },
                 eventDrop: function(info) {
 
+
                     // Atualiza a data no calendário ao arrastar tarefa
                     var start   = info.event.start;
                     var end     = info.event.end
-                    var type   = info.event.extendedProps.type;
-                    var id     = info.event.extendedProps.id;
-                    var allDay = info.event.allDay;
+                    var type    = info.event.extendedProps.type;
+                    var id      = info.event.extendedProps.id;
+                    var allDay  = info.event.allDay;
 
                     updateCalendar(id, type, start, end, allDay);
 
@@ -126,6 +127,8 @@
                     // Obtém dados para atualização
                     var type   = info.event.extendedProps.type;
                     var id     = info.event.extendedProps.id;
+
+                    console.log(id, type, start, end);
 
                     // Realiza a requisição AJAX
                     updateCalendar(id, type, start, end);
@@ -198,7 +201,7 @@
                     // Monta a string com o título e horários
                     var eventTitle = '';
                     if (type === 'meetings') {
-                        eventTitle = time + ' - <b>Reunião</b><div class="d-flex align-items-center overflow-hidden mt-n1">' + badge + arg.event.extendedProps.htmlTitle + '</div>';
+                        eventTitle = time + '<div class="d-flex align-items-center overflow-hidden mt-n1">' + badge + arg.event.extendedProps.htmlTitle + '</div>';
                     } else {
                         eventTitle = time + '<div class="d-flex align-items-center overflow-hidden mt-n1">' + badge + arg.event.title + '</div>';
                     }
@@ -253,10 +256,9 @@
 
                 $.ajax({
                     type: 'PUT',
-                    url: "{{ route('agenda.update') }}",
+                    url: "{{ route('agenda.calendar.update', '') }}/" + id,
                     data: {
                         _token: @json(csrf_token()),
-                        id: id,
                         type: type,
                         date_start: dateStart,
                         date_end: dateEnd ?? null,

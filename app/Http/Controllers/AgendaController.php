@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agenda;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,6 +39,30 @@ class AgendaController extends Controller
             'filterFor' => null,
         ]);
 
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+
+        // VERIFY IF EXISTS
+        if(!$content = $this->repository->find($id)){
+            return response()->json(['Meeting not found'], 200);
+        };
+
+        // Usuários
+        $users = User::where('status', 1)->get();
+
+        // GENERATES DISPLAY WITH DATA
+        return view('pages.agenda.edit')->with([
+            'content' => $content,
+            'users'   => $users,
+        ]);
     }
 
     /**
@@ -77,6 +102,25 @@ class AgendaController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        // VERIFY IF EXISTS
+        if(!$content = $this->repository->find($id)){
+            return response()->json(['Evento não '], 200);
+        };
+
+        // GENERATES DISPLAY WITH DATA
+        return view('pages.agenda.show')->with([
+            'content' => $content,
+        ]);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -87,22 +131,75 @@ class AgendaController extends Controller
     {
 
         // VERIFY IF EXISTS
-        if(!$content = $this->repository->find($id))
-        return redirect()->back();
+        if(!$content = $this->repository->find($id)){
+            return response()->json(['Meeting not found'], 200);
+        };
 
         // GET FORM DATA
         $data = $request->all();
 
+        // STORING AND FORMATING NEW DATA 
+        $data['created_by'] = Auth::id();
+
+        if($data['recurrent'] == 1){
+            $data['date_start']  = now();
+            $data['frequency'] = 'weekly';
+            $data['week_days'] = implode(',', $data['week_days']);
+            $data['date_end']  = null;
+            $data['hour_start'] = $data['start_at'] . ':00';
+            $data['hour_end'] = null;
+        } else {
+            $data['date_start'] = $data['date_end'] = formateDate($data['date_start']);
+        }
+
+        // Adiciona a reunião ao banco de dados
+        $content->update($data);
+
+        // Caso não seja uma reunião geral
+        if($data['general'] == '0'){
+
+            // Remova os relacionamentos antigos e insira os novos
+            $content->usersParticipants()->sync($data['users_id']);
+
+        }
+
+        // REDIRECT AND MESSAGES
+        return redirect()
+                ->back()
+                ->with('message', 'Reunião <b>'. $data['name'] . '</b> foi atualizada com sucesso.');
+
+    }
+
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function changeCalendar(Request $request, $id)
+    {
+
+        // VERIFY IF EXISTS
+        if(!$content = $this->repository->find($id))
+        return redirect()->back();
+
+        // GET ALL DATA
+        $data = $request->all();
+
         // UPDATE BY
         $data['updated_by'] = Auth::id();
-        
+
+        $data['start']  = formateDate($data['date_start']) . ' ' . $data['hour_start'] . ' ';
+        $data['end'] = formateDate($data['date_end']) . ' ' . $data['hour_end'] . ' ';
+
         // STORING NEW DATA
         $content->update($data);
 
         // REDIRECT AND MESSAGES
-        return redirect()
-            ->route('catalogs.index')
-            ->with('message', 'Catálogo editado com sucesso.');
+        return response('Changed With Success');
 
     }
 

@@ -157,7 +157,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/visualizando/{id?}', [AgendaController::class, 'show'])->name('show');
             Route::get('/desabilitar/{id}', [AgendaController::class, 'destroy'])->name('destroy');
             Route::get('/editar/{id}', [AgendaController::class, 'edit'])->name('edit');
-            Route::put('/editar', [AgendaController::class, 'update'])->name('update');
+            Route::put('/editar/{id?}', [AgendaController::class, 'update'])->name('update');
+            Route::put('/calendario/{id?}', [AgendaController::class, 'changeCalendar'])->name('calendar.update');
         });
 
     });
