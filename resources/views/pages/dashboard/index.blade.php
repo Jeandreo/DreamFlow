@@ -363,17 +363,10 @@
                             <div class="card-body pt-0">
                               <!-- BEGIN:TASKS -->
                               <div style="min-height: 50px;">
-								@if ($tasks->count())
-									@foreach ($tasks as $task)
-                                		@include('pages.tasks._tasks')
-									@endforeach
-								@endif
-                                <div class="no-tasks" @if ($tasks->count() != 0) style="display: none;" @endif>
-                                    <div class="rounded bg-light d-flex align-items-center justify-content-center h-50px">
-                                        <div class="text-center">
-                                            <p class="m-0 text-gray-600 fw-bold text-uppercase">Sem tarefas ainda em lembretes</p>
-                                        </div>
-                                    </div>
+                                <div id="tasks-list">
+                                    {{-- RESULTS HERE --}}
+                                    {{-- RESULTS HERE --}}
+                                    {{-- RESULTS HERE --}}
                                 </div>
                                 <form action="#" method="POST" class="send-tasks">
                                     @csrf
@@ -454,14 +447,30 @@
         // Verifica se esta checado
         var checked = $(this).is(':checked');
 
-        // Verifica se esta checada
-        if(checked){
-            $('.not-today').show();
-        } else {
-            $('.not-today').hide();
-        }
+        // Carrega lista
+        loadList(checked);
 
     });
+
+    // Carrega listagem
+    function loadList(checked = false){
+
+        // RANGE
+        var range = checked ? 'all' : 'today';
+
+        // AJAX
+        $.ajax({
+            type:'GET',
+            url: "{{ route('dashboard.list', '') }}/" + range,
+            success:function(response) {
+                $('#tasks-list').html(response);
+                generateFlatpickr();
+                KTMenu.createInstances();
+            }
+        });
+    }
+
+    loadList();
     
 </script>
 @include('pages.tasks._javascript')

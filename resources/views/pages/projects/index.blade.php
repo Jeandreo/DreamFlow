@@ -116,7 +116,7 @@
 								</div>
 							</div>
 							<div class="d-flex justify-content-between mt-6">
-								<a href="{{ route('index') }}" class="btn btn-sm fw-bold btn-secondary">Voltar</a>
+								<a href="{{ route('dashboard.index') }}" class="btn btn-sm fw-bold btn-secondary">Voltar</a>
 								<a href="{{ route('projects.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger">Adicionar Projeto</a>
 							</div>
 						</div>

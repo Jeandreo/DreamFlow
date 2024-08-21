@@ -64,7 +64,7 @@
         <!--begin::Javascript-->
         <script>
             var hostUrl = "assets/";
-			var globalUrl = "{{ route('index') }}";
+			var globalUrl = "{{ route('dashboard.index') }}";
 			var csrf = "{{ csrf_token() }}";
         </script>
         <!--begin::Global Javascript Bundle(mandatory for all pages)-->

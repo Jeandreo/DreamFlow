@@ -27,39 +27,8 @@ class DashboardController extends Controller
         // GET DAYS OF PREVIOUS MONTH
         $previousMonth = $actualMonth->copy()->subMonth();
 
-        // GET TASKS
-        // $tasks = ProjectTask::where('date', '<=', date('Y-m-d'))
-        $tasks = ProjectTask::where('date', '<=', date('Y-m-d', strtotime('+1 days')))
-                            ->whereNull('task_id')
-                            ->where('checked', false)
-                            ->where('status', 1)
-                            ->where('designated_id', Auth::id())
-                            ->get();
-
-        // GET IDS ALREADY
-        $already = $tasks->pluck('id')->toArray();
-
-        // SEARCH
-        $tasks = ProjectTask::where('status', 1)
-                            ->where('date', '<=', date('Y-m-d', strtotime('+1 days')))
-                            ->where('checked', false)
-                            ->whereNotNull('name')
-                            ->where(function($query) use ($already) {
-                                $query->whereNull('task_id')
-                                    ->orWhere(function($query) use ($already) {
-                                        $query->whereNotNull('task_id')
-                                            ->whereNotIn('task_id', $already);
-                                    });
-                            })
-                            ->where('designated_id', Auth::id())
-                            ->orderBy('date')
-                            ->get();
-
         // CHALLENGES
         $challenges = ProjectTask::where('status', 1)->where('date', '>=', now())->where('checked', false)->where('challenge', true)->where('created_by', Auth::id())->get();
-
-        // GET USERS FOR TASK
-        $users = User::where('status', 1)->get();
 
         // GET CHALLENGE
         $monthChallenge = Challenge::where('type', 'mensal')->where('date', date('m/Y'))->where('status', 1)->where('created_by', Auth::id())->first();
@@ -88,14 +57,76 @@ class DashboardController extends Controller
         return view('pages.dashboard.index')->with([
             'actualMonth' => $actualMonth,
             'previousMonth' => $previousMonth,
-            'tasks' => $tasks,
-            'users' => $users,
             'challenges' => $challenges,
             'daysOfWeek' => $daysOfWeek,
             'monthChallenge' => $monthChallenge,
             'weekChallenge' => $weekChallenge,
             'lists' => $lists,
             'projects' => $projects,
+        ]);
+
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list($range = 'today')
+    {
+
+        // GET MAIN TASKS
+        $tasks = ProjectTask::whereNull('task_id')
+        ->where('checked', false)
+        ->where('status', 1)
+        ->where('designated_id', Auth::id());
+
+        // FILTER DATES
+        if ($range == 'today') {
+        $tasks->whereDate('date', date('Y-m-d'));
+        }
+
+        // Executa a consulta para obter as tarefas principais
+        $tasks = $tasks->get();
+
+        // GET IDS ALREADY
+        $already = $tasks->pluck('id')->toArray();
+
+        // GET SUBTASKS EXCEPT MAINS
+        $subtasksAndTasks = ProjectTask::where('status', 1)
+            ->where('checked', false)
+            ->whereNotNull('name')
+            ->where(function($query) use ($already) {
+                $query->whereNull('task_id')
+                    ->orWhere(function($query) use ($already) {
+                        $query->whereNotNull('task_id')
+                                ->whereNotIn('task_id', $already);
+                    });
+            })
+            ->where('designated_id', Auth::id())
+            ->orderBy('date');
+
+        // FILTER DATES
+        if ($range == 'today') {
+            $subtasksAndTasks->whereDate('date', date('Y-m-d'));
+        }
+
+        // Encerra a consulta para obter as subtarefas
+        $tasks = $subtasksAndTasks->get();
+
+
+        // OBTÉM PROJETOS
+        $projects = Project::where('status', 1)->get();
+
+        // GET USERS FOR TASK
+        $users = User::where('status', 1)->get();
+
+        // RETURN VIEW WITH DATA
+        return view('pages.dashboard._list')->with([
+            'tasks' => $tasks,
+            'projects' => $projects,
+            'users' => $users,
         ]);
 
     }

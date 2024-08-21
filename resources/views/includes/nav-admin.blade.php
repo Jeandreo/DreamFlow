@@ -8,7 +8,7 @@
         </li>
     </ul>
     {{-- <div class="d-flex align-items-center justify-content-center">
-        <a href="{{ route('index') }}" class="btn btn-sm btn-light text-uppercase fw-bolder text-gray-700 m-2">Desempenho</a>
+        <a href="{{ route('dashboard.index') }}" class="btn btn-sm btn-light text-uppercase fw-bolder text-gray-700 m-2">Desempenho</a>
         <a href="{{ route('financial.index') }}" class="btn btn-sm btn-light text-uppercase fw-bolder text-gray-700 m-2">Financeiro</a>
         <a href="{{ route('financial.transactions.index') }}" class="btn btn-sm btn-light text-uppercase fw-bolder text-gray-700 m-2">Transações</a>
     </div> --}}

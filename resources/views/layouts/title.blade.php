@@ -4,7 +4,7 @@
 	</h1>
 	<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1 justify-content-center">
 	   	<li class="breadcrumb-item text-muted">
-		  	<a href="{{ route('index') }}" class="text-muted text-hover-primary">
+		  	<a href="{{ route('dashboard.index') }}" class="text-muted text-hover-primary">
 				Home
 			</a>
 		</li>

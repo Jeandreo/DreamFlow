@@ -41,7 +41,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->group(function () {
 
     // DASHBOARD
-    Route::get('/', [DashboardController::class, 'index'])->name('index');
+    Route::name('dashboard.')->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('index');
+        Route::get('/lista/{range?}', [DashboardController::class, 'list'])->name('list');
+    });
 
     // FINANCIAL
     Route::prefix('financeiro')->group(function () {
