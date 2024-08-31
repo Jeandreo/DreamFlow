@@ -412,9 +412,7 @@
 
 
         // REMOVE PREVIOUS CLASS
-        $('.task-date-' + taskId).removeClass('text-danger text-primary text-info text-gray-700');
-
-        console.log(difference);
+        $('.task-date-' + taskId).removeClass('text-danger text-primary text-success text-info text-gray-700');
 
         // VERIIFY DIFERENCE
         if (difference < 0) {
