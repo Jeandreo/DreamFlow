@@ -52,11 +52,11 @@
                 </div>
                 <input type="text" class="form-control border-0 form-control-sm w-auto text-center w-200px bg-white task-date
                 @if(date('Y-m-d', strtotime($content->date)) == date('Y-m-d'))
-                    text-primary
+                    text-success
                 @elseif(strtotime($content->date) < time())
                     text-danger
                 @elseif(\Carbon\Carbon::parse($content->date)->diffInDays() <= 2)
-                    text-info
+                    text-primary
                 @else
                     text-gray-700
                 @endif" disabled placeholder="Prazo da tarefa" value="@if($content->date) {{ date('d/m/Y', strtotime($content->date)) }} @endif"/>

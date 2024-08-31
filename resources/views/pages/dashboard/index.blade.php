@@ -466,6 +466,7 @@
                 $('#tasks-list').html(response);
                 generateFlatpickr();
                 KTMenu.createInstances();
+                $('body').tooltip({selector: '[data-bs-toggle="tooltip"]',html: true});
             }
         });
     }
