@@ -122,6 +122,7 @@ class FinancialTransactionsController extends Controller
             'wallets' => $wallets,
             'credits' => $credits,
             'categories' => $categories,
+            'pageClean' => true,
         ]);
 
     }
@@ -143,6 +144,7 @@ class FinancialTransactionsController extends Controller
             'wallets' => $wallets,
             'credits' => $credits,
             'categories' => $categories,
+            'pageClean' => true,
         ]);
 
     }

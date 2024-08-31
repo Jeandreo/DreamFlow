@@ -17,6 +17,7 @@ class Agenda extends Model
      */
     protected $fillable = [
         'name',
+        'category_id',
         'description',
         'general',
         'date_start',

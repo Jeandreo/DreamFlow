@@ -60,10 +60,6 @@
 						</div>
 						@endforeach
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
 
 <div class="modal fade" data-bs-focus="false" id="modal_task">

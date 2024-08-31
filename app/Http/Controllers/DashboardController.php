@@ -63,6 +63,7 @@ class DashboardController extends Controller
             'weekChallenge' => $weekChallenge,
             'lists' => $lists,
             'projects' => $projects,
+            'pageClean' => true,
         ]);
 
     }

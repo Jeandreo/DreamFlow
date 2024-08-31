@@ -36,6 +36,15 @@ function projects() {
     return $projects;
 }
 
+function randomColor() {
+    $letters = '0123456789ABCDEF';
+    $color = '#';
+    for ($i = 0; $i < 6; $i++) {
+        $color .= $letters[rand(0, 15)];
+    }
+    return $color;
+}
+
 function catalogs() {
     // Obtém o ID do usuário autenticado
     $userId = Auth::id();

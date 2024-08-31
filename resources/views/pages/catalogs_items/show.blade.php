@@ -81,10 +81,6 @@
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
 @include('includes.preview-image')
 @endsection

@@ -5,32 +5,19 @@
 @section('title-toolbar', 'Agenda')
 
 @section('content')
-	@include('layouts.title')
-	<div class="app-main flex-column flex-row-fluid " id="kt_app_main">
-		<div class="d-flex flex-column flex-column-fluid">                             
-			<div id="kt_app_content" class="app-content  flex-column-fluid py-6" >
-				<div id="kt_app_content_container" class="app-container  container-fluid ">
-					<div class="row">
-						<div class="col-12">
-							<div class="card">
-								<div class="card-body">
-									<div id="full-calendar">
-										{{-- CARREGA CALENDÁRIO --}}
-										{{-- CARREGA CALENDÁRIO --}}
-										{{-- CARREGA CALENDÁRIO --}}
-									</div>
-								</div>
-							</div>
-							<div class="d-flex justify-content-between mt-6">
-								<a href="{{ route('dashboard.index') }}" class="btn btn-sm fw-bold btn-secondary">Voltar</a>
-								<a href="{{ route('catalogs.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger" data-bs-toggle="modal" data-bs-target="#modal_meeting">Agendar Compromisso</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="d-flex justify-content-between mb-6">
+        <a href="{{ route('dashboard.index') }}" class="btn btn-sm fw-bold btn-secondary">Voltar</a>
+        <a href="{{ route('catalogs.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger" data-bs-toggle="modal" data-bs-target="#modal_meeting">Agendar Compromisso</a>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div id="full-calendar">
+                {{-- CARREGA CALENDÁRIO --}}
+                {{-- CARREGA CALENDÁRIO --}}
+                {{-- CARREGA CALENDÁRIO --}}
+            </div>
+        </div>
+    </div>
 	@include('pages.agenda._modals')
 @endsection
 
@@ -91,7 +78,7 @@
                     endTime: '18:30',
                 },
                 slotDuration: '00:30:00',
-                slotLabelInterval: '00:30:00',
+                slotLabelInterval: '01:00:00',
                 slotLabelFormat: {
                     hour: '2-digit',
                     minute: '2-digit',

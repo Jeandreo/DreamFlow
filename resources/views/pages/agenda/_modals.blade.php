@@ -3,7 +3,7 @@
         <div class="modal-content position-absolute">
             <div class="modal-header py-3 bg-dark border-0">
                 <div class="d-flex w-100">
-                    <h5 class="modal-title text-gray-300">Agende uma reunião</h5>
+                    <h5 class="modal-title text-gray-300">Agende um compromisso</h5>
                 </div>
                 <div class="btn btn-icon bg-pure-darker ms-2" data-bs-dismiss="modal" aria-label="Close">
                     <span class="svg-icon svg-icon-2x fw-bolder">X</span>
@@ -24,7 +24,7 @@
     </div>
 </div>
 <div class="modal fade" tabindex="-1" id="show_metting">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered mw-750px">
         <div class="modal-content position-absolute" id="show-meeting">
             {{-- RESULTS HERE --}}
             {{-- RESULTS HERE --}}
@@ -73,8 +73,11 @@
             url: url,
             success: function(response){
                 $('#edit-agenda').html(response);
-                $('.select-paticipants').select2();
+                $('#edit_metting select').select2({
+                    dropdownParent: $('#edit_metting')
+                });
                 $('#edit_metting').modal('show');
+                generateMasks();
             }
         });
     }

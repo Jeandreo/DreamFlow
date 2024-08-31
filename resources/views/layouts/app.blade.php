@@ -18,12 +18,16 @@
                 {{-- @include('layouts.header') --}}
                 <!--end::Header-->   
                 <!--begin::Wrapper-->
-                <div class="app-wrapper  flex-column flex-row-fluid position-relative mt-0" id="kt_app_wrapper">
+                <div class="app-wrapper flex-column flex-row-fluid position-relative mt-0" id="kt_app_wrapper">
                     <!--begin::Sidebar-->
                     @include('layouts.sidebar')
                     <!--end::Sidebar-->
                     <!--begin::Main-->
-                    @yield('content')
+                    <div class="app-main flex-column flex-row-fluid">
+                        <div class="@if(!isset($pageClean)) app-container container-fluid py-6 @else px-0 @endif">
+                            @yield('content')
+                        </div>
+                    </div>
                     <!--end:::Main-->
                     <!--begin::Toast-->
                     @if(session('message'))
