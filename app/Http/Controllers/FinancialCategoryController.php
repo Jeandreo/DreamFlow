@@ -28,7 +28,7 @@ class FinancialCategoryController extends Controller
     {
 
         // GET ALL DATA
-        $contents = $this->repository->orderBy('name', 'ASC')->whereNull('father_id')->where('created_by', Auth::id())->get()->groupBy('type');
+        $contents = $this->repository->orderBy('name', 'ASC')->whereNull('father_id')->get()->groupBy('type');
 
         // RETURN VIEW WITH DATA
         return view('pages.financial_categories.index')->with([

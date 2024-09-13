@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CatalogItemController;
 use App\Http\Controllers\ChallengeController;
@@ -124,13 +125,25 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [FinancialDebtsController::class, 'index'])->name('index');
                 Route::get('/adicionar', [FinancialDebtsController::class, 'create'])->name('create');
                 Route::post('/adicionar', [FinancialDebtsController::class, 'store'])->name('store');
-                Route::get('/visualizando/{id?}', [FinancialDebtsController::class, 'show'])->name('show');
                 Route::get('/desabilitar/{id}', [FinancialDebtsController::class, 'destroy'])->name('destroy');
                 Route::get('/editar/{id}', [FinancialDebtsController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [FinancialDebtsController::class, 'update'])->name('update');
             });
         });
 
+    });
+
+    // TRANSACTIONS
+    Route::prefix('orcamentos')->group(function () {
+        Route::name('budgets.')->group(function () {
+            Route::get('/', [BudgetController::class, 'index'])->name('index');
+            Route::get('/adicionar', [BudgetController::class, 'create'])->name('create');
+            Route::post('/adicionar', [BudgetController::class, 'store'])->name('store');
+            Route::get('/visualizando/{id?}', [BudgetController::class, 'show'])->name('show');
+            Route::get('/desabilitar/{id}', [BudgetController::class, 'destroy'])->name('destroy');
+            Route::get('/editar/{id}', [BudgetController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}', [BudgetController::class, 'update'])->name('update');
+        });
     });
 
     // PROFILE USER

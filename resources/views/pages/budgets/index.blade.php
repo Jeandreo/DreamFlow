@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title-page', 'Débitos')
+@section('title-page', 'Orçamentos')
 
-@section('title-toolbar', 'Débitos')
+@section('title-toolbar', 'Orçamentos')
 
 @section('content')
 	@include('layouts.title')
@@ -16,7 +16,8 @@
 								<th width="4%" class="pe-0 ps-5">ID</th>
 								<th>Nome</th>
 								<th>Descrição</th>
-								<th>Valor</th>
+								<th>Valor Previsto</th>
+								<th>Valor Gasto</th>
 								<th class="text-center">Status</th>
 								<th class="text-center" width="165px">
 									<span>Ações</span>
@@ -32,7 +33,7 @@
 									</span>
 								</td>
 								<td>
-									<a href="{{ route('financial.debits.edit', $content->id) }}" class="text-gray-800 text-hover-primary fs-6 fw-normal">
+									<a href="{{ route('budgets.show', $content->id) }}" class="text-gray-800 text-hover-primary fs-6 fw-normal">
 										{{ $content->name }}
 									</a>
 								</td>
@@ -44,6 +45,11 @@
 									@else
 										<span class="badge badge-light">-</span>
 									@endif
+								</td>
+								<td>
+									<span class="text-gray-800 fs-6 fw-normal">
+										R$ {{ number_format($content->total_expected, 2, ',', '.') }}
+									</span>
 								</td>
 								<td>
 									<span class="text-gray-800 fs-6 fw-normal">
@@ -62,10 +68,10 @@
 									@endif
 								</td>
 								<td class="text-center">
-									<a href="{{ route('financial.debits.edit', $content->id) }}" class="btn btn-sm btn-light btn-active-light-success btn-icon">
+									<a href="{{ route('budgets.edit', $content->id) }}" class="btn btn-sm btn-light btn-active-light-success btn-icon">
 										<i class="fa-solid fa-pen-to-square "></i>
 									</a>
-									<a href="{{ route('financial.debits.destroy', $content->id) }}" class="btn btn-sm btn-light btn-active-light-danger btn-icon">
+									<a href="{{ route('budgets.destroy', $content->id) }}" class="btn btn-sm btn-light btn-active-light-danger btn-icon">
 										<i class="fa-solid fa-trash-can"></i>
 									</a>
 								</td>
@@ -77,7 +83,7 @@
 			</div>
 			<div class="d-flex justify-content-between mt-6">
 				<a href="{{ route('dashboard.index') }}" class="btn btn-sm fw-bold btn-secondary">Voltar</a>
-				<a href="{{ route('financial.debits.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger">Adicionar Débito</a>
+				<a href="{{ route('budgets.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger">Adicionar Orçamento</a>
 			</div>
 		</div>
 	</div>

@@ -28,7 +28,7 @@ class FinancialInstitutionController extends Controller
     {
 
         // GET ALL DATA
-        $contents = $this->repository->orderBy('name', 'ASC')->where('created_by', Auth::id())->get();
+        $contents = $this->repository->orderBy('name', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.financial_institutions.index')->with([

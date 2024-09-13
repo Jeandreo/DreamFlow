@@ -1,4 +1,4 @@
-<div class="page-title d-flex flex-column justify-content-center flex-wrap mt-5">
+<div class="page-title d-flex flex-column justify-content-center flex-wrap mb-5">
 	<h1 class="page-heading text-gray-700 fw-bold fs-3 flex-column justify-content-center my-0 text-center">
 	   @yield('title-toolbar', '#######')
 	</h1>

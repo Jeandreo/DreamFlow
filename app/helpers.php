@@ -138,7 +138,7 @@ function hex2rgb($colour, $opacity) {
 function checkDayMonth($date, $type){
 
     // VERIFY IF COMPLETED IN THE DAY
-    $exists = ChallengeCompleted::where('type', $type)->where('date', $date)->where('created_by', Auth::id())->first();
+    $exists = ChallengeCompleted::where('type', $type)->where('date', $date)->first();
 
     // RETURN
     return $exists;

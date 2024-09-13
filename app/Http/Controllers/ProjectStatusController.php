@@ -29,7 +29,7 @@ class ProjectStatusController extends Controller
     {
 
         // GET ALL DATA
-        $contents = Project::orderBy('name', 'ASC')->where('created_by', Auth::id())->get();
+        $contents = Project::orderBy('name', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.statuses.index')->with([

@@ -220,6 +220,10 @@
                             <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.debits.index') }}">
                                 Débitos
                             </a>
+                            <br>
+                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('budgets.index') }}">
+                                Compras do mês
+                            </a>
                         </div>
                     </div>
                 </div>

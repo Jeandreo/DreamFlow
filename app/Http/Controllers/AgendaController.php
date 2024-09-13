@@ -29,7 +29,7 @@ class AgendaController extends Controller
     {
 
         // GET ALL DATA
-        $contents = $this->repository->orderBy('name', 'ASC')->where('created_by', Auth::id())->get();
+        $contents = $this->repository->orderBy('name', 'ASC')->get();
         $agenda = $this->meetingsToEvents($contents);
 
         // RETURN VIEW WITH DATA

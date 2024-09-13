@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FinancialCreditCard;
-use App\Models\FinancialInstitution;
-use App\Models\FinancialTransactions;
-use App\Models\FinancialWallet;
+use App\Models\Budget;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class FinancialCreditCardController extends Controller
+class BudgetController extends Controller
 {
     protected $request;
     private $repository;
     
-    public function __construct(Request $request, FinancialCreditCard $content)
+    public function __construct(Request $request, Budget $content)
     {
         
         $this->request = $request;
@@ -34,7 +31,7 @@ class FinancialCreditCardController extends Controller
         $contents = $this->repository->orderBy('name', 'ASC')->get();        
 
         // RETURN VIEW WITH DATA
-        return view('pages.financial_credit.index')->with([
+        return view('pages.budgets.index')->with([
             'contents' => $contents,
         ]);
 
@@ -48,15 +45,8 @@ class FinancialCreditCardController extends Controller
     public function create()
     {
 
-        // GET DATA
-        $wallets = FinancialWallet::where('status', 1)->get();
-        $institutions = FinancialInstitution::where('status', 1)->get();
-
         // RENDER VIEW
-        return view('pages.financial_credit.create')->with([
-            'wallets' => $wallets,
-            'institutions' => $institutions,
-        ]);
+        return view('pages.budgets.create');
     } 
 
     /**
@@ -72,7 +62,7 @@ class FinancialCreditCardController extends Controller
         $data = $request->all();
 
         // FORMAT DATA
-        $data['limit'] = toDecimal($data['limit']);
+        $data['total_expected'] = toDecimal($data['total_expected']);
 
         // CREATED BY
         $data['created_by'] = Auth::id();
@@ -82,9 +72,26 @@ class FinancialCreditCardController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-                ->route('financial.credit.cards.index')
-                ->with('message', 'Cartão adicionado com sucesso.');
+                ->route('budgets.index')
+                ->with('message', 'Orçamento adicionado com sucesso.');
 
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        // GET ALL DATA
+        $contents = $this->repository->find($id);
+
+        // RETURN VIEW WITH DATA
+        return view('pages.budgets.show')->with([
+            'contents' => $contents,
+        ]);
     }
 
     /**
@@ -97,17 +104,13 @@ class FinancialCreditCardController extends Controller
     {
         // GET ALL DATA
         $content = $this->repository->find($id);
-        $wallets = FinancialWallet::where('status', 1)->get();
-        $institutions = FinancialInstitution::where('status', 1)->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
 
         // GENERATES DISPLAY WITH DATA
-        return view('pages.financial_credit.edit')->with([
+        return view('pages.budgets.edit')->with([
             'content' => $content,
-            'wallets' => $wallets,
-            'institutions' => $institutions,
         ]);
     }
 
@@ -129,7 +132,7 @@ class FinancialCreditCardController extends Controller
         $data = $request->all();
 
         // FORMAT DATA
-        $data['limit'] = toDecimal($data['limit']);
+        $data['total_expected'] = toDecimal($data['total_expected']);
 
         // UPDATE BY
         $data['updated_by'] = Auth::id();
@@ -139,35 +142,8 @@ class FinancialCreditCardController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('financial.credit.cards.index')
-            ->with('message', 'Cartão editado com sucesso.');
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function transactions(Request $request)
-    {
-
-        // VERIFY IF EXISTS
-        if(!$content = $this->repository->find($request->credit_card_id))
-        return redirect()->back();
-
-        $transactions = FinancialTransactions::where('date_payment', '>=', $request->dateBegin)
-                                                ->where('date_payment', '<=', $request->dateEnd)
-                                                ->where('credit_card_id', $request->credit_card_id)
-                                                ->where('fature', false)
-                                                ->get();
-
-       // RETURN VIEW WITH DATA
-       return view('pages.financial_credit._transactions')->with([
-            'transactions' => $transactions,
-        ]);
+            ->route('budgets.index')
+            ->with('message', 'Orçamento editado com sucesso.');
 
     }
 
@@ -189,8 +165,8 @@ class FinancialCreditCardController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('financial.credit.cards.index')
-            ->with('message', 'Cartão ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->route('budgets.index')
+            ->with('message', 'Orçamento ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
 
     }
 }

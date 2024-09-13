@@ -28,13 +28,13 @@ class DashboardController extends Controller
         $previousMonth = $actualMonth->copy()->subMonth();
 
         // CHALLENGES
-        $challenges = ProjectTask::where('status', 1)->where('date', '>=', now())->where('checked', false)->where('challenge', true)->where('created_by', Auth::id())->get();
+        $challenges = ProjectTask::where('status', 1)->where('date', '>=', now())->where('checked', false)->where('challenge', true)->get();
 
         // GET CHALLENGE
-        $monthChallenge = Challenge::where('type', 'mensal')->where('date', date('m/Y'))->where('status', 1)->where('created_by', Auth::id())->first();
+        $monthChallenge = Challenge::where('type', 'mensal')->where('date', date('m/Y'))->where('status', 1)->first();
 
         // GET WEEK CHALLENGE
-        $weekChallenge = Challenge::where('type', 'semanal')->where('custom_start', '<=', now())->where('custom_end', '>=', now())->where('status', 1)->where('created_by', Auth::id())->first();
+        $weekChallenge = Challenge::where('type', 'semanal')->where('custom_start', '<=', now())->where('custom_end', '>=', now())->where('status', 1)->first();
 
         // FORMAT DAYS
         $daysOfWeek = [
@@ -48,7 +48,7 @@ class DashboardController extends Controller
         ];
 
         // OBTÉM LISTAS
-        $lists = Catalog::where('status', 1)->orderBy('name', 'ASC')->where('created_by', Auth::id())->get();
+        $lists = Catalog::where('status', 1)->orderBy('name', 'ASC')->get();
 
         // OBTÉM PROJETOS
         $projects = Project::where('status', 1)->get();

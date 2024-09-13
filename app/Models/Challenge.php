@@ -70,7 +70,7 @@ class Challenge extends Model
 
     public function completed($date){
 
-        return ChallengeCompleted::where('challenge_id', $this->id)->where('date', $date)->where('created_by', Auth::id())->first()->completed ?? null;
+        return ChallengeCompleted::where('challenge_id', $this->id)->where('date', $date)->first()->completed ?? null;
 
     }
 

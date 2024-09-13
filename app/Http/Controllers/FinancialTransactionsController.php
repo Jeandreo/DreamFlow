@@ -542,7 +542,7 @@ class FinancialTransactionsController extends Controller
         ];
         
         // COUNT TOTAL RECORDS
-        $totalRecords = count($data);
+        $totalRecords = count($transactions);
 
         // Remove os ajustes de carteira
         // $data = collect($data)->where('adjustment', false);
@@ -648,6 +648,64 @@ class FinancialTransactionsController extends Controller
             ->toJson();
     }
 
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function apiTransactions(Request $request)
+    {
+
+        // Inicia a consulta com junções e seleções
+        $query = $this->transactions($request);
+        
+        // Transações
+        $transactions = $query->get()->toArray();
+
+        // Obtém as transações recorrente
+        $recurrents = $this->recurringTransactions($request, $transactions);
+
+        // Mescla as duas coleções
+        $transactions = collect($transactions)->merge($recurrents);
+
+        // Obtém Faturas
+        $data = $this->fatureTransactions($transactions); 
+
+        // Remove as transações de cartão
+        $data = array_filter($data->toArray(), function($transaction) {
+            return !($transaction->credit_card_id && $transaction->fature == 0);
+        });
+
+        // Organiza a coleção
+        $collection = collect($data);
+
+        // Agrupamento dos resultados esperados e lançados
+        $expected = [
+            'total' => $collection->sum('value'),
+            'revenue' => $collection->where('value', '>', 0)->sum('value'),
+            'expense' => $collection->where('value', '<', 0)->sum('value'),
+        ];
+
+        $current = [
+            'total' => $collection->where('paid', true)->sum('value'),
+            'revenue' => $collection->where('paid', true)->where('value', '>', 0)->sum('value'),
+            'expense' => $collection->where('paid', true)->where('value', '<', 0)->sum('value'),
+        ];
+        
+        // COUNT TOTAL RECORDS
+        $totalRecords = count($transactions);
+        
+        // Retorna para API
+        return response()->json([
+            'transactions' => $transactions,
+            'expected' => $expected,
+            'current' => $current,
+            'totalRecords' => $totalRecords,
+        ]);
+
+    }
+
     /**
      * Inicializa a consulta com junções e seleção de colunas.
      *
@@ -709,7 +767,11 @@ class FinancialTransactionsController extends Controller
 
         $dateBegin = $request->input('date_begin');
         $dateEnd = $request->input('date_end');
-        $query->whereBetween('financial_transactions.date_payment', [$dateBegin, $dateEnd]);
+
+        // Se estiver filtrando por data
+        if($dateBegin && $dateEnd){
+            $query->whereBetween('financial_transactions.date_payment', [$dateBegin, $dateEnd]);
+        }
 
         // Executa consulta em trás array
         return $query;
