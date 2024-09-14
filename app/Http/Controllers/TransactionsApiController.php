@@ -15,7 +15,7 @@ class TransactionsApiController extends Controller
     public function processing()
     {
 
-        $transactionsController = new FinancialTransactionsController();
+        $transactionsController = new FinancialTransactionsController( );
 
         // Inicia a consulta com junções e seleções
         $query = $this->transactions($request);
