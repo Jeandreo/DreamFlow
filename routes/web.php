@@ -22,9 +22,6 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\UserController;
-use App\Models\ChallengeMonthly;
-use App\Models\FinancialCreditCard;
-use App\Models\ProjectTask;
 use Illuminate\Support\Facades\Route;
 
 /*
