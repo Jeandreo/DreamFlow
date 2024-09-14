@@ -659,15 +659,15 @@ class FinancialTransactionsController extends Controller
 
         // Inicia a consulta com junções e seleções
         $query = $this->transactions($request);
-        
-        // Apenas os débitos por enquanto
-        $query = $query->where('value', '<=', 0);
 
         // Transações
         $transactions = $query->get()->toArray();
 
         // Obtém as transações recorrente
         $recurrents = $this->recurringTransactions($request, $transactions);
+        
+        // Apenas os débitos por enquanto
+        $recurrents = $recurrents->where('value', '<=', 0);
 
         // Mescla as duas coleções
         $transactions = collect($transactions)->merge($recurrents);
