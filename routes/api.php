@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthApiController;
 use App\Http\Controllers\FinancialTransactionsController;
+use App\Http\Controllers\TransactionsApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +21,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [AuthApiController::class, 'auth']);
-Route::get('/transacoes', [FinancialTransactionsController::class, 'apiTransactions']);
+// Autenticação
+Route::prefix('autenticacao')->group(function () {
+    Route::post('/login', [AuthApiController::class, 'auth']);
+});
+
+// Transações
+Route::prefix('financeiro')->group(function () {
+    Route::get('/transacoes', [TransactionsApiController::class, 'getTransactions']);
+    Route::get('/carteiras-e-cartoes', [TransactionsApiController::class, 'getWalletsCredits']);
+    Route::get('/visualizar/{id}', [TransactionsApiController::class, 'show']);
+});

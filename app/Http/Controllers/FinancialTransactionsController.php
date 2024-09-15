@@ -113,7 +113,6 @@ class FinancialTransactionsController extends Controller
         // Obtém cartões de crédito
         $wallets = FinancialWallet::where('status', 1)->get();
         $credits = FinancialCreditCard::where('status', 1)->get();
-        $categories = FinancialCategory::where('status', 1)->get();
 
         return view('pages.financial.index')->with([
             'values' => $values,
@@ -121,7 +120,6 @@ class FinancialTransactionsController extends Controller
             'monthNames' => array_values($monthNames),
             'wallets' => $wallets,
             'credits' => $credits,
-            'categories' => $categories,
             'pageClean' => true,
         ]);
 
@@ -648,70 +646,12 @@ class FinancialTransactionsController extends Controller
             ->toJson();
     }
 
-    
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function apiTransactions(Request $request)
-    {
-
-        // Inicia a consulta com junções e seleções
-        $query = $this->transactions($request);
-        
-        // Transações
-        $transactions = $query->get()->toArray();
-
-        // Obtém as transações recorrente
-        $recurrents = $this->recurringTransactions($request, $transactions);
-
-        // Mescla as duas coleções
-        $transactions = collect($transactions)->merge($recurrents);
-
-        // Obtém Faturas
-        $data = $this->fatureTransactions($transactions); 
-
-        // Remove as transações de cartão
-        $data = array_filter($data->toArray(), function($transaction) {
-            return !($transaction->credit_card_id && $transaction->fature == 0);
-        });
-
-        // Organiza a coleção
-        $collection = collect($data);
-
-        // Agrupamento dos resultados esperados e lançados
-        $expected = [
-            'total' => $collection->sum('value'),
-            'revenue' => $collection->where('value', '>', 0)->sum('value'),
-            'expense' => $collection->where('value', '<', 0)->sum('value'),
-        ];
-
-        $current = [
-            'total' => $collection->where('paid', true)->sum('value'),
-            'revenue' => $collection->where('paid', true)->where('value', '>', 0)->sum('value'),
-            'expense' => $collection->where('paid', true)->where('value', '<', 0)->sum('value'),
-        ];
-        
-        // COUNT TOTAL RECORDS
-        $totalRecords = count($transactions);
-        
-        // Retorna para API
-        return response()->json([
-            'transactions' => $transactions,
-            'expected' => $expected,
-            'current' => $current,
-            'totalRecords' => $totalRecords,
-        ]);
-
-    }
-
     /**
      * Inicializa a consulta com junções e seleção de colunas.
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function transactions($request){
+    public function transactions($request){
 
         // Inicia a consulta
         $query = DB::table('financial_transactions');
@@ -783,7 +723,7 @@ class FinancialTransactionsController extends Controller
      * @param \Illuminate\Support\Collection $data
      * @return \Illuminate\Support\Collection
      */
-    protected function fatureTransactions($data)
+    public function fatureTransactions($data)
     {
         // Agrupa as compras no cartão de crédito em que não foram geradas em uma fatura
         $faturesCredit = $data->where('credit_card_id', true)->whereNull('fature_id');
@@ -924,7 +864,7 @@ class FinancialTransactionsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function search($query, $request)
+    public function search($query, $request)
     {
         // Pesquisa por termos
         if ($request->searchBy != '') {
@@ -954,7 +894,7 @@ class FinancialTransactionsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function ordering($query, $request)
+    public function ordering($query, $request)
     {
         // Ordenação
         if ($request->order_by) {
