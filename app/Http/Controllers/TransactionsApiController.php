@@ -78,18 +78,24 @@ class TransactionsApiController extends Controller
      */
     public function getWalletsCredits()
     {
-
         // Obtém cartões de crédito
-        $wallets = FinancialWallet::where('status', 1)->get();
-        $credits = FinancialCreditCard::where('status', 1)->get();
-        
-        // Retorna para API
-        return response()->json([
-            'wallets' => $wallets,
-            'credits' => $credits,
-        ]);
+        $wallets = FinancialWallet::where('status', 1)->get()->map(function($wallet) {
+            $wallet->type = 'wallet';
+            return $wallet;
+        });
 
+        $credits = FinancialCreditCard::where('status', 1)->get()->map(function($credit) {
+            $credit->type = 'credit';
+            return $credit;
+        });
+        
+        // Combina os dados em um único array
+        $combined = $wallets->merge($credits);
+
+        // Retorna para API
+        return response()->json($combined);
     }
+
 
     /**
      * Show the form for editing the specified resource.
