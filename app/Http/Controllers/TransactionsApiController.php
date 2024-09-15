@@ -110,10 +110,10 @@ class TransactionsApiController extends Controller
 
         // GENERATES DISPLAY WITH DATA
         return response()->json([
-            'content' => $content,
-            'wallets' => $wallets,
-            'credits' => $credits,
-            'categories' => $categories,
+            'transaction' => $content,
+            'wallets'     => $wallets,
+            'credits'     => $credits,
+            'categories'  => $categories,
         ]);
     }
 
