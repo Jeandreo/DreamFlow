@@ -82,10 +82,11 @@ class TransactionsApiController extends Controller
         
         // COUNT TOTAL RECORDS
         $totalRecords = count($transactions);
-        
+
         // Retorna para API
         return response()->json([
             'transactions' => $transactions,
+            'transactionsFilter' => $collection,
             'expected' => $expected,
             'current' => $current,
             'totalRecords' => $totalRecords,
