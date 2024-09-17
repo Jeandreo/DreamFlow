@@ -99,6 +99,20 @@ class TransactionsApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function categories()
+    {
+        // Cartegorias
+        $categories = FinancialCategory::where('status', 1)->get();
+
+        // Retorna para API
+        return response()->json($categories);
+    }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function getWalletsCredits()
     {
         // Obtém cartões de crédito

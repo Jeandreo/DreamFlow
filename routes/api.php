@@ -30,5 +30,6 @@ Route::prefix('autenticacao')->group(function () {
 Route::prefix('financeiro')->group(function () {
     Route::get('/transacoes', [TransactionsApiController::class, 'getTransactions']);
     Route::get('/carteiras-e-cartoes', [TransactionsApiController::class, 'getWalletsCredits']);
+    Route::get('/categorias', [TransactionsApiController::class, 'categories']);
     Route::get('/visualizar/{id}', [TransactionsApiController::class, 'show']);
 });
