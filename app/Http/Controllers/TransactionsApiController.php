@@ -86,7 +86,7 @@ class TransactionsApiController extends Controller
 
         // Retorna para API
         return response()->json([
-            'transactions' => $transactions,
+            'transactions' => $collection,
             'expected' => $expected,
             'current' => $current,
             'totalRecords' => $totalRecords,
