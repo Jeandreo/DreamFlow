@@ -3,14 +3,14 @@
 <input type="hidden" name="preview" value="">
 @endif
 <div class="row">
-    @if(!isset($content)) <input type="hidden" name="type" value="" id="type-transaction"> @endif
+    @if(!isset($content))<input type="hidden" name="type" value="@if(isset($type)){{ $type }}@endif">@endif
     <div class="col mb-5">
         <label class="required form-label fw-bold">Descrição:</label>
         <input type="text" class="form-control form-control-solid" placeholder="Descreva a compra..." name="name" value="{{ $content->name ?? old('name') }}" required/>
     </div>
     <div class="col-4 mb-5">
         <label class="required form-label fw-bold">Método:</label>
-        <select class="form-select form-select-solid select-cards" name="wallet_or_credit" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="#modal_trasaction" @endif required>
+        <select class="form-select form-select-solid select-cards" name="wallet_or_credit" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="{{ $modal }}" @endif required>
             <option value=""></option>
             @foreach ($wallets as $wallet)
             <option value="wallet_{{ $wallet->id }}" @if(isset($content) && $content->wallet_id == $wallet->id) selected @endif data-type="wallet">{{ $wallet->name }}</option>
@@ -30,17 +30,23 @@
         <label class="required form-label fw-bold">Data da compra:</label>
         <input type="text" class="form-control form-control-solid flatpickr" placeholder="00/00/0000" name="date_purchase" value="{{ $content->venciment ?? date('Y-m-d') }}" required/>
     </div>
-    @if (!isset($content) || $content->adjustment === 0 && $content->fature === 0)
-    <div class="col-6 mb-5">
-        <label class="required form-label fw-bold">Categoria:</label>
-        <select class="form-select form-select-solid select-categories" name="category_id" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="#modal_trasaction" @endif required>
-            <option></option>
-            @foreach ($categories as $category)
-            <option value="{{ $category->id }}" @if(isset($content) && $content->category_id == $category->id) selected @endif data-color="@if($category->father){{ $category->father->color }}@else{{ $category->color }}@endif" data-icon="@if($category->father){{ str_replace(' ', ',', $category->father->icon) }}@else{{ str_replace(' ', ',', $category->icon) }}@endif">{{ $category->name }}</option>
-            @endforeach
-        </select>
-    </div>
-    @endif
+        @if (!isset($content) || $content->adjustment === 0 && $content->fature === 0)
+        <div class="col-6 mb-5">
+            <label class="required form-label fw-bold">Categoria:</label>
+            <select class="form-select form-select-solid select-categories" name="category_id" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="{{ $modal }}" @endif required>
+                <option></option>
+                @if(isset($type) && $type == 'revenue')
+                    @foreach ($categories->where('type', 'revenue') as $category)
+                    <option value="{{ $category->id }}" @if(isset($content) && $content->category_id == $category->id) selected @endif data-color="@if($category->father){{ $category->father->color }}@else{{ $category->color }}@endif" data-icon="@if($category->father){{ str_replace(' ', ',', $category->father->icon) }}@else{{ str_replace(' ', ',', $category->icon) }}@endif">{{ $category->name }}</option>
+                    @endforeach
+                @else
+                    @foreach ($categories->where('type', 'expense') as $category)
+                    <option value="{{ $category->id }}" @if(isset($content) && $content->category_id == $category->id) selected @endif data-color="@if($category->father){{ $category->father->color }}@else{{ $category->color }}@endif" data-icon="@if($category->father){{ str_replace(' ', ',', $category->father->icon) }}@else{{ str_replace(' ', ',', $category->icon) }}@endif">{{ $category->name }}</option>
+                    @endforeach
+                @endif
+            </select>
+        </div>
+        @endif
 </div>
 @if (!isset($content))
 <div class="row">

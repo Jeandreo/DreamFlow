@@ -117,6 +117,7 @@ class FinancialTransactionsController extends Controller
         return view('pages.financial.index')->with([
             'values' => $values,
             'series' => $series,
+            'balance' => $this->balance(),
             'monthNames' => array_values($monthNames),
             'wallets' => $wallets,
             'credits' => $credits,
@@ -136,7 +137,7 @@ class FinancialTransactionsController extends Controller
         // GET DATA
         $wallets = FinancialWallet::where('status', 1)->get();
         $credits = FinancialCreditCard::where('status', 1)->get();
-        $categories = FinancialCategory::where('status', 1)->whereNotNull('father_id')->get();
+        $categories = FinancialCategory::where('status', 1)->get();
 
         return view('pages.financial_transactions.index')->with([
             'wallets' => $wallets,
@@ -389,26 +390,25 @@ class FinancialTransactionsController extends Controller
     public function checked(Request $request)
     {
 
+        // Se não for uma fatura
         if($request->type != 'Fature'){
 
             // Obtém transação
             $transaction = $this->repository->find($request->id);
 
-            // GET FORM DATA
-            $data = $transaction->toArray();
-
             // FORMAT CHECKED
             $data['paid'] = $request->paid == 'true' ? true : false;
-        
+
+            // Se for uma pré-visualização de um lançamento recorrente
             if($request->preview == 'true') {
-    
-                // STORING NEW DATA
+                // Duplica a transação modelo e gera uma nova
+                $data = $transaction->toArray();
                 $data['date_purchase'] = $request->date;
                 $data['date_payment'] = $request->date;
                 $data['date_paid'] = now();
                 $data['updated_by'] = null;
                 $data['created_by'] = Auth::id();
-                $transaction->create($data);
+                $transaction = $transaction->create($data);
     
             } else {
                 // STORING NEW DATA
@@ -417,7 +417,14 @@ class FinancialTransactionsController extends Controller
                 $transaction->update($data);
             } 
 
+            // Se a transação for um recebimento, o valor recebido é o mesmo que o pago
+            if($transaction->value_paid == 0){
+                $transaction->value_paid = $transaction->value;
+                $transaction->save();
+            }
+
         } else {
+
             // Obtém cartão
             $cardId = $request->id;
 
@@ -928,6 +935,18 @@ class FinancialTransactionsController extends Controller
         }
 
         return $query;
+    }
+
+    /**
+     * Aplica a ordenação à consulta.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function balance()
+    {
+        return $this->repository->where('paid', true)->sum('value_paid');
     }
 }
 

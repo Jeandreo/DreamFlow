@@ -1002,70 +1002,70 @@ class DatabaseSeeder extends Seeder
             'created_by' => 1,
         ]);
 
-        FinancialTransactions::create([
-            'wallet_id' => 1,
-            'category_id' => 3,
-            'name' => 'Netflix',
-            'recurrent' => true,
-            'hitching' => 1,
-            'value' => 10,
-            'date_purchase' => now(),
-            'date_payment' => now(),
-            'created_by' => 1,
-        ]);
+        // FinancialTransactions::create([
+        //     'wallet_id' => 1,
+        //     'category_id' => 3,
+        //     'name' => 'Netflix',
+        //     'recurrent' => true,
+        //     'hitching' => 1,
+        //     'value' => 10,
+        //     'date_purchase' => now(),
+        //     'date_payment' => now(),
+        //     'created_by' => 1,
+        // ]);
 
-        FinancialTransactions::create([
-            'wallet_id' => 1,
-            'category_id' => 3,
-            'name' => 'Google',
-            'recurrent' => true,
-            'hitching' => 2,
-            'value' => 10,
-            'date_purchase' => now(),
-            'date_payment' => now(),
-            'created_by' => 1,
-        ]);
+        // FinancialTransactions::create([
+        //     'wallet_id' => 1,
+        //     'category_id' => 3,
+        //     'name' => 'Google',
+        //     'recurrent' => true,
+        //     'hitching' => 2,
+        //     'value' => 10,
+        //     'date_purchase' => now(),
+        //     'date_payment' => now(),
+        //     'created_by' => 1,
+        // ]);
 
-        FinancialTransactions::create([
-            'credit_card_id' => 1,
-            'category_id' => 8,
-            'name' => 'Tênis para corrida',
-            'value' => 10,
-            'date_purchase' => now(),
-            'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
-            'created_by' => 1,
-        ]);
+        // FinancialTransactions::create([
+        //     'credit_card_id' => 1,
+        //     'category_id' => 8,
+        //     'name' => 'Tênis para corrida',
+        //     'value' => 10,
+        //     'date_purchase' => now(),
+        //     'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
+        //     'created_by' => 1,
+        // ]);
 
-        FinancialTransactions::create([
-            'credit_card_id' => 2,
-            'category_id' => 8,
-            'name' => 'Uber',
-            'value' => 10,
-            'date_purchase' => now(),
-            'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(9),
-            'created_by' => 1,
-        ]);
+        // FinancialTransactions::create([
+        //     'credit_card_id' => 2,
+        //     'category_id' => 8,
+        //     'name' => 'Uber',
+        //     'value' => 10,
+        //     'date_purchase' => now(),
+        //     'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(9),
+        //     'created_by' => 1,
+        // ]);
 
-        FinancialTransactions::create([
-            'credit_card_id' => 1,
-            'category_id' => 8,
-            'name' => 'Comida',
-            'value' => 10,
-            'date_purchase' => now(),
-            'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
-            'created_by' => 1,
-        ]);
+        // FinancialTransactions::create([
+        //     'credit_card_id' => 1,
+        //     'category_id' => 8,
+        //     'name' => 'Comida',
+        //     'value' => 10,
+        //     'date_purchase' => now(),
+        //     'date_payment' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
+        //     'created_by' => 1,
+        // ]);
 
-        FinancialTransactions::create([
-            'wallet_id' => 1,
-            'category_id' => 3,
-            'name' => 'TaekWondo',
-            'recurrent' => true,
-            'value' => 2,
-            'date_purchase' => now(),
-            'date_payment' => now(),
-            'created_by' => 1,
-        ]);
+        // FinancialTransactions::create([
+        //     'wallet_id' => 1,
+        //     'category_id' => 3,
+        //     'name' => 'TaekWondo',
+        //     'recurrent' => true,
+        //     'value' => 2,
+        //     'date_purchase' => now(),
+        //     'date_payment' => now(),
+        //     'created_by' => 1,
+        // ]);
 
         // \App\Models\User::factory(10)->create();
         // \App\Models\FinancialTransactions::factory(10)->create();

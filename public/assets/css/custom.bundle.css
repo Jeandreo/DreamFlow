@@ -403,3 +403,7 @@ input[type=text]:disabled {
 .fc-timegrid-slot {
     height: 1.5em !important;
 }
+
+.text-success {
+    color: #94cb09 !important;
+}

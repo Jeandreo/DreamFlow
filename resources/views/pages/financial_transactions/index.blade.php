@@ -98,7 +98,7 @@
                                         <button type="button" class="btn btn-primary me-2 add-transaction text-uppercase fw-bold d-none" data-type="transference">
                                             Trânsferencia
                                         </button>
-                                        <button type="button" class="btn btn-success me-2 add-transaction text-uppercase fw-bold" data-type="renevue">
+                                        <button type="button" class="btn btn-success me-2 add-transaction text-uppercase fw-bold" data-type="revenue">
                                             Receita
                                         </button>
                                         <button type="button" class="btn btn-danger me-2 add-transaction text-uppercase fw-bold" data-type="expense">
@@ -136,7 +136,7 @@
 <div class="modal fade" tabindex="-1" id="load_fature">
     <div class="modal-dialog modal-dialog-centered rounded mw-750px">
         <div class="modal-content rounded">
-            <div class="modal-header">
+            <div class="modal-header py-3 bg-light rounded-top">
                 <h3 class="modal-title">Transações</h3>
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                     <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
@@ -154,23 +154,46 @@
     </div>
 </div>
 
-<div class="modal fade" tabindex="-1" id="modal_trasaction">
-    <div class="modal-dialog modal-dialog-centered rounded">
+<div class="modal fade" tabindex="-1" id="modal_trasaction_revenue">
+    <div class="modal-dialog modal-dialog-centered rounded mw-750px">
         <div class="modal-content rounded">
-            <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data" id="create-transaction">
+            <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data" class="create-transaction">
                 @csrf
-                <div class="modal-header">
-                    <h3 class="modal-title">Adicionar Trasação</h3>
+                <div class="modal-header py-3 bg-light rounded-top">
+                    <h3 class="text-success m-0">Adicionar Receita</h3>
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                         <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                     </div>
                 </div>
                 <div class="modal-body">
-                    @include('pages.financial_transactions._form')
+                    @include('pages.financial_transactions._form', ['type' => 'revenue', 'modal' => '#modal_trasaction_revenue'])
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer bg-light py-3">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                    <button type="submit" class="btn btn-success btn-active-primary fw-bold">Adicionar Nova Receita</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modal_trasaction_expense">
+    <div class="modal-dialog modal-dialog-centered rounded mw-750px">
+        <div class="modal-content rounded">
+            <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data" class="create-transaction">
+                @csrf
+                <div class="modal-header py-3 bg-light rounded-top">
+                    <h3 class="text-danger m-0">Adicionar Despesa</h3>
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    @include('pages.financial_transactions._form', ['type' => 'expense', 'modal' => '#modal_trasaction_expense'])
+                </div>
+                <div class="modal-footer bg-light py-3">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-danger btn-active-primary fw-bold">Adicionar</button>
                 </div>
             </form>
         </div>
@@ -178,12 +201,12 @@
 </div>
 
 <div class="modal fade" tabindex="-1" id="edit_trasaction">
-    <div class="modal-dialog modal-dialog-centered rounded">
+    <div class="modal-dialog modal-dialog-centered rounded mw-750px">
         <div class="modal-content rounded">
             <form action="" method="POST" enctype="multipart/form-data" id="update-transaction">
                 @csrf
                 @method('PUT')
-                <div class="modal-header">
+                <div class="modal-header py-3 bg-light rounded-top">
                     <h3 class="modal-title">Editar Transação</h3>
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                         <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
@@ -286,12 +309,18 @@
 
         // Obtém o tipo
         var type = $(this).data('type');
-        
-        // Inser qual o tipo no modal de transação
-        $('#type-transaction').val(type);
 
+        // Seleciona modal a ser aberto
+        if(type == 'revenue'){
+            var modal = '#modal_trasaction_revenue';
+        } else if (type == 'expense') {
+            var modal = '#modal_trasaction_expense';
+        } else if (type == 'transference') {
+            var modal = '#';
+        }
+        
         // Abre modal
-        $('#modal_trasaction').modal('show');
+        $(modal).modal('show');
 
     });
 
@@ -451,12 +480,14 @@
 
     
     // REGISTER TRANSACTION
-    $('#create-transaction').submit(function(e){
+    $('.create-transaction').submit(function(e){
 
+        // Para evento
         e.preventDefault();
 
         // GET VALUES
         var form = $(this);
+        var formId = form.closest('.modal').attr('id')
         var formData = {};
 
         form.find('input, select, textarea').each(function() {
@@ -475,7 +506,7 @@
             success: function(response){
 
                 // HIDE MODAL
-                $('#modal_trasaction').modal('hide');
+                $('#' + formId).modal('hide');
 
                 // RELOAD TABLE
                 table.DataTable().ajax.reload();

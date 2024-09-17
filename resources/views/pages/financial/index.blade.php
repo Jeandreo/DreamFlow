@@ -23,7 +23,7 @@
                     <div class="card mb-4 shadow-light">
                         <div class="card-body">
                             <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0">
-                                R$ 0,00
+                                R$ {{ number_format($balance, 2, ',', '.') }}
                             </h3>
                             <h2 class="fs-5 text-uppercase text-primary mb-0">
                                 Saldo disponível
