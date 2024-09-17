@@ -45,6 +45,28 @@ class TransactionsApiController extends Controller
         // Organiza a coleção
         $collection = collect($data);
 
+        // Mapeia as colunas
+        $collection = collect($data)->map(function ($item) {
+            // Define as propriedades padrão para ícone e cor
+            $color = '#0076f5';
+            $icon = 'fa-solid fa-receipt';
+            $category = 'Fatura';
+            
+            // Se não for fatura, usa os ícones e cores personalizados do pai ou dele mesmo.
+            if (!isset($item->fature) || $item->fature == 0) {
+                $color = $item->has_father ? $item->father_color : $item->category_color;
+                $icon = $item->has_father ? $item->father_icon : $item->category_icon;
+                $category = $item->category;
+            }
+        
+            // Adiciona os valores personalizados ao item
+            return array_merge((array) $item, [
+                'category_color' => $color,
+                'icon' => $icon,
+                'category' => $category,
+            ]);
+        });
+
         // Agrupamento dos resultados esperados e lançados
         $expected = [
             'total' => $collection->sum('value'),
@@ -61,6 +83,7 @@ class TransactionsApiController extends Controller
         // COUNT TOTAL RECORDS
         $totalRecords = count($transactions);
         
+
         // Retorna para API
         return response()->json([
             'transactions' => $transactions,

@@ -573,7 +573,7 @@ class FinancialTransactionsController extends Controller
             })
             ->editColumn('category_id', function($row) {
 
-                // Se não for fatura pega os ícones personalizados
+                // Se não for fatura pega os ícones e cores personalizados, se tiver pai, pega os do pai.
                 if(!isset($row->fature) || $row->fature == false){
                     $color    = $row->has_father ? $row->father_color : $row->category_color;
                     $icon     = $row->has_father ? $row->father_icon  : $row->category_icon;
