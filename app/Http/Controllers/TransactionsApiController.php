@@ -60,7 +60,7 @@ class TransactionsApiController extends Controller
             }
         
             // Adiciona os valores personalizados ao item
-            return array_merge((array) $item, [
+            return (object) array_merge((array) $item, [
                 'color' => $color,
                 'icon' => $icon,
                 'category' => $category,
@@ -83,7 +83,6 @@ class TransactionsApiController extends Controller
         // COUNT TOTAL RECORDS
         $totalRecords = count($transactions);
         
-
         // Retorna para API
         return response()->json([
             'transactions' => $collection,
@@ -93,7 +92,7 @@ class TransactionsApiController extends Controller
         ]);
 
     }
-    
+
     /**
      * Display a listing of the resource.
      *
