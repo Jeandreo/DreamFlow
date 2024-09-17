@@ -102,7 +102,7 @@ class TransactionsApiController extends Controller
     public function categories()
     {
         // Cartegorias
-        $categories = FinancialCategory::where('status', 1)->get();
+        $categories = FinancialCategory::where('status', 1)->get()->pluck('icon');
 
         // Retorna para API
         return response()->json($categories);
