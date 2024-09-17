@@ -61,7 +61,7 @@ class TransactionsApiController extends Controller
         
             // Adiciona os valores personalizados ao item
             return array_merge((array) $item, [
-                'category_color' => $color,
+                'color' => $color,
                 'icon' => $icon,
                 'category' => $category,
             ]);
