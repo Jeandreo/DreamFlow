@@ -169,7 +169,7 @@
                 </div>
                 <div class="col-3 mb-4">
                     <div class="card shadow-light">
-                        <div class="card-body">
+                        <div class="card-body py-5">
                             @foreach ($credits as $credit)
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex">
@@ -298,10 +298,10 @@
                                     <div class="card-body p-3">
                                         <div class="d-flex align-items-center">
                                             <div class="h-40px w-40px rounded bg-light-dark d-flex align-items-center justify-content-center">
-                                                <i class="fa-solid fa-shopping-cart fs-4 text-dark"></i>
+                                                <i class="fa-solid fa-shopping-cart fs-4 text-gray-700"></i>
                                             </div>
                                             <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
-                                                Compras do mês
+                                                Orçamentos
                                             </span>
                                         </div>
                                     </div>
