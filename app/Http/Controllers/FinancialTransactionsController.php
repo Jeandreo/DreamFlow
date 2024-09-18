@@ -396,13 +396,14 @@ class FinancialTransactionsController extends Controller
             // Obtém transação
             $transaction = $this->repository->find($request->id);
 
+            // Duplica a transação modelo e gera uma nova
+            $data = $transaction->toArray();
+
             // FORMAT CHECKED
             $data['paid'] = $request->paid == 'true' ? true : false;
 
             // Se for uma pré-visualização de um lançamento recorrente
             if($request->preview == 'true') {
-                // Duplica a transação modelo e gera uma nova
-                $data = $transaction->toArray();
                 $data['date_purchase'] = $request->date;
                 $data['date_payment'] = $request->date;
                 $data['date_paid'] = now();
@@ -534,11 +535,7 @@ class FinancialTransactionsController extends Controller
         $collection = collect($data);
 
         // Agrupamento dos resultados esperados e lançados
-        $expected = [
-            'total' => $collection->sum('value'),
-            'revenue' => $collection->where('value', '>', 0)->sum('value'),
-            'expense' => $collection->where('value', '<', 0)->sum('value'),
-        ];
+        $expected = $this->expected($request);
 
         $current = [
             'total' => $collection->where('paid', true)->sum('value'),
@@ -653,6 +650,76 @@ class FinancialTransactionsController extends Controller
             ->toJson();
     }
 
+
+    /**
+     * Inicializa a consulta com junções e seleção de colunas.
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function expected($request){
+
+        // Data final simulada (2 meses no futuro)
+        $dateEnd = Carbon::parse($request->date_end)->endOfMonth();
+
+        // Obtém todas as transações recorrentes até a data final
+        $recurringTransactions = FinancialTransactions::where('recurrent', true)
+            ->where('recurrent_begin', '<=', $dateEnd)
+            ->where('status', 1)
+            ->get()
+            ->groupBy('hitching');
+
+        // Filtro de transações recorrentes (pegando apenas um modelo por 'hitching')
+        $recurrentFilter = [];
+        foreach ($recurringTransactions as $transaction) {
+            $recurrentFilter[] = $transaction[0]; // Pega o primeiro item do agrupamento
+        }
+
+        // Inicializa as somas
+        $revenues = 0;
+        $expenses = 0;
+
+        // Itera sobre as transações recorrentes filtradas
+        foreach ($recurrentFilter as $recurrentTransaction) {
+            // Converte a data de início da recorrência
+            $recurrentBegin = Carbon::parse($recurrentTransaction->recurrent_begin);
+
+            // Calcula a diferença de meses entre a data de início e a data final simulada
+            $monthsDifference = $recurrentBegin->diffInMonths($dateEnd);
+
+            // Soma as ocorrências da transação recorrente no intervalo de meses
+            for ($i = 0; $i <= $monthsDifference; $i++) {
+                // Se o valor for positivo, é receita (revenue)
+                if ($recurrentTransaction->value > 0) {
+                    $revenues += $recurrentTransaction->value;
+                } 
+                // Se o valor for negativo, é despesa (expense)
+                else {
+                    $expenses += $recurrentTransaction->value;
+                }
+            }
+        }
+
+        // Soma as transações não recorrentes também (caso queira incluir isso)
+        $nonRecurringRevenues = FinancialTransactions::where('recurrent', false)
+            ->where('value', '>', 0)
+            ->sum('value');
+
+        $nonRecurringExpenses = FinancialTransactions::where('recurrent', false)
+            ->where('value', '<', 0)
+            ->sum('value');
+
+        // Calcula a diferença (revenues - expenses)
+        $totalRevenues = $revenues + $nonRecurringRevenues;
+        $totalExpenses = abs($expenses + $nonRecurringExpenses);
+        $difference = $totalRevenues + $expenses; // Despesas são negativas, então somamos
+
+        return [
+            'revenue' => $totalRevenues,
+            'expense' => $totalExpenses,
+            'total' => $difference,
+        ];
+
+    }
     /**
      * Inicializa a consulta com junções e seleção de colunas.
      *
@@ -858,7 +925,6 @@ class FinancialTransactionsController extends Controller
 
             }
         }
-
 
         return collect($transactionsRecurrents);
         
