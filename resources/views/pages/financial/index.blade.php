@@ -38,7 +38,7 @@
                                 R$ 0,00
                             </h3>
                             <h2 class="fs-5 text-uppercase text-primary mb-0">
-                                Reserva de emergencia
+                                Res. de Emergencia
                             </h2>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-2">
+                <div class="col-3">
                     <div class="card mb-4 shadow-light">
                         <div class="card-body">
                             <h2 class="fs-2x text-uppercase text-gray-700 mb-0">
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-10">
+                <div class="col-9">
                     <div class="card mb-4 shadow-light">
                         <div class="card-body">
                             <div class="row">
@@ -194,38 +194,122 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3">
-                    <div class="card shadow-light">
-                        <div class="card-body">
-                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.wallets.index') }}">
-                                Carteiras
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-4">
+                            <a href="{{ route('financial.wallets.index') }}">
+                                <div class="card mb-4">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="h-40px w-40px rounded bg-light-primary d-flex align-items-center justify-content-center">
+                                                <i class="fa-solid fa-wallet fs-4 text-primary"></i>
+                                            </div>
+                                            <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
+                                                Carteiras
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </a>
-                            <br>
-                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.transactions.index') }}">
-                                Transações
+                        </div>
+                        <div class="col-4">
+                            <a href="{{ route('financial.transactions.index') }}">
+                                <div class="card mb-4">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="h-40px w-40px rounded bg-light-success d-flex align-items-center justify-content-center">
+                                                <i class="fa-solid fa-exchange-alt fs-4 text-success"></i>
+                                            </div>
+                                            <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
+                                                Transações
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </a>
-                            <br>
-                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.institutions.index') }}">
-                                Instituições
+                        </div>
+                        <div class="col-4">
+                            <a href="{{ route('financial.institutions.index') }}">
+                                <div class="card mb-4">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="h-40px w-40px rounded bg-light-warning d-flex align-items-center justify-content-center">
+                                                <i class="fa-solid fa-bank fs-4 text-warning"></i>
+                                            </div>
+                                            <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
+                                                Instituições
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </a>
-                            <br>
-                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.credit.cards.index') }}">
-                                Cartões de Crédito
+                        </div>
+                        <div class="col-4">
+                            <a href="{{ route('financial.credit.cards.index') }}">
+                                <div class="card mb-4">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="h-40px w-40px rounded bg-light-danger d-flex align-items-center justify-content-center">
+                                                <i class="fa-solid fa-credit-card fs-4 text-danger"></i>
+                                            </div>
+                                            <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
+                                                Cartões de Crédito
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </a>
-                            <br>
-                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.categories.index') }}">
-                                Categorias
+                        </div>
+                        <div class="col-4">
+                            <a href="{{ route('financial.categories.index') }}">
+                                <div class="card mb-4">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="h-40px w-40px rounded bg-light-info d-flex align-items-center justify-content-center">
+                                                <i class="fa-solid fa-list fs-4 text-info"></i>
+                                            </div>
+                                            <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
+                                                Categorias
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </a>
-                            <br>
-                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('financial.debits.index') }}">
-                                Débitos
+                        </div>
+                        <div class="col-4">
+                            <a href="{{ route('financial.debits.index') }}">
+                                <div class="card mb-4">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="h-40px w-40px rounded bg-light-secondary d-flex align-items-center justify-content-center">
+                                                <i class="fa-solid fa-file-invoice-dollar fs-4 text-gray-500"></i>
+                                            </div>
+                                            <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
+                                                Débitos
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </a>
-                            <br>
-                            <a class="menu-link fs-5 text-gray-700 fw-bold text-hover-primary" href="{{ route('budgets.index') }}">
-                                Compras do mês
+                        </div>
+                        <div class="col-4">
+                            <a href="{{ route('budgets.index') }}">
+                                <div class="card mb-4">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="h-40px w-40px rounded bg-light-dark d-flex align-items-center justify-content-center">
+                                                <i class="fa-solid fa-shopping-cart fs-4 text-dark"></i>
+                                            </div>
+                                            <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
+                                                Compras do mês
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </a>
                         </div>
                     </div>
+                    
                 </div>
             </div>
             <div class="row">
