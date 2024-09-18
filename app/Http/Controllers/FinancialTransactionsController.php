@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\FinancialCategory;
 use App\Models\FinancialCreditCard;
 use App\Models\FinancialTransactions;
+use App\Models\FinancialTransactionsRecurrent;
 use App\Models\FinancialWallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use LDAP\Result;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class FinancialTransactionsController extends Controller
@@ -166,11 +168,6 @@ class FinancialTransactionsController extends Controller
         // FORMAT DATA
         $data['value'] = toDecimal($data['value']);
 
-        // Se for recorrente
-        if($data['recurrent'] == true){
-            $data['recurrent_begin'] = $data['date_purchase'];
-        }
-
         // IF EXPENSE
         if($data['type'] == 'expense'){
             $data['value'] = -$data['value'];
@@ -199,12 +196,10 @@ class FinancialTransactionsController extends Controller
         }
 
         // IF RECURRENT OR INSTALLMENTS
-        if($data['recurrent'] == true || $data['installments'] ==  true){
-            $data['hitching'] = $this->getHitching();
-        }
+        if($data['installments'] ==  true){
 
-        //
-        if($data['installments'] == true){
+            // Atrelamento
+            $data['hitching'] = $this->getHitching();
 
             // Informa que não será recorrente:
             $data['recurrent'] = false;
@@ -226,7 +221,7 @@ class FinancialTransactionsController extends Controller
                 $data['name'] = "$name - ($i/$installments)";
                 
                 // SEND DATA
-                $this->repository->create($data);
+                $insertTable = $this->repository->create($data);
                 
             }
 
@@ -236,7 +231,22 @@ class FinancialTransactionsController extends Controller
         }
 
         // SEND DATA
-        $this->repository->create($data);
+        $insertTable = $this->repository->create($data);
+
+        // Se for recorrente cria a recorrencia
+        if($data['recurrent'] == true){
+
+            // Gera recorrencia
+            $recurrence = FinancialTransactionsRecurrent::create([
+                'transaction_id' => $insertTable->id,
+                'start' => $data['date_payment'],
+            ]);
+
+            // Salva atrelamento
+            $insertTable->recurrent_id = $recurrence->id;
+            $insertTable->save();
+
+        }
 
         // REDIRECT AND MESSAGES
         return response()->json('Transaction created with success', 200);
@@ -364,7 +374,7 @@ class FinancialTransactionsController extends Controller
         $content = $this->repository->find($id);
         $wallets = FinancialWallet::where('status', 1)->get();
         $credits = FinancialCreditCard::where('status', 1)->get();
-        $categories = FinancialCategory::where('status', 1)->whereNotNull('father_id')->get();
+        $categories = FinancialCategory::where('status', 1)->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
@@ -375,6 +385,7 @@ class FinancialTransactionsController extends Controller
             'wallets' => $wallets,
             'credits' => $credits,
             'categories' => $categories,
+            'type' => $content->value > 0 ? 'revenue' : 'expense',
         ]);
     }
 
@@ -536,12 +547,9 @@ class FinancialTransactionsController extends Controller
 
         // Agrupamento dos resultados esperados e lançados
         $expected = $this->expected($request);
-
-        $current = [
-            'total' => $collection->where('paid', true)->sum('value'),
-            'revenue' => $collection->where('paid', true)->where('value', '>', 0)->sum('value'),
-            'expense' => $collection->where('paid', true)->where('value', '<', 0)->sum('value'),
-        ];
+        
+        // Obtém total pago
+        $current = $this->current($request);
         
         // COUNT TOTAL RECORDS
         $totalRecords = count($transactions);
@@ -568,7 +576,7 @@ class FinancialTransactionsController extends Controller
                 $isPreview       = isset($row->preview) ? 'true' : 'false';
                 $isFature        = isset($row->fature) && $row->fature == true ? 'true' : 'false';
                 $isFaturePreview = isset($row->fature_preview) ? 'true' : 'false';
-                $recurrent       = $row->recurrent ? '<i class="fa-solid fa-retweet '. (isset($row->preview) ? 'text-danger' : 'text-primary') .'"></i>' : '<span></span>';
+                $recurrent       = $row->recurrent_id ? '<i class="fa-solid fa-retweet '. (isset($row->preview) ? 'text-danger' : 'text-primary') .'"></i>' : '<span></span>';
                 $date            = date('Y-m-d', strtotime($row->date_purchase));
 
                 return "<span data-search='$row->name' class='show' data-id='$row->id' data-preview='$isPreview' data-type='$row->type' data-date='$date' data-fature='$isFature' data-fature-preview='$isFaturePreview'>
@@ -650,6 +658,30 @@ class FinancialTransactionsController extends Controller
             ->toJson();
     }
 
+    /**
+     * Inicializa a consulta com junções e seleção de colunas.
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function current($request){
+
+        // Soma as transações não recorrentes também (caso queira incluir isso)
+        $revenues = FinancialTransactions::where('date_payment', '<=', $request->date_end)->where('value', '>', 0)->where('paid', true)->sum('value');
+        $expenses = FinancialTransactions::where('date_payment', '<=', $request->date_end)->where('value', '<', 0)->where('paid', true)->sum('value');
+
+        // Calcula a diferença (revenues - expenses)
+        $difference = $revenues + $expenses;
+
+        // Resultados
+        $results = [
+            'revenue' => $revenues,
+            'expense' => $expenses,
+            'total' => $difference,
+        ];
+
+        return $results;
+
+    }
 
     /**
      * Inicializa a consulta com junções e seleção de colunas.
@@ -662,26 +694,24 @@ class FinancialTransactionsController extends Controller
         $dateEnd = Carbon::parse($request->date_end)->endOfMonth();
 
         // Obtém todas as transações recorrentes até a data final
-        $recurringTransactions = FinancialTransactions::where('recurrent', true)
-            ->where('recurrent_begin', '<=', $dateEnd)
-            ->where('status', 1)
-            ->get()
-            ->groupBy('hitching');
-
-        // Filtro de transações recorrentes (pegando apenas um modelo por 'hitching')
-        $recurrentFilter = [];
-        foreach ($recurringTransactions as $transaction) {
-            $recurrentFilter[] = $transaction[0]; // Pega o primeiro item do agrupamento
-        }
+        $recurrences = FinancialTransactionsRecurrent::where('status', true)
+                                ->where('end', '<=' ,$request->date_end)
+                                ->orWhere('status', true)
+                                ->whereNull('end')
+                                ->get();
 
         // Inicializa as somas
         $revenues = 0;
         $expenses = 0;
 
         // Itera sobre as transações recorrentes filtradas
-        foreach ($recurrentFilter as $recurrentTransaction) {
+        foreach ($recurrences as $recurrentTransaction) {
+
+            // Obtém modelo
+            $template = $recurrentTransaction->transaction;
+
             // Converte a data de início da recorrência
-            $recurrentBegin = Carbon::parse($recurrentTransaction->recurrent_begin);
+            $recurrentBegin = Carbon::parse($template->start);
 
             // Calcula a diferença de meses entre a data de início e a data final simulada
             $monthsDifference = $recurrentBegin->diffInMonths($dateEnd);
@@ -689,37 +719,37 @@ class FinancialTransactionsController extends Controller
             // Soma as ocorrências da transação recorrente no intervalo de meses
             for ($i = 0; $i <= $monthsDifference; $i++) {
                 // Se o valor for positivo, é receita (revenue)
-                if ($recurrentTransaction->value > 0) {
-                    $revenues += $recurrentTransaction->value;
+                if ($template->value > 0) {
+                    $revenues += $template->value;
                 } 
                 // Se o valor for negativo, é despesa (expense)
                 else {
-                    $expenses += $recurrentTransaction->value;
+                    $expenses += $template->value;
                 }
             }
+
         }
 
         // Soma as transações não recorrentes também (caso queira incluir isso)
-        $nonRecurringRevenues = FinancialTransactions::where('recurrent', false)
-            ->where('value', '>', 0)
-            ->sum('value');
-
-        $nonRecurringExpenses = FinancialTransactions::where('recurrent', false)
-            ->where('value', '<', 0)
-            ->sum('value');
+        $nonRecurringRevenues = FinancialTransactions::whereNull('recurrent_id')->where('date_payment', '<=', $request->date_end)->where('value', '>', 0)->sum('value');
+        $nonRecurringExpenses = FinancialTransactions::whereNull('recurrent_id')->where('date_payment', '<=', $request->date_end)->where('value', '<', 0)->sum('value');
 
         // Calcula a diferença (revenues - expenses)
         $totalRevenues = $revenues + $nonRecurringRevenues;
-        $totalExpenses = abs($expenses + $nonRecurringExpenses);
-        $difference = $totalRevenues + $expenses; // Despesas são negativas, então somamos
+        $totalExpenses = $expenses + $nonRecurringExpenses;
+        $difference = $totalRevenues - $expenses;
 
-        return [
+        // Resultados
+        $results = [
             'revenue' => $totalRevenues,
             'expense' => $totalExpenses,
             'total' => $difference,
         ];
 
+        return $results;
+
     }
+
     /**
      * Inicializa a consulta com junções e seleção de colunas.
      *
@@ -760,8 +790,7 @@ class FinancialTransactionsController extends Controller
             'financial_transactions.value           as value',
             'financial_transactions.paid            as paid',
             'financial_transactions.wallet_id       as has_wallet',
-            'financial_transactions.recurrent       as recurrent',
-            'financial_transactions.hitching        as hitching',
+            'financial_transactions.recurrent_id    as recurrent_id',
             'financial_transactions.fature          as fature',
             'financial_transactions.fature_id       as fature_id',
             'financial_transactions.adjustment      as adjustment',
@@ -799,6 +828,9 @@ class FinancialTransactionsController extends Controller
      */
     public function fatureTransactions($data)
     {
+
+        $data = collect($data);
+
         // Agrupa as compras no cartão de crédito em que não foram geradas em uma fatura
         $faturesCredit = $data->where('credit_card_id', true)->whereNull('fature_id');
 
@@ -831,7 +863,7 @@ class FinancialTransactionsController extends Controller
                         'value' => $transactions->sum('value'),
                         'paid' => false,
                         'has_wallet' => null,
-                        'recurrent' => null,
+                        'recurrent_id' => null,
                         'fature' => true,
                         'fature_preview' => true,
                         'category' => 'Fatura',
@@ -861,33 +893,34 @@ class FinancialTransactionsController extends Controller
 
         // Define a data de início do mês anterior
         $date = Carbon::parse($request->date_begin);
-
+        
         // Obtém todas as transações recorrentes
-        $recurringTransactions = FinancialTransactions::where('recurrent', true)->where('recurrent_begin', '<=' ,$date->endOfMonth()->format('Y-m-d'))->where('status', 1)->get()->groupBy('hitching');
-
-        // Transações
-        $recurrentFilter = [];
-
-        foreach ($recurringTransactions as $transaction) {
-            $recurrentFilter[] = $transaction[0];
-        }
+        $recurrentFilter = FinancialTransactionsRecurrent::where('status', true)
+                                ->where('end', '<=' ,$request->date_end)
+                                ->orWhere('status', true)
+                                ->whereNull('end')
+                                ->get();
 
         // Obtém apenas as recorrentes
         $transactionsRecurrents = [];
 
         // Faz loop entre transações recorrentes
-        foreach ($recurrentFilter as $transaction) {
+        foreach ($recurrentFilter as $recurrence) {
 
+            // Obtém a transação modelo
+            $transaction = $recurrence->transaction;
+
+            // Formata data
             $newDate = $date->startOfMonth()->format('Y-m-') . date('d', strtotime($transaction->date_payment));
 
             // Verifica se tem categorias
             $hasFather = $transaction->category->father_id ? true : false;
 
             // Verifica se já existe uma transação com o mesmo vínculo no mesmo mês
-            $existingTransaction = collect($data)->first(function ($item) use ($transaction, $newDate) {
+            $existingTransaction = collect($data)->first(function ($item) use ($recurrence, $newDate) {
 
                 // Importante o vínculo (hitching) estar cadastrado
-                return $item->hitching == $transaction->hitching && Carbon::parse($item->date_purchase)->isSameMonth($newDate);
+                return $item->recurrent_id == $recurrence->id && Carbon::parse($item->date_purchase)->isSameMonth($newDate);
 
             });
 
@@ -907,7 +940,7 @@ class FinancialTransactionsController extends Controller
                     'has_wallet'     => false,
                     'hitching'       => $transaction->hitching,
                     'category'       => $transaction->category->name,
-                    'recurrent'      => true,
+                    'recurrent_id'   => $recurrence->id,
                     'has_father'     => $hasFather,
                     'category_color' => $transaction->category->color,
                     'category_icon'  => $transaction->category->icon,

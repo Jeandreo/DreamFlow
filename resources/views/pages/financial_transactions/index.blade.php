@@ -159,8 +159,8 @@
         <div class="modal-content rounded">
             <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data" class="create-transaction">
                 @csrf
-                <div class="modal-header py-3 bg-light rounded-top">
-                    <h3 class="text-success m-0">Adicionar Receita</h3>
+                <div class="modal-header py-3 bg-light rounded-top bg-header">
+                    <h3 class="text-white m-0">Adicionar Receita</h3>
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                         <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                     </div>
@@ -168,7 +168,7 @@
                 <div class="modal-body">
                     @include('pages.financial_transactions._form', ['type' => 'revenue', 'modal' => '#modal_trasaction_revenue'])
                 </div>
-                <div class="modal-footer bg-light py-3">
+                <div class="modal-footer bg-light py-3 rounded-bottom">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
                     <button type="submit" class="btn btn-success btn-active-primary fw-bold">Adicionar Nova Receita</button>
                 </div>
@@ -182,8 +182,8 @@
         <div class="modal-content rounded">
             <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data" class="create-transaction">
                 @csrf
-                <div class="modal-header py-3 bg-light rounded-top">
-                    <h3 class="text-danger m-0">Adicionar Despesa</h3>
+                <div class="modal-header py-3 bg-light rounded-top bg-header">
+                    <h3 class="text-white m-0">Adicionar Despesa</h3>
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                         <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                     </div>
@@ -191,7 +191,7 @@
                 <div class="modal-body">
                     @include('pages.financial_transactions._form', ['type' => 'expense', 'modal' => '#modal_trasaction_expense'])
                 </div>
-                <div class="modal-footer bg-light py-3">
+                <div class="modal-footer bg-light py-3 rounded-bottom">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
                     <button type="submit" class="btn btn-danger btn-active-primary fw-bold">Adicionar</button>
                 </div>
@@ -217,7 +217,7 @@
                     {{-- LOAD TRANSACTION HERE --}}
                     {{-- LOAD TRANSACTION HERE --}}
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer bg-light py-3 rounded-bottom">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
                     <button type="submit" class="btn btn-primary">Atualizar</button>
                 </div>

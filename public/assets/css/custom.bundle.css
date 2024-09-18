@@ -407,3 +407,7 @@ input[type=text]:disabled {
 .text-success {
     color: #94cb09 !important;
 }
+
+.bg-header {
+    background: linear-gradient(0deg, #171f2c, #222d3e) !important;
+}
