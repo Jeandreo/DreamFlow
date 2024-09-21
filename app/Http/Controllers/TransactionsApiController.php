@@ -7,6 +7,7 @@ use App\Models\FinancialCreditCard;
 use App\Models\FinancialTransactions;
 use App\Models\FinancialWallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TransactionsApiController extends Controller
 {
@@ -20,22 +21,22 @@ class TransactionsApiController extends Controller
     {
         
         // Passar o modelo e o request para o construtor do controller
-        $financialTransactionsController = new FinancialTransactionsController($request, new FinancialTransactions);
+        $apiTransaction = new FinancialTransactionsController($request, new FinancialTransactions);
 
         // Inicia a consulta com junções e seleções
-        $query = $financialTransactionsController->transactions($request);
+        $query = $apiTransaction->transactions($request);
         
         // Transações
         $transactions = $query->get()->toArray();
 
         // Obtém as transações recorrente
-        $recurrents = $financialTransactionsController->recurringTransactions($request, $transactions);
+        $recurrents = $apiTransaction->recurringTransactions($request, $transactions);
 
         // Mescla as duas coleções
         $transactions = collect($transactions)->merge($recurrents);
 
         // Obtém Faturas
-        $data = $financialTransactionsController->fatureTransactions($transactions); 
+        $data = $apiTransaction->fatureTransactions($transactions); 
 
         // Remove as transações de cartão
         $data = array_filter($data->toArray(), function($transaction) {
@@ -108,6 +109,26 @@ class TransactionsApiController extends Controller
 
         // Retorna para API
         return response()->json($categories);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function newTransaction(Request $request)
+    {
+
+        Log::info($request);
+
+        // Passar o modelo e o request para o construtor do controller
+        $apiTransaction = new FinancialTransactionsController($request, new FinancialTransactions);
+
+        // Inicia a consulta com junções e seleções
+        $apiTransaction->store($request);
+
+        // Retorna para API
+        return response()->json('Transação adicionada com sucesso.');
     }
     
     /**
