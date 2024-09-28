@@ -11,7 +11,7 @@
 <meta property="og:site_name" content="Keenthemes | Metronic" />
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-<link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.webp') }}" />
+<link rel="shortcut icon" href="{{ asset('assets/media/favicon_square.png') }}" />
 <!--begin::Fonts-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

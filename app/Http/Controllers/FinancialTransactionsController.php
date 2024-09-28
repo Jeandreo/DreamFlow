@@ -842,6 +842,7 @@ class FinancialTransactionsController extends Controller
         foreach ($faturesByMonth as $yearMonth => $cards) {
             // Faz looping entre os cartões
             foreach ($cards as $card => $transactions) {
+                
                 // Verifica se já existe uma fatura criada
                 $existFature = collect($transactions)->where('fature', true)->isNotEmpty();
 

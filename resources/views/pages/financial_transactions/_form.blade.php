@@ -15,9 +15,11 @@
             @foreach ($wallets as $wallet)
             <option value="{{ $wallet->id }}" @if(isset($content) && $content->wallet_id == $wallet->id) selected @endif data-type="wallet">{{ $wallet->name }}</option>
             @endforeach
+            @if(!isset($type) || $type == 'expense')
             @foreach ($credits as $credit)
             <option value="{{ $credit->id }}" @if(isset($content) && $content->credit_card_id == $credit->id) selected @endif data-type="credit">{{ $credit->name }}</option>
             @endforeach
+            @endif
         </select>
     </div>
     <input type="hidden" name="method" value="@if(isset($content) && $content->credit_card_id){{'credit'}}@endif">
