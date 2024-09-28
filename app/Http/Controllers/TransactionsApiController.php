@@ -150,12 +150,12 @@ class TransactionsApiController extends Controller
             return $credit;
         });
 
-        dump($wallets, $credits);
+        dump($wallets->toArray(), $credits->toArray());
         
         // Combina os dados em um único array
         $combined = $wallets->merge($credits);
 
-        dd($combined);
+        dd($combined->toArray());
 
         // Retorna para API
         return response()->json($combined);
