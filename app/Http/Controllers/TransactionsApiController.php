@@ -104,18 +104,24 @@ class TransactionsApiController extends Controller
      */
     public function categories()
     {
-        // Obtém as categorias ativas
+        // Obtém todas as categorias ativas
         $categories = FinancialCategory::where('status', 1)->get();
+
+        // Inicializa um array para armazenar as categorias organizadas
+        $organizedCategories = [];
 
         // Itera sobre cada categoria
         foreach ($categories as $category) {
-            // Verifica se a categoria tem uma categoria pai
-            if ($category->father) {
-                // Atribui a cor da categoria pai
-                $category->color = $category->father->color; // Acesso ao pai
-            } else {
-                // Se não tiver pai, mantém a própria cor
-                $category->color = $category->color; // Não precisa fazer nada aqui
+            if (!$category->father) {
+                // Se a categoria não tem pai, adiciona ao array principal
+                $organizedCategories[] = $category;
+
+                // Adiciona as categorias filhas desta categoria
+                foreach ($categories as $child) {
+                    if ($child->father_id == $category->id) {
+                        $organizedCategories[] = $child;
+                    }
+                }
             }
         }
 
