@@ -150,11 +150,8 @@ class TransactionsApiController extends Controller
             return $credit;
         });
 
-        // Combina os dados em um único array, sem mesclar
-        $combined = [
-            'wallets' => $wallets,
-            'credits' => $credits
-        ];
+        // Combina os dados em um único array usando concat
+        $combined = $wallets->concat($credits);
 
         // Retorna para API
         return response()->json($combined);
