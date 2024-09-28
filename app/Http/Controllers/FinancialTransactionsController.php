@@ -857,7 +857,7 @@ class FinancialTransactionsController extends Controller
                         'name' => 'Fatura de ' . $monthName . ' - ' . $card,
                         'date_purchase' => date($yearMonth . $transactions[0]->due_date),
                         'date_payment' => date($yearMonth . $transactions[0]->due_date),
-                        'value' => $transactions->sum('value'),
+                        'value' => number_format($transactions->sum('value'), 2),
                         'paid' => false,
                         'has_wallet' => null,
                         'recurrent_id' => null,
