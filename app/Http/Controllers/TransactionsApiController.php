@@ -121,6 +121,8 @@ class TransactionsApiController extends Controller
 
         Log::info($request);
 
+        return response(['Sucesso'], 200);
+
         // Passar o modelo e o request para o construtor do controller
         $apiTransaction = new FinancialTransactionsController($request, new FinancialTransactions);
 
