@@ -893,10 +893,10 @@ class FinancialTransactionsController extends Controller
 
         // Define a data de início do mês anterior
         $date = Carbon::parse($request->date_begin);
-        
+
         // Obtém todas as transações recorrentes
         $recurrentFilter = FinancialTransactionsRecurrent::where('status', true)
-                                ->where('end', '<=' ,$request->date_end)
+                                ->where('end', '<=' , $date)
                                 ->orWhere('status', true)
                                 ->whereNull('end')
                                 ->get();
