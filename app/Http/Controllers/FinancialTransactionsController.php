@@ -163,7 +163,7 @@ class FinancialTransactionsController extends Controller
         $data = $request->all();
 
         // CREATED BY
-        $data['created_by'] = Auth::id();
+        $data['created_by'] = isset($data['created_by']) ? $data['created_by'] : Auth::id();
 
         // FORMAT DATA
         $data['value'] = toDecimal($data['value']);
