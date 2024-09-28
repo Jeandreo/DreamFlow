@@ -29,6 +29,8 @@ class TransactionsApiController extends Controller
         // Transações
         $transactions = $query->get()->toArray();
 
+        dd($transactions);
+
         // Obtém as transações recorrente
         $recurrents = $apiTransaction->recurringTransactions($request, $transactions);
 
