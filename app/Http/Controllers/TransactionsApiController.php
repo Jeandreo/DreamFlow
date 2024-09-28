@@ -43,7 +43,6 @@ class TransactionsApiController extends Controller
             return !($transaction->credit_card_id && $transaction->fature == 0);
         });
         
-        dd($transactions, $data);
         // Organiza a coleção
         $collection = collect($data);
 
@@ -150,9 +149,13 @@ class TransactionsApiController extends Controller
             $credit->type = 'credit';
             return $credit;
         });
+
+        dump($wallets, $credits);
         
         // Combina os dados em um único array
         $combined = $wallets->merge($credits);
+
+        dd($combined);
 
         // Retorna para API
         return response()->json($combined);
