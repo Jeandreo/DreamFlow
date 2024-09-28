@@ -35,15 +35,15 @@ class TransactionsApiController extends Controller
         // Mescla as duas coleções
         $transactions = collect($transactions)->merge($recurrents);
         
-        dd($transactions);
         // Obtém Faturas
         $data = $apiTransaction->fatureTransactions($transactions); 
-
+        
         // Remove as transações de cartão
         $data = array_filter($data->toArray(), function($transaction) {
             return !($transaction->credit_card_id && $transaction->fature == 0);
         });
-
+        
+        dd($transactions, $data);
         // Organiza a coleção
         $collection = collect($data);
 
