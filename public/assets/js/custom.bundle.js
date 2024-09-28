@@ -498,7 +498,7 @@ function select2Categories(selector = '.select-categories', dropdown = false){
 
 }
 
-function select2WalletsCards(selector = '.select-cards'){
+function select2WalletsCards(selector = '.select-method'){
     var optionFormat = function(item) {
         
         if ( !item.id ) { return item.text; }

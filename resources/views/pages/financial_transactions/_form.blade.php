@@ -10,16 +10,17 @@
     </div>
     <div class="col-4 mb-5">
         <label class="required form-label fw-bold">Método:</label>
-        <select class="form-select form-select-solid select-cards" name="wallet_or_credit" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="{{ $modal }}" @endif required>
+        <select class="form-select form-select-solid select-method" name="method_id" data-placeholder="Selecione" @if(!isset($content)) data-dropdown-parent="{{ $modal }}" @endif required>
             <option value=""></option>
             @foreach ($wallets as $wallet)
-            <option value="wallet_{{ $wallet->id }}" @if(isset($content) && $content->wallet_id == $wallet->id) selected @endif data-type="wallet">{{ $wallet->name }}</option>
+            <option value="{{ $wallet->id }}" @if(isset($content) && $content->wallet_id == $wallet->id) selected @endif data-type="wallet">{{ $wallet->name }}</option>
             @endforeach
             @foreach ($credits as $credit)
-            <option value="credit_{{ $credit->id }}" @if(isset($content) && $content->credit_card_id == $credit->id) selected @endif data-type="credit">{{ $credit->name }}</option>
+            <option value="{{ $credit->id }}" @if(isset($content) && $content->credit_card_id == $credit->id) selected @endif data-type="credit">{{ $credit->name }}</option>
             @endforeach
         </select>
     </div>
+    <input type="hidden" name="method" value="@if(isset($content) && $content->credit_card_id){{'credit'}}@endif">
     <div class="col mb-5">
         <label class="required form-label fw-bold">Valor:</label>
         <input type="text" class="form-control form-control-solid input-money" placeholder="R$ 0,00" name="value" value="{{ $content->value ?? old('value') }}" required/>
@@ -76,3 +77,20 @@
     <label class="form-label fw-bold">Observação:</label>
     <textarea name="description" class="form-control form-control-solid" placeholder="Alguma observação sobre este cartão?">@if(isset($content->description)){{$content->description}}@endif</textarea>
 </div>
+
+@section('custom-footer')
+@parent
+<script>
+    $(document).ready(function(){
+
+        $(document).on('change', '.select-method', function(){
+            // Seleciona o tipo
+            var type = $(this).find('option:selected').data('type');
+
+            // Atualiza o tipo de pagamento
+            $('[name="method"]').val(type);
+        });
+
+    });
+</script>
+@endsection

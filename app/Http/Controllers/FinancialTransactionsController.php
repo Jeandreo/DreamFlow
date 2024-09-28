@@ -173,14 +173,11 @@ class FinancialTransactionsController extends Controller
             $data['value'] = -$data['value'];
         }
 
-        // GET METHOD
-        $method = explode('_', $data['wallet_or_credit']);
-
         // IF CREDIT
-        if($method[0] == 'credit'){
+        if($data['method'] == 'credit'){
 
             // Get Card
-            $card = FinancialCreditCard::find($method[1]);
+            $card = FinancialCreditCard::find($data['method_id']);
 
             // Date to Payment
             $yearMonth = Carbon::parse($data['date_purchase'])->addMonths(1)->format('Y-m-');
@@ -188,11 +185,11 @@ class FinancialTransactionsController extends Controller
             $data['date_payment'] = $dateFature;
 
             // CardId
-            $data['credit_card_id'] = $method[1];
+            $data['credit_card_id'] = $data['method_id'];
 
         } else {
             $data['date_payment'] = $data['date_purchase'];
-            $data['wallet_id'] = $method[1];
+            $data['wallet_id'] = $data['method_id'];
         }
 
         // IF RECURRENT OR INSTALLMENTS
