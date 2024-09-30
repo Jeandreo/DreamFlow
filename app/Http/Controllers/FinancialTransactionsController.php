@@ -415,10 +415,43 @@ class FinancialTransactionsController extends Controller
     {
 
         // Se não for uma fatura
-        if ($request->type != 'Fature') {
+        if($request->type != 'Fature'){
 
-            // Duplica a transação modelo e gera uma nova
-            $data = $request->all();
+            // Obtém transação
+            $transaction = $this->repository->find($request->id);
+
+            // Obtém dados da transação
+            $data = $transaction->toArray();
+
+            // FORMAT CHECKED
+            $data['paid'] = $request->paid == 'true' ? true : false;
+
+            // Se for uma pré-visualização de um lançamento recorrente
+            if($request->preview == 'true') {
+                $data['date_purchase'] = $request->date;
+                $data['date_payment'] = $request->date;
+                $data['date_paid'] = now();
+                $data['updated_by'] = null;
+                $data['created_by'] = Auth::id();
+                $transaction = $transaction->create($data);
+    
+            } else {
+                // STORING NEW DATA
+                $data['updated_by'] = Auth::id();
+                $data['date_paid'] = now();
+                $transaction->update($data);
+            } 
+
+            // Se a transação for um recebimento, o valor recebido é o mesmo que o pago
+            if($transaction->value_paid == 0){
+                $transaction->value_paid = $transaction->value;
+                $transaction->save();
+            }
+
+        } else {
+
+            // Obtém dados da transação
+            $data = $request->toArray();
 
             // Extrair os parâmetros fornecidos
             $creditCardId = $data['id'];
@@ -434,76 +467,15 @@ class FinancialTransactionsController extends Controller
                 ->where('year', $year)
                 ->first(); 
 
-            dd($fature, $request->all());
+            $fature->paid = $fature->paid ? false : true;
+            $fature->save();
 
-            // FORMAT CHECKED
-            $data['paid'] = $request->paid == 'true' ? true : false;
-
-            // Se for uma pré-visualização de um lançamento recorrente
-            if ($request->preview == 'true') {
-                $data['date_purchase'] = $request->date;
-                $data['date_payment'] = $request->date;
-                $data['date_paid'] = now();
-                $data['updated_by'] = null;
-                $data['created_by'] = Auth::id();
-                $transaction = $transaction->create($data);
-            } else {
-                // STORING NEW DATA
-                $data['updated_by'] = Auth::id();
-                $data['date_paid'] = now();
-                $transaction->update($data);
-            }
-
-            // Se a transação for um recebimento, o valor recebido é o mesmo que o pago
-            if ($transaction->value_paid == 0) {
-                $transaction->value_paid = $transaction->value;
-                $transaction->save();
-            }
-        } else {
-
-            // Obtém cartão
-            $cardId = $request->id;
-
-            // Cartão
-            $card = FinancialCreditCard::find($cardId);
-
-            // Separa ano e mes
-            $arrayDate = explode('-', $request->date);
-            $year = $arrayDate[0];
-            $month = $arrayDate[1];
-
-            // Obtém total dos valores do mês
-            $totalValue = FinancialTransactions::where('credit_card_id', $cardId)
-                ->whereYear('date_payment', $year)
-                ->whereMonth('date_payment', $month)
-                ->sum('value');
-
-            // Data de pagamento
-            $yearMonthName = ucfirst(Carbon::parse(date($request->date))->locale('pt_BR')->isoFormat('MMMM'));
-
-            $createFature = $this->repository->create([
-                'credit_card_id' => $cardId,
-                'category_id' => 0,
-                'name' => 'Fatura de ' . $yearMonthName . ' - ' . $card->name,
-                'fature' => true,
-                'value' => $totalValue,
-                'date_purchase' => $request->date,
-                'date_payment' => $request->date,
-                'date_paid' => now(),
-                'paid' => true,
-                'created_by' => Auth::id(),
-            ]);
-
-            // Salva em qual fatura foi paga
-            FinancialTransactions::where('credit_card_id', $cardId)
-                ->whereYear('date_payment', $year)
-                ->whereMonth('date_payment', $month)
-                ->update(['fature_id' => $createFature->id]);
         }
 
 
         // REDIRECT AND MESSAGES
         return response()->json('Transaction updated with success', 200);
+
     }
 
     /**
@@ -879,7 +851,7 @@ class FinancialTransactionsController extends Controller
                 'date_purchase' => $dueDate,
                 'date_payment' => $dueDate,
                 'value' => $totalSum,
-                'paid' => false,
+                'paid' => $fature->paid,
                 'has_wallet' => null,
                 'recurrent_id' => null,
                 'fature' => true,
