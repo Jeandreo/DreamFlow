@@ -26,7 +26,6 @@ class FinancialTransactions extends Model
         'adjustment',
         'adjustment_count',
         'fature',
-        'fature_id',
         'value',
         'value_paid',
         'date_purchase',

@@ -9,8 +9,8 @@
 				<th class="">Categoria</th>
 			</tr>
 		</thead>
-		<tbody>@foreach ($transactions as $transaction)
-			<tr class="open-transaction">
+		<tbody>@foreach ($fature->transactions as $transaction)
+			<tr class="open-transaction cursor-pointer">
 				<td>
 					<span class="fw-bold text-gray-600 fs-6 show" data-id="{{ $transaction->id }}" data-preview='false'>{{ date('d/m/Y', strtotime($transaction->date_purchase)) }}</span>
 				</td>

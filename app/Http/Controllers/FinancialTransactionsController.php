@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\FinancialCategory;
 use App\Models\FinancialCreditCard;
+use App\Models\FinancialFature;
+use App\Models\FinancialFaturesTransaction;
 use App\Models\FinancialTransactions;
 use App\Models\FinancialTransactionsRecurrent;
 use App\Models\FinancialWallet;
@@ -12,20 +14,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use LDAP\Result;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
+use Illuminate\Support\Collection;
 
 class FinancialTransactionsController extends Controller
 {
     protected $request;
     private $repository;
-    
+
     public function __construct(Request $request, FinancialTransactions $content)
     {
-        
+
         $this->request = $request;
         $this->repository = $content;
-
     }
 
     /**
@@ -61,9 +62,9 @@ class FinancialTransactionsController extends Controller
             DB::raw('MONTH(date_purchase) as month'),
             DB::raw('SUM(value) as total')
         )
-        ->whereYear('date_purchase', date('Y')) // Filtra o ano atual, pode ser modificado conforme necessário
-        ->groupBy('month')
-        ->get();
+            ->whereYear('date_purchase', date('Y')) // Filtra o ano atual, pode ser modificado conforme necessário
+            ->groupBy('month')
+            ->get();
 
         foreach ($transactions as $transaction) {
             if ($transaction->total > 0) {
@@ -97,14 +98,14 @@ class FinancialTransactionsController extends Controller
         $entriesSum = FinancialTransactions::where('value', '>=', 0)
             ->where('date_payment', 'like', $currentMonth . '%')
             ->sum('value');
-    
+
         $exitsSum = FinancialTransactions::where('value', '<', 0)
             ->where('date_payment', 'like', $currentMonth . '%')
             ->sum('value');
-    
+
         // Calcula a diferença
         $difference = $entriesSum + $exitsSum;
-    
+
         // Retorna os resultados em um array
         $values = [
             'revenues' => $entriesSum,
@@ -125,7 +126,6 @@ class FinancialTransactionsController extends Controller
             'credits' => $credits,
             'pageClean' => true,
         ]);
-
     }
 
     /**
@@ -147,7 +147,6 @@ class FinancialTransactionsController extends Controller
             'categories' => $categories,
             'pageClean' => true,
         ]);
-
     }
 
     /**
@@ -169,31 +168,23 @@ class FinancialTransactionsController extends Controller
         $data['value'] = toDecimal($data['value']);
 
         // IF EXPENSE
-        if($data['type'] == 'expense'){
+        if ($data['type'] == 'expense') {
             $data['value'] = -$data['value'];
         }
 
         // IF CREDIT
-        if($data['method'] == 'credit'){
-
-            // Get Card
-            $card = FinancialCreditCard::find($data['method_id']);
-
-            // Date to Payment
-            $yearMonth = Carbon::parse($data['date_purchase'])->addMonths(1)->format('Y-m-');
-            $dateFature = $yearMonth . $card->due_day;
-            $data['date_payment'] = $dateFature;
-
+        if ($data['method'] == 'credit') {            
             // CardId
             $data['credit_card_id'] = $data['method_id'];
-
-        } else {
+        } 
+        
+        if ($data['method'] == 'wallet') {
             $data['date_payment'] = $data['date_purchase'];
             $data['wallet_id'] = $data['method_id'];
         }
 
         // IF RECURRENT OR INSTALLMENTS
-        if($data['installments'] ==  true){
+        if ($data['installments'] ==  true) {
 
             // Atrelamento
             $data['hitching'] = $this->getHitching();
@@ -207,31 +198,60 @@ class FinancialTransactionsController extends Controller
             // Salva nome
             $name = $data['name'];
 
-            for ($i = 1; $i <= $installments; $i++) { 
+            for ($i = 1; $i <= $installments; $i++) {
 
                 // Pula o primeiro mês
-                if($i != 1){
+                if ($i != 1) {
                     $data['date_payment'] = Carbon::parse($data['date_payment'])->addMonths(1)->format('Y-m-d');
                 }
 
                 // Ajusta nome
                 $data['name'] = "$name - ($i/$installments)";
-                
+
                 // SEND DATA
                 $insertTable = $this->repository->create($data);
-                
             }
 
             // REDIRECT AND MESSAGES
             return response()->json('Transaction created with success', 200);
-
         }
 
         // SEND DATA
         $insertTable = $this->repository->create($data);
 
+        // Relaciona a fatura
+        if ($data['method'] == 'credit') {
+
+            // Obtém cartão de crédito
+            $credit = FinancialCreditCard::find($data['method_id']);
+
+            // Calcular o próximo mês e ano
+            $nextMonth = Carbon::parse($data['date_purchase'])->addMonth()->month;
+            $nextYear = Carbon::parse($data['date_purchase'])->addMonth()->year;
+
+            // É uma fatura
+            $data['fature'] = true;
+
+            // Verificar ou criar a fatura
+            $fature = FinancialFature::firstOrCreate(
+                [
+                    'credit_card_id' => $data['method_id'],
+                    'month' => $nextMonth, 
+                    'year' => $nextYear,
+                    'day' => $credit->due_day, 
+                ],
+            );
+
+            // Salva Fatura
+            FinancialFaturesTransaction::create([
+                'transaction_id' => $insertTable->id,
+                'fature_id' => $fature->id,
+            ]);
+
+        }
+
         // Se for recorrente cria a recorrencia
-        if($data['recurrent'] == true){
+        if ($data['recurrent'] == true) {
 
             // Gera recorrencia
             $recurrence = FinancialTransactionsRecurrent::create([
@@ -242,20 +262,19 @@ class FinancialTransactionsController extends Controller
             // Salva atrelamento
             $insertTable->recurrent_id = $recurrence->id;
             $insertTable->save();
-
         }
 
         // REDIRECT AND MESSAGES
         return response()->json('Transaction created with success', 200);
-
     }
 
-    public function getHitching(){
+    public function getHitching()
+    {
 
         // Get Last Hitching
         $last = FinancialTransactions::max('hitching');
 
-        if(!$last){
+        if (!$last) {
             $hitching = 1;
         } else {
             $hitching = ++$last;
@@ -275,8 +294,8 @@ class FinancialTransactionsController extends Controller
     {
 
         // VERIFY IF EXISTS
-        if(!$content = $this->repository->find($id))
-        return redirect()->back();
+        if (!$content = $this->repository->find($id))
+            return redirect()->back();
 
         // GET FORM DATA
         $data = $request->all();
@@ -285,7 +304,7 @@ class FinancialTransactionsController extends Controller
         $data['value'] = toDecimal($data['value']);
 
         // IF EXPENSE
-        if($data['type'] == 'expense'){
+        if ($data['type'] == 'expense') {
             $data['value'] = -$data['value'];
         }
 
@@ -293,7 +312,7 @@ class FinancialTransactionsController extends Controller
         $method = explode('_', $data['wallet_or_credit']);
 
         // IF CREDIT
-        if($method[0] == 'credit'){
+        if ($method[0] == 'credit') {
             // Obtém cartão de crédito
             $credit = FinancialCreditCard::find($method[1]);
             $data['wallet_id']      = null;
@@ -306,16 +325,15 @@ class FinancialTransactionsController extends Controller
         }
 
         // UPDATE OR MAKE NEW
-        if($request->preview == 'false'){
+        if ($request->preview == 'false') {
             // STORING NEW DATA
             $data['updated_by'] = Auth::id();
             $content->update($data);
 
             // Atualiza a fatura
-            if($method[0] == 'credit'){
+            if ($method[0] == 'credit') {
                 $this->calcFature($data['credit_card_id'], $data['date_payment']);
             }
-
         } else {
             // STORING NEW DATA
             $data['created_by'] = Auth::id();
@@ -324,39 +342,37 @@ class FinancialTransactionsController extends Controller
 
         // REDIRECT AND MESSAGES
         return response()->json('Transaction updated with success', 200);
-
     }
 
-    public function calcFature($card, $month){
+    public function calcFature($card, $month)
+    {
 
         // Obtém data Carbon
         $date = Carbon::parse($month);
 
         // Procura se a fatura já foi gerada
         $fature = FinancialTransactions::where('fature', true)
-                    ->where('credit_card_id', $card)
-                    ->whereYear('date_payment', $date->year)
-                    ->whereMonth('date_payment', $date->month)
-                    ->first();
+            ->where('credit_card_id', $card)
+            ->whereYear('date_payment', $date->year)
+            ->whereMonth('date_payment', $date->month)
+            ->first();
 
 
         // Se a fatura já foi gerada, recalcula ela
-        if($fature){
+        if ($fature) {
 
             $previousMonth = $date->copy()->subMonth();
             $newValue = FinancialTransactions::where('fature', false)
-                            ->where('credit_card_id', $card)
-                            ->whereYear('date_purchase', $previousMonth->year)
-                            ->whereMonth('date_purchase', $previousMonth->month)
-                            ->sum('value');
+                ->where('credit_card_id', $card)
+                ->whereYear('date_purchase', $previousMonth->year)
+                ->whereMonth('date_purchase', $previousMonth->month)
+                ->sum('value');
 
 
             // Atualiza o valor 
             $fature->value = $newValue;
             $fature->save();
-            
         }
-
     }
 
     /**
@@ -374,7 +390,7 @@ class FinancialTransactionsController extends Controller
         $categories = FinancialCategory::where('status', 1)->get();
 
         // VERIFY IF EXISTS
-        if(!$content) return redirect()->back();
+        if (!$content) return redirect()->back();
 
         // GENERATES DISPLAY WITH DATA
         return view('pages.financial_transactions._form')->with([
@@ -399,39 +415,50 @@ class FinancialTransactionsController extends Controller
     {
 
         // Se não for uma fatura
-        if($request->type != 'Fature'){
-
-            // Obtém transação
-            $transaction = $this->repository->find($request->id);
+        if ($request->type != 'Fature') {
 
             // Duplica a transação modelo e gera uma nova
-            $data = $transaction->toArray();
+            $data = $request->all();
+
+            // Extrair os parâmetros fornecidos
+            $creditCardId = $data['id'];
+            $date = Carbon::parse($data['date']);
+
+            // Obter o mês e o ano da fatura
+            $month = $date->month;
+            $year = $date->year;
+
+            // Buscar a fatura para o cartão de crédito dentro do mês e ano fornecidos
+            $fature = FinancialFature::where('credit_card_id', $creditCardId)
+                ->where('month', $month)
+                ->where('year', $year)
+                ->first(); 
+
+            dd($fature, $request->all());
 
             // FORMAT CHECKED
             $data['paid'] = $request->paid == 'true' ? true : false;
 
             // Se for uma pré-visualização de um lançamento recorrente
-            if($request->preview == 'true') {
+            if ($request->preview == 'true') {
                 $data['date_purchase'] = $request->date;
                 $data['date_payment'] = $request->date;
                 $data['date_paid'] = now();
                 $data['updated_by'] = null;
                 $data['created_by'] = Auth::id();
                 $transaction = $transaction->create($data);
-    
             } else {
                 // STORING NEW DATA
                 $data['updated_by'] = Auth::id();
                 $data['date_paid'] = now();
                 $transaction->update($data);
-            } 
+            }
 
             // Se a transação for um recebimento, o valor recebido é o mesmo que o pago
-            if($transaction->value_paid == 0){
+            if ($transaction->value_paid == 0) {
                 $transaction->value_paid = $transaction->value;
                 $transaction->save();
             }
-
         } else {
 
             // Obtém cartão
@@ -472,13 +499,11 @@ class FinancialTransactionsController extends Controller
                 ->whereYear('date_payment', $year)
                 ->whereMonth('date_payment', $month)
                 ->update(['fature_id' => $createFature->id]);
-
         }
 
 
         // REDIRECT AND MESSAGES
         return response()->json('Transaction updated with success', 200);
-
     }
 
     /**
@@ -491,17 +516,16 @@ class FinancialTransactionsController extends Controller
     {
 
         // VERIFY IF EXISTS
-        if(!$content = $this->repository->find($request->id))
-        return redirect()->back();
+        if (!$content = $this->repository->find($request->id))
+            return redirect()->back();
 
         // GET FORM DATA
         $content->delete();
 
         // REDIRECT AND MESSAGES
         return response()->json('Transaction updated with success', 200);
-
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -509,6 +533,9 @@ class FinancialTransactionsController extends Controller
      */
     public function processing(Request $request)
     {
+        // Ajusta datas
+        $dates['start'] = $request->input('date_begin');
+        $dates['end'] = $request->input('date_end');
 
         // Inicia a consulta com junções e seleções
         $query = $this->transactions($request);
@@ -532,10 +559,10 @@ class FinancialTransactionsController extends Controller
         $transactions = collect($transactions)->merge($recurrents);
 
         // Obtém Faturas
-        $data = $this->fatureTransactions($transactions); 
+        $data = $this->fatureTransactions($dates);
 
         // Remove as transações de cartão
-        $data = array_filter($data->toArray(), function($transaction) {
+        $data = array_filter($data->toArray(), function ($transaction) {
             return !($transaction->credit_card_id && $transaction->fature == 0);
         });
 
@@ -544,46 +571,45 @@ class FinancialTransactionsController extends Controller
 
         // Agrupamento dos resultados esperados e lançados
         $expected = $this->expected($request);
-        
+
         // Obtém total pago
         $current = $this->current($request);
-        
+
         // COUNT TOTAL RECORDS
         $totalRecords = count($transactions);
 
         // Remove os ajustes de carteira
         // $data = collect($data)->where('adjustment', false);
-        
+
         // Configurar as colunas usando a função editColumn
         return FacadesDataTables::of($data)
-            ->editColumn('checked', function($row) {
+            ->editColumn('checked', function ($row) {
 
                 // Se for um ajuste ou uma transação ed fatura não permite "Pagar"
-                if(isset($row->adjustment) && $row->adjustment == true || $row->type == 'Wallet' && $row->credit_card_id && $row->type == 'Wallet' && !$row->fature){
+                if (isset($row->adjustment) && $row->adjustment == true || $row->type == 'Wallet' && $row->credit_card_id && $row->type == 'Wallet' && !$row->fature) {
                     return '-';
                 } else {
                     return "<div class='form-check form-check-sm form-check-custom form-check-solid ps-3 cursor-pointer'>
                                 <input class='form-check-input cursor-pointer transaction-paid' type='checkbox' value='$row->id' " . ($row->paid ? 'checked' : null) . ">
                             </div>";
                 }
-
             })
-            ->editColumn('name', function($row) {
+            ->editColumn('name', function ($row) {
 
                 $isPreview       = isset($row->preview) ? 'true' : 'false';
                 $isFature        = isset($row->fature) && $row->fature == true ? 'true' : 'false';
                 $isFaturePreview = isset($row->fature_preview) ? 'true' : 'false';
-                $recurrent       = $row->recurrent_id ? '<i class="fa-solid fa-retweet '. (isset($row->preview) ? 'text-danger' : 'text-primary') .'"></i>' : '<span></span>';
+                $recurrent       = $row->recurrent_id ? '<i class="fa-solid fa-retweet ' . (isset($row->preview) ? 'text-danger' : 'text-primary') . '"></i>' : '<span></span>';
                 $date            = date('Y-m-d', strtotime($row->date_purchase));
 
                 return "<span data-search='$row->name' class='show' data-id='$row->id' data-preview='$isPreview' data-type='$row->type' data-date='$date' data-fature='$isFature' data-fature-preview='$isFaturePreview'>
                             " . (isset($row->adjustment) && $row->adjustment == 1 ? 'Ajuste de saldo ' : '') . Str::limit($row->name, 30) . " $recurrent
                         </span>";
             })
-            ->editColumn('category_id', function($row) {
+            ->editColumn('category_id', function ($row) {
 
                 // Se não for fatura pega os ícones e cores personalizados, se tiver pai, pega os do pai.
-                if(!isset($row->fature) || $row->fature == false){
+                if (!isset($row->fature) || $row->fature == false) {
                     $color    = $row->has_father ? $row->father_color : $row->category_color;
                     $icon     = $row->has_father ? $row->father_icon  : $row->category_icon;
                     $category = $row->category;
@@ -600,23 +626,22 @@ class FinancialTransactionsController extends Controller
                             </div>
                             <span class='text-gray-600'>$category</span>
                         </span>";
-
             })
-            ->editColumn('date', function($row) {
+            ->editColumn('date', function ($row) {
                 return date('d/m/Y', strtotime($row->date_payment));
             })
-            ->editColumn('value', function($row) {
+            ->editColumn('value', function ($row) {
                 $class = $row->value < 0 ? 'text-danger' : 'text-success';
                 return "<span class='$class'>R$ " . number_format($row->value, 2, ',', '.') . "</span>";
             })
-            ->editColumn('wallet_credit', function($row) {
+            ->editColumn('wallet_credit', function ($row) {
                 if ($row->id && $row->has_wallet) {
                     return "
                     <span class='badge py-2 fw-bold fs-8 px-3' style='background: " . hex2rgb($row->wallet_color, 7) . "; color: " . $row->wallet_color . "'>
                         <i class='fa-solid fa-wallet fs-9 me-1' style='color: " . hex2rgb($row->wallet_color, 70) . "'></i>
                         $row->wallet_name
                     </span>";
-                } elseif($row->id && $row->credit_card_id) {
+                } elseif ($row->id && $row->credit_card_id) {
                     return "<span class='badge badge-light-danger py-2 fw-bold fs-8 px-3'>
                                 <div class='d-flex align-items-center'>
                                     <i class='fa-solid fa-credit-card text-danger fs-9 me-1'></i>
@@ -627,12 +652,12 @@ class FinancialTransactionsController extends Controller
                     return '<span class="badge badge-light">Não informado</span>';
                 }
             })
-            ->editColumn('actions', function($row) {
+            ->editColumn('actions', function ($row) {
 
                 // Adiciona buscar transações
-                if(isset($row->fature) && $row->fature){
+                if (isset($row->fature) && $row->fature) {
                     $showTransactios = "<button type='button' class='show-sub-transactions btn btn-sm btn-light btn-active-light-primary toggle h-35px me-3'
-                                            <span data-credit-card='". $row->credit_card_id ."'><i class='fa-solid fa-circle-plus'></i></span>
+                                            <span data-credit-card='" . $row->credit_card_id . "'><i class='fa-solid fa-circle-plus'></i></span>
                                         </button>";
                     $btnDelete = '';
                 } else {
@@ -643,7 +668,6 @@ class FinancialTransactionsController extends Controller
                 }
 
                 return $showTransactios . $btnDelete . "<button class='btn btn-light btn-active-light-primary btn-sm me-3'>Ações</button>";
-
             })
             ->rawColumns(['checked', 'name', 'category_id', 'date', 'value', 'wallet_credit', 'actions'])
             ->setTotalRecords($totalRecords)
@@ -660,7 +684,8 @@ class FinancialTransactionsController extends Controller
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public function current($request){
+    public function current($request)
+    {
 
         // Soma as transações não recorrentes também (caso queira incluir isso)
         $revenues = FinancialTransactions::where('date_payment', '<=', $request->date_end)->where('value', '>', 0)->where('paid', true)->sum('value');
@@ -677,7 +702,6 @@ class FinancialTransactionsController extends Controller
         ];
 
         return $results;
-
     }
 
     /**
@@ -685,17 +709,18 @@ class FinancialTransactionsController extends Controller
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public function expected($request){
+    public function expected($request)
+    {
 
         // Data final simulada (2 meses no futuro)
         $dateEnd = Carbon::parse($request->date_end)->endOfMonth();
 
         // Obtém todas as transações recorrentes até a data final
         $recurrences = FinancialTransactionsRecurrent::where('status', true)
-                                ->where('end', '<=' ,$request->date_end)
-                                ->orWhere('status', true)
-                                ->whereNull('end')
-                                ->get();
+            ->where('end', '<=', $request->date_end)
+            ->orWhere('status', true)
+            ->whereNull('end')
+            ->get();
 
         // Inicializa as somas
         $revenues = 0;
@@ -718,13 +743,12 @@ class FinancialTransactionsController extends Controller
                 // Se o valor for positivo, é receita (revenue)
                 if ($template->value > 0) {
                     $revenues += $template->value;
-                } 
+                }
                 // Se o valor for negativo, é despesa (expense)
                 else {
                     $expenses += $template->value;
                 }
             }
-
         }
 
         // Soma as transações não recorrentes também (caso queira incluir isso)
@@ -744,7 +768,6 @@ class FinancialTransactionsController extends Controller
         ];
 
         return $results;
-
     }
 
     /**
@@ -752,28 +775,29 @@ class FinancialTransactionsController extends Controller
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public function transactions($request){
+    public function transactions($dates)
+    {
 
         // Inicia a consulta
         $query = DB::table('financial_transactions');
 
         // Junta com a tabela de categorias
-        $query->leftJoin('financial_categories', function($join) {
+        $query->leftJoin('financial_categories', function ($join) {
             $join->on('financial_transactions.category_id', '=', 'financial_categories.id');
         });
 
         // Verifica se a categoria possui uma categoria pai
-        $query->leftJoin('financial_categories as category_father', function($join) {
+        $query->leftJoin('financial_categories as category_father', function ($join) {
             $join->on('category_father.id', '=', 'financial_categories.father_id');
         });
 
         // Junta com a tabela de carteiras
-        $query->leftJoin('financial_wallets', function($join) {
+        $query->leftJoin('financial_wallets', function ($join) {
             $join->on('financial_transactions.wallet_id', '=', 'financial_wallets.id');
         });
 
         // Junta aos cartões de crédito
-        $query->leftJoin('financial_credit_cards', function($join) {
+        $query->leftJoin('financial_credit_cards', function ($join) {
             $join->on('financial_transactions.credit_card_id', '=', 'financial_credit_cards.id');
         });
 
@@ -789,7 +813,6 @@ class FinancialTransactionsController extends Controller
             'financial_transactions.wallet_id       as has_wallet',
             'financial_transactions.recurrent_id    as recurrent_id',
             'financial_transactions.fature          as fature',
-            'financial_transactions.fature_id       as fature_id',
             'financial_transactions.adjustment      as adjustment',
             'financial_categories.name              as category',
             'financial_categories.father_id         as has_father',
@@ -805,12 +828,9 @@ class FinancialTransactionsController extends Controller
             'financial_credit_cards.due_day         as due_date',
         );
 
-        $dateBegin = $request->input('date_begin');
-        $dateEnd = $request->input('date_end');
-
         // Se estiver filtrando por data
-        if($dateBegin && $dateEnd){
-            $query->whereBetween('financial_transactions.date_payment', [$dateBegin, $dateEnd]);
+        if ($dates['start'] && $dates['end']) {
+            $query->whereBetween('financial_transactions.date_payment', [$dates['start'], $dates['end']]);
         }
 
         // Executa consulta em trás array
@@ -823,61 +843,61 @@ class FinancialTransactionsController extends Controller
      * @param \Illuminate\Support\Collection $data
      * @return \Illuminate\Support\Collection
      */
-    public function fatureTransactions($data)
+    public function fatureTransactions($dates)
     {
 
-        $data = collect($data);
+        // Supondo que você tenha os valores de início e fim
+        $start = Carbon::parse($dates['start']);
 
-        // Agrupa as compras no cartão de crédito em que não foram geradas em uma fatura
-        $faturesCredit = $data->where('credit_card_id', true)->whereNull('fature_id');
+        // Obter todas as faturas do mês e ano especificados
+        $fatures = FinancialFature::where('month', $start->month)
+            ->where('year', $start->year)
+            ->get();
 
-        // Agrupar por mês e por cartão de crédito
-        $faturesByMonth = $faturesCredit->groupBy(function ($item) {
-            return Carbon::parse($item->date_payment)->format('Y-m-');
-        })->map(function ($items) {
-            return $items->groupBy('card_name');
-        });
+        // Inicializa uma coleção vazia
+        $fatureCollection = new Collection();
 
-        // Faz looping entre faturas 
-        foreach ($faturesByMonth as $yearMonth => $cards) {
-            // Faz looping entre os cartões
-            foreach ($cards as $card => $transactions) {
-                
-                // Verifica se já existe uma fatura criada
-                $existFature = collect($transactions)->where('fature', true)->isNotEmpty();
+        foreach ($fatures as $fature) {
 
-                // Se não existir
-                if (!$existFature) {
-                    // Formata nome do mês
-                    $monthName = ucfirst(Carbon::parse(date($yearMonth . $transactions[0]->due_date))->locale('pt_BR')->isoFormat('MMMM'));
+            // Obtém o cartão de crédito
+            $credit = FinancialCreditCard::find($fature['credit_card_id']);
 
-                    // Cria objeto
-                    $fature = (object)[
-                        'type' => 'Fature',
-                        'id' => $transactions[0]->credit_card_id,
-                        'name' => 'Fatura de ' . $monthName . ' - ' . $card,
-                        'date_purchase' => date($yearMonth . $transactions[0]->due_date),
-                        'date_payment' => date($yearMonth . $transactions[0]->due_date),
-                        'value' => $transactions->sum('value'),
-                        'paid' => false,
-                        'has_wallet' => null,
-                        'recurrent_id' => null,
-                        'fature' => true,
-                        'fature_preview' => true,
-                        'category' => 'Fatura',
-                        'has_father' => false,
-                        'credit_card_id' => $transactions[0]->credit_card_id,
-                        'card_name' => $card,
-                        'year_month' => $yearMonth,
-                    ];
+            // Obtém mês por escrito
+            $monthName = ucfirst(Carbon::parse(date($start->year . $start->month . '01'))->locale('pt_BR')->isoFormat('MMMM'));
 
-                    // Insere fatura
-                    $data->push($fature);
-                }
-            }
+            // Gera data da fatura
+            $dueDate = $start->year . '-' . $start->month . '-' . $credit->due_day;
+
+            // Obtém total
+            $totalSum = $fature->transactions()->sum('value');
+
+            // Cria objeto
+            $fatureObject = (object)[
+                'type' => 'Fature',
+                'id' => $credit->id,
+                'name' => 'Fatura de ' . $monthName . ' - ' . $credit->name,
+                'date_purchase' => $dueDate,
+                'date_payment' => $dueDate,
+                'value' => $totalSum,
+                'paid' => false,
+                'has_wallet' => null,
+                'recurrent_id' => null,
+                'fature' => true,
+                'fature_preview' => true,
+                'category' => 'Fatura',
+                'has_father' => false,
+                'credit_card_id' => $credit->id,
+                'card_name' => $credit->name,
+            ];
+
+            // Adiciona o objeto à coleção
+            $fatureCollection->push($fatureObject);
+
         }
 
-        return collect($data);
+        // Obtém coleção
+        return collect($fatureCollection);
+        
     }
 
     /**
@@ -887,17 +907,18 @@ class FinancialTransactionsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Database\Query\Builder
      */
-    public function recurringTransactions($request, $data){
+    public function recurringTransactions($request, $data)
+    {
 
         // Define a data de início do mês anterior
         $date = Carbon::parse($request->date_begin);
 
         // Obtém todas as transações recorrentes
         $recurrentFilter = FinancialTransactionsRecurrent::where('status', true)
-                                ->where('end', '<=' , $date)
-                                ->orWhere('status', true)
-                                ->whereNull('end')
-                                ->get();
+            ->where('end', '<=', $date)
+            ->orWhere('status', true)
+            ->whereNull('end')
+            ->get();
 
         // Obtém apenas as recorrentes
         $transactionsRecurrents = [];
@@ -919,12 +940,11 @@ class FinancialTransactionsController extends Controller
 
                 // Importante o vínculo (hitching) estar cadastrado
                 return $item->recurrent_id == $recurrence->id && Carbon::parse($item->date_purchase)->isSameMonth($newDate);
-
             });
 
             // Se não houver transação criada, simula uma ficticia
             if (!$existingTransaction) {
-                
+
                 // Cria o objeto
                 $trasactionSimulated = (object) [
                     'type'           => 'Recurrent',
@@ -953,12 +973,10 @@ class FinancialTransactionsController extends Controller
 
                 // Insere os dados
                 $transactionsRecurrents[] = $trasactionSimulated;
-
             }
         }
 
         return collect($transactionsRecurrents);
-        
     }
 
     /**
@@ -1046,4 +1064,3 @@ class FinancialTransactionsController extends Controller
         return $this->repository->where('paid', true)->sum('value_paid');
     }
 }
-
