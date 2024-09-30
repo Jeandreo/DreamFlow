@@ -316,6 +316,15 @@ class FinancialTransactionsController extends Controller
             $data['wallet_id']      = $data['method_id'];
             $data['credit_card_id'] = null;
         }
+        
+        // Se for recorrente cria a recorrencia
+        if ($content->recurrent) {
+
+            // Gera recorrencia
+            $content->recurrent->start = $data['date_payment'];
+            $content->recurrent->save();
+
+        }
 
         // UPDATE OR MAKE NEW
         if ($request->preview == 'false') {
@@ -670,7 +679,7 @@ class FinancialTransactionsController extends Controller
         $expenses = 0;
 
         // Itera sobre as transações recorrentes filtradas
-        foreach ($recurrences as $recurrentTransaction) {
+        foreach ($recurrences as $key => $recurrentTransaction) {
 
             // Obtém modelo
             $template = $recurrentTransaction->transaction;
@@ -687,7 +696,7 @@ class FinancialTransactionsController extends Controller
                     $revenues += $template->value;
                 }
                 else {
-                    $expenses += $template->value;
+                    $expenses += abs($template->value);
                 }
             }
 
@@ -716,8 +725,8 @@ class FinancialTransactionsController extends Controller
 
         // Calcula a diferença (revenues - expenses)
         $totalRevenues = $revenues + $nonRecurringRevenues;
-        $totalExpenses = $expenses + $nonRecurringExpenses;
-        $difference = $totalRevenues - $expenses;
+        $totalExpenses = $expenses + abs($nonRecurringExpenses);
+        $difference = $totalRevenues - $totalExpenses;
 
         // Resultados
         $results = [

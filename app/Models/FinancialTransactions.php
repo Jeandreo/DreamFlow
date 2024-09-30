@@ -47,4 +47,12 @@ class FinancialTransactions extends Model
         return $this->HasOne(FinancialCategory::class, 'id', 'category_id');
     }
 
+    /**
+     * Get the brand associated with the user.
+     */
+    public function recurrent(): HasOne
+    {
+        return $this->HasOne(FinancialTransactionsRecurrent::class, 'transaction_id', 'id');
+    }
+
 }
