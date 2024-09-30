@@ -307,71 +307,27 @@ class FinancialTransactionsController extends Controller
             $data['value'] = -$data['value'];
         }
 
-        // GET METHOD
-        $method = explode('_', $data['wallet_or_credit']);
-
         // IF CREDIT
-        if ($method[0] == 'credit') {
-            // Obtém cartão de crédito
-            $credit = FinancialCreditCard::find($method[1]);
+        if ($data['method'] == 'credit') {
             $data['wallet_id']      = null;
-            $data['credit_card_id'] = $method[1];
-            $data['date_payment']   = Carbon::parse($data['date_purchase'])->addMonth()->format('Y-m-') . $credit->due_day;
+            $data['credit_card_id'] = $data['method_id'];
         } else {
             $data['date_payment']   = $data['date_purchase'];
-            $data['wallet_id']      = $method[1];
+            $data['wallet_id']      = $data['method_id'];
             $data['credit_card_id'] = null;
         }
 
         // UPDATE OR MAKE NEW
         if ($request->preview == 'false') {
-            // STORING NEW DATA
             $data['updated_by'] = Auth::id();
             $content->update($data);
-
-            // Atualiza a fatura
-            if ($method[0] == 'credit') {
-                $this->calcFature($data['credit_card_id'], $data['date_payment']);
-            }
         } else {
-            // STORING NEW DATA
             $data['created_by'] = Auth::id();
             $content->create($data);
         }
 
         // REDIRECT AND MESSAGES
         return response()->json('Transaction updated with success', 200);
-    }
-
-    public function calcFature($card, $month)
-    {
-
-        // Obtém data Carbon
-        $date = Carbon::parse($month);
-
-        // Procura se a fatura já foi gerada
-        $fature = FinancialTransactions::where('fature', true)
-            ->where('credit_card_id', $card)
-            ->whereYear('date_payment', $date->year)
-            ->whereMonth('date_payment', $date->month)
-            ->first();
-
-
-        // Se a fatura já foi gerada, recalcula ela
-        if ($fature) {
-
-            $previousMonth = $date->copy()->subMonth();
-            $newValue = FinancialTransactions::where('fature', false)
-                ->where('credit_card_id', $card)
-                ->whereYear('date_purchase', $previousMonth->year)
-                ->whereMonth('date_purchase', $previousMonth->month)
-                ->sum('value');
-
-
-            // Atualiza o valor 
-            $fature->value = $newValue;
-            $fature->save();
-        }
     }
 
     /**

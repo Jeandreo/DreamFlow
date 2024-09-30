@@ -270,8 +270,7 @@ input[type=text]:disabled {
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar {
-    background: linear-gradient(90deg, #002885, #085eaf);
-    box-shadow: 5px 0px 50px #00000050;
+    background: linear-gradient(230deg, #30415e, #18202B);
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link.active {
@@ -279,7 +278,7 @@ input[type=text]:disabled {
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar .app-sidebar-logo {
-    border-bottom: 1px dashed #0000477a;
+    border-bottom: 1px dashed #00000020;
 }
 
 
