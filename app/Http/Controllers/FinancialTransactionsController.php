@@ -652,14 +652,17 @@ class FinancialTransactionsController extends Controller
     public function expected($request)
     {
 
-        // Data final simulada (2 meses no futuro)
-        $dateEnd = Carbon::parse($request->date_end)->endOfMonth();
+        // Define a data de início do mês anterior
+        $dateStart = Carbon::parse($request->date_begin);
+        $dateEnd = Carbon::parse($request->date_end);
 
-        // Obtém todas as transações recorrentes até a data final
-        $recurrences = FinancialTransactionsRecurrent::where('status', true)
-            ->where('end', '<=', $request->date_end)
-            ->orWhere('status', true)
-            ->whereNull('end')
+        // Obtém todas as transações recorrentes
+        $recurrences = FinancialTransactionsRecurrent::where('start', '<=', $dateEnd)
+            ->where(function ($query) use ($dateEnd) {
+                $query->where('end', '<=', $dateEnd)
+                    ->orWhereNull('end');
+            })
+            ->where('status', true)
             ->get();
 
         // Inicializa as somas
@@ -673,27 +676,26 @@ class FinancialTransactionsController extends Controller
             $template = $recurrentTransaction->transaction;
 
             // Converte a data de início da recorrência
-            $recurrentBegin = Carbon::parse($template->start);
+            $recurrentBegin = Carbon::parse($recurrentTransaction->start);
 
             // Calcula a diferença de meses entre a data de início e a data final simulada
             $monthsDifference = $recurrentBegin->diffInMonths($dateEnd);
 
             // Soma as ocorrências da transação recorrente no intervalo de meses
             for ($i = 0; $i <= $monthsDifference; $i++) {
-                // Se o valor for positivo, é receita (revenue)
                 if ($template->value > 0) {
                     $revenues += $template->value;
                 }
-                // Se o valor for negativo, é despesa (expense)
                 else {
                     $expenses += $template->value;
                 }
             }
+
         }
 
         // Soma as transações não recorrentes também (caso queira incluir isso)
-        $nonRecurringRevenues = FinancialTransactions::whereNull('recurrent_id')->where('date_payment', '<=', $request->date_end)->where('value', '>', 0)->sum('value');
-        $nonRecurringExpenses = FinancialTransactions::whereNull('recurrent_id')->where('date_payment', '<=', $request->date_end)->where('value', '<', 0)->sum('value');
+        $nonRecurringRevenues = FinancialTransactions::whereNull('recurrent_id')->where('date_payment', '<=', $dateEnd)->where('value', '>', 0)->sum('value');
+        $nonRecurringExpenses = FinancialTransactions::whereNull('recurrent_id')->where('date_payment', '<=', $dateEnd)->where('value', '<', 0)->sum('value');
 
         // Extrair os parâmetros fornecidos
         $date = Carbon::parse($request->date_end);
@@ -866,13 +868,18 @@ class FinancialTransactionsController extends Controller
     {
 
         // Define a data de início do mês anterior
-        $date = Carbon::parse($request->date_begin);
+        $dateStart = Carbon::parse($request->date_begin);
+        $dateEnd = Carbon::parse($request->date_end);
+
 
         // Obtém todas as transações recorrentes
         $recurrentFilter = FinancialTransactionsRecurrent::where('status', true)
-            ->where('end', '<=', $date)
-            ->orWhere('status', true)
-            ->whereNull('end')
+            ->where('start', '<=', $dateStart)
+            ->where(function ($query) use ($dateEnd) {
+                $query->where('end', '>=', $dateEnd)
+                    ->orWhereNull('end');
+            })
+            ->where('status', true)
             ->get();
 
         // Obtém apenas as recorrentes
@@ -885,7 +892,7 @@ class FinancialTransactionsController extends Controller
             $transaction = $recurrence->transaction;
 
             // Formata data
-            $newDate = $date->startOfMonth()->format('Y-m-') . date('d', strtotime($transaction->date_payment));
+            $newDate = $dateStart->format('Y-m-') . date('d', strtotime($transaction->date_payment));
 
             // Verifica se tem categorias
             $hasFather = $transaction->category->father_id ? true : false;
