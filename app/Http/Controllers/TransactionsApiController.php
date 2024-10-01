@@ -19,35 +19,44 @@ class TransactionsApiController extends Controller
      */
     public function getTransactions(Request $request)
     {
+            // Extrai dados
+        $data = $request->all();
+
+        // Formata
+        if(!isset($data['date_begin'])){
+            $data['date_begin'] = date('Y-m-01');
+        }
+
+        if(!isset($data['date_end'])){
+            $data['date_end'] = date('Y-m-t');
+        }
+
         
         // Passar o modelo e o request para o construtor do controller
         $apiTransaction = new FinancialTransactionsController($request, new FinancialTransactions);
 
         // Inicia a consulta com junções e seleções
-        $query = $apiTransaction->transactions($request);
+        $query = $apiTransaction->transactions($data);
         
         // Transações
         $transactions = $query->get()->toArray();
         
         // Obtém as transações recorrente
-        $recurrents = $apiTransaction->recurringTransactions($request, $transactions);
+        $recurrents = $apiTransaction->recurringTransactions($data, $transactions);
         
         // Mescla as duas coleções
         $transactions = collect($transactions)->merge($recurrents);
-        
+
         // Obtém Faturas
-        $data = $apiTransaction->fatureTransactions($transactions); 
+        $fatures = $apiTransaction->fatureTransactions($data); 
         
         // Remove as transações de cartão
-        $data = array_filter($data->toArray(), function($transaction) {
+        $fatures = array_filter($fatures->toArray(), function($transaction) {
             return !($transaction->credit_card_id && $transaction->fature == 0);
         });
-        
-        // Organiza a coleção
-        $collection = collect($data);
 
         // Mapeia as colunas
-        $collection = collect($data)->map(function ($item) {
+        $collection = collect($fatures)->map(function ($item) {
             // Define as propriedades padrão para ícone e cor
             $color = '#0076f5';
             $icon = 'fa-solid fa-receipt';
@@ -68,6 +77,9 @@ class TransactionsApiController extends Controller
             ]);
         });
 
+        // Mescla as duas coleções
+        $transactions = collect($transactions)->merge($fatures);
+
         // Agrupamento dos resultados esperados e lançados
         $expected = [
             'total' => $collection->sum('value'),
@@ -85,7 +97,7 @@ class TransactionsApiController extends Controller
         $totalRecords = count($transactions);
 
         // Formata
-        $transactionsFilter = array_values($collection->toArray());
+        $transactionsFilter = array_values($transactions->toArray());
 
         // Retorna para API
         return response()->json([

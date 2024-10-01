@@ -466,8 +466,11 @@ class FinancialTransactionsController extends Controller
     public function processing(Request $request)
     {
 
+        // Extrai dados
+        $data = $request->all();
+
         // Inicia a consulta com junções e seleções
-        $query = $this->transactions($request);
+        $query = $this->transactions($data);
 
         // Realiza pesquisa pelo input
         $query = $this->search($query, $request);
@@ -482,13 +485,13 @@ class FinancialTransactionsController extends Controller
         $transactions = $query->get()->toArray();
 
         // Obtém as transações recorrente
-        $recurrents = $this->recurringTransactions($request, $transactions);
+        $recurrents = $this->recurringTransactions($data, $transactions);
 
         // Mescla as duas coleções
         $transactions = collect($transactions)->merge($recurrents);
 
         // Obtém Faturas
-        $fatures = $this->fatureTransactions($request);
+        $fatures = $this->fatureTransactions($data);
 
         // Mescla as duas coleções
         $transactions = collect($transactions)->merge($fatures);
@@ -743,7 +746,7 @@ class FinancialTransactionsController extends Controller
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public function transactions($request)
+    public function transactions($data)
     {
 
         // Inicia a consulta
@@ -797,8 +800,8 @@ class FinancialTransactionsController extends Controller
         );
 
         // Se estiver filtrando por data
-        if ($request->date_begin && $request->date_end) {
-            $query->whereBetween('financial_transactions.date_payment', [$request->date_begin, $request->date_end]);
+        if ($data['date_begin'] && $data['date_end']) {
+            $query->whereBetween('financial_transactions.date_payment', [$data['date_begin'], $data['date_end']]);
         }
 
         // Executa consulta em trás array
@@ -811,11 +814,11 @@ class FinancialTransactionsController extends Controller
      * @param \Illuminate\Support\Collection $data
      * @return \Illuminate\Support\Collection
      */
-    public function fatureTransactions($request)
+    public function fatureTransactions($data)
     {
 
         // Supondo que você tenha os valores de início e fim
-        $start = Carbon::parse($request->date_begin);
+        $start = Carbon::parse($data['date_begin']);
 
         // Obter todas as faturas do mês e ano especificados
         $fatures = FinancialFature::where('month', $start->month)
@@ -873,12 +876,12 @@ class FinancialTransactionsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Database\Query\Builder
      */
-    public function recurringTransactions($request, $data)
+    public function recurringTransactions($data, $transactions)
     {
 
         // Define a data de início do mês anterior
-        $dateStart = Carbon::parse($request->date_begin);
-        $dateEnd = Carbon::parse($request->date_end);
+        $dateStart = Carbon::parse($data['date_begin']);
+        $dateEnd = Carbon::parse($data['date_end']);
 
 
         // Obtém todas as transações recorrentes
@@ -907,7 +910,7 @@ class FinancialTransactionsController extends Controller
             $hasFather = $transaction->category->father_id ? true : false;
 
             // Verifica se já existe uma transação com o mesmo vínculo no mesmo mês
-            $existingTransaction = collect($data)->first(function ($item) use ($recurrence, $newDate) {
+            $existingTransaction = collect($transactions)->first(function ($item) use ($recurrence, $newDate) {
 
                 // Importante o vínculo (hitching) estar cadastrado
                 return $item->recurrent_id == $recurrence->id && Carbon::parse($item->date_purchase)->isSameMonth($newDate);
