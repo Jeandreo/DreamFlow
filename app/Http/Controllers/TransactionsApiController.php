@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 class TransactionsApiController extends Controller
 {
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -19,39 +19,39 @@ class TransactionsApiController extends Controller
      */
     public function getTransactions(Request $request)
     {
-            // Extrai dados
+        // Extrai dados
         $data = $request->all();
 
         // Formata
-        if(!isset($data['date_begin'])){
+        if (!isset($data['date_begin'])) {
             $data['date_begin'] = date('Y-m-01');
         }
 
-        if(!isset($data['date_end'])){
+        if (!isset($data['date_end'])) {
             $data['date_end'] = date('Y-m-t');
         }
 
-        
+
         // Passar o modelo e o request para o construtor do controller
         $apiTransaction = new FinancialTransactionsController($request, new FinancialTransactions);
 
         // Inicia a consulta com junções e seleções
         $query = $apiTransaction->transactions($data);
-        
+
         // Transações
         $transactions = $query->get()->toArray();
-        
+
         // Obtém as transações recorrente
         $recurrents = $apiTransaction->recurringTransactions($data, $transactions);
-        
+
         // Mescla as duas coleções
         $transactions = collect($transactions)->merge($recurrents);
 
         // Obtém Faturas
-        $fatures = $apiTransaction->fatureTransactions($data); 
-        
+        $fatures = $apiTransaction->fatureTransactions($data);
+
         // Remove as transações de cartão
-        $fatures = array_filter($fatures->toArray(), function($transaction) {
+        $fatures = array_filter($fatures->toArray(), function ($transaction) {
             return !($transaction->credit_card_id && $transaction->fature == 0);
         });
 
@@ -64,14 +64,14 @@ class TransactionsApiController extends Controller
             $color = '#0076f5';
             $icon = 'fa-solid fa-receipt';
             $category = 'Fatura';
-            
+
             // Se não for fatura, usa os ícones e cores personalizados do pai ou dele mesmo.
             if (!isset($item->fature) || $item->fature == 0) {
                 $color = $item->has_father ? $item->father_color : $item->category_color;
                 $icon = $item->has_father ? $item->father_icon : $item->category_icon;
                 $category = $item->category;
             }
-        
+
             // Adiciona os valores personalizados ao item
             return (object) array_merge((array) $item, [
                 'color' => $color,
@@ -92,7 +92,7 @@ class TransactionsApiController extends Controller
             'revenue' => $collection->where('paid', true)->where('value', '>', 0)->sum('value'),
             'expense' => $collection->where('paid', true)->where('value', '<', 0)->sum('value'),
         ];
-        
+
         // COUNT TOTAL RECORDS
         $totalRecords = count($transactions);
 
@@ -106,7 +106,6 @@ class TransactionsApiController extends Controller
             'current' => $current,
             'totalRecords' => $totalRecords,
         ]);
-
     }
 
     /**
@@ -155,7 +154,7 @@ class TransactionsApiController extends Controller
         // Retorna para API
         return response()->json('Transação adicionada com sucesso.');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -164,12 +163,12 @@ class TransactionsApiController extends Controller
     public function getWalletsCredits()
     {
         // Obtém cartões de crédito
-        $wallets = FinancialWallet::where('status', 1)->get()->map(function($wallet) {
+        $wallets = FinancialWallet::where('status', 1)->get()->map(function ($wallet) {
             $wallet->type = 'wallet';
             return $wallet;
         });
 
-        $credits = FinancialCreditCard::where('status', 1)->get()->map(function($credit) {
+        $credits = FinancialCreditCard::where('status', 1)->get()->map(function ($credit) {
             $credit->type = 'credit';
             return $credit;
         });
@@ -179,7 +178,6 @@ class TransactionsApiController extends Controller
 
         // Retorna para API
         return response()->json($combined);
-
     }
 
 
@@ -198,7 +196,7 @@ class TransactionsApiController extends Controller
         $categories = FinancialCategory::where('status', 1)->whereNotNull('father_id')->get();
 
         // VERIFY IF EXISTS
-        if(!$content) return response()->json(['Transaction Not Found'], 404);
+        if (!$content) return response()->json(['Transaction Not Found'], 404);
 
         // GENERATES DISPLAY WITH DATA
         return response()->json([
@@ -208,5 +206,4 @@ class TransactionsApiController extends Controller
             'categories'  => $categories,
         ]);
     }
-
 }
