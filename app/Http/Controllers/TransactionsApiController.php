@@ -55,8 +55,11 @@ class TransactionsApiController extends Controller
             return !($transaction->credit_card_id && $transaction->fature == 0);
         });
 
+        // Mescla as duas coleções
+        $transactions = collect($transactions)->merge($fatures);
+
         // Mapeia as colunas
-        $collection = collect($fatures)->map(function ($item) {
+        $collection = collect($transactions)->map(function ($item) {
             // Define as propriedades padrão para ícone e cor
             $color = '#0076f5';
             $icon = 'fa-solid fa-receipt';
@@ -77,9 +80,6 @@ class TransactionsApiController extends Controller
             ]);
         });
 
-        // Mescla as duas coleções
-        $transactions = collect($transactions)->merge($fatures);
-
         // Agrupamento dos resultados esperados e lançados
         $expected = [
             'total' => $collection->sum('value'),
@@ -97,7 +97,7 @@ class TransactionsApiController extends Controller
         $totalRecords = count($transactions);
 
         // Formata
-        $transactionsFilter = array_values($transactions->toArray());
+        $transactionsFilter = array_values($collection->toArray());
 
         // Retorna para API
         return response()->json([
