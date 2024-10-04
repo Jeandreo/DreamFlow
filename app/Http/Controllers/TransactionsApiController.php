@@ -113,14 +113,22 @@ class TransactionsApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function categories()
+    public function categories($type = null)
     {
 
         // Categories
         $categories = [];
 
         // Obtém as categorias ativas
-        $categoriesFathers = FinancialCategory::where('status', 1)->whereNull('father_id')->get();
+        $categoriesFathers = FinancialCategory::where('status', 1)->whereNull('father_id');
+
+        // Filtra de acordo com o tipo
+        if($type){
+            $categoriesFathers = $categoriesFathers->where('type', $type);
+        }
+
+        // Consulta
+        $categoriesFathers = $categoriesFathers->get();
 
         foreach ($categoriesFathers as $father) {
             $categories[] = $father;

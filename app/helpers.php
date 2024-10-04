@@ -13,13 +13,15 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Encoders\AutoEncoder;
 
-function randomEmoji(){
+function randomEmoji()
+{
     $emojis = ["😊", "😄", "😃", "😁", "😆", "😍", "😋", "😎", "😸", "🌟", "🎉", "🥳", "🎈", "🌈", "💖"];
     $random_index = array_rand($emojis);
     return $emojis[$random_index];
 }
 
-function projects() {
+function projects()
+{
     // Obtém o ID do usuário autenticado
     $userId = Auth::id();
 
@@ -29,14 +31,15 @@ function projects() {
             $query->whereHas('users', function ($subquery) use ($userId) {
                 $subquery->where('user_id', $userId);
             })
-            ->orWhere('manager_id', $userId)
-            ->orWhere('created_by', $userId);
+                ->orWhere('manager_id', $userId)
+                ->orWhere('created_by', $userId);
         });
 
     return $projects;
 }
 
-function randomColor() {
+function randomColor()
+{
     $letters = '0123456789ABCDEF';
     $color = '#';
     for ($i = 0; $i < 6; $i++) {
@@ -45,7 +48,8 @@ function randomColor() {
     return $color;
 }
 
-function catalogs() {
+function catalogs()
+{
     // Obtém o ID do usuário autenticado
     $userId = Auth::id();
 
@@ -55,18 +59,19 @@ function catalogs() {
     return $catalogs;
 }
 
-function resizeAndSaveImage($base64Image, $sizes, $name, $path){
+function resizeAndSaveImage($base64Image, $sizes, $name, $path)
+{
 
     // Directory to save images
     $uploadDir = public_path('storage/' . $path);
-            
+
     // Create the directory if it doesn't exist
     if (!file_exists($uploadDir)) mkdir($uploadDir, 0777, true);
 
     // IMAGEM ORIGINAL
     $manager = new ImageManager(new Driver());
 
-    foreach($sizes as $value) {
+    foreach ($sizes as $value) {
 
         // Obtém imagem
         $image = $manager->read($base64Image);
@@ -78,37 +83,40 @@ function resizeAndSaveImage($base64Image, $sizes, $name, $path){
 
 
         // SALVE A IMAGEM REDIMENSIONADA
-        $image->save('storage/'. $path . $nameFile, 95);
-
+        $image->save('storage/' . $path . $nameFile, 95);
     }
-
 }
 
 // MONEY BRL TO DECIMAL
-function toDecimal($value){
+function toDecimal($value)
+{
 
-      // REMOVE R$ AND REPLACE POINTS
-      $value = str_replace(array('R$', '.'), '', $value);
-      $value = str_replace(',', '.', $value);
-  
-      // CONVERT TO FLOAT
-      $value = floatval($value);
-  
-      // RETURN
-      return $value;
+    // Limpa caracteres especiais
+    $value = str_replace("\xC2\xA0", ' ', $value);
+
+    // REMOVE R$ AND REPLACE POINTS
+    $value = str_replace(array('R$', '.'), '', $value);
+    $value = str_replace(',', '.', $value);
+
+    // CONVERT TO FLOAT
+    $value = floatval($value);
+
+    // RETURN
+    return $value;
 }
 
 
-function findImage($pathAndFile, $default = 'user'){
+function findImage($pathAndFile, $default = 'user')
+{
 
-    if(Storage::disk('public')->exists($pathAndFile)){
+    if (Storage::disk('public')->exists($pathAndFile)) {
         $url = asset('storage/' . $pathAndFile);
     } else {
-        if($default == 'landscape'){
+        if ($default == 'landscape') {
             $url = asset('/assets/media/images/default.png');
-        } elseif($default == 'image') {
+        } elseif ($default == 'image') {
             $url = asset('/assets/media/images/blank_file.png');
-        } elseif($default == 'beautiful') {
+        } elseif ($default == 'beautiful') {
             $url = asset('/assets/media/images/img-beautiful.jpg');
         } else {
             $url = asset('/assets/media/avatars/blank.png');
@@ -116,12 +124,12 @@ function findImage($pathAndFile, $default = 'user'){
     }
 
     return $url;
-
 }
 
 // PUT THE BACKGROUND IN THE TEXT COLOR
-function hex2rgb($colour, $opacity) {
-    
+function hex2rgb($colour, $opacity)
+{
+
     // REMOVE # FROM STRING
     $colour = ltrim($colour, '#');
 
@@ -131,18 +139,17 @@ function hex2rgb($colour, $opacity) {
 
     // RETURN RGBA
     return sprintf('rgb(%d, %d, %d, %d%%)', ...$rgb);
-
 }
 
 // VERIFY IF DAY CHECKED
-function checkDayMonth($date, $type){
+function checkDayMonth($date, $type)
+{
 
     // VERIFY IF COMPLETED IN THE DAY
     $exists = ChallengeCompleted::where('type', $type)->where('date', $date)->first();
 
     // RETURN
     return $exists;
-
 }
 
 
