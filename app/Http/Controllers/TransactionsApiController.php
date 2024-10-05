@@ -54,17 +54,17 @@ class TransactionsApiController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Transação não encontrada.',
-            ], 404); // Retorna 404 se não encontrar
+            ], 404);
         }
 
         // Alterna o estado de 'paid'
-        $transaction->paid = !$transaction->paid; // Inverte o estado
+        $transaction->paid = !$transaction->paid;
         $transaction->save();
 
         // Retorna para API com o estado atual e sucesso
         return response()->json([
             'success' => true,
-            'paid' => $transaction->paid, // Retorna o novo estado de 'paid'
+            'paid' => $transaction->paid,
             'message' => 'Transação atualizada com sucesso.'
         ]);
     }
@@ -78,21 +78,28 @@ class TransactionsApiController extends Controller
     public function transaction($id)
     {
         // Inicia a consulta com junções e seleções
-        $transaction = $this->repository->find($id);
+        $transaction = $this->repository->with('category')->find($id);
 
         // Verifica se a transação foi encontrada
         if (!$transaction) {
             return response()->json([
                 'success' => false,
                 'message' => 'Transação não encontrada.',
-            ], 404); // Retorna 404 se não encontrar
+            ], 404);
+        }
+
+        // Consulta
+        $category = $transaction->category;
+        if ($category->father) {
+            $category->color = $category->father->color;
+            $category->icon = $category->father->icon;
         }
 
         // Retorna para API com o estado atual e sucesso
         return response()->json([
             'success' => true,
             'transaction' => $transaction,
-            'message' => 'Transação atualizada com sucesso.'
+            'message' => 'Transação encontrada com sucesso.'
         ]);
     }
 
