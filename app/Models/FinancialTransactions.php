@@ -42,6 +42,39 @@ class FinancialTransactions extends Model
     /**
      * Get the brand associated with the user.
      */
+    public function payment()
+    {
+        // Verifica como foi pago
+        if($this->wallet_id){
+            return $this->wallet;
+        } elseif($this->credit_card_id) {
+            return $this->credit;
+        } else {
+            return null;
+        }
+
+    }
+
+    /**
+     * Get the brand associated with the user.
+     */
+    public function credit(): HasOne
+    {
+        return $this->HasOne(FinancialCategory::class, 'id', 'wallet_id');
+    }
+
+
+    /**
+     * Get the brand associated with the user.
+     */
+    public function wallet(): HasOne
+    {
+        return $this->HasOne(FinancialCategory::class, 'id', 'wallet_id');
+    }
+
+    /**
+     * Get the brand associated with the user.
+     */
     public function category(): HasOne
     {
         return $this->HasOne(FinancialCategory::class, 'id', 'category_id');

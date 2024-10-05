@@ -95,6 +95,11 @@ class TransactionsApiController extends Controller
             $category->icon = $category->father->icon;
         }
 
+        // Obtém pagamentos
+        $transaction->payment();
+
+        dd($transaction->toArray());
+
         // Retorna para API com o estado atual e sucesso
         return response()->json([
             'success' => true,
@@ -261,12 +266,14 @@ class TransactionsApiController extends Controller
         $wallets = FinancialWallet::where('status', 1)->get()->map(function ($wallet) {
             $wallet->type = 'wallet';
             $wallet->total = $wallet->total();
+            $wallet->url = url("storage/instituicoes/$wallet->institution_id/logo-150px.jpg");
             return $wallet;
         });
 
         $credits = FinancialCreditCard::where('status', 1)->get()->map(function ($credit) {
             $credit->type = 'credit';
             $credit->total = $credit->total();
+            $credit->url = url("storage/instituicoes/$credit->institution_id/logo-150px.jpg");
             return $credit;
         });
 
