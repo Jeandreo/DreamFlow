@@ -69,6 +69,33 @@ class TransactionsApiController extends Controller
         ]);
     }
 
+    /**
+     * Marca uma transação como paga ou não paga.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function transaction($id)
+    {
+        // Inicia a consulta com junções e seleções
+        $transaction = $this->repository->find($id);
+
+        // Verifica se a transação foi encontrada
+        if (!$transaction) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transação não encontrada.',
+            ], 404); // Retorna 404 se não encontrar
+        }
+
+        // Retorna para API com o estado atual e sucesso
+        return response()->json([
+            'success' => true,
+            'transaction' => $transaction,
+            'message' => 'Transação atualizada com sucesso.'
+        ]);
+    }
+
 
     /**
      * Display a listing of the resource.
