@@ -12,12 +12,36 @@ use Illuminate\Support\Facades\Log;
 class TransactionsApiController extends Controller
 {
 
+    // Configura api
+    protected $apiTransaction;
+
+    // Contruct
+    public function __construct(Request $request)
+    {
+        // Passar o modelo e o request para o construtor do controller
+        $this->apiTransaction = new FinancialTransactionsController($request, new FinancialTransactions);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function getTransactions(Request $request)
+    public function balance()
+    {
+        // Inicia a consulta com junções e seleções
+        $balance = $this->apiTransaction->balance();
+
+        // Retorna para API
+        return response()->json($balance);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function transactions(Request $request)
     {
         // Extrai dados
         $data = $request->all();
@@ -31,9 +55,8 @@ class TransactionsApiController extends Controller
             $data['date_end'] = date('Y-m-t');
         }
 
-
-        // Passar o modelo e o request para o construtor do controller
-        $apiTransaction = new FinancialTransactionsController($request, new FinancialTransactions);
+        // Conecta API
+        $apiTransaction = $this->apiTransaction;
 
         // Inicia a consulta com junções e seleções
         $query = $apiTransaction->transactions($data);
@@ -149,12 +172,8 @@ class TransactionsApiController extends Controller
      */
     public function newTransaction(Request $request)
     {
-
-        // Salva para testes
-        Log::info($request);
-
-        // Passar o modelo e o request para o construtor do controller
-        $apiTransaction = new FinancialTransactionsController($request, new FinancialTransactions);
+        // Conecta API
+        $apiTransaction = $this->apiTransaction;
 
         // Inicia a consulta com junções e seleções
         $apiTransaction->store($request);
@@ -168,21 +187,25 @@ class TransactionsApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getWalletsCredits()
+    public function walletsCredits()
     {
         // Obtém cartões de crédito
         $wallets = FinancialWallet::where('status', 1)->get()->map(function ($wallet) {
             $wallet->type = 'wallet';
+            $wallet->total = $wallet->total();
             return $wallet;
         });
 
         $credits = FinancialCreditCard::where('status', 1)->get()->map(function ($credit) {
             $credit->type = 'credit';
+            $credit->total = $credit->total();
             return $credit;
         });
 
         // Combina os dados em um único array usando concat
         $combined = $wallets->concat($credits);
+
+        dd($combined->toArray());
 
         // Retorna para API
         return response()->json($combined);
