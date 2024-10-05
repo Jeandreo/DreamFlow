@@ -60,16 +60,15 @@ class FinancialTransactions extends Model
      */
     public function credit(): HasOne
     {
-        return $this->HasOne(FinancialCategory::class, 'id', 'wallet_id');
+        return $this->HasOne(FinancialCreditCard::class, 'id', 'credit_card_id');
     }
-
 
     /**
      * Get the brand associated with the user.
      */
     public function wallet(): HasOne
     {
-        return $this->HasOne(FinancialCategory::class, 'id', 'wallet_id');
+        return $this->HasOne(FinancialWallet::class, 'id', 'wallet_id');
     }
 
     /**

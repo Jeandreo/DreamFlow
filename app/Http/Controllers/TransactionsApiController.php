@@ -95,10 +95,22 @@ class TransactionsApiController extends Controller
             $category->icon = $category->father->icon;
         }
 
-        // Obtém pagamentos
-        $transaction->payment();
+        // Obtém os dados do pagamento
+        if($transaction->wallet_id){
+            $paymentMethod = $transaction->wallet;
+            $type = 'wallet';
+        } else {
+            $paymentMethod = $transaction->credit;
+            $type = 'credit';
+        }
 
-        dd($transaction->toArray());
+        // Obtém pagamentos
+        $transaction->payment = [
+            'id' => $paymentMethod->id,
+            'name' => $paymentMethod->name,
+            'url' => url("storage/instituicoes/$paymentMethod->institution_id/logo-150px.jpg"),
+            'type' => $type,
+        ];
 
         // Retorna para API com o estado atual e sucesso
         return response()->json([
