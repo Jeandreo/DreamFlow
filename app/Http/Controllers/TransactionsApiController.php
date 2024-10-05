@@ -14,12 +14,14 @@ class TransactionsApiController extends Controller
 
     // Configura api
     protected $apiTransaction;
+    protected $repository;
 
     // Contruct
-    public function __construct(Request $request)
+    public function __construct(Request $request, FinancialTransactions $content)
     {
         // Passar o modelo e o request para o construtor do controller
         $this->apiTransaction = new FinancialTransactionsController($request, new FinancialTransactions);
+        $this->repository = $content;
     }
 
     /**
@@ -35,6 +37,38 @@ class TransactionsApiController extends Controller
         // Retorna para API
         return response()->json($balance);
     }
+
+    /**
+     * Marca uma transação como paga ou não paga.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function paid($id)
+    {
+        // Inicia a consulta com junções e seleções
+        $transaction = $this->repository->find($id);
+
+        // Verifica se a transação foi encontrada
+        if (!$transaction) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transação não encontrada.',
+            ], 404); // Retorna 404 se não encontrar
+        }
+
+        // Alterna o estado de 'paid'
+        $transaction->paid = !$transaction->paid; // Inverte o estado
+        $transaction->save();
+
+        // Retorna para API com o estado atual e sucesso
+        return response()->json([
+            'success' => true,
+            'paid' => $transaction->paid, // Retorna o novo estado de 'paid'
+            'message' => 'Transação atualizada com sucesso.'
+        ]);
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -204,8 +238,6 @@ class TransactionsApiController extends Controller
 
         // Combina os dados em um único array usando concat
         $combined = $wallets->concat($credits);
-
-        dd($combined->toArray());
 
         // Retorna para API
         return response()->json($combined);

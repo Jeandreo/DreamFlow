@@ -29,6 +29,7 @@ Route::prefix('autenticacao')->group(function () {
 // Transações
 Route::prefix('financeiro')->group(function () {
     Route::get('/balanco', [TransactionsApiController::class, 'balance']);
+    Route::get('/marcar-como-pago/{id}', [TransactionsApiController::class, 'paid']);
     Route::get('/transacoes', [TransactionsApiController::class, 'transactions']);
     Route::get('/carteiras-e-cartoes', [TransactionsApiController::class, 'walletsCredits']);
     Route::post('/nova-transacao', [TransactionsApiController::class, 'newTransaction']);
