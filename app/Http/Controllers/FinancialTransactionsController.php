@@ -158,32 +158,32 @@ class FinancialTransactionsController extends Controller
     public function store(Request $request)
     {
 
-        // GET FORM DATA
+        // Obtém os dados do formulário
         $data = $request->all();
 
-        // CREATED BY
+        // Salva as informações de quem criou
         $data['created_by'] = !isset($data['created_by']) ? Auth::id() : $data['created_by'];
 
-        // FORMAT DATA
+        // Formata o valor monetário
         $data['value'] = toDecimal($data['value']);
 
-        // IF EXPENSE
+        // Se for uma despesa registra como negativo
         if ($data['type'] == 'expense') {
             $data['value'] = -$data['value'];
         }
 
-        // IF CREDIT
+        // Se for crédito
         if ($data['method'] == 'credit') {
-            // CardId
             $data['credit_card_id'] = $data['method_id'];
         }
 
+        // Se for carteira
         if ($data['method'] == 'wallet') {
             $data['date_payment'] = $data['date_purchase'];
             $data['wallet_id'] = $data['method_id'];
         }
 
-        // IF RECURRENT OR INSTALLMENTS
+        // Se for parcelamento (em XX vezes)
         if ($data['installments'] ==  true) {
 
             // Atrelamento
@@ -208,18 +208,20 @@ class FinancialTransactionsController extends Controller
                 // Ajusta nome
                 $data['name'] = "$name - ($i/$installments)";
 
-                // SEND DATA
+                // Registra cada parcela
                 $insertTable = $this->repository->create($data);
+
             }
 
-            // REDIRECT AND MESSAGES
+            // Redireciona
             return response()->json('Transaction created with success', 200);
+
         }
 
-        // SEND DATA
+        // Registra transação
         $insertTable = $this->repository->create($data);
 
-        // Relaciona a fatura
+        // Se for no crédito, relaciona a fatura do mês.
         if ($data['method'] == 'credit') {
 
             // Obtém cartão de crédito
@@ -316,7 +318,7 @@ class FinancialTransactionsController extends Controller
             $data['wallet_id']      = $data['method_id'];
             $data['credit_card_id'] = null;
         }
-        
+
         // Se for recorrente cria a recorrencia
         if ($content->recurrent) {
 
@@ -772,7 +774,7 @@ class FinancialTransactionsController extends Controller
             $join->on('financial_transactions.credit_card_id', '=', 'financial_credit_cards.id');
         });
 
-        // Seleciona colunas 
+        // Seleciona colunas
         $query->select(
             DB::raw('"Wallet"                       as type'),
             'financial_transactions.id              as id',
