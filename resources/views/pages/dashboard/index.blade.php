@@ -6,7 +6,7 @@
 @endsection
 @section('content')
 <div class="row m-0 background-dashboard" style="background-image: url('{{ asset('assets/media/logos/background-pattern.webp') }}'); background-size: cover;">
-    <div style="background: linear-gradient(0deg, #0c3396, #085fb0);">
+    <div style="background: linear-gradient(0deg, #090c11, #18202bf0);">
         <div class="col-12">
             <div class="toolbar py-20 mb-10" id="kt_toolbar">
                 <div id="kt_toolbar_container" class=" container-xxl  d-flex justify-content-center">
@@ -275,7 +275,7 @@
                                                 <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Minhas listas</span>
                                                 <span class="text-muted fw-semibold fs-7">O maior risco é não correr risco algum.</span>
                                             </h3>
-                                            <div class="card-toolbar">            
+                                            <div class="card-toolbar">
                                                 <ol class="p-0 m-0 carousel-indicators carousel-indicators-bullet carousel-indicators-active-primary">
                                                     @for ($i = 0; $i < $lists->count(); ++$i)
                                                         <li data-bs-target="#kt_carousel_1_carousel" data-bs-slide-to="{{ $i }}" class="ms-1 @if($i == 0)active @endif"></li>
@@ -292,7 +292,7 @@
                                                         @foreach ($list->items()->get()->take(6) as $item)
                                                         <div class="col-6 mb-2">
                                                             <a href="{{ route('catalogs.items.show', $item->id) }}">
-                                                                <div class="d-flex align-items-center">                                             
+                                                                <div class="d-flex align-items-center">
                                                                     <img src="{{ findImage('catalogos/' .$list->id . '/' . $item->id . '/capa-300px.jpg', 'beautiful') }}" class="object-fit-cover h-40px w-60px rounded-sm me-3" alt="">
                                                                     <div class="d-flex justify-content-start flex-column">
                                                                         <p class="text-gray-800 fw-bold text-hover-primary mb-0 fs-6">
@@ -472,7 +472,7 @@
     }
 
     loadList();
-    
+
 </script>
 @include('pages.tasks._javascript')
 @endsection

@@ -270,7 +270,7 @@ input[type=text]:disabled {
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar {
-    background: linear-gradient(230deg, #30415e, #18202B);
+    background: linear-gradient(0deg, #090c11, #18202B);
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link.active {
@@ -278,7 +278,7 @@ input[type=text]:disabled {
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar .app-sidebar-logo {
-    border-bottom: 1px dashed #00000020;
+    border-bottom: 1px dashed #0000477a;
 }
 
 
@@ -297,10 +297,10 @@ input[type=text]:disabled {
     color: var(--bs-text-gray-700) !important;
 }
 
-.list-style h1, 
-.list-style h2, 
-.list-style h3, 
-.list-style h4, 
+.list-style h1,
+.list-style h2,
+.list-style h3,
+.list-style h4,
 .list-style h5 {
     color: var(--bs-text-gray-800) !important;
 }
@@ -327,7 +327,7 @@ input[type=text]:disabled {
 .rotate {
     transition: transform 0.3s ease-in-out; /* Adiciona uma transição suave */
   }
-  
+
 .rotate.rotate-90 {
     transform: rotate(90deg); /* Aplica a rotação de 90 graus quando a classe 'rotacionado' é adicionada */
 }

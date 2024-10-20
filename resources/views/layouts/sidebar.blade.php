@@ -1,44 +1,44 @@
 <div id="kt_app_sidebar" class="app-sidebar  flex-column "
-    data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="325px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#open_sidebar"      
+    data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="325px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#open_sidebar"
     >
     <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
         <a href="{{ route('dashboard.index') }}">
-        <img alt="Logo" src="{{ asset('assets/media/logo-clean.png') }}" class="h-50px app-sidebar-logo-default"/>
-        <img alt="Logo" src="{{ asset('assets/media/favicon-clean.png') }}" class="h-35px app-sidebar-logo-minimize ms-n1"/>
+        <img alt="Logo" src="{{ asset('/assets/media/logos/logo-jeandreo.webp') }}" class="h-30px app-sidebar-logo-default"/>
+        <img alt="Logo" src="{{ asset('/assets/media/logos/favicon.webp') }}" class="h-35px app-sidebar-logo-minimize ms-n1"/>
         </a>
-        <div 
-            id="kt_app_sidebar_toggle" 
-            class="toggle-sidebar app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary h-30px w-30px position-absolute top-50 start-100 translate-middle rotate @if(Auth::user()->sidebar == false){{ 'active' }}@endif" 
-            data-kt-toggle="true" 
-            data-kt-toggle-state="active" 
-            data-kt-toggle-target="body" 
+        <div
+            id="kt_app_sidebar_toggle"
+            class="toggle-sidebar app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary h-30px w-30px position-absolute top-50 start-100 translate-middle rotate @if(Auth::user()->sidebar == false){{ 'active' }}@endif"
+            data-kt-toggle="true"
+            data-kt-toggle-state="active"
+            data-kt-toggle-target="body"
             data-kt-toggle-name="app-sidebar-minimize"
             >
-            <i class="ki-duotone ki-black-left-line fs-3 rotate-180"><span class="path1"></span><span class="path2"></span></i>        
+            <i class="ki-duotone ki-black-left-line fs-3 rotate-180"><span class="path1"></span><span class="path2"></span></i>
         </div>
     </div>
     <div class="app-sidebar-menu overflow-hidden flex-column-fluid">
         <div id="kt_app_sidebar_menu_wrapper" class="app-sidebar-wrapper">
             <div
                 id="kt_app_sidebar_menu_scroll"
-                class="scroll-y my-5 mx-3 overflow-x-hidden"       
+                class="scroll-y my-5 mx-3 overflow-x-hidden"
                 data-kt-scroll="true"
                 data-kt-scroll-activate="true"
-                data-kt-scroll-height="auto"     
+                data-kt-scroll-height="auto"
                 data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer"
-                data-kt-scroll-wrappers="#kt_app_sidebar_menu" 
+                data-kt-scroll-wrappers="#kt_app_sidebar_menu"
                 data-kt-scroll-offset="5px"
                 data-kt-scroll-save-state="true"
                 >
-                <div 
-                    class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6"       
-                    id="#kt_app_sidebar_menu"                     
-                    data-kt-menu="true" 
+                <div
+                    class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6"
+                    id="#kt_app_sidebar_menu"
+                    data-kt-menu="true"
                     data-kt-menu-expand="false"
                     >
                     <div class="aside-user d-flex align-items-sm-center justify-content-center py-5">
-                        <div class="symbol symbol-40px mx-2">             
-                            <img src="{{ findImage('users/' . Auth::id() . '/' . 'perfil-300px.jpg') }}" alt="">         
+                        <div class="symbol symbol-40px mx-2">
+                            <img src="{{ findImage('users/' . Auth::id() . '/' . 'perfil-300px.jpg') }}" alt="">
                         </div>
                         <div class="aside-user-info flex-row-fluid flex-wrap ms-5">
                             <div class="d-flex">
@@ -48,8 +48,8 @@
                                 </div>
                                 <div class="me-n2">
                                     <a href="#" class="btn btn-icon btn-sm btn-active-color-primary mt-n2" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start" data-kt-menu-overflow="true">
-                                    <i class="ki-duotone ki-setting-2 text-muted fs-1"><span class="path1"></span><span class="path2"></span></i>            
-                                    </a> 
+                                    <i class="ki-duotone ki-setting-2 text-muted fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                    </a>
                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
                                         <div class="menu-item px-5">
                                             <a href="{{ route('users.edit', Auth::id()) }}" class="menu-link px-5">
@@ -103,7 +103,7 @@
                             <span class="menu-icon">
                             <span class="bullet bullet-dot h-10px w-10px" style="background: {{ $project->color }};">
                             </span>
-                            </span>                      
+                            </span>
                             <span class="menu-title">
                             {{ $project->name }}
                             </span>
@@ -123,16 +123,16 @@
                                 <span class="menu-icon">
                                 <span class="bullet bullet-dot h-10px w-10px" style="background: {{ $project->color }};">
                                 </span>
-                                </span>                      
+                                </span>
                                 <span class="menu-title">
                                 {{ $project->name }}                </span>
                                 <!--end::Title-->
-                                <!--begin::Badge--> 
+                                <!--begin::Badge-->
                                 <span class="menu-badge">
                                 <span class="badge badge-custom">
                                 6                    </span>
-                                </span>                      
-                                <!--end::Badge-->                                      
+                                </span>
+                                <!--end::Badge-->
                             </a>
                         </div>
                         @endforeach
@@ -203,6 +203,6 @@
         <i class="ki-duotone ki-document btn-icon fs-2 m-0"><span class="path1"></span><span class="path2"></span></i>
         </a>
     </div>
-    <!--end::Footer-->   
-    @endif 
+    <!--end::Footer-->
+    @endif
 </div>
