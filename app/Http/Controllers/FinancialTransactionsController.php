@@ -210,12 +210,10 @@ class FinancialTransactionsController extends Controller
 
                 // Registra cada parcela
                 $insertTable = $this->repository->create($data);
-
             }
 
             // Redireciona
             return response()->json('Transaction created with success', 200);
-
         }
 
         // Registra transação
@@ -325,7 +323,6 @@ class FinancialTransactionsController extends Controller
             // Gera recorrencia
             $content->recurrent->start = $data['date_payment'];
             $content->recurrent->save();
-
         }
 
         // UPDATE OR MAKE NEW
@@ -616,46 +613,86 @@ class FinancialTransactionsController extends Controller
     public function current($request)
     {
 
-        // Soma as transações não recorrentes
-        $revenues = FinancialTransactions::where('date_payment', '>=', $request->date_begin)
-            ->where('date_payment', '<=', $request->date_end)
-            ->where('value', '>', 0)->where('paid', true)
+        // Define a data de término
+        $dateEnd = Carbon::parse($request->date_end);
+
+
+        // Obtém todas as transações recorrentes
+        $recurrences = $this->getActiveRecurrents($dateEnd);
+
+        $currentMonthRevenues = 0;
+        $currentMonthExpenses = 0;
+
+        // Itera sobre as transações recorrentes
+        foreach ($recurrences as $recurrentTransaction) {
+
+            // Obtém o valor da transação e a data de início da recorrência
+            $transactionValue = $recurrentTransaction->transaction->value;
+
+            // Adiciona o valor ao mês em questão (só uma vez, não precisa de laço)
+            if ($transactionValue > 0) {
+                $currentMonthRevenues += $transactionValue;
+            } else {
+                $currentMonthExpenses += abs($transactionValue);
+            }
+        }
+
+        $currentMonthNonRecurringRevenues = FinancialTransactions::whereNull('recurrent_id')
+            ->whereMonth('date_payment', $dateEnd->month)
+            ->whereYear('date_payment', $dateEnd->year)
+            ->where('value', '>', 0)
             ->sum('value');
 
-        $expenses = FinancialTransactions::where('date_payment', '>=', $request->date_begin)
-            ->where('date_payment', '<=', $request->date_end)->where('value', '<', 0)
-            ->where('paid', true)
+        $currentMonthNonRecurringExpenses = FinancialTransactions::whereNull('recurrent_id')
+            ->whereMonth('date_payment', $dateEnd->month)
+            ->whereYear('date_payment', $dateEnd->year)
+            ->where('value', '<', 0)
             ->sum('value');
 
-        // Extrair os parâmetros fornecidos
-        $date = Carbon::parse($request->date_end);
+        $currentMonthFatureExpenses = 0;
 
         // Obter o mês e o ano da fatura
-        $month = $date->month;
-        $year = $date->year;
+        $month = $dateEnd->month;
+        $year = $dateEnd->year;
+        $totalFatureExpenses = 0;
 
         // Buscar a fatura para o cartão de crédito dentro do mês e ano fornecidos
-        $fatures = FinancialFature::where('paid', true)
-            ->where('month', $month)
+        $fatures = FinancialFature::where('month', $month)
             ->where('year', $year)
             ->get();
 
-        // Adiciona o valor das faturas do mes
+            
         foreach ($fatures as $fature) {
-            $expenses = $expenses + $fature->transactions()->sum('value');
+            $totalFatureExpenses += $fature->transactions()->sum('value');
+            $currentMonthFatureExpenses += $fature->transactions()->sum('value');
         }
 
-        // Calcula a diferença (revenues - expenses)
-        $difference = $revenues + $expenses;
+        $currentMonthRevenues += $currentMonthNonRecurringRevenues;
+        $currentMonthExpenses += abs($currentMonthNonRecurringExpenses) + abs($currentMonthFatureExpenses);
+
+        $currentMonthDifference = $currentMonthRevenues - $currentMonthExpenses;
 
         // Resultados
         $results = [
-            'revenue' => $revenues,
-            'expense' => $expenses,
-            'total' => $difference,
+            'revenue' => $currentMonthRevenues,
+            'expense' => $currentMonthExpenses,
+            'total' => $currentMonthDifference,
         ];
 
         return $results;
+    }
+
+
+    public function getActiveRecurrents($dateEnd)
+    {
+
+        return FinancialTransactionsRecurrent::where('start', '<=', $dateEnd)
+            ->where(function ($query) use ($dateEnd) {
+                $query->where('end', '<=', $dateEnd)
+                    ->orWhereNull('end');
+            })
+            ->where('status', true)
+            ->get();
     }
 
     /**
@@ -665,83 +702,82 @@ class FinancialTransactionsController extends Controller
      */
     public function expected($request)
     {
-
-        // Define a data de início do mês anterior
-        $dateStart = Carbon::parse($request->date_begin);
+        // Define a data de término
         $dateEnd = Carbon::parse($request->date_end);
 
         // Obtém todas as transações recorrentes
-        $recurrences = FinancialTransactionsRecurrent::where('start', '<=', $dateEnd)
-            ->where(function ($query) use ($dateEnd) {
-                $query->where('end', '<=', $dateEnd)
-                    ->orWhereNull('end');
-            })
-            ->where('status', true)
-            ->get();
+        $recurrences = $this->getActiveRecurrents($dateEnd);
 
-        // Inicializa as somas
-        $revenues = 0;
-        $expenses = 0;
+        // Inicializa variáveis para armazenar os valores calculados
+        $totalRevenues = 0;
+        $totalExpenses = 0;
 
-        // Itera sobre as transações recorrentes filtradas
-        foreach ($recurrences as $key => $recurrentTransaction) {
+        // Itera sobre as transações recorrentes
+        foreach ($recurrences as $recurrentTransaction) {
 
-            // Obtém modelo
-            $template = $recurrentTransaction->transaction;
-
-            // Converte a data de início da recorrência
+            // Obtém o valor da transação e a data de início da recorrência
+            $transactionValue = $recurrentTransaction->transaction->value;
             $recurrentBegin = Carbon::parse($recurrentTransaction->start);
 
             // Calcula a diferença de meses entre a data de início e a data final simulada
             $monthsDifference = $recurrentBegin->diffInMonths($dateEnd);
 
-            // Soma as ocorrências da transação recorrente no intervalo de meses
+            // Soma o valor para cada mês até o mês final (incluindo o mês inicial)
             for ($i = 0; $i <= $monthsDifference; $i++) {
-                if ($template->value > 0) {
-                    $revenues += $template->value;
-                }
-                else {
-                    $expenses += abs($template->value);
+                if ($transactionValue > 0) {
+                    $totalRevenues += $transactionValue;
+                } else {
+                    $totalExpenses += abs($transactionValue);
                 }
             }
-
         }
 
-        // Soma as transações não recorrentes também (caso queira incluir isso)
-        $nonRecurringRevenues = FinancialTransactions::whereNull('recurrent_id')->where('date_payment', '<=', $dateEnd)->where('value', '>', 0)->sum('value');
-        $nonRecurringExpenses = FinancialTransactions::whereNull('recurrent_id')->where('date_payment', '<=', $dateEnd)->where('value', '<', 0)->sum('value');
+        // Soma as transações não recorrentes (total e do mês atual)
+        $nonRecurringRevenues = FinancialTransactions::whereNull('recurrent_id')
+            ->where('date_payment', '<=', $dateEnd)
+            ->where('value', '>', 0)
+            ->sum('value');
 
-        // Extrair os parâmetros fornecidos
-        $date = Carbon::parse($request->date_end);
+        $nonRecurringExpenses = FinancialTransactions::whereNull('recurrent_id')
+            ->where('date_payment', '<=', $dateEnd)
+            ->where('value', '<', 0)
+            ->sum('value');
 
         // Obter o mês e o ano da fatura
-        $month = $date->month;
-        $year = $date->year;
+        $month = $dateEnd->month;
+        $year = $dateEnd->year;
 
         // Buscar a fatura para o cartão de crédito dentro do mês e ano fornecidos
         $fatures = FinancialFature::where('month', $month)
             ->where('year', $year)
             ->get();
 
-        // Adiciona o valor das faturas do mes
+        // Adiciona o valor das faturas do mês
+        $totalFatureExpenses = 0;
+        $currentMonthFatureExpenses = 0;
         foreach ($fatures as $fature) {
-            $expenses = $expenses + $fature->transactions()->sum('value');
+            $totalFatureExpenses += $fature->transactions()->sum('value');
+            $currentMonthFatureExpenses += $fature->transactions()
+                ->whereMonth('date_payment', $month)
+                ->whereYear('date_payment', $year)
+                ->sum('value');
         }
 
-        // Calcula a diferença (revenues - expenses)
-        $totalRevenues = $revenues + $nonRecurringRevenues;
-        $totalExpenses = $expenses + abs($nonRecurringExpenses);
+        // Calcula os totais (totais e mês atual)
+        $totalRevenues += $nonRecurringRevenues;
+        $totalExpenses += abs($nonRecurringExpenses) + abs($totalFatureExpenses);
         $difference = $totalRevenues - $totalExpenses;
 
         // Resultados
         $results = [
-            'revenue' => $totalRevenues,
-            'expense' => $totalExpenses,
-            'total' => $difference,
+            'revenue'   => $totalRevenues,
+            'expense'   => $totalExpenses,
+            'total'     => $difference,
         ];
 
         return $results;
     }
+
 
     /**
      * Inicializa a consulta com junções e seleção de colunas.
@@ -887,14 +923,7 @@ class FinancialTransactionsController extends Controller
 
 
         // Obtém todas as transações recorrentes
-        $recurrentFilter = FinancialTransactionsRecurrent::where('status', true)
-            ->where('start', '<=', $dateStart)
-            ->where(function ($query) use ($dateEnd) {
-                $query->where('end', '>=', $dateEnd)
-                    ->orWhereNull('end');
-            })
-            ->where('status', true)
-            ->get();
+        $recurrentFilter = $this->getActiveRecurrents($dateEnd);
 
         // Obtém apenas as recorrentes
         $transactionsRecurrents = [];

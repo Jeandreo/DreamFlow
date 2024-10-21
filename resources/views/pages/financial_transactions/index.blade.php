@@ -27,11 +27,11 @@
                     <div class="col">
                         <div class="card mb-4 shadow">
                             <div class="card-body">
-                                <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="total-revenue">
+                                <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-revenue">
                                     R$ 0,00
                                 </h3>
                                 <h2 class="fs-5 text-uppercase text-primary mb-0">
-                                    Entrada <span id="preview-total-revenue"></span>
+                                    Entrada Prevista
                                 </h2>
                             </div>
                         </div>
@@ -39,11 +39,11 @@
                     <div class="col">
                         <div class="card mb-4 shadow">
                             <div class="card-body">
-                                <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="total-expense">
+                                <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-expense">
                                     R$ 0,00
                                 </h3>
                                 <h2 class="fs-5 text-uppercase text-primary mb-0">
-                                    Saída <span id="preview-total-expense"></span>
+                                    Saída Prevista
                                 </h2>
                             </div>
                         </div>
@@ -51,11 +51,11 @@
                     <div class="col">
                         <div class="card mb-4 shadow">
                             <div class="card-body">
-                                <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="total">
+                                <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-result">
                                     R$ 0,00
                                 </h3>
                                 <h2 class="fs-5 text-uppercase text-primary mb-0">
-                                    Resultado <span id="preview-total"></span>
+                                    Resultado do mês
                                 </h2>
                             </div>
                         </div>
@@ -559,13 +559,9 @@
 
         // Adicione um ouvinte para o evento 'xhr.dt'
         table.on('xhr.dt', function(e, settings, json) {
-            $('#total-revenue').text(formatBRL(json.current.revenue));
-            $('#total-expense').text(formatBRL(json.current.expense));
-            $('#total').text(formatBRL(json.current.total));
-
-            $('#preview-total-revenue').text(formatBRL(json.expected.revenue));
-            $('#preview-total-expense').text(formatBRL(json.expected.expense));
-            $('#preview-total').text(formatBRL(json.expected.total));
+            $('#current-month-revenue').text(formatBRL(json.current.revenue)).attr('title', 'Previsto até o mês: ' + formatBRL(json.expected.revenue));
+            $('#current-month-expense').text(formatBRL(json.current.expense)).attr('title', 'Previsto até o mês: ' + formatBRL(json.expected.expense));
+            $('#current-month-result').text(formatBRL(json.current.total)).attr('title', 'Previsto até o mês: ' + formatBRL(json.expected.total));
         });
 
         // MAKE TABLE
