@@ -111,7 +111,7 @@
                                     <div class="col-4">
                                         <div class="d-flex justify-content-end">
                                             <button type="button"
-                                                    class="btn btn-primary me-2 add-transaction text-uppercase fw-bold d-none"
+                                                    class="btn btn-primary me-2 add-transaction text-uppercase fw-bold"
                                                     data-type="transference">
                                                 Trânsferencia
                                             </button>
@@ -173,6 +173,33 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="modal_trasaction_transference">
+        <div class="modal-dialog modal-dialog-centered rounded mw-750px">
+            <div class="modal-content rounded">
+                <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data"
+                      class="create-transaction">
+                    @csrf
+                    <div class="modal-header py-3 bg-light rounded-top bg-header">
+                        <h3 class="text-white m-0">Trânsferencia em Contas</h3>
+                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
+                             aria-label="Close">
+                            <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
+                                      class="path2"></span></i>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        @include('pages.financial_transactions._transference')
+                    </div>
+                    <div class="modal-footer bg-light py-3 rounded-bottom">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-success btn-active-primary fw-bold">Adicionar Nova
+                            Receita</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -361,7 +388,7 @@
             } else if (type == 'expense') {
                 var modal = '#modal_trasaction_expense';
             } else if (type == 'transference') {
-                var modal = '#';
+                var modal = '#modal_trasaction_transference';
             }
 
             // Abre modal
