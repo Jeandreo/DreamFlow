@@ -87,7 +87,7 @@ class DashboardController extends Controller
         if ($range == 'today') {
             $tasks->whereDate('date', date('Y-m-d'));
         } else {
-            $tasks->where('date', '<=', date('Y-m-d', strtotime('+2 days')));
+            $tasks->where('date', '<=', date('Y-m-d', strtotime('+3 days')));
         }
 
         // Executa a consulta para obter as tarefas principais
