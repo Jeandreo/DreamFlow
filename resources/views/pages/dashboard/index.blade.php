@@ -285,41 +285,50 @@
                                         </div>
                                         <div class="card-body py-6">
                                             <div class="carousel-inner h-100">
-                                            @foreach ($lists as $key => $list)
-                                            <div class="carousel-item @if($key == 0)active @endif">
-                                                <div class="row h-150px">
-                                                    @if ($list->items->count())
-                                                        @foreach ($list->items()->get()->take(6) as $item)
-                                                        <div class="col-6 mb-2">
-                                                            <a href="{{ route('catalogs.items.show', $item->id) }}">
-                                                                <div class="d-flex align-items-center">
-                                                                    <img src="{{ findImage('catalogos/' .$list->id . '/' . $item->id . '/capa-300px.jpg', 'beautiful') }}" class="object-fit-cover h-40px w-60px rounded-sm me-3" alt="">
-                                                                    <div class="d-flex justify-content-start flex-column">
-                                                                        <p class="text-gray-800 fw-bold text-hover-primary mb-0 fs-6">
-                                                                            {{ Str::limit($item->name, 16) }}
-                                                                        </p>
-                                                                        <span class="text-gray-500 fw-semibold d-block fs-7">
-                                                                            {{ Str::limit($item->catalog->name, 18) }}
-                                                                        </span>
+                                            @if ($lists->count())
+                                                @foreach ($lists as $key => $list)
+                                                <div class="carousel-item @if($key == 0)active @endif">
+                                                    <div class="row h-150px">
+                                                        @if ($list->items->count())
+                                                            @foreach ($list->items()->get()->take(6) as $item)
+                                                            <div class="col-6 mb-2">
+                                                                <a href="{{ route('catalogs.items.show', $item->id) }}">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <img src="{{ findImage('catalogos/' .$list->id . '/' . $item->id . '/capa-300px.jpg', 'beautiful') }}" class="object-fit-cover h-40px w-60px rounded-sm me-3" alt="">
+                                                                        <div class="d-flex justify-content-start flex-column">
+                                                                            <p class="text-gray-800 fw-bold text-hover-primary mb-0 fs-6">
+                                                                                {{ Str::limit($item->name, 16) }}
+                                                                            </p>
+                                                                            <span class="text-gray-500 fw-semibold d-block fs-7">
+                                                                                {{ Str::limit($item->catalog->name, 18) }}
+                                                                            </span>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </a>
+                                                                </a>
+                                                            </div>
+                                                            @endforeach
+                                                        @else
+                                                        <div class="bg-light rounded d-flex align-items-center justify-content-center h-150px">
+                                                            <div class="text-center">
+                                                                <p class="fw-bold text-gray-700 fs-4 mb-0">SEM ITENS NA LISTA 🧐</p>
+                                                                <p class="text-gray-600 fs-6">Adicione seus items e gerencie suas ideias aqui.</p>
+                                                                <a href="{{ route('catalogs.show', $list->id) }}" class="btn btn-sm btn-primary btn-active-danger text-uppercase fw-bolder">
+                                                                    Adicionar Itens
+                                                                </a>
+                                                            </div>
                                                         </div>
-                                                        @endforeach
-                                                    @else
-                                                    <div class="bg-light rounded d-flex align-items-center justify-content-center h-150px">
-                                                        <div class="text-center">
-                                                            <p class="fw-bold text-gray-700 fs-4 mb-0">SEM ITENS NA LISTA 🧐</p>
-                                                            <p class="text-gray-600 fs-6">Adicione seus items e gerencie suas ideias aqui.</p>
-                                                            <a href="{{ route('catalogs.show', $list->id) }}" class="btn btn-sm btn-primary btn-active-danger text-uppercase fw-bolder">
-                                                                Adicionar Itens
-                                                            </a>
-                                                        </div>
+                                                        @endif
                                                     </div>
-                                                    @endif
+                                                </div>
+                                                @endforeach
+                                            @else
+                                            <div class="bg-light rounded d-flex align-items-center justify-content-center h-150px">
+                                                <div class="text-center">
+                                                    <p class="fw-bold text-gray-700 fs-3 mb-1">SEM LISTAS CADASTRADAS 😒</p>
+                                                    <p class="text-gray-600 fs-5">Cadastre suas listas através da sidebar.</p>
                                                 </div>
                                             </div>
-                                            @endforeach
+                                            @endif
                                             </div>
                                         </div>
                                     </div>
