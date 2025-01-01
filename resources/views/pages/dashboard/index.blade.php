@@ -348,7 +348,7 @@
     function loadList(checked = false){
 
         // RANGE
-        var range = checked ? 'all' : 'today';
+        var range = checked ? 'all' : 'next_days';
 
         // AJAX
         $.ajax({

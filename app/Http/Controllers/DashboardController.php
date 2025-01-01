@@ -111,7 +111,7 @@ class DashboardController extends Controller
             ->orderBy('date');
 
         // FILTER DATES
-        if ($range == 'today') {
+        if ($range == 'next_days') {
             $subtasksAndTasks->where('date', '<=', date('Y-m-d', strtotime('+2 days')));
         }
 
