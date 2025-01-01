@@ -368,6 +368,7 @@
                                     {{-- RESULTS HERE --}}
                                     {{-- RESULTS HERE --}}
                                 </div>
+                                @if(projects()->where('reminder', true)->exists())
                                 <form action="#" method="POST" class="send-tasks">
                                     @csrf
                                     <div class="d-flex h-40px mt-5">
@@ -394,6 +395,7 @@
                                         </button>
                                     </div>
                                 </form>
+                                @endif
                             </div>
                         </div>
                     </div>
