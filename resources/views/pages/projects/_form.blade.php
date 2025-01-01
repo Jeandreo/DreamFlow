@@ -21,13 +21,13 @@
         <select class="form-select form-select-solid" name="manager_id" data-control="select2" data-placeholder="Selecione" required>
             <option value=""></option>
             @foreach ($users as $user)
-            <option value="{{ $user->id }}" @if(isset($content) && $content->manager_id == $user->id) selected @endif>{{ $user->name }}</option>
+            <option value="{{ $user->id }}" @if(isset($content) && $content->manager_id == $user->id || !isset($content) && $user->id == Auth::id()) selected @endif>{{ $user->name }}</option>
             @endforeach
         </select>
     </div>
     <div class="col-3 mb-5">
         <label class="required form-label fw-bold">Início:</label>
-        <input type="text" class="form-control form-control-solid flatpickr" placeholder="Data de início" name="start_date" value="{{ $content->start_date ?? old('start_date') }}" required/>
+        <input type="text" class="form-control form-control-solid flatpickr" placeholder="Data de início" name="start_date" value="{{ $content->start_date ?? date('Y-m-d') }}" required/>
     </div>
     <div class="col-3 mb-5">
         <label class="form-label fw-bold">Fim:</label>
@@ -43,7 +43,7 @@
             <select class="form-select form-select-solid" name="type" data-control="select2" data-hide-search="true" data-placeholder="Selecione" required>
                 <option value=""></option>
                 <option value="1" @if(isset($content) && $content->type == 1) selected @endif>Corporativo</option>
-                <option value="2" @if(isset($content) && $content->type == 2) selected @endif>Pessoal</option>
+                <option value="2" @if(isset($content) && $content->type == 2 || !isset($content)) selected @endif>Pessoal</option>
             </select>
         </div>
         <div class="col mb-5 col-team" @if(!isset($content) || $content->type == 2) style="display: none;" @endif>
