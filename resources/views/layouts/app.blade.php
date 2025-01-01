@@ -16,7 +16,7 @@
             <div class="app-page  flex-column flex-column-fluid " id="kt_app_page">
                 <!--begin::Header-->
                 {{-- @include('layouts.header') --}}
-                <!--end::Header-->   
+                <!--end::Header-->
                 <!--begin::Wrapper-->
                 <div class="app-wrapper flex-column flex-row-fluid position-relative mt-0" id="kt_app_wrapper">
                     <!--begin::Sidebar-->
@@ -24,7 +24,7 @@
                     <!--end::Sidebar-->
                     <!--begin::Main-->
                     <div class="app-main flex-column flex-row-fluid">
-                        <div class="@if(!isset($pageClean)) app-container container-fluid py-6 @else px-0 @endif">
+                        <div class="@if(!isset($pageClean)) app-container container-fluid py-6 @else h-100 px-0 @endif">
                             @yield('content')
                         </div>
                     </div>
@@ -46,10 +46,10 @@
                     <!--end:::Toast-->
                     <!--begin::Footer-->
                     {{-- @include('layouts.footer') --}}
-                    <!--end::Footer-->     
+                    <!--end::Footer-->
                     <button id="open_sidebar" class="btn btn-icon btn-dark app-layout-builder-toggle py-4 d-flex d-md-none">
                         <i class="ki-duotone ki-setting-4 fs-1"></i>
-                    </button>    
+                    </button>
                 </div>
                 <!--end::Wrapper-->
             </div>

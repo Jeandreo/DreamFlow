@@ -7,8 +7,8 @@
 @endsection
 
 @section('content')
-<div class="app-main flex-column flex-row-fluid " id="kt_app_main" style="background: url('{{ asset('assets/media/images/bg_colors.jpg') }}');">
-	<div class="d-flex flex-column flex-column-fluid">                             
+<div class="app-main flex-column flex-row-fluid h-100" id="kt_app_main" style="background: url('{{ asset('assets/media/images/bg_colors.jpg') }}');">
+	<div class="d-flex flex-column flex-column-fluid">
 		<div id="kt_app_content" class="app-content  flex-column-fluid py-6" >
 			<div id="kt_app_content_container" class="app-container  container-fluid ">
 				<div class="row">
@@ -101,7 +101,7 @@
 
 			// GET PROJECT
 			var draggableDropped = $(movedDiv).closest('.draggable-zone');
-			
+
 			// TYPE DRAGGABLE
 			var draggableType = draggableDropped.data('type');
 
@@ -127,19 +127,19 @@
 				type:'PUT',
 				url: "{{ route('tasks.order') }}",
 				data: {
-					_token: @json(csrf_token()), 
-					project_id: projectId, 
-					task_id: taskId, 
+					_token: @json(csrf_token()),
+					project_id: projectId,
+					task_id: taskId,
 					tasksOrderIds: tasksOrderIds
 				},
 				success: function(response){
-					
+
 					// CHANGE COLOR PROJECT ON TASK
 					$(movedDiv).find('.color-task').css('background', response['color']);
 
 					// GET ZONE INITIAL
 					var startZone = $('#project-tasks-' + response['startProject']);
-					
+
 					// COUNT TASKS IN ZONE
 					var tasksCount = startZone.find('.task-list').length;
 
@@ -154,7 +154,7 @@
 	}
 
 	draggable();
-	
+
 </script>
 @include('pages.tasks._javascript')
 @endsection
