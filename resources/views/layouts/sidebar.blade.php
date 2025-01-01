@@ -86,9 +86,6 @@
                     <div  class="menu-item">
                         <a class="menu-link"  href="{{ route('agenda.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Agênda</span></a><!--end:Menu link-->
                     </div>
-                    <div  class="menu-item">
-                        <a class="menu-link"  href="{{ route('catalogs.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Modais <span class="badge badge-danger ms-2">Em Breve</span> </span></a><!--end:Menu link-->
-                    </div>
                     @if (projects()->where('reminder', false)->where('type', 1)->count())
                     <div class="menu menu-rounded menu-column">
                         <div  class="menu-item pt-5" >

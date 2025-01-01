@@ -216,125 +216,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12 col-md-8 d-grid align-items-stretch">
-                                <div class="card mb-4">
-                                    <div class="card-header border-0 py-5">
-                                        <h3 class="card-title align-items-start flex-column">
-                                            <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Próximas conquistas?</span>
-                                            <span class="text-muted fw-semibold fs-7">O maior risco é não correr risco algum.</span>
-                                        </h3>
-                                    </div>
-                                    <div class="card-body pt-0">
-                                        @if ($challenges->count())
-                                            @foreach ($challenges as $challenge)
-                                                <div class="bg-light rounded mb-3 p-3">
-                                                    <div class="row">
-                                                        <div class="col-12 col-md-3 d-flex align-items-center">
-                                                            <p class="m-0 fs-5 fw-bold text-gray-700">{{ $challenge->name }}</p>
-                                                        </div>
-                                                        <div class="col-12 col-md-8 d-flex align-items-center">
-                                                            <div class="d-flex hover-scroll-x">
-                                                                @foreach ($challenge->subtasks as $key => $mission)
-                                                                <div class="min-h-20px min-w-20px rounded-circle centered @if($mission->checked) bg-success text-white @elseif(!$mission->checked && $mission->date && strtotime($mission->date) < time()) bg-danger text-white @else bg-white text-primary @endif me-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="{{ $mission->name }} @if($mission->date) {{ '<br><b>' . date('d/m/Y', strtotime($mission->date)) . '</b>' }} @endif">
-                                                                    <span class="fw-bold">{{ $key + 1 }}</span>
-                                                                </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-md-1 d-flex align-items-center">
-                                                            @if ($challenge->date)
-                                                                <span class="badge badge-light-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<span class='text-primary fw-bold'>DEADLINE</span><br><b>{{ date('d/m/Y', strtotime($challenge->date)) }}</b>">
-                                                                    {{ ceil((strtotime($challenge->date) - time()) / (60 * 60 * 24)) }} dias
-                                                                </span>
-                                                            @else
-                                                                <span class="badge badge-light">
-                                                                    -
-                                                                </span>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        @else
-                                        <div class="bg-light rounded d-flex align-items-center justify-content-center h-150px">
-                                            <div class="text-center">
-                                                <p class="fw-bold text-gray-700 fs-3 mb-1">EIIIIITAAA VOCÊ ESTA SEM DESAFIOS 😱</p>
-                                                <p class="text-gray-600 fs-5">Para você ter um desafio, você precisa ter uma tarefa.</p>
-                                            </div>
-                                        </div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-4 d-grid align-items-stretch">
-                                <div class="card mb-4">
-                                    <div id="kt_carousel_1_carousel" class="card card-flush carousel carousel-custom carousel-stretch slide h-xl-100" data-bs-ride="carousel" data-bs-interval="5000">
-                                        <div class="card-header pt-5">
-                                            <h3 class="card-title align-items-start flex-column">
-                                                <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Minhas listas</span>
-                                                <span class="text-muted fw-semibold fs-7">O maior risco é não correr risco algum.</span>
-                                            </h3>
-                                            <div class="card-toolbar">
-                                                <ol class="p-0 m-0 carousel-indicators carousel-indicators-bullet carousel-indicators-active-primary">
-                                                    @for ($i = 0; $i < $lists->count(); ++$i)
-                                                        <li data-bs-target="#kt_carousel_1_carousel" data-bs-slide-to="{{ $i }}" class="ms-1 @if($i == 0)active @endif"></li>
-                                                    @endfor
-                                                </ol>
-                                            </div>
-                                        </div>
-                                        <div class="card-body py-6">
-                                            <div class="carousel-inner h-100">
-                                            @if ($lists->count())
-                                                @foreach ($lists as $key => $list)
-                                                <div class="carousel-item @if($key == 0)active @endif">
-                                                    <div class="row h-150px">
-                                                        @if ($list->items->count())
-                                                            @foreach ($list->items()->get()->take(6) as $item)
-                                                            <div class="col-6 mb-2">
-                                                                <a href="{{ route('catalogs.items.show', $item->id) }}">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <img src="{{ findImage('catalogos/' .$list->id . '/' . $item->id . '/capa-300px.jpg', 'beautiful') }}" class="object-fit-cover h-40px w-60px rounded-sm me-3" alt="">
-                                                                        <div class="d-flex justify-content-start flex-column">
-                                                                            <p class="text-gray-800 fw-bold text-hover-primary mb-0 fs-6">
-                                                                                {{ Str::limit($item->name, 16) }}
-                                                                            </p>
-                                                                            <span class="text-gray-500 fw-semibold d-block fs-7">
-                                                                                {{ Str::limit($item->catalog->name, 18) }}
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            @endforeach
-                                                        @else
-                                                        <div class="bg-light rounded d-flex align-items-center justify-content-center h-150px">
-                                                            <div class="text-center">
-                                                                <p class="fw-bold text-gray-700 fs-4 mb-0">SEM ITENS NA LISTA 🧐</p>
-                                                                <p class="text-gray-600 fs-6">Adicione seus items e gerencie suas ideias aqui.</p>
-                                                                <a href="{{ route('catalogs.show', $list->id) }}" class="btn btn-sm btn-primary btn-active-danger text-uppercase fw-bolder">
-                                                                    Adicionar Itens
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                                @endforeach
-                                            @else
-                                            <div class="bg-light rounded d-flex align-items-center justify-content-center h-150px">
-                                                <div class="text-center">
-                                                    <p class="fw-bold text-gray-700 fs-3 mb-1">SEM LISTAS CADASTRADAS 😒</p>
-                                                    <p class="text-gray-600 fs-5">Cadastre suas listas através da sidebar.</p>
-                                                </div>
-                                            </div>
-                                            @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="col-4" style="display: none;">
                         <div class="card">
@@ -363,7 +244,7 @@
                                 <div class="card-toolbar">
                                     <div class="form-check form-switch form-check-custom form-check-solid">
                                         <label class="form-check-label cursor-pointer me-2 fw-bold text-danger text-gray-600 text-uppercase" for="tasks_today">
-                                            Próximos 3 dias
+                                            Até os próximos 3 dias
                                         </label>
                                         <input class="form-check-input h-20px cursor-pointer" type="checkbox" value="" id="tasks_today"/>
                                     </div>

@@ -79,9 +79,9 @@ class DashboardController extends Controller
 
         // GET MAIN TASKS
         $tasks = ProjectTask::whereNull('task_id')
-        ->where('checked', false)
-        ->where('status', 1)
-        ->where('designated_id', Auth::id());
+                        ->where('checked', false)
+                        ->where('status', 1)
+                        ->where('designated_id', Auth::id());
 
         // FILTER DATES
         if ($range == 'today') {
@@ -112,8 +112,6 @@ class DashboardController extends Controller
 
         // FILTER DATES
         if ($range == 'today') {
-            $subtasksAndTasks->whereDate('date', date('Y-m-d'));
-        } else {
             $subtasksAndTasks->where('date', '<=', date('Y-m-d', strtotime('+2 days')));
         }
 
