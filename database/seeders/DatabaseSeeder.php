@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Jeandreo Furquim',
             'email' => 'jeandreofur@gmail.com',
             'role_id' => 1,
-            'password' => Hash::make('Inc@ns4v3l_2024'),
+            'password' => Hash::make('Inc@ns4v3l_2025'),
             'created_by' => 0,
         ]);
 

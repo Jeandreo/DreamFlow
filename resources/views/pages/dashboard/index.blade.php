@@ -246,7 +246,7 @@
                                         <label class="form-check-label cursor-pointer me-2 fw-bold text-danger text-gray-600 text-uppercase" for="tasks_today">
                                             Até os próximos 3 dias
                                         </label>
-                                        <input class="form-check-input h-20px cursor-pointer" type="checkbox" value="" id="tasks_today"/>
+                                        <input class="form-check-input h-20px cursor-pointer" type="checkbox" id="tasks_today" checked/>
                                     </div>
                                 </div>
                             </div>
