@@ -348,7 +348,7 @@
                                         <label class="form-check-label cursor-pointer me-2 fw-bold text-danger text-gray-600 text-uppercase" for="tasks_today">
                                             Apenas as dos próximos dias
                                         </label>
-                                        <input class="form-check-input h-20px cursor-pointer" type="checkbox" id="tasks_today"/>
+                                        <input class="form-check-input h-20px cursor-pointer" type="checkbox" id="tasks_today" checked/>
                                     </div>
                                 </div>
                             </div>
@@ -438,16 +438,16 @@
     // Desmarca ou marca
     $(document).on('change', '#tasks_today', function(){
 
-        // Verifica se esta checado
-        var checked = $(this).is(':checked');
-
         // Carrega lista
-        loadList(checked);
+        loadList();
 
     });
 
     // Carrega listagem
-    function loadList(checked = false){
+    function loadList(){
+
+        // Verifica se esta checado
+        var checked = $('#tasks_today').is(':checked');
 
         // RANGE
         var range = checked ? 'next_days' : 'all';
