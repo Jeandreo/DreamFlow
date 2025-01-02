@@ -258,13 +258,13 @@
                                     {{-- RESULTS HERE --}}
                                     {{-- RESULTS HERE --}}
                                 </div>
-                                @if(projects()->where('reminder', true)->exists())
+                                @if(projects()->exists())
                                 <form action="#" method="POST" class="send-tasks">
                                     @csrf
                                     <div class="d-flex h-40px mt-5">
                                         <input type="text" name="name" class="form-control form-control-solid w-100 h-100 rounded-start border" placeholder="Inserir nova tarefa" style="border-radius: 10px 0px 0px 10px !important;">
                                         <input type="text" class="form-control flatpickr rounded-0 text-center w-200px input bg-gray-300 border-0" placeholder="00/00/0000" name="date" value="{{ date('Y-m-d') }}" required/>
-                                        <input type="hidden" name="project_id" value="{{ projects()->where('reminder', true)->first()->id }}">
+                                        <input type="hidden" name="project_id" value="{{ projects()->where('reminder', true)->exists() ? projects()->where('reminder', true)->first()->id : 1 }}">
                                         <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-200px rounded-0 background-project" style="background: {{ projects()->where('reminder', true)->first()->color }}">
                                             <div class="w-200px h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
                                                 <p class="text-white fw-bold m-0 text-center project-name">{{ projects()->where('reminder', true)->first()->name }}</p>
