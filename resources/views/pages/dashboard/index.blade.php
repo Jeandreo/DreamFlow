@@ -244,9 +244,9 @@
                                 <div class="card-toolbar">
                                     <div class="form-check form-switch form-check-custom form-check-solid">
                                         <label class="form-check-label cursor-pointer me-2 fw-bold text-danger text-gray-600 text-uppercase" for="tasks_today">
-                                            Até os próximos 3 dias
+                                            Exibir todas
                                         </label>
-                                        <input class="form-check-input h-20px cursor-pointer" type="checkbox" id="tasks_today" checked/>
+                                        <input class="form-check-input h-20px cursor-pointer" type="checkbox" id="tasks_today"/>
                                     </div>
                                 </div>
                             </div>

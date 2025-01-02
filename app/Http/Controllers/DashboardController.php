@@ -84,9 +84,7 @@ class DashboardController extends Controller
                         ->where('designated_id', Auth::id());
 
         // FILTER DATES
-        if ($range == 'today') {
-            $tasks->whereDate('date', date('Y-m-d'));
-        } else {
+        if ($range == 'next_days') {
             $tasks->where('date', '<=', date('Y-m-d', strtotime('+3 days')));
         }
 
