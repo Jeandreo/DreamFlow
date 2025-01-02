@@ -86,7 +86,7 @@
                     <div  class="menu-item">
                         <a class="menu-link"  href="{{ route('agenda.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Agênda</span></a><!--end:Menu link-->
                     </div>
-                    @if (projects()->where('reminder', false)->where('type', 1)->count())
+                    @if (projects()->where('type', 1)->count())
                     <div class="menu menu-rounded menu-column">
                         <div  class="menu-item pt-5" >
                             <div class="menu-content justify-content-between d-flex align-items-center">
@@ -94,7 +94,7 @@
                                 <i class="fa-solid fa-circle-plus text-white"></i>
                             </div>
                         </div>
-                        @foreach (projects()->where('reminder', false)->where('type', 1)->get() as $project)
+                        @foreach (projects()->where('type', 1)->get() as $project)
                         <div class="menu-item">
                             <a class="menu-link" href="{{ route('projects.show', $project->id) }}">
                             <span class="menu-icon">
@@ -109,12 +109,12 @@
                         @endforeach
                     </div>
                     @endif
-                    @if (projects()->where('reminder', false)->where('type', 2)->count())
+                    @if (projects()->where('type', 2)->count())
                     <div class="menu menu-rounded menu-column mb-6">
                         <div  class="menu-item pt-5" >
                             <div  class="menu-content" ><span class="menu-heading fw-bold text-uppercase fs-7">Crescimento</span></div>
                         </div>
-                        @foreach (projects()->where('reminder', false)->where('type', 2)->get() as $project)
+                        @foreach (projects()->where('type', 2)->get() as $project)
                         <div class="menu-item">
                             <a class="menu-link" href="{{ route('projects.show', $project->id) }}">
                                 <span class="menu-icon">
