@@ -346,7 +346,7 @@
                                 <div class="card-toolbar">
                                     <div class="form-check form-switch form-check-custom form-check-solid">
                                         <label class="form-check-label cursor-pointer me-2 fw-bold text-danger text-gray-600 text-uppercase" for="tasks_today">
-                                            Exibir todas
+                                            Apenas as dos próximos dias
                                         </label>
                                         <input class="form-check-input h-20px cursor-pointer" type="checkbox" id="tasks_today"/>
                                     </div>
@@ -450,7 +450,7 @@
     function loadList(checked = false){
 
         // RANGE
-        var range = checked ? 'all' : 'next_days';
+        var range = checked ? 'next_days' : 'all';
 
         // AJAX
         $.ajax({

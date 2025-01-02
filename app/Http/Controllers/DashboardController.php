@@ -85,7 +85,7 @@ class DashboardController extends Controller
 
         // FILTER DATES
         if ($range == 'next_days') {
-            $tasks->where('date', '<=', date('Y-m-d', strtotime('+3 days')));
+            $tasks->where('date', '<=', date('Y-m-d', strtotime('+1 days')));
         }
 
         // Executa a consulta para obter as tarefas principais
