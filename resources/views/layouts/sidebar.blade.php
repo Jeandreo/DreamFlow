@@ -126,8 +126,9 @@
                                 <!--end::Title-->
                                 <!--begin::Badge-->
                                 <span class="menu-badge">
-                                <span class="badge badge-custom">
-                                6                    </span>
+                                <span class="badge badge-custom text-gray-700">
+                                    {{ $project->tasks->count() }}
+                                </span>
                                 </span>
                                 <!--end::Badge-->
                             </a>
