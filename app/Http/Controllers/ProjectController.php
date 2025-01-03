@@ -32,7 +32,7 @@ class ProjectController extends Controller
     {
 
         // GET ALL DATA
-        $contents = projects()->get();
+        $contents = $this->repository->orderBy('name', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.projects.index')->with([
@@ -136,7 +136,7 @@ class ProjectController extends Controller
     {
         // GET ALL DATA
         if($id == null){
-            $projects = projects();
+            $projects = $this->repository->where('status', 1)->get();
         } else {
             $projects = $this->repository->where('id', $id)->get();
         }
