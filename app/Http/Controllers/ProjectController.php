@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
-    
+
     protected $request;
     private $repository;
-    
+
     public function __construct(Request $request, Project $content)
     {
-        
+
         $this->request = $request;
         $this->repository = $content;
 
@@ -57,7 +57,7 @@ class ProjectController extends Controller
             'users' => $users,
             'categories' => $categories,
         ]);
-    } 
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -73,7 +73,7 @@ class ProjectController extends Controller
 
         // CREATED BY
         $data['created_by'] = Auth::id();
-        
+
         // SEND DATA
         $created = $this->repository->create($data);
 
@@ -136,11 +136,11 @@ class ProjectController extends Controller
     {
         // GET ALL DATA
         if($id == null){
-            $projects = $this->repository->where('status', 1)->get();
+            $projects = projects();
         } else {
             $projects = $this->repository->where('id', $id)->get();
         }
-        
+
         // GET USERS
         $users = User::where('status', 1)->get();
 
@@ -195,7 +195,7 @@ class ProjectController extends Controller
 
         // UPDATE BY
         $data['updated_by'] = Auth::id();
-        
+
         // STORING NEW DATA
         $updated = $content->update($data);
 
@@ -212,7 +212,7 @@ class ProjectController extends Controller
             if($request->hasFile('image')){
                 $request->file('image')->storeAs('public/projetos/' . $id, 'capa.jpg');
             }
-            
+
         }
 
         // REDIRECT AND MESSAGES
@@ -254,7 +254,7 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        
+
         // GET DATA
         $content = $this->repository->find($id);
         $status = $content->status == true ? false : true;
