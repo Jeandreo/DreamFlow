@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Eduarda Cruz',
             'email' => 'eduarda@dreamake.com.br',
-            'role_id' => 1,
+            'role_id' => 2,
             'password' => Hash::make('atingir_metas'),
             'created_by' => 0,
         ]);
