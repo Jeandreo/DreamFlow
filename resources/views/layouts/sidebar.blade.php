@@ -160,7 +160,7 @@
                         <!--begin:Menu sub-->
                         <div  class="menu-sub menu-sub-accordion">
                             <div  class="menu-item">
-                                <a class="menu-link" href="{{ route('projects.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Projetos</span></a><!--end:Menu link-->
+                                <a class="menu-link" href="{{ route('projects.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Quadros</span></a><!--end:Menu link-->
                             </div>
                             <div  class="menu-item">
                                 <a class="menu-link" href="{{ route('catalogs.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Listas</span></a><!--end:Menu link-->
