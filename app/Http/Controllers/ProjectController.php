@@ -35,7 +35,7 @@ class ProjectController extends Controller
         if(Auth::user()->role_id == 1){
             $contents = $this->repository->orderBy('name', 'ASC')->get();
         } else {
-            $contents = projects();
+            $contents = projects()->get();
         }
 
         // RETURN VIEW WITH DATA
