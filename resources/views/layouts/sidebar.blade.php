@@ -66,9 +66,13 @@
                             </div>
                         </div>
                     </div>
-                    <div  class="menu-item">
+                    {{-- <div  class="menu-item">
                         <a class="menu-link active"  href="{{ route('dashboard.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Painél de controle</span></a><!--end:Menu link-->
+                    </div> --}}
+                    <div  class="menu-item">
+                        <a class="menu-link active"  href="{{ route('dashboard.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Lista de tarefas</span></a><!--end:Menu link-->
                     </div>
+                    @if (Auth::user()->role_id == 1)
                     <div  class="menu-item">
                         <a class="menu-link" href="{{ route('financial.index') }}">
                         <span class="menu-bullet">
@@ -77,6 +81,7 @@
                         <span  class="menu-title" >Financeiro</span>
                         </a>
                     </div>
+                    @endif
                     <div  class="menu-item">
                         <a class="menu-link"  href="{{ route('projects.show') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Projetos</span></a><!--end:Menu link-->
                     </div>
