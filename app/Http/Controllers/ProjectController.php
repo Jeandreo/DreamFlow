@@ -32,11 +32,7 @@ class ProjectController extends Controller
     {
 
         // GET ALL DATA
-        if(Auth::user()->role_id == 1){
-            $contents = $this->repository->orderBy('name', 'ASC')->get();
-        } else {
-            $contents = projects()->get();
-        }
+        $contents = projects()->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.projects.index')->with([
