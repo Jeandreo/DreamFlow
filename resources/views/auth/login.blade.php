@@ -44,7 +44,7 @@
                                     <div class="col-md-6">
                                         <!--begin::Google link--->
                                         <a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-                                            <img alt="Logo" src="{{ asset('assets/media/svg/brand-logos/google-icon.svg') }}" class="h-15px me-3">   
+                                            <img alt="Logo" src="{{ asset('assets/media/svg/brand-logos/google-icon.svg') }}" class="h-15px me-3">
                                             Acessar com o Google
                                         </a>
                                         <!--end::Google link--->
@@ -70,7 +70,7 @@
                                 <!--begin::Input group--->
                                 <div class="fv-row mb-8 fv-plugins-icon-container">
                                     <!--begin::Email-->
-                                    <input type="email" placeholder="E-mail" name="email" autocomplete="off" class="form-control form-control-solid" value="{{ old('email') }}" required> 
+                                    <input type="email" placeholder="E-mail" name="email" autocomplete="off" class="form-control form-control-solid" value="{{ old('email') }}" required>
                                     <!--end::Email-->
                                 </div>
                                 <!--end::Input group--->
@@ -93,15 +93,18 @@
                                 <x-auth-validation-errors class="mb-4" :errors="$errors" />
                                 <!--end::Input-->
                                 <!--begin::Wrapper-->
-                                <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
-                                    <div></div>
-                                    <!--begin::Link-->
+                                <div class="d-flex align-items-center justify-content-between mb-4 mt-4">
+                                    <label class="form-check form-check-inline">
+                                        <input class="form-check-input cursor-pointer" type="checkbox" name="remember" value="1">
+                                        <span class="form-check-label fw-semibold text-gray-700 fs-base ms-1 cursor-pointer">
+                                            Mantenha-me conectado
+                                        </span>
+                                    </label>
                                     <a href="#" class="link-primary">
-                                    Esqueceu a senha?
+                                        Esqueceu a senha?
                                     </a>
-                                    <!--end::Link-->
                                 </div>
-                                <!--end::Wrapper-->    
+                                <!--end::Wrapper-->
                                 <!--begin::Submit button-->
                                 <div class="d-grid mb-10">
                                     <button type="submit" class="btn btn-primary">
@@ -118,12 +121,12 @@
                                 </div>
                                 <!--end::Sign up-->
                             </form>
-                            <!--end::Form--> 
+                            <!--end::Form-->
                         </div>
                         <!--end::Wrapper-->
                     </div>
-                    <!--end::Form-->       
-                    <!--begin::Footer-->  
+                    <!--end::Form-->
+                    <!--begin::Footer-->
                     <div class="w-lg-500px d-flex flex-stack px-10 mx-auto">
                         <!--begin::Languages-->
                         <div class="me-10">
@@ -198,9 +201,9 @@
                                 </div>
                                 <!--end::Menu item-->
                             </div>
-                            <!--end::Menu-->           
+                            <!--end::Menu-->
                         </div>
-                        <!--end::Languages--> 
+                        <!--end::Languages-->
                         <!--begin::Links-->
                         <div class="d-flex fw-semibold text-primary fs-base gap-5">
                             <a href="pages/team.html" target="_blank">Termos</a>
@@ -219,11 +222,11 @@
                         <!--begin::Logo-->
                         <img alt="Logo" src="{{ asset('assets/media/logos/dreamflow-pb.webp') }}" class="h-35px h-lg-50px">
                         <!--end::Logo-->
-                        <!--begin::Image-->                
-                        <img class="mx-auto w-275px w-md-50 w-xl-700px mb-10 mb-lg-20 mt-10" src="{{ asset('assets/media/images/imagens-login.png') }}" alt="">                 
+                        <!--begin::Image-->
+                        <img class="mx-auto w-275px w-md-50 w-xl-700px mb-10 mb-lg-20 mt-10" src="{{ asset('assets/media/images/imagens-login.png') }}" alt="">
                         <!--end::Image-->
                         <!--begin::Title-->
-                        <h1 class="text-white fs-2qx fw-bolder text-center mb-7"> 
+                        <h1 class="text-white fs-2qx fw-bolder text-center mb-7">
                             Rápido, Fácil e Eficiente
                         </h1>
                         <!--end::Title-->
@@ -242,7 +245,7 @@
         <!--end::Root-->
         <!--begin::Javascript-->
         <script>
-            var hostUrl = "assets/";        
+            var hostUrl = "assets/";
         </script>
         <!--begin::Global Javascript Bundle(mandatory for all pages)-->
         <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
