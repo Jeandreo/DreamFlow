@@ -135,7 +135,6 @@ class DashboardController extends Controller
         // Encerra a consulta para obter as subtarefas
         $tasks = $subtasksAndTasks->get();
 
-
         // OBTÉM PROJETOS
         $projects = Project::where('status', 1)->get();
 

@@ -67,13 +67,21 @@
                         </div>
                     </div>
                     <div  class="menu-item">
-                        <a class="menu-link active"  href="{{ route('dashboard.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Painél de controle</span></a><!--end:Menu link-->
+                        <a class="menu-link active"  href="{{ route('dashboard.index') }}"  ><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Painél de controle</span></a>
                     </div>
                     <div  class="menu-item">
-                        <a class="menu-link"  href="{{ route('dashboard.tasks') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Lista de tarefas</span></a><!--end:Menu link-->
+                        <a class="menu-link" href="{{ route('dashboard.tasks') }}"  ><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span>
+                            <span class="menu-title">Lista de tarefas </span>
+                            <span class="menu-badge">
+                                <span class="badge badge-primary">
+                                    {{ countTasksToday() }}
+                                </span>
+                            </span>
+                        </a>
+                    </a>
                     </div>
                     <div  class="menu-item">
-                        <a class="menu-link"  href="{{ route('projects.show') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Quadros de tarefas</span></a><!--end:Menu link-->
+                        <a class="menu-link" href="{{ route('projects.show') }}"  ><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Quadros de tarefas</span></a>
                     </div>
                     @if (Auth::user()->role_id == 1)
                     <div  class="menu-item">
@@ -81,15 +89,15 @@
                         <span class="menu-bullet">
                         <span class="bullet bullet-dot"></span>
                         </span>
-                        <span  class="menu-title" >Financeiro</span>
+                        <span class="menu-title">Financeiro</span>
                         </a>
                     </div>
                     @endif
                     <div  class="menu-item">
-                        <a class="menu-link"  href="{{ route('catalogs.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Listas</span></a><!--end:Menu link-->
+                        <a class="menu-link" href="{{ route('catalogs.index') }}"  ><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Listas</span></a>
                     </div>
                     <div  class="menu-item">
-                        <a class="menu-link"  href="{{ route('agenda.index') }}"  ><span  class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span  class="menu-title" >Agênda</span></a><!--end:Menu link-->
+                        <a class="menu-link" href="{{ route('agenda.index') }}"  ><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Agênda</span></a>
                     </div>
                     @if (projects()->where('type', 1)->count())
                     <div class="menu menu-rounded menu-column">
@@ -102,13 +110,12 @@
                         @foreach (projects()->where('type', 1)->get() as $project)
                         <div class="menu-item">
                             <a class="menu-link" href="{{ route('projects.show', $project->id) }}">
-                            <span class="menu-icon">
-                            <span class="bullet bullet-dot h-10px w-10px" style="background: {{ $project->color }};">
-                            </span>
-                            </span>
-                            <span class="menu-title">
-                            {{ $project->name }}
-                            </span>
+                                <span class="menu-icon">
+                                    <span class="bullet bullet-dot h-10px w-10px" style="background: {{ $project->color }};"></span>
+                                </span>
+                                <span class="menu-title">
+                                    {{ $project->name }}
+                                </span>
                             </a>
                         </div>
                         @endforeach
@@ -123,19 +130,16 @@
                         <div class="menu-item">
                             <a class="menu-link" href="{{ route('projects.show', $project->id) }}">
                                 <span class="menu-icon">
-                                <span class="bullet bullet-dot h-10px w-10px" style="background: {{ $project->color }};">
-                                </span>
+                                    <span class="bullet bullet-dot h-10px w-10px" style="background: {{ $project->color }};"></span>
                                 </span>
                                 <span class="menu-title">
-                                {{ $project->name }}                </span>
-                                <!--end::Title-->
-                                <!--begin::Badge-->
+                                    {{ $project->name }}
+                                </span>
                                 <span class="menu-badge">
-                                <span class="badge badge-custom text-gray-700">
-                                    {{ $project->tasks->count() }}
+                                    <span class="badge badge-custom text-gray-700">
+                                        {{ $project->tasks->count() }}
+                                    </span>
                                 </span>
-                                </span>
-                                <!--end::Badge-->
                             </a>
                         </div>
                         @endforeach
@@ -143,7 +147,7 @@
                     @endif
                     <div  data-kt-menu-trigger="click"  class="menu-item menu-accordion" >
                         <span class="menu-link"  >
-                        <span  class="menu-icon" >
+                        <span class="menu-icon" >
                         <i class="ki-duotone ki-element-11 fs-2">
                         <span class="path1"></span>
                         <span class="path2"></span>
@@ -151,31 +155,31 @@
                         <span class="path4"></span>
                         </i>
                         </span>
-                        <span  class="menu-title" >
+                        <span class="menu-title">
                         Configurações
                         </span>
-                        <span  class="menu-arrow" ></span>
+                        <span class="menu-arrow" ></span>
                         </span>
-                        <!--end:Menu link-->
+
                         <!--begin:Menu sub-->
                         <div  class="menu-sub menu-sub-accordion">
                             <div  class="menu-item">
-                                <a class="menu-link" href="{{ route('projects.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Quadros</span></a><!--end:Menu link-->
+                                <a class="menu-link" href="{{ route('projects.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Quadros</span></a>
                             </div>
                             <div  class="menu-item">
-                                <a class="menu-link" href="{{ route('catalogs.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Listas</span></a><!--end:Menu link-->
+                                <a class="menu-link" href="{{ route('catalogs.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Listas</span></a>
                             </div>
                             <div  class="menu-item" >
-                                <a class="menu-link" href="{{ route('statuses.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Status</span></a><!--end:Menu link-->
+                                <a class="menu-link" href="{{ route('statuses.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Status</span></a>
                             </div>
                             <div  class="menu-item" >
-                                <a class="menu-link" href="{{ route('categories.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Categorias</span></a><!--end:Menu link-->
+                                <a class="menu-link" href="{{ route('categories.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Categorias</span></a>
                             </div>
                             <div  class="menu-item" >
-                                <a class="menu-link" href="{{ route('challenges.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Metas Semanais e Mensais</span></a><!--end:Menu link-->
+                                <a class="menu-link" href="{{ route('challenges.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Metas Semanais e Mensais</span></a>
                             </div>
                             <div  class="menu-item" >
-                                <a class="menu-link" href="{{ route('users.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Usuários</span></a><!--end:Menu link-->
+                                <a class="menu-link" href="{{ route('users.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Usuários</span></a>
                             </div>
                             <div class="row mt-4">
                                 <div class="col-6">

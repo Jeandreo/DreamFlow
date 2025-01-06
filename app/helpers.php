@@ -7,6 +7,7 @@ use App\Models\ChallengeCompleted;
 use App\Models\ChallengeMonthly;
 use App\Models\ChallenngeMonthly;
 use App\Models\Project;
+use App\Models\ProjectTask;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
@@ -36,6 +37,18 @@ function projects()
         });
 
     return $projects;
+}
+
+function countTasksToday()
+{
+    $count = ProjectTask::whereNull('task_id')
+                ->where('checked', false)
+                ->where('status', 1)
+                ->where('designated_id', Auth::id())
+                ->where('date', '<=',date('Y-m-d'))
+                ->count();
+
+    return $count;
 }
 
 function randomColor()
