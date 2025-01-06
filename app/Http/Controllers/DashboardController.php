@@ -68,6 +68,25 @@ class DashboardController extends Controller
 
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function tasks()
+    {
+
+        // OBTÉM PROJETOS
+        $projects = Project::where('status', 1)->get();
+
+        // RETURN VIEW WITH DATA
+        return view('pages.dashboard.tasks')->with([
+            'projects' => $projects,
+            'pageClean' => true,
+        ]);
+
+    }
+
 
     /**
      * Display a listing of the resource.
