@@ -79,6 +79,7 @@
         <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
         <script src="{{ asset('assets/plugins/custom/cropper/cropper.bundle.js') }}"></script>
         <script src="{{ asset('/assets/js/custom.bundle.js?v=2') }}"></script>
+        <script src="{{ asset('assets/plugins/custom/ckeditor5/ckeditor-classic.bundle.js') }}"></script>
         <!--end::Global Javascript Bundle-->
         <script>
             // SAVE STATE SIDEBAR

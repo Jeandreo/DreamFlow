@@ -1,6 +1,6 @@
 @extends('layouts.app')
-@section('title-page', 'Dashboard')
-@section('title-toolbar', 'Dashboard')
+@section('title-page', 'Tarefas')
+@section('title-toolbar', 'Tarefas')
 @section('custom-head')
 <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
 @endsection

@@ -1,9 +1,6 @@
 @extends('layouts.app')
 @section('title-page', 'Dashboard')
 @section('title-toolbar', 'Dashboard')
-@section('custom-head')
-<script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
-@endsection
 @section('content')
 <div class="row m-0 background-dashboard" style="background-image: url('{{ asset('assets/media/logos/background-pattern.webp') }}'); background-size: cover;">
     <div style="background: linear-gradient(0deg, #090c11, #18202bf0);">
@@ -89,7 +86,7 @@
                                     <div class="col-12">
                                         <div class="card mb-2">
                                             <div class="d-flex align-items-center">
-                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-5">
+                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-4">
                                                     1
                                                 </span>
                                                 <span class="fw-bold text-gray-700">
@@ -99,31 +96,41 @@
                                         </div>
                                         <div class="card mb-2">
                                             <div class="d-flex align-items-center">
-                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-5">
-                                                    1
-                                                </span>
-                                                <span class="fw-bold text-gray-700">
-                                                   Conquistar 86 Kg ou uma barriga tonificada!
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="card mb-2">
-                                            <div class="d-flex align-items-center">
-                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-5">
+                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-4">
                                                     2
                                                 </span>
                                                 <span class="fw-bold text-gray-700">
-                                                   Ler 12 Livros no Ano!
+                                                   Ser um corredor profissional
                                                 </span>
                                             </div>
                                         </div>
                                         <div class="card mb-2">
                                             <div class="d-flex align-items-center">
-                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-5">
+                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-4">
+                                                    3
+                                                </span>
+                                                <span class="fw-bold text-gray-700">
+                                                   Se tornar mais elegante
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-4">
                                                     4
                                                 </span>
                                                 <span class="fw-bold text-gray-700">
-                                                   Capacitação para Liderança!
+                                                   Ter uma Rede Social forte
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <span class="rounded-start bg-primary text-white fs-3 w-30px h-35px d-flex align-items-center justify-content-center fw-bolder me-4">
+                                                    5
+                                                </span>
+                                                <span class="fw-bold text-gray-700">
+                                                   Viver mais experiências
                                                 </span>
                                             </div>
                                         </div>
@@ -185,7 +192,7 @@
                                 </div>
                                 <div class="card mb-4">
                                     <div class="card-body p-2">
-                                        <textarea class="form-control form-control-solid" name="notes" rows="2" placeholder="Anotações aqui...">{{ Auth::user()->notes }}</textarea>
+                                        <textarea class="form-control form-control-solid" name="notes" rows="3" placeholder="Anotações aqui...">{{ Auth::user()->notes }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -194,22 +201,22 @@
                                     <div class="card-body p-2 px-4">
                                         <div class="row h-100">
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/amor.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 107px">
+                                                <img src="{{ findImage('mural/amor.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/porsche.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 107px">
+                                                <img src="{{ findImage('mural/porsche.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/amor_3.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 107px">
+                                                <img src="{{ findImage('mural/amor_3.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/duda.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 107px">
+                                                <img src="{{ findImage('mural/duda.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/Jeandreo-Forbes.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 107px">
+                                                <img src="{{ findImage('mural/Jeandreo-Forbes.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/maratona.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 107px">
+                                                <img src="{{ findImage('mural/maratona.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
                                             </div>
                                         </div>
                                     </div>

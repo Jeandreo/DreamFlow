@@ -65,7 +65,7 @@
 									@endif
 								</td>
 								<td>
-									@if($content->start_date) 
+									@if($content->start_date)
 									<span class="text-gray-600" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ date('d/m/Y', strtotime($content->start_date)) }} ás {{ date('H:i:s', strtotime($content->start_date)) }}">
 										{{ date('d/m/Y', strtotime($content->start_date)) }}
 									</span>
@@ -74,14 +74,14 @@
 										-
 									</span>
 									@endif
-									@if($content->end_date) 
+									@if($content->end_date)
 									<span class="text-gray-600" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ date('d/m/Y', strtotime($content->end_date)) }} ás {{ date('H:i:s', strtotime($content->end_date)) }}">
 										{{ date('d/m/Y', strtotime($content->end_date)) }}
 									</span>
 									@endif
 								</td>
 								<td class="text-center">
-									@if($content->status == 1) 
+									@if($content->status == 1)
 									<span class="badge badge-light-success">
 										Ativo
 									</span>
