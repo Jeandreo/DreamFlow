@@ -137,7 +137,7 @@
                                 </span>
                                 <span class="menu-badge">
                                     <span class="badge badge-custom text-gray-700">
-                                        {{ $project->tasks->count() }}
+                                        {{ $project->tasks()->where('status', 1)->count() }}
                                     </span>
                                 </span>
                             </a>
