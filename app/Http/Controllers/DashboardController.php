@@ -100,7 +100,10 @@ class DashboardController extends Controller
         $tasks = ProjectTask::whereNull('task_id')
                         ->where('checked', false)
                         ->where('status', 1)
-                        ->where('designated_id', Auth::id());
+                        ->where('designated_id', Auth::id())
+                        ->whereHas('project', function ($query) {
+                            $query->where('status', 1);
+                        });
 
         // FILTER DATES
         if ($range == 'next_days') {

@@ -995,6 +995,7 @@ class FinancialTransactionsController extends Controller
     {
         // Pesquisa por termos
         if ($request->searchBy != '') {
+            
             // Separa os termos
             $searchTerms = explode(' ', $request->searchBy);
 
@@ -1009,6 +1010,7 @@ class FinancialTransactionsController extends Controller
             $query->orWhere(function ($query) use ($request) {
                 $query->where('financial_categories.name', 'like', "%$request->searchBy%");
             });
+
         }
 
         return $query;

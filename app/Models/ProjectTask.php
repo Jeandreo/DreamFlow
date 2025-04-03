@@ -39,6 +39,14 @@ class ProjectTask extends Model
     ];
 
     /**
+     * Get the creator associated with the tasks.
+     */
+    public function project(): HasOne
+    {
+        return $this->hasOne(Project::class, 'id', 'project_id');
+    }
+
+    /**
      * Get the comments associated with the tasks.
      */
     public function comments(): HasMany
@@ -84,14 +92,6 @@ class ProjectTask extends Model
     public function designated(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'designated_id');
-    }
-
-    /**
-     * Get the creator associated with the tasks.
-     */
-    public function project(): HasOne
-    {
-        return $this->hasOne(Project::class, 'id', 'project_id');
     }
 
     /**

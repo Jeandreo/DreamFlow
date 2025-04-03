@@ -55,7 +55,6 @@ class FinancialTransactionsFactory extends Factory
             'category_id' => $category,
             'name' => $transactions[array_rand($transactions)],
             'hitching' => fake()->boolean,
-            'recurrent' => fake()->boolean,
             'value' => $signal . fake()->randomFloat(2, 10, 1000),
             'value_paid' => fake()->randomFloat(2, 0, 1000),
             'date_purchase' => fake()->dateTimeBetween(Carbon::now()->startOfYear(), Carbon::now()->endOfYear())->format('Y-m-d'),
