@@ -201,7 +201,7 @@
                                     <div class="card-body p-2 px-4">
                                         <div class="row h-100">
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/amor.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
+                                                <img src="{{ findImage('mural/meia.png', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
                                                 <img src="{{ findImage('mural/porsche.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
