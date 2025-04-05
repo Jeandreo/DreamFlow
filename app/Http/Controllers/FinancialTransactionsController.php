@@ -464,49 +464,59 @@ class FinancialTransactionsController extends Controller
      */
     public function processing(Request $request)
     {
-
         // Extrai dados
         $data = $request->all();
-
+    
         // Inicia a consulta com junções e seleções
         $query = $this->transactions($data);
-
+    
         // Realiza pesquisa pelo input
         $query = $this->search($query, $request);
-
+    
         // Aplica a ordenação
         $query = $this->ordering($query, $request);
-
+    
         // Itens por página e paginação
         $query->paginate($request->per_page);
-
+    
         // Transações
         $transactions = $query->get()->toArray();
-
+    
         // Obtém as transações recorrente
         $recurrents = $this->recurringTransactions($data, $transactions);
-
+    
         // Mescla as duas coleções
         $transactions = collect($transactions)->merge($recurrents);
-
+    
         // Obtém Faturas
         $fatures = $this->fatureTransactions($data);
-
+    
         // Mescla as duas coleções
         $transactions = collect($transactions)->merge($fatures);
-
+    
+        // Ordena a coleção final
+        $transactions = $transactions->sortBy([
+            // 1. Entradas primeiro (valores positivos), depois saídas
+            fn ($a, $b) => ($a->value >= 0 ? 0 : 1) <=> ($b->value >= 0 ? 0 : 1),
+            // 2. Recorrência (recorrentes primeiro)
+            fn ($a, $b) => (is_null($a->recurrent_id) ? 1 : 0) <=> (is_null($b->recurrent_id) ? 1 : 0),
+            // 3. Data (mais antigas primeiro)
+            fn ($a, $b) => strtotime($a->date_payment) <=> strtotime($b->date_payment),
+            // 4. Nome (ordem alfabética)
+            fn ($a, $b) => strcmp($a->name, $b->name),
+        ])->values(); // values() para reindexar o array
+    
         // Agrupamento dos resultados esperados e lançados
         $expected = $this->expected($request);
-
+    
         // Obtém total pago
         $current = $this->current($request);
-
+    
         // COUNT TOTAL RECORDS
         $totalRecords = count($transactions);
-
+    
         // Remove os ajustes de carteira
         // $data = collect($data)->where('adjustment', false);
-
         // Configurar as colunas usando a função editColumn
         return FacadesDataTables::of($transactions)
             ->editColumn('checked', function ($row) {
@@ -1054,8 +1064,8 @@ class FinancialTransactionsController extends Controller
 
             // Executa
             $query->orderBy($column, $direction);
-        }
 
+        } 
         return $query;
     }
 

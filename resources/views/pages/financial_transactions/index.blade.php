@@ -473,7 +473,7 @@
                 url: '{{ route('financial.transactions.processing') }}',
                 data: function(data) {
                     data.searchBy = searchInput.val();
-                    data.order_by = data.columns[data.order[0].column].data;
+                    data.order_by = data.order?.length ? data.columns[data.order[0].column].data : null;
                     data.per_page = data.length;
                     data.date_begin = $('.date-begin').val();
                     data.date_end = $('.date-end').val();
@@ -481,9 +481,7 @@
             },
             buttons: false,
             searching: true,
-            order: [
-                [1, 'ASC']
-            ],
+            aaSorting: [],
             pageLength: 100,
             lengthMenu: [100, 250, 500, 1000],
             columns: [{
