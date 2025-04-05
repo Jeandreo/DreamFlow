@@ -210,7 +210,7 @@
                                                 <img src="{{ findImage('mural/amor_3.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
-                                                <img src="{{ findImage('mural/duda.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
+                                                <img src="{{ findImage('mural/fazer.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
                                             </div>
                                             <div class="col-4 px-1 my-1">
                                                 <img src="{{ findImage('mural/Jeandreo-Forbes.jpg', 'beautiful') }}" class="rounded-sm w-100 object-fit-cover show-image cursor-pointer" style="height: 120px">
