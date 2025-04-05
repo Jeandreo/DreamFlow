@@ -581,6 +581,8 @@
             // Para evento
             e.preventDefault();
 
+            var btn = $(this).find('[type="submit"]').prop('disabled', true);
+
             // GET VALUES
             var form = $(this);
             var formId = form.closest('.modal').attr('id')
@@ -609,6 +611,10 @@
                     // RELOAD TABLE
                     table.DataTable().ajax.reload();
 
+                    setTimeout(() => {
+                        btn.prop('disabled', false);
+                    }, 250);
+
                 }
             });
 
@@ -618,6 +624,8 @@
         $('#update-transaction').submit(function(e) {
 
             e.preventDefault();
+
+            var btn = $(this).find('[type="submit"]').prop('disabled', true);
 
             // GET VALUES
             var form = $(this);
@@ -648,6 +656,10 @@
 
                     // RELOAD TABLE
                     table.DataTable().ajax.reload();
+
+                    setTimeout(() => {
+                        btn.prop('disabled', false);
+                    }, 250);
 
                 }
             });

@@ -450,6 +450,11 @@ class FinancialTransactionsController extends Controller
         if (!$content = $this->repository->find($request->id))
             return redirect()->back();
 
+        // VERIFY RECURRENCE
+        if($recurrence = $content->recurrent){
+            $recurrence->delete();
+        }
+
         // GET FORM DATA
         $content->delete();
 
@@ -943,7 +948,7 @@ class FinancialTransactionsController extends Controller
 
             // Obtém a transação modelo
             $transaction = $recurrence->transaction;
-
+            
             // Formata data
             $newDate = $dateStart->format('Y-m-') . date('d', strtotime($transaction->date_payment));
 
