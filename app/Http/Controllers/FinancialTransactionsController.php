@@ -887,7 +887,7 @@ class FinancialTransactionsController extends Controller
             $credit = FinancialCreditCard::find($fature['credit_card_id']);
 
             // Obtém mês por escrito
-            $monthName = ucfirst(Carbon::parse(date($start->year . $start->month . '01'))->locale('pt_BR')->isoFormat('MMMM'));
+            $monthName = ucfirst(Carbon::parse(date("$start->year-$start->month-01"))->locale('pt_BR')->isoFormat('MMMM'));
 
             // Gera data da fatura
             $dueDate = $start->year . '-' . $start->month . '-' . $credit->due_day;
