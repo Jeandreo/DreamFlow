@@ -3,7 +3,7 @@
         {!! $title !!}
     </h1>
     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-6 my-1">
-        <li class="breadcrumb-item text-white fs-5 opacity-75">
+        <li class="breadcrumb-item text-white fs-5 opacity-75 text-center">
             {{ $phrase }}
         </li>
     </ul>

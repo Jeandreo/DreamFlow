@@ -20,9 +20,7 @@
         <div id="kt_app_content" class="app-content  flex-column-fluid py-6">
             <div id="kt_app_content_container" class="app-container container-fluid ">
                 <div class="row mt-n20">
-                    <div class="col-2">
-                    </div>
-                    <div class="col">
+                    <div class="col offset-md-2">
                         <div class="card mb-4 shadow">
                             <div class="card-body">
                                 <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-revenue">
@@ -58,7 +56,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-2">
+                    <div class="col-2 d-none d-md-block">
                     </div>
                 </div>
                 <div class="row">
@@ -66,7 +64,7 @@
                         <div class="card shadow mb-4">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div class="col-12 col-md-4">
                                         <div class="d-flex align-items-center position-relative my-1">
                                             <i class="ki-duotone ki-magnifier fs-1 position-absolute ms-6"><span
                                                       class="path1"></span><span class="path2"></span></i>
@@ -82,7 +80,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="col-4 text-center">
+                                    <div class="col-12 col-md-4 text-center">
                                         <div class="calendar-dates" style="display: none;">
                                             <div class="d-flex justify-content-center align-items-center">
                                                 <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-begin"
@@ -106,8 +104,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-4">
-                                        <div class="d-flex justify-content-end">
+                                    <div class="col-12 col-md-4">
+                                        <div class="d-none d-md-flex justify-content-end">
                                             <button type="button"
                                                     class="btn btn-primary me-2 add-transaction text-uppercase fw-bold"
                                                     data-type="transference">
@@ -122,6 +120,23 @@
                                                     class="btn btn-danger me-2 add-transaction text-uppercase fw-bold"
                                                     data-type="expense">
                                                 Despesas
+                                            </button>
+                                        </div>
+                                        <div class="d-flex d-md-none justify-content-end position-fixed z-index-9" style="right: 30px; bottom: 20px;">
+                                            <button type="button"
+                                                    class="btn btn-primary btn-icon me-2 add-transaction text-uppercase fw-bold"
+                                                    data-type="transference">
+                                                <i class="fa-solid fa-right-left"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-success btn-icon me-2 add-transaction text-uppercase fw-bold"
+                                                    data-type="revenue">
+                                                <i class="fa-solid fa-arrow-up"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-danger btn-icon me-2 add-transaction text-uppercase fw-bold"
+                                                    data-type="expense">
+                                                <i class="fa-solid fa-arrow-down"></i>
                                             </button>
                                         </div>
                                     </div>

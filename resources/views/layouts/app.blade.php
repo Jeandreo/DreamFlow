@@ -47,7 +47,7 @@
                     <!--begin::Footer-->
                     {{-- @include('layouts.footer') --}}
                     <!--end::Footer-->
-                    <button id="open_sidebar" class="btn btn-icon btn-dark app-layout-builder-toggle py-4 d-flex d-md-none">
+                    <button id="open_sidebar" class="btn btn-icon btn-danger app-layout-builder-toggle py-4 d-flex d-md-none shadow" style="top: 20px;">
                         <i class="ki-duotone ki-setting-4 fs-1"></i>
                     </button>
                 </div>
