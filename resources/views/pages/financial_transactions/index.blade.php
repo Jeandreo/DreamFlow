@@ -91,7 +91,7 @@
                                             </div>
                                         </div>
                                         <div class="calendar-months">
-                                            <div class="d-flex justify-content-center align-items-center">
+                                            <div class="d-flex justify-content-center align-items-center my-7 my-md-0">
                                                 <span class="badge badge-light-primary cursor-pointer"
                                                       id="previous-month">RETROCEDER</span>
                                                 <span id="current-month"
