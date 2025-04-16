@@ -1002,7 +1002,7 @@ class DatabaseSeeder extends Seeder
             'created_by' => 1,
         ]);
 
-        FinancialTransactions::create([
+        /* FinancialTransactions::create([
             'wallet_id' => 1,
             'category_id' => 3,
             'name' => 'Netflix',
@@ -1062,9 +1062,9 @@ class DatabaseSeeder extends Seeder
             'date_purchase' => now(),
             'date_payment' => now(),
             'created_by' => 1,
-        ]);
+        ]); */
 
         \App\Models\User::factory(10)->create();
-        \App\Models\FinancialTransactions::factory(10)->create();
+        /* \App\Models\FinancialTransactions::factory(10)->create(); */
     }
 }

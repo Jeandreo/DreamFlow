@@ -20,7 +20,41 @@
         <div id="kt_app_content" class="app-content  flex-column-fluid py-6">
             <div id="kt_app_content_container" class="app-container container-fluid ">
                 <div class="row mt-n20">
-                    <div class="col offset-md-2">
+                    <div class="col">
+                        <div class="card mb-4 shadow-light">
+                            <div class="card-body">
+                                <h2 class="fs-5 text-center text-uppercase text-gray-700 mb-0">
+                                    Resultado do mês
+                                </h2>
+                                <p class="m-0 d-flex justify-content-between">
+                                    <span class="fw-bold text-gray-700">
+                                        Entrada Prevista
+                                    </span>
+                                    <span class="text-uppercase text-gray-700 fw-normal mb-0" id="current-month-revenue">
+                                        R$ 0,00
+                                    </span>
+                                </p>
+                                <p class="m-0 d-flex justify-content-between">
+                                    <span class="fw-bold text-gray-700">
+                                        Saída Prevista
+                                    </span>
+                                    <span class="text-uppercase text-gray-700 fw-normal mb-0" id="current-month-expense">
+                                        R$ 0,00
+                                    </span>
+                                </p>
+                                <p class="m-0 d-flex justify-content-between">
+                                    <span class="fw-bold text-gray-700">
+                                        Resultado do mês
+                                    </span>
+                                    <span class="text-uppercase text-gray-700 fw-normal mb-0" id="current-month-result">
+                                        R$ 0,00
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
                         <div class="card mb-4 shadow">
                             <div class="card-body">
                                 <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-revenue">
