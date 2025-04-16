@@ -24,7 +24,7 @@
                     <!--end::Sidebar-->
                     <!--begin::Main-->
                     <div class="app-main flex-column flex-row-fluid">
-                        <div class="@if(!isset($pageClean)) app-container container-fluid py-6 @else h-100 px-0 @endif">
+                        <div class="app-container container-fluid" style="padding: 0px !important;">
                             @yield('content')
                         </div>
                     </div>

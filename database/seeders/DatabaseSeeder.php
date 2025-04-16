@@ -7,12 +7,16 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Catalog;
 use App\Models\CatalogItem;
 use App\Models\Challenge;
+use App\Models\Diet;
+use App\Models\Dish;
 use App\Models\Financial;
 use App\Models\FinancialCategory;
 use App\Models\FinancialCreditCard;
 use App\Models\FinancialInstitution;
 use App\Models\FinancialTransactions;
 use App\Models\FinancialWallet;
+use App\Models\Food;
+use App\Models\Meal;
 use App\Models\Project;
 use App\Models\ProjectCategory;
 use App\Models\ProjectStatus;
@@ -1063,6 +1067,41 @@ class DatabaseSeeder extends Seeder
             'date_payment' => now(),
             'created_by' => 1,
         ]); */
+
+        // Cria alimentos
+        $foods = Food::factory()->count(20)->create();
+
+        // Cria pratos com alimentos
+        $dishes = Dish::factory()->count(10)->create()->each(function ($dish) use ($foods) {
+            $dish->foods()->attach(
+                $foods->random(3)->pluck('id')->mapWithKeys(fn($id) => [$id => ['amount_used' => rand(50, 150)]])->toArray()
+            );
+        });
+
+        // Cria refeições com pratos
+        $meals = Meal::factory()->count(5)->create()->each(function ($meal) use ($dishes) {
+            $meal->dishes()->attach(
+                $dishes->random(2)->pluck('id')->mapWithKeys(fn($id) => [$id => ['quantity' => rand(1, 2)]])->toArray()
+            );
+        });
+
+        // Cria dietas com refeições por dias da semana
+        Diet::factory()->count(2)->create()->each(function ($diet) use ($meals) {
+            $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+            foreach ($days as $day) {
+                $diet->meals()->attach(
+                    $meals->random(3)->pluck('id')->mapWithKeys(fn($id) => [
+                        $id => [
+                            'time' => now()->addHours(rand(6, 20))->format('H:i'),
+                            'day_of_week' => $day,
+                        ]
+                    ])->toArray()
+                );
+            }
+        });
+
+        // $this->call(DietSeeder::class);
 
         \App\Models\User::factory(10)->create();
         /* \App\Models\FinancialTransactions::factory(10)->create(); */

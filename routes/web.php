@@ -7,12 +7,17 @@ use App\Http\Controllers\CatalogItemController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DietController;
+use App\Http\Controllers\DishController;
 use App\Http\Controllers\FinancialCategoryController;
 use App\Http\Controllers\FinancialCreditCardController;
 use App\Http\Controllers\FinancialDebtsController;
 use App\Http\Controllers\FinancialInstitutionController;
 use App\Http\Controllers\FinancialTransactionsController;
 use App\Http\Controllers\FinancialWalletController;
+use App\Http\Controllers\FoodController;
+use App\Http\Controllers\MealController;
+use App\Http\Controllers\NutritionController;
 use App\Http\Controllers\ProjectCategoryController;
 use App\Http\Controllers\ProjectCommentController;
 use App\Http\Controllers\ProjectController;
@@ -123,6 +128,60 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/desabilitar/{id}', [FinancialDebtsController::class, 'destroy'])->name('destroy');
                 Route::get('/editar/{id}', [FinancialDebtsController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [FinancialDebtsController::class, 'update'])->name('update');
+            });
+        });
+
+    });
+
+    // FINANCIAL
+    Route::prefix('alimentacao')->group(function () {
+
+        // DASHBOARD
+        Route::name('nutrition.')->group(function () {
+            Route::get('/', [NutritionController::class, 'index'])->name('index');
+        });
+
+        // Dieta
+        Route::prefix('dieta')->group(function () {
+            Route::name('diets.')->group(function () {
+                Route::get('/', [DietController::class, 'index'])->name('index');
+                Route::post('/adicionar', [DietController::class, 'store'])->name('store');
+                Route::get('/editar/{id}', [DietController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [DietController::class, 'update'])->name('update');
+                Route::put('/remove', [DietController::class, 'destroy'])->name('destroy');
+            });
+        });
+
+        // Alimentos
+        Route::prefix('alimentos')->group(function () {
+            Route::name('foods.')->group(function () {
+                Route::get('/', [FoodController::class, 'index'])->name('index');
+                Route::post('/adicionar', [FoodController::class, 'store'])->name('store');
+                Route::get('/editar/{id}', [FoodController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [FoodController::class, 'update'])->name('update');
+                Route::put('/remove', [FoodController::class, 'destroy'])->name('destroy');
+            });
+        });
+
+        // Pratos
+        Route::prefix('prato')->group(function () {
+            Route::name('dishs.')->group(function () {
+                Route::get('/', [DishController::class, 'index'])->name('index');
+                Route::post('/adicionar', [DishController::class, 'store'])->name('store');
+                Route::get('/editar/{id}', [DishController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [DishController::class, 'update'])->name('update');
+                Route::put('/remove', [DishController::class, 'destroy'])->name('destroy');
+            });
+        });
+
+        // Refeições
+        Route::prefix('refeicoes')->group(function () {
+            Route::name('meals.')->group(function () {
+                Route::get('/', [MealController::class, 'index'])->name('index');
+                Route::post('/adicionar', [MealController::class, 'store'])->name('store');
+                Route::get('/editar/{id}', [MealController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}', [MealController::class, 'update'])->name('update');
+                Route::put('/remove', [MealController::class, 'destroy'])->name('destroy');
             });
         });
 
