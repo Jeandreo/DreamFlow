@@ -6,7 +6,7 @@
     <div style="background: linear-gradient(0deg, #090c11, #18202bf0);">
         <div class="col-12">
             <div class="toolbar py-20 mb-10" id="kt_toolbar">
-                <div id="kt_toolbar_container" class=" container-xxl  d-flex justify-content-center">
+                <div id="kt_toolbar_container" class="container-xxl d-flex justify-content-center">
                     @include('includes.nav-admin', ['title' => "Alimentação da família!", 'phrase' => "“Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal"])
                 </div>
             </div>
@@ -22,8 +22,8 @@
                         <div class="card mb-4">
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="h-40px w-40px rounded bg-light-primary d-flex align-items-center justify-content-center">
-                                        <i class="fa-solid fa-wallet fs-4 text-primary"></i>
+                                    <div class="h-40px w-40px rounded bg-light-success d-flex align-items-center justify-content-center">
+                                        <i class="fa-solid fa-apple-alt fs-4 text-success"></i> <!-- Maçã para Alimentos -->
                                     </div>
                                     <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
                                         Alimentos
@@ -39,7 +39,7 @@
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center">
                                     <div class="h-40px w-40px rounded bg-light-warning d-flex align-items-center justify-content-center">
-                                        <i class="fa-solid fa-bank fs-4 text-warning"></i>
+                                        <i class="fa-solid fa-utensils fs-4 text-warning"></i> <!-- Utensílios para Pratos -->
                                     </div>
                                     <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
                                         Pratos
@@ -55,7 +55,7 @@
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center">
                                     <div class="h-40px w-40px rounded bg-light-danger d-flex align-items-center justify-content-center">
-                                        <i class="fa-solid fa-credit-card fs-4 text-danger"></i>
+                                        <i class="fa-solid fa-bowl-food fs-4 text-danger"></i> <!-- Bowl de comida para Refeições -->
                                     </div>
                                     <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
                                         Refeições
@@ -70,8 +70,8 @@
                         <div class="card mb-4">
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="h-40px w-40px rounded bg-light-danger d-flex align-items-center justify-content-center">
-                                        <i class="fa-solid fa-credit-card fs-4 text-danger"></i>
+                                    <div class="h-40px w-40px rounded bg-light-primary d-flex align-items-center justify-content-center">
+                                        <i class="fa-solid fa-balance-scale fs-4 text-primary"></i> <!-- Balança para Dietas -->
                                     </div>
                                     <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
                                         Dietas
