@@ -196,7 +196,7 @@ class CatalogItemController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('catalogs.index')
-            ->with('message', 'Catálogo ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->with('message', 'Catálogo ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
     }
 }

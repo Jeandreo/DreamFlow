@@ -166,8 +166,9 @@ Route::middleware(['auth'])->group(function () {
 
         // Pratos
         Route::prefix('prato')->group(function () {
-            Route::name('dishs.')->group(function () {
+            Route::name('dishes.')->group(function () {
                 Route::get('/', [DishController::class, 'index'])->name('index');
+                Route::get('/adicionar', [DishController::class, 'create'])->name('create');
                 Route::post('/adicionar', [DishController::class, 'store'])->name('store');
                 Route::get('/editar/{id}', [DishController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [DishController::class, 'update'])->name('update');
@@ -179,6 +180,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('refeicoes')->group(function () {
             Route::name('meals.')->group(function () {
                 Route::get('/', [MealController::class, 'index'])->name('index');
+                Route::get('/adicionar', [MealController::class, 'create'])->name('create');
                 Route::post('/adicionar', [MealController::class, 'store'])->name('store');
                 Route::get('/editar/{id}', [MealController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [MealController::class, 'update'])->name('update');

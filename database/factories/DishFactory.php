@@ -20,6 +20,7 @@ class DishFactory extends Factory
             'name' => $this->faker->words(2, true),
             'description' => $this->faker->sentence(),
             'preparation_method' => $this->faker->paragraph(),
+            'created_by' => 1,
         ];
     }
 }

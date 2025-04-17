@@ -166,7 +166,7 @@ class BudgetController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('budgets.index')
-            ->with('message', 'Orçamento ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->with('message', 'Orçamento ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
     }
 }

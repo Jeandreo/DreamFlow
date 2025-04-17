@@ -34,7 +34,7 @@
                     </a>
                 </div>
                 <div class="col-6 col-md-3">
-                    <a href="{{ route('dishs.index') }}">
+                    <a href="{{ route('dishes.index') }}">
                         <div class="card mb-4">
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center">

@@ -188,7 +188,7 @@ class UserController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('users.index')
-            ->with('message', 'Usuário ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
+            ->with('message', 'Usuário ' . $content->status == 1 ? 'desativado' : 'habilitado' . ' com sucesso.');
 
     }
 

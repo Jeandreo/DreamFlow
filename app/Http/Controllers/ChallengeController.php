@@ -173,7 +173,7 @@ class ChallengeController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('challenges.index')
-            ->with('message', 'Desafio ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
+            ->with('message', 'Desafio ' . $content->status == 1 ? 'desativado' : 'habilitado' . ' com sucesso.');
 
     }
 

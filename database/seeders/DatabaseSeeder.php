@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'jeandreofur@gmail.com',
             'role_id' => 1,
             'password' => Hash::make('Inc@ns4v3l_2025'),
+            'sidebar' => false,
             'created_by' => 0,
         ]);
 

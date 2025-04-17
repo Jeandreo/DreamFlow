@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title-page', 'Cadastrar Alimento')
+@section('title-page', 'Cadastrar Prato')
 
-@section('title-toolbar', 'Cadastrar Alimento')
+@section('title-toolbar', 'Cadastrar Prato')
 
 @section('content')
 	@include('layouts.title')
@@ -10,11 +10,11 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-body">
-					<form action="{{ route('foods.store') }}" method="POST" enctype="multipart/form-data">
+					<form action="{{ route('dishes.store') }}" method="POST" enctype="multipart/form-data">
 						@csrf
-						@include('pages.nutrition.foods._form')
+						@include('pages.nutrition.dishes._form')
 						<div class="d-flex justify-content-between">
-							<a href="{{ route('foods.index') }}" class="btn btn-light mt-2">Voltar</a>
+							<a href="{{ route('dishes.index') }}" class="btn btn-light mt-2">Voltar</a>
 							<button type="submit" class="btn btn-primary btn-active-danger mt-2">Cadastrar</button>
 						</div>
 					</form>

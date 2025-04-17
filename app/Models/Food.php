@@ -19,6 +19,7 @@ class Food extends Model
         'fats',
         'fiber',
         'notes',
+        'status',
         'created_by',
         'updated_by'
     ];

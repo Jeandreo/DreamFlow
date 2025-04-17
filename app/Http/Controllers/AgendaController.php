@@ -222,7 +222,7 @@ class AgendaController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->back()
-            ->with('message', 'Catálogo ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->with('message', 'Catálogo ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
     }
 

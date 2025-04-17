@@ -265,7 +265,7 @@ class ProjectController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('projects.index')
-            ->with('message', 'Projeto ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->with('message', 'Projeto ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
     }
 

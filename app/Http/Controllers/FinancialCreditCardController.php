@@ -195,6 +195,6 @@ class FinancialCreditCardController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('financial.credit.cards.index')
-            ->with('message', 'Cartão ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->with('message', 'Cartão ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
     }
 }

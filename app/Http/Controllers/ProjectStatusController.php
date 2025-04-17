@@ -150,7 +150,7 @@ class ProjectStatusController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('statuses.index')
-            ->with('message', 'Status ' . $content->status == 1 ? 'desativado' : 'habiliitado' . ' com sucesso.');
+            ->with('message', 'Status ' . $content->status == 1 ? 'desativado' : 'habilitado' . ' com sucesso.');
 
     }
 }

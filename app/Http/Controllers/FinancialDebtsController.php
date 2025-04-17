@@ -149,7 +149,7 @@ class FinancialDebtsController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('financial.debits.index')
-            ->with('message', 'Débito ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->with('message', 'Débito ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
     }
 }

@@ -70,7 +70,7 @@ class FoodController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
                 ->route('foods.index')
-                ->with('message', 'Orçamento adicionado com sucesso.');
+                ->with('message', 'Alimento adicionado com sucesso.');
 
     }
 
@@ -120,7 +120,7 @@ class FoodController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('foods.index')
-            ->with('message', 'Orçamento editado com sucesso.');
+            ->with('message', 'Alimento editado com sucesso.');
 
     }
 
@@ -143,7 +143,7 @@ class FoodController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('foods.index')
-            ->with('message', 'Orçamento ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->with('message', 'Alimento ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
     }
 }
