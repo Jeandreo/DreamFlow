@@ -46,7 +46,7 @@ class FoodController extends Controller
     {
 
         // RENDER VIEW
-        return view('pages.diet.foods.create');
+        return view('pages.nutrition.foods.create');
     } 
 
     /**
@@ -61,9 +61,6 @@ class FoodController extends Controller
         // GET FORM DATA
         $data = $request->all();
 
-        // FORMAT DATA
-        $data['total_expected'] = toDecimal($data['total_expected']);
-
         // CREATED BY
         $data['created_by'] = Auth::id();
         
@@ -75,23 +72,6 @@ class FoodController extends Controller
                 ->route('foods.index')
                 ->with('message', 'Orçamento adicionado com sucesso.');
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        // GET ALL DATA
-        $contents = $this->repository->find($id);
-
-        // RETURN VIEW WITH DATA
-        return view('pages.diet.foods.show')->with([
-            'contents' => $contents,
-        ]);
     }
 
     /**
@@ -109,7 +89,7 @@ class FoodController extends Controller
         if(!$content) return redirect()->back();
 
         // GENERATES DISPLAY WITH DATA
-        return view('pages.diet.foods.edit')->with([
+        return view('pages.nutrition.foods.edit')->with([
             'content' => $content,
         ]);
     }
@@ -130,9 +110,6 @@ class FoodController extends Controller
 
         // GET FORM DATA
         $data = $request->all();
-
-        // FORMAT DATA
-        $data['total_expected'] = toDecimal($data['total_expected']);
 
         // UPDATE BY
         $data['updated_by'] = Auth::id();

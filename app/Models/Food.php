@@ -10,8 +10,17 @@ class Food extends Model
     use HasFactory;
     
     protected $fillable = [
-        'name', 'type', 'base_quantity', 'calories',
-        'proteins', 'carbohydrates', 'fats', 'fiber', 'notes',
+        'name',
+        'category',
+        'base_quantity',
+        'calories',
+        'proteins',
+        'carbohydrates',
+        'fats',
+        'fiber',
+        'notes',
+        'created_by',
+        'updated_by'
     ];
 
     public function dishes()

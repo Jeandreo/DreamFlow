@@ -156,6 +156,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('alimentos')->group(function () {
             Route::name('foods.')->group(function () {
                 Route::get('/', [FoodController::class, 'index'])->name('index');
+                Route::get('/adicionar', [FoodController::class, 'create'])->name('create');
                 Route::post('/adicionar', [FoodController::class, 'store'])->name('store');
                 Route::get('/editar/{id}', [FoodController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [FoodController::class, 'update'])->name('update');

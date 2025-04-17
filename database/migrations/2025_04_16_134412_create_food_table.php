@@ -14,14 +14,17 @@ return new class extends Migration
         Schema::create('food', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('type'); // protein, carb, fat, fruit, etc.
-            $table->string('base_quantity'); // e.g. "100g", "1 unit"
-            $table->float('calories');
-            $table->float('proteins');
-            $table->float('carbohydrates');
-            $table->float('fats');
-            $table->float('fiber')->nullable();
+            $table->string('category');
+            $table->string('base_quantity');
+            $table->decimal('calories')->default(0);
+            $table->decimal('proteins')->default(0);
+            $table->decimal('carbohydrates')->default(0);
+            $table->decimal('fats')->default(0);
+            $table->decimal('fiber')->default(0);
             $table->text('notes')->nullable();
+            $table->boolean('status')->default(true);
+            $table->integer('created_by');
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

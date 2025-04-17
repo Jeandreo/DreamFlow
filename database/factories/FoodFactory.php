@@ -18,7 +18,7 @@ class FoodFactory extends Factory
     {
         return [
             'name' => $this->faker->word(),
-            'type' => $this->faker->randomElement(['protein', 'carb', 'fat', 'vegetable', 'fruit']),
+            'category' => $this->faker->randomElement(['Proteina', 'Carboidrato', 'Gordura', 'vegetable', 'fruit']),
             'base_quantity' => '100g',
             'calories' => $this->faker->randomFloat(2, 20, 300),
             'proteins' => $this->faker->randomFloat(2, 0, 30),
@@ -26,6 +26,7 @@ class FoodFactory extends Factory
             'fats' => $this->faker->randomFloat(2, 0, 20),
             'fiber' => $this->faker->randomFloat(2, 0, 10),
             'notes' => $this->faker->optional()->sentence(),
+            'created_by' => 1,
         ];
 
     }
