@@ -31,10 +31,10 @@
 										</a>
 									</td>
 									<td>
-										{{ $content->dishes->count() }}
+										{{ $content->meals->count() }}
 									</td>
 									<td>
-										{{ $content->getTotalCaloriesAttribute() }}<span class="fs-8 text-gray-500">/kcal</span>
+										{{ $content->calculateTotalCalories() }}<span class="fs-8 text-gray-500">/kcal</span>
 									</td>
 									<td class="text-center">
 										@if($content->status == 1) 
