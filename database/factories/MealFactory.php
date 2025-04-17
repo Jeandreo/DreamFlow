@@ -17,7 +17,16 @@ class MealFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->randomElement(['Breakfast', 'Lunch', 'Dinner', 'Snack', 'Pre-workout']),
+            'name' => $this->faker->randomElement([
+                'Café da Manhã',
+                'Almoço',
+                'Jantar',
+                'Lanche da Tarde',
+                'Pré-Treino',
+                'Pós-Treino',
+                'Ceia',
+            ]),
         ];
+        
     }
 }

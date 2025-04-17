@@ -17,8 +17,18 @@ class FoodFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word(),
-            'category' => $this->faker->randomElement(['Proteina', 'Carboidrato', 'Gordura', 'vegetable', 'fruit']),
+            'name' => $this->faker->randomElement([
+                'Arroz Integral',
+                'Peito de Frango',
+                'Banana',
+                'Ovo',
+                'Brócolis',
+                'Batata Doce',
+                'Aveia',
+                'Salmão',
+                'Queijo Cottage',
+            ]),
+            'category' => $this->faker->randomElement(['Proteína', 'Carboidrato', 'Gordura', 'Vegetal', 'Fruta']),
             'base_quantity' => '100g',
             'calories' => $this->faker->randomFloat(2, 20, 300),
             'proteins' => $this->faker->randomFloat(2, 0, 30),
@@ -28,6 +38,7 @@ class FoodFactory extends Factory
             'notes' => $this->faker->optional()->sentence(),
             'created_by' => 1,
         ];
+        
 
     }
 }

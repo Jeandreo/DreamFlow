@@ -17,10 +17,17 @@ class DishFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->words(2, true),
+            'name' => $this->faker->randomElement([
+                'Frango com Batata Doce',
+                'Omelete de Claras',
+                'Peito de Frango Grelhado',
+                'Salmão com Legumes',
+                'Quinoa com Vegetais',
+            ]),
             'description' => $this->faker->sentence(),
             'preparation_method' => $this->faker->paragraph(),
             'created_by' => 1,
         ];
+        
     }
 }

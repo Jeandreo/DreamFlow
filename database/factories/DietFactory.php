@@ -17,9 +17,9 @@ class DietFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Standard Diet - ' . $this->faker->word(),
-            'goal' => $this->faker->randomElement(['Weight Loss', 'Maintenance', 'Bulking']),
+            'name' => 'Dieta ' . $this->faker->randomElement(['Low Carb', 'Balanceada', 'Cetogênica', 'Hipercalórica', 'Vegetariana']),
+            'goal' => $this->faker->randomElement(['Emagrecimento', 'Manutenção', 'Ganhar Massa']),
             'total_calories' => $this->faker->numberBetween(1800, 3500),
-        ];
+        ];        
     }
 }
