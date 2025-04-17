@@ -15,6 +15,7 @@
 							<tr class="fw-bold fs-6 text-gray-800 px-7">
 								<th>Nome</th>
 								<th>Alimentos</th>
+								<th>Calorias</th>
 								<th class="text-center">Status</th>
 								<th class="text-center" width="165px">
 									<span>Ações</span>
@@ -29,7 +30,12 @@
 											{{ $content->name }}
 										</a>
 									</td>
-									<td>1</td>
+									<td>
+										{{ $content->foods->count() }}
+									</td>
+									<td>
+										{{ $content->getTotalCaloriesAttribute() }}<span class="fs-8 text-gray-500">/kcal</span>
+									</td>
 									<td class="text-center">
 										@if($content->status == 1) 
 										<span class="badge badge-light-success">

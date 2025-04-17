@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('dish_id')->constrained()->onDelete('cascade');
             $table->foreignId('food_id')->constrained()->onDelete('cascade');
-            $table->float('amount_used'); // in grams or units
             $table->timestamps();
         });
     }

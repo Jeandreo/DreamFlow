@@ -55,15 +55,15 @@ class DashboardController extends Controller
 
         // RETURN VIEW WITH DATA
         return view('pages.dashboard.index')->with([
-            'actualMonth' => $actualMonth,
-            'previousMonth' => $previousMonth,
-            'challenges' => $challenges,
-            'daysOfWeek' => $daysOfWeek,
-            'monthChallenge' => $monthChallenge,
-            'weekChallenge' => $weekChallenge,
-            'lists' => $lists,
-            'projects' => $projects,
-            'pageClean' => true,
+            'actualMonth'       => $actualMonth,
+            'previousMonth'     => $previousMonth,
+            'challenges'        => $challenges,
+            'daysOfWeek'        => $daysOfWeek,
+            'monthChallenge'    => $monthChallenge,
+            'weekChallenge'     => $weekChallenge,
+            'lists'             => $lists,
+            'projects'          => $projects,
+            'pageClean'         => true,
         ]);
 
     }

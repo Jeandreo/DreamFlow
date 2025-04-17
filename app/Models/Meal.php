@@ -9,7 +9,12 @@ class Meal extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name',
+        'status',
+        'created_by',
+        'updated_by'
+    ];
 
     public function dishes()
     {
@@ -20,4 +25,10 @@ class Meal extends Model
     {
         return $this->belongsToMany(Diet::class)->withPivot('time', 'day_of_week')->withTimestamps();
     }
+
+    public function getTotalCaloriesAttribute()
+    {
+        return $this->dishes->sum(fn($dish) => $dish->total_calories);
+    }
+
 }

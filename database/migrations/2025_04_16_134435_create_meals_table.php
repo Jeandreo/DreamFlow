@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('meals', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // e.g. Breakfast, Lunch
+            $table->string('name');
+            $table->boolean('status')->default(true);
+            $table->integer('created_by');
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

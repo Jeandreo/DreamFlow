@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title-page', 'Alimentos')
+@section('title-page', 'Refeições')
 
-@section('title-toolbar', 'Alimentos')
+@section('title-toolbar', 'Refeições')
 
 @section('content')
 	@include('layouts.title')
@@ -14,10 +14,7 @@
 						<thead>
 							<tr class="fw-bold fs-6 text-gray-800 px-7">
 								<th>Nome</th>
-								{{-- <th>Categoria</th> --}}
-								<th>Proteínas (g)</th>
-								<th>Carboidratos (g)</th>
-								<th>Gorduras (g)</th>
+								<th>Pratos</th>
 								<th>Calorias</th>
 								<th class="text-center">Status</th>
 								<th class="text-center" width="165px">
@@ -29,15 +26,16 @@
 							@foreach ($contents as $content)
 								<tr>
 									<td>
-										<a href="{{ route('foods.edit', $content->id) }}" class="text-center text-gray-700 text-hover-primary fw-bold">
+										<a href="{{ route('meals.edit', $content->id) }}" class="text-center text-gray-700 text-hover-primary fw-bold">
 											{{ $content->name }}
 										</a>
 									</td>
-									{{-- <td>{{ $content->type }}</td> --}}
-									<td>{{ $content->proteins }}</td>
-									<td>{{ $content->carbohydrates }}</td>
-									<td>{{ $content->fats }}</td>
-									<td>{{ $content->calories }}<span class="fs-8 text-gray-500">/kcal</span></td>
+									<td>
+										{{ $content->dishes->count() }}
+									</td>
+									<td>
+										{{ $content->getTotalCaloriesAttribute() }}<span class="fs-8 text-gray-500">/kcal</span>
+									</td>
 									<td class="text-center">
 										@if($content->status == 1) 
 										<span class="badge badge-light-success">
@@ -50,10 +48,10 @@
 										@endif
 									</td>
 									<td class="text-center">
-										<a href="{{ route('foods.edit', $content->id) }}" class="btn btn-sm btn-light btn-active-light-success btn-icon">
+										<a href="{{ route('meals.edit', $content->id) }}" class="btn btn-sm btn-light btn-active-light-success btn-icon">
 											<i class="fa-solid fa-pen-to-square "></i>
 										</a>
-										<a href="{{ route('foods.destroy', $content->id) }}" class="btn btn-sm btn-light btn-active-light-danger btn-icon">
+										<a href="{{ route('meals.destroy', $content->id) }}" class="btn btn-sm btn-light btn-active-light-danger btn-icon">
 											<i class="fa-solid fa-trash-can"></i>
 										</a>
 									</td>
@@ -65,7 +63,7 @@
 			</div>
 			<div class="d-flex justify-content-between mt-6">
 				<a href="{{ route('nutrition.index') }}" class="btn btn-sm fw-bold btn-secondary">Voltar</a>
-				<a href="{{ route('foods.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger">Adicionar Alimento</a>
+				<a href="{{ route('meals.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger">Adicionar Refeição</a>
 			</div>
 		</div>
 	</div>

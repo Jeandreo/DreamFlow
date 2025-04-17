@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dish;
+use App\Models\Food;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,9 +45,12 @@ class DishController extends Controller
      */
     public function create()
     {
+        $foods = Food::where('status', true)->get();
 
         // RENDER VIEW
-        return view('pages.nutrition.dishes.create');
+        return view('pages.nutrition.dishes.create')->with([
+            'foods' => $foods,
+        ]);
     } 
 
     /**
@@ -65,7 +69,10 @@ class DishController extends Controller
         $data['created_by'] = Auth::id();
         
         // SEND DATA
-        $this->repository->create($data);
+        $dish = $this->repository->create($data);
+
+        // SYNC FOODS (without pivot data)
+        $dish->foods()->sync($request->input('foods', []));
 
         // REDIRECT AND MESSAGES
         return redirect()
@@ -84,6 +91,7 @@ class DishController extends Controller
     {
         // GET ALL DATA
         $content = $this->repository->find($id);
+        $foods = Food::where('status', true)->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
@@ -91,6 +99,7 @@ class DishController extends Controller
         // GENERATES DISPLAY WITH DATA
         return view('pages.nutrition.dishes.edit')->with([
             'content' => $content,
+            'foods' => $foods,
         ]);
     }
 
@@ -116,6 +125,10 @@ class DishController extends Controller
         
         // STORING NEW DATA
         $content->update($data);
+
+        // SYNC FOODS (without pivot data)
+        $content->foods()->sync($request->input('foods', []));
+
 
         // REDIRECT AND MESSAGES
         return redirect()

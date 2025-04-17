@@ -13,10 +13,10 @@
     </div>
     <div class="col-12 mb-5">
         <label class="form-label fw-bold">Alimentos:</label>
-        <select class="form-select form-select-solid" name="foods[]" data-control="select2" data-placeholder="Selecione" data-allow-clear="true" multiple>
+        <select class="form-select form-select-solid" name="dishes[]" data-control="select2" data-placeholder="Selecione" data-allow-clear="true" multiple>
             <option value=""></option>
-            @foreach ($foods as $food)
-            <option value="{{ $food->id }}" @if(isset($content) && $content->foods->contains($food->id)) selected @endif>{{ $food->name }}</option>
+            @foreach ($dishes as $dish)
+            <option value="{{ $dish->id }}" @if(isset($content) && $content->dishes->contains($dish->id)) selected @endif>{{ $dish->name }}</option>
             @endforeach
         </select>
     </div>

@@ -1075,7 +1075,7 @@ class DatabaseSeeder extends Seeder
         // Cria pratos com alimentos
         $dishes = Dish::factory()->count(10)->create()->each(function ($dish) use ($foods) {
             $dish->foods()->attach(
-                $foods->random(3)->pluck('id')->mapWithKeys(fn($id) => [$id => ['amount_used' => rand(50, 150)]])->toArray()
+                $foods->random(3)->pluck('id')->toArray()
             );
         });
 

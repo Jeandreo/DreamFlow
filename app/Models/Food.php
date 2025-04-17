@@ -26,6 +26,6 @@ class Food extends Model
 
     public function dishes()
     {
-        return $this->belongsToMany(Dish::class)->withPivot('amount_used')->withTimestamps();
+        return $this->belongsToMany(Dish::class)->withTimestamps();
     }
 }

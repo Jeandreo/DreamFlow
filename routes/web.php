@@ -76,7 +76,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::put('/editar/{id}', [FinancialTransactionsController::class, 'update'])->name('update');
                 Route::get('/processar', [FinancialTransactionsController::class, 'processing'])->name('processing');
                 Route::post('/concluida', [FinancialTransactionsController::class, 'checked'])->name('checked');
-                Route::put('/remove', [FinancialTransactionsController::class, 'destroy'])->name('destroy');
+                Route::put('/remove/{id}', [FinancialTransactionsController::class, 'destroy'])->name('destroy');
             });
         });
 
@@ -142,13 +142,13 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // Dieta
-        Route::prefix('dieta')->group(function () {
+        Route::prefix('dietas')->group(function () {
             Route::name('diets.')->group(function () {
                 Route::get('/', [DietController::class, 'index'])->name('index');
                 Route::post('/adicionar', [DietController::class, 'store'])->name('store');
                 Route::get('/editar/{id}', [DietController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [DietController::class, 'update'])->name('update');
-                Route::put('/remove', [DietController::class, 'destroy'])->name('destroy');
+                Route::get('/remove/{id}', [DietController::class, 'destroy'])->name('destroy');
             });
         });
 
@@ -160,19 +160,19 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/adicionar', [FoodController::class, 'store'])->name('store');
                 Route::get('/editar/{id}', [FoodController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [FoodController::class, 'update'])->name('update');
-                Route::put('/remove', [FoodController::class, 'destroy'])->name('destroy');
+                Route::get('/remove/{id}', [FoodController::class, 'destroy'])->name('destroy');
             });
         });
 
         // Pratos
-        Route::prefix('prato')->group(function () {
+        Route::prefix('pratos')->group(function () {
             Route::name('dishes.')->group(function () {
                 Route::get('/', [DishController::class, 'index'])->name('index');
                 Route::get('/adicionar', [DishController::class, 'create'])->name('create');
                 Route::post('/adicionar', [DishController::class, 'store'])->name('store');
                 Route::get('/editar/{id}', [DishController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [DishController::class, 'update'])->name('update');
-                Route::put('/remove', [DishController::class, 'destroy'])->name('destroy');
+                Route::get('/remove/{id}', [DishController::class, 'destroy'])->name('destroy');
             });
         });
 
@@ -184,7 +184,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/adicionar', [MealController::class, 'store'])->name('store');
                 Route::get('/editar/{id}', [MealController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [MealController::class, 'update'])->name('update');
-                Route::put('/remove', [MealController::class, 'destroy'])->name('destroy');
+                Route::get('/remove/{id}', [MealController::class, 'destroy'])->name('destroy');
             });
         });
 

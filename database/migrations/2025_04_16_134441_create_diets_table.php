@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('goal'); // e.g. Weight Loss, Maintenance
             $table->float('total_calories')->nullable();
+            $table->boolean('status')->default(true);
+            $table->integer('created_by');
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

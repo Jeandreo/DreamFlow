@@ -26,6 +26,7 @@ class MealFactory extends Factory
                 'Pós-Treino',
                 'Ceia',
             ]),
+            'created_by' => 1,
         ];
         
     }

@@ -20,12 +20,17 @@ class Dish extends Model
 
     public function foods()
     {
-        return $this->belongsToMany(Food::class)->withPivot('amount_used')->withTimestamps();
+        return $this->belongsToMany(Food::class)->withTimestamps();
     }
 
     public function meals()
     {
         return $this->belongsToMany(Meal::class)->withPivot('quantity')->withTimestamps();
+    }
+
+    public function getTotalCaloriesAttribute()
+    {
+        return $this->foods->sum('calories');
     }
     
 }
