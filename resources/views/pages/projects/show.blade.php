@@ -1,65 +1,61 @@
 @extends('layouts.app')
 
-@section('title-page', $contents->name ?? 'Projetos')
+@section('title-page', $projects->count() == 1 ? $projects[0]->name : 'Projetos')
 
 @section('custom-head')
 <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
 @endsection
 
 @section('content')
-<div class="app-main flex-column flex-row-fluid h-100" id="kt_app_main" style="background: url('{{ asset('assets/media/images/bg_colors.jpg') }}');">
-	<div class="d-flex flex-column flex-column-fluid">
-		<div id="kt_app_content" class="app-content  flex-column-fluid py-6" >
-			<div id="kt_app_content_container" class="app-container  container-fluid ">
-				<div class="row">
-					<div class="col-12">
-						@foreach ($projects as $project)
-						<div class="card mb-6">
-							<div class="card-body p-5">
-								<!-- BEGIN:HEADER -->
-								<div class="p-0 d-flex align-items-center justify-content-between fw-bold mb-2">
-									<div class="d-flex align-items-center ps-3 pe-5">
-										<h2 class="text-gray-700 fs-6 text-uppercase cursor-pointer show-tasks-fileds" data-project="{{ $project->id }}">{{ $project->name }}</h2>
-									</div>
-									<div class="d-none d-md-flex align-items-center">
-										<div class="w-125px text-center text-gray-700 fs-7 text-uppercase">
-											Designado
-										</div>
-										<div class="d-flex align-items-center justify-content-center cursor-pointer w-150px text-gray-700 fs-7 text-uppercase">
-											Status
-										</div>
-										<div class="d-flex align-items-center justify-content-center cursor-pointer w-200px text-gray-700 fs-7 text-uppercase">
-											Data
-										</div>
-										<div>
-											<i class="fa-solid fa-arrows-to-dot text-hover-primary cursor-pointer py-2 px-3 mx-3 fs-7 text-gray-700"></i>
-										</div>
-									</div>
-								</div>
-								<!-- END:HEADER -->
-								<div class="draggable-zone load-tasks-project" data-type="project" style="min-height: 50px;" data-project="{{ $project->id }}" id="project-tasks-{{ $project->id }}">
-									@if ($project->tasks()->whereNull('task_id')->count())
-										@foreach ($project->tasks()->where('status', 1)->whereNull('task_id')->where('checked', false)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get() as $task)
-											@include('pages.tasks._tasks')
-										@endforeach
-									@endif
-									<div class="no-tasks" @if ($project->tasks()->where('status', 1)->whereNull('task_id')->where('checked', false)->count()) style="display: none;" @endif>
-										<div class="rounded bg-light d-flex align-items-center justify-content-center h-50px">
-											<div class="text-center">
-												<p class="m-0 text-gray-600 fw-bold text-uppercase">Sem tarefas ainda nesse projeto</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<form action="#" method="POST" class="send-tasks">
-									@csrf
-									<input type="hidden" name="project_id" value="{{$project->id}}">
-									<input type="text" name="name" class="form-control form-control-solid w-100 rounded mt-5" placeholder="Inserir nova tarefa">
-								</form>
+
+<div class="row">
+	<div class="col-12">
+		@foreach ($projects as $project)
+		<div class="card mb-6">
+			<div class="card-body p-5">
+				<div class="p-0 d-flex align-items-center justify-content-between fw-bold mb-2">
+					<div class="d-flex align-items-center ps-3 pe-5">
+						<h2 class="text-gray-700 fs-6 text-uppercase cursor-pointer show-tasks-fileds" data-project="{{ $project->id }}">{{ $project->name }}</h2>
+					</div>
+					<div class="d-none d-md-flex align-items-center">
+						<div class="w-125px text-center text-gray-700 fs-7 text-uppercase">
+							Designado
+						</div>
+						<div class="d-flex align-items-center justify-content-center cursor-pointer w-150px text-gray-700 fs-7 text-uppercase">
+							Status
+						</div>
+						<div class="d-flex align-items-center justify-content-center cursor-pointer w-200px text-gray-700 fs-7 text-uppercase">
+							Data
+						</div>
+						<div>
+							<i class="fa-solid fa-arrows-to-dot text-hover-primary cursor-pointer py-2 px-3 mx-3 fs-7 text-gray-700"></i>
+						</div>
+					</div>
+				</div>
+				<!-- END:HEADER -->
+				<div class="draggable-zone load-tasks-project" data-type="project" style="min-height: 50px;" data-project="{{ $project->id }}" id="project-tasks-{{ $project->id }}">
+					@if ($project->tasks()->whereNull('task_id')->count())
+						@foreach ($project->tasks()->where('status', 1)->whereNull('task_id')->where('checked', false)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get() as $task)
+							@include('pages.tasks._tasks')
+						@endforeach
+					@endif
+					<div class="no-tasks" @if ($project->tasks()->where('status', 1)->whereNull('task_id')->where('checked', false)->count()) style="display: none;" @endif>
+						<div class="rounded bg-light d-flex align-items-center justify-content-center h-50px">
+							<div class="text-center">
+								<p class="m-0 text-gray-600 fw-bold text-uppercase">Sem tarefas ainda nesse projeto</p>
 							</div>
 						</div>
-						@endforeach
 					</div>
+				</div>
+				<form action="#" method="POST" class="send-tasks">
+					@csrf
+					<input type="hidden" name="project_id" value="{{$project->id}}">
+					<input type="text" name="name" class="form-control form-control-solid w-100 rounded mt-5" placeholder="Inserir nova tarefa">
+				</form>
+			</div>
+		</div>
+		@endforeach
+	</div>
 </div>
 
 <div class="modal fade" data-bs-focus="false" id="modal_task">

@@ -20,6 +20,11 @@ body {
     --bs-modal-width: 1250px;
 }
 
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    padding-right: calc(var(--bs-gutter-x) * 5.5);
+    padding-left: calc(var(--bs-gutter-x) * 5.5);
+}
+
 [type="color"]{
     cursor: pointer;
     height: 44px;
@@ -410,4 +415,10 @@ input[type=text]:disabled {
 
 .bg-header {
     background: linear-gradient(0deg, #171f2c, #222d3e) !important;
+}
+
+
+.btn-group-sm>.btn.btn-icon, .btn.btn-icon.btn-sm {
+    height: calc(1.0em + 1.1rem + 2px);
+    width: calc(1.0em + 1.1rem + 2px);
 }

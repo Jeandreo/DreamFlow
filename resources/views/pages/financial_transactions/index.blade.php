@@ -2,213 +2,192 @@
 @section('title-page', 'Transações')
 @section('title-toolbar', 'Transações')
 @section('content')
-    <div class="row m-0 background-dashboard" style="background-image: url('{{ asset('assets/media/logos/background-pattern.webp') }}'); background-size: cover;">
-        <div style="background: linear-gradient(0deg, #090c11, #18202bf0);">
-            <div class="col-12">
-                <div class="toolbar py-20 mb-10" id="kt_toolbar">
-                    <div id="kt_toolbar_container" class=" container-xxl  d-flex justify-content-center">
-                        @include('includes.nav-admin', [
-                            'title' => 'Transações Família!',
-                            'phrase' => '“Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal',
-                        ])
-                    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card mb-4 shadow-light">
+                <div class="card-body">
+                    <h2 class="fs-5 text-center text-uppercase text-gray-700 mb-0">
+                        Resultado do mês
+                    </h2>
+                    <p class="m-0 d-flex justify-content-between">
+                        <span class="fw-bold text-gray-700">
+                            Entrada Prevista
+                        </span>
+                        <span class="text-uppercase text-gray-700 fw-normal mb-0" id="current-month-revenue">
+                            R$ 0,00
+                        </span>
+                    </p>
+                    <p class="m-0 d-flex justify-content-between">
+                        <span class="fw-bold text-gray-700">
+                            Saída Prevista
+                        </span>
+                        <span class="text-uppercase text-gray-700 fw-normal mb-0" id="current-month-expense">
+                            R$ 0,00
+                        </span>
+                    </p>
+                    <p class="m-0 d-flex justify-content-between">
+                        <span class="fw-bold text-gray-700">
+                            Resultado do mês
+                        </span>
+                        <span class="text-uppercase text-gray-700 fw-normal mb-0" id="current-month-result">
+                            R$ 0,00
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="d-flex flex-column flex-column-fluid">
-        <div id="kt_app_content" class="app-content  flex-column-fluid py-6">
-            <div id="kt_app_content_container" class="app-container container-fluid ">
-                <div class="row mt-n20">
-                    <div class="col">
-                        <div class="card mb-4 shadow-light">
-                            <div class="card-body">
-                                <h2 class="fs-5 text-center text-uppercase text-gray-700 mb-0">
-                                    Resultado do mês
-                                </h2>
-                                <p class="m-0 d-flex justify-content-between">
-                                    <span class="fw-bold text-gray-700">
-                                        Entrada Prevista
-                                    </span>
-                                    <span class="text-uppercase text-gray-700 fw-normal mb-0" id="current-month-revenue">
-                                        R$ 0,00
-                                    </span>
-                                </p>
-                                <p class="m-0 d-flex justify-content-between">
-                                    <span class="fw-bold text-gray-700">
-                                        Saída Prevista
-                                    </span>
-                                    <span class="text-uppercase text-gray-700 fw-normal mb-0" id="current-month-expense">
-                                        R$ 0,00
-                                    </span>
-                                </p>
-                                <p class="m-0 d-flex justify-content-between">
-                                    <span class="fw-bold text-gray-700">
-                                        Resultado do mês
-                                    </span>
-                                    <span class="text-uppercase text-gray-700 fw-normal mb-0" id="current-month-result">
-                                        R$ 0,00
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="col">
-                        <div class="card mb-4 shadow">
-                            <div class="card-body">
-                                <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-revenue">
-                                    R$ 0,00
-                                </h3>
-                                <h2 class="fs-5 text-uppercase text-primary mb-0">
-                                    Entrada Prevista
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card mb-4 shadow">
-                            <div class="card-body">
-                                <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-expense">
-                                    R$ 0,00
-                                </h3>
-                                <h2 class="fs-5 text-uppercase text-primary mb-0">
-                                    Saída Prevista
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card mb-4 shadow">
-                            <div class="card-body">
-                                <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-result">
-                                    R$ 0,00
-                                </h3>
-                                <h2 class="fs-5 text-uppercase text-primary mb-0">
-                                    Resultado do mês
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2 d-none d-md-block">
-                    </div>
+        <div class="col">
+            <div class="card mb-4 shadow">
+                <div class="card-body">
+                    <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-revenue">
+                        R$ 0,00
+                    </h3>
+                    <h2 class="fs-5 text-uppercase text-primary mb-0">
+                        Entrada Prevista
+                    </h2>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card shadow mb-4">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12 col-md-4">
-                                        <div class="d-flex align-items-center position-relative my-1">
-                                            <i class="ki-duotone ki-magnifier fs-1 position-absolute ms-6"><span
-                                                      class="path1"></span><span class="path2"></span></i>
-                                            <input type="text" class="form-control form-control-solid w-225px ps-15"
-                                                   placeholder="Procurar transações" id="search-in-datatable" />
-                                            {{-- <button type="button" class="btn btn-light-primary ms-2">
-                                            <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i>
-                                            Filtrar
-                                        </button> --}}
-                                            <button type="button"
-                                                    class="btn btn-light-primary btn-icon ms-2 change-calendar-picker">
-                                                <i class="fa-solid fa-calendar-days"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-4 text-center">
-                                        <div class="calendar-dates" style="display: none;">
-                                            <div class="d-flex justify-content-center align-items-center">
-                                                <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-begin"
-                                                       placeholder="Início" value="{{ date('Y-m-01') }}" />
-                                                <span class="text-gray-600 fs-5 text-uppercase fw-bold px-8">Até</span>
-                                                <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-end"
-                                                       placeholder="Fim" value="{{ date('Y-m-t') }}" />
-                                            </div>
-                                        </div>
-                                        <div class="calendar-months">
-                                            <div class="d-flex justify-content-center align-items-center my-7 my-md-0">
-                                                <span class="badge badge-light-primary cursor-pointer"
-                                                      id="previous-month">RETROCEDER</span>
-                                                <span id="current-month"
-                                                      class="text-gray-600 fs-5 text-uppercase fw-bold px-8">{{ ucfirst(\Carbon\Carbon::parse(date('Y-m-d'))->locale('pt_BR')->isoFormat('MMMM')) }}
-                                                    de {{ date('Y') }}</span>
-                                                <input type="hidden" id="date_to_filter" name="date_to_filter"
-                                                       value="{{ date('Y-m-d') }}">
-                                                <span class="badge badge-light-primary cursor-pointer"
-                                                      id="next-month">AVANÇAR</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-4">
-                                        <div class="d-none d-md-flex justify-content-end">
-                                            <button type="button"
-                                                    class="btn btn-primary me-2 add-transaction text-uppercase fw-bold"
-                                                    data-type="transference">
-                                                Trânsferencia
-                                            </button>
-                                            <button type="button"
-                                                    class="btn btn-success me-2 add-transaction text-uppercase fw-bold"
-                                                    data-type="revenue">
-                                                Receita
-                                            </button>
-                                            <button type="button"
-                                                    class="btn btn-danger me-2 add-transaction text-uppercase fw-bold"
-                                                    data-type="expense">
-                                                Despesas
-                                            </button>
-                                        </div>
-                                        <div class="d-flex d-md-none justify-content-end position-fixed z-index-9" style="right: 30px; bottom: 20px;">
-                                            <button type="button"
-                                                    class="btn btn-primary btn-icon me-2 add-transaction text-uppercase fw-bold"
-                                                    data-type="transference">
-                                                <i class="fa-solid fa-right-left"></i>
-                                            </button>
-                                            <button type="button"
-                                                    class="btn btn-success btn-icon me-2 add-transaction text-uppercase fw-bold"
-                                                    data-type="revenue">
-                                                <i class="fa-solid fa-arrow-up"></i>
-                                            </button>
-                                            <button type="button"
-                                                    class="btn btn-danger btn-icon me-2 add-transaction text-uppercase fw-bold"
-                                                    data-type="expense">
-                                                <i class="fa-solid fa-arrow-down"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-4 shadow">
+                <div class="card-body">
+                    <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-expense">
+                        R$ 0,00
+                    </h3>
+                    <h2 class="fs-5 text-uppercase text-primary mb-0">
+                        Saída Prevista
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-4 shadow">
+                <div class="card-body">
+                    <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-result">
+                        R$ 0,00
+                    </h3>
+                    <h2 class="fs-5 text-uppercase text-primary mb-0">
+                        Resultado do mês
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-2 d-none d-md-block">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <div class="d-flex align-items-center position-relative my-1">
+                                <i class="ki-duotone ki-magnifier fs-1 position-absolute ms-6"><span
+                                        class="path1"></span><span class="path2"></span></i>
+                                <input type="text" class="form-control form-control-solid w-225px ps-15"
+                                    placeholder="Procurar transações" id="search-in-datatable" />
+                                {{-- <button type="button" class="btn btn-light-primary ms-2">
+                                <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i>
+                                Filtrar
+                            </button> --}}
+                                <button type="button"
+                                        class="btn btn-light-primary btn-icon ms-2 change-calendar-picker">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4 text-center">
+                            <div class="calendar-dates" style="display: none;">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-begin"
+                                        placeholder="Início" value="{{ date('Y-m-01') }}" />
+                                    <span class="text-gray-600 fs-5 text-uppercase fw-bold px-8">Até</span>
+                                    <input class="form-control form-control-solid w-200px text-center cursor-pointer flatpickr rounded-pill input-date-transaction date-end"
+                                        placeholder="Fim" value="{{ date('Y-m-t') }}" />
                                 </div>
-                                <table id="datatables-transactions"
-                                       class="table align-middle table-row-dashed fs-6 gy-3 table-odd-light">
-                                    <thead>
-                                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                            <th class="w-10px pe-2">-</th>
-                                            <th class="w-100px">Dia</th>
-                                            <th>O que foi</th>
-                                            <th>Categoria</th>
-                                            <th>Valor</th>
-                                            <th>Conta/Cartão</th>
-                                            <th class="text-end">Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-pd text-gray-600 fw-semibold cursor-pointer">
-                                        {{-- RESULTS HERE --}}
-                                        {{-- RESULTS HERE --}}
-                                        {{-- RESULTS HERE --}}
-                                    </tbody>
-                                </table>
+                            </div>
+                            <div class="calendar-months">
+                                <div class="d-flex justify-content-center align-items-center my-7 my-md-0">
+                                    <span class="badge badge-light-primary cursor-pointer"
+                                        id="previous-month">RETROCEDER</span>
+                                    <span id="current-month"
+                                        class="text-gray-600 fs-5 text-uppercase fw-bold px-8">{{ ucfirst(\Carbon\Carbon::parse(date('Y-m-d'))->locale('pt_BR')->isoFormat('MMMM')) }}
+                                        de {{ date('Y') }}</span>
+                                    <input type="hidden" id="date_to_filter" name="date_to_filter"
+                                        value="{{ date('Y-m-d') }}">
+                                    <span class="badge badge-light-primary cursor-pointer"
+                                        id="next-month">AVANÇAR</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="d-none d-md-flex justify-content-end">
+                                <button type="button"
+                                        class="btn btn-primary me-2 add-transaction text-uppercase fw-bold"
+                                        data-type="transference">
+                                    Trânsferencia
+                                </button>
+                                <button type="button"
+                                        class="btn btn-success me-2 add-transaction text-uppercase fw-bold"
+                                        data-type="revenue">
+                                    Receita
+                                </button>
+                                <button type="button"
+                                        class="btn btn-danger me-2 add-transaction text-uppercase fw-bold"
+                                        data-type="expense">
+                                    Despesas
+                                </button>
+                            </div>
+                            <div class="d-flex d-md-none justify-content-end position-fixed z-index-9" style="right: 30px; bottom: 20px;">
+                                <button type="button"
+                                        class="btn btn-primary btn-icon me-2 add-transaction text-uppercase fw-bold"
+                                        data-type="transference">
+                                    <i class="fa-solid fa-right-left"></i>
+                                </button>
+                                <button type="button"
+                                        class="btn btn-success btn-icon me-2 add-transaction text-uppercase fw-bold"
+                                        data-type="revenue">
+                                    <i class="fa-solid fa-arrow-up"></i>
+                                </button>
+                                <button type="button"
+                                        class="btn btn-danger btn-icon me-2 add-transaction text-uppercase fw-bold"
+                                        data-type="expense">
+                                    <i class="fa-solid fa-arrow-down"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
+                    <table id="datatables-transactions"
+                        class="table align-middle table-row-dashed fs-6 gy-3 table-odd-light">
+                        <thead>
+                            <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                <th class="w-10px pe-2">-</th>
+                                <th class="w-100px">Dia</th>
+                                <th>O que foi</th>
+                                <th>Categoria</th>
+                                <th>Valor</th>
+                                <th>Conta/Cartão</th>
+                                <th class="text-end">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-pd text-gray-600 fw-semibold cursor-pointer">
+                            {{-- RESULTS HERE --}}
+                            {{-- RESULTS HERE --}}
+                            {{-- RESULTS HERE --}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="modal fade" tabindex="-1" id="load_fature">
         <div class="modal-dialog modal-dialog-centered rounded mw-750px">
             <div class="modal-content rounded">
                 <div class="modal-header py-3 bg-light rounded-top">
                     <h3 class="modal-title">Transações</h3>
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
-                         aria-label="Close">
+                            aria-label="Close">
                         <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                     </div>
                 </div>
@@ -223,19 +202,18 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" tabindex="-1" id="modal_trasaction_transference">
         <div class="modal-dialog modal-dialog-centered rounded mw-750px">
             <div class="modal-content rounded">
                 <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data"
-                      class="create-transaction">
+                        class="create-transaction">
                     @csrf
                     <div class="modal-header py-3 bg-light rounded-top bg-header">
                         <h3 class="text-white m-0">Trânsferencia em Contas</h3>
                         <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
-                             aria-label="Close">
+                                aria-label="Close">
                             <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
-                                      class="path2"></span></i>
+                                        class="path2"></span></i>
                         </div>
                     </div>
                     <div class="modal-body">
@@ -250,19 +228,18 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" tabindex="-1" id="modal_trasaction_revenue">
         <div class="modal-dialog modal-dialog-centered rounded mw-750px">
             <div class="modal-content rounded">
                 <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data"
-                      class="create-transaction">
+                        class="create-transaction">
                     @csrf
                     <div class="modal-header py-3 bg-light rounded-top bg-header">
                         <h3 class="text-white m-0">Adicionar Receita</h3>
                         <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
-                             aria-label="Close">
+                                aria-label="Close">
                             <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
-                                      class="path2"></span></i>
+                                        class="path2"></span></i>
                         </div>
                     </div>
                     <div class="modal-body">
@@ -280,19 +257,18 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" tabindex="-1" id="modal_trasaction_expense">
         <div class="modal-dialog modal-dialog-centered rounded mw-750px">
             <div class="modal-content rounded">
                 <form action="{{ route('financial.transactions.store') }}" method="POST" enctype="multipart/form-data"
-                      class="create-transaction">
+                        class="create-transaction">
                     @csrf
                     <div class="modal-header py-3 bg-light rounded-top bg-header">
                         <h3 class="text-white m-0">Adicionar Despesa</h3>
                         <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
-                             aria-label="Close">
+                                aria-label="Close">
                             <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
-                                      class="path2"></span></i>
+                                        class="path2"></span></i>
                         </div>
                     </div>
                     <div class="modal-body">
@@ -309,7 +285,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" tabindex="-1" id="edit_trasaction">
         <div class="modal-dialog modal-dialog-centered rounded mw-750px">
             <div class="modal-content rounded">
@@ -319,9 +294,9 @@
                     <div class="modal-header py-3 bg-light rounded-top">
                         <h3 class="modal-title">Editar Transação</h3>
                         <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
-                             aria-label="Close">
+                                aria-label="Close">
                             <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
-                                      class="path2"></span></i>
+                                        class="path2"></span></i>
                         </div>
                     </div>
                     <div class="modal-body" id="load-transaction">

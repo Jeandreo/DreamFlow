@@ -5,12 +5,11 @@
 @section('title-toolbar', 'Cartões de Crédito')
 
 @section('content')
-	@include('layouts.title')
 	<div class="row">
 		<div class="col-12">
 			<div class="card">
 				<div class="card-body">
-					<table class="table table-striped table-row-bordered gy-3 gs-7 border rounded align-middle dmk-datatables">
+					<table class="table table-striped table-row-bordered gy-1 gs-7 border rounded align-middle dmk-datatables">
 						<thead>
 							<tr class="fw-bold fs-6 text-gray-800 px-7">
 								<th width="4%" class="pe-0 ps-5">ID</th>

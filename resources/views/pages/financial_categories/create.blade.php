@@ -5,7 +5,6 @@
 @section('title-toolbar', 'Adicionar Categoria')
 
 @section('content')
-	@include('layouts.title')
 	<div class="row">
 		<div class="col-12">
 			<div class="card">

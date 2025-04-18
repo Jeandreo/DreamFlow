@@ -133,7 +133,7 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
-    // FINANCIAL
+    // Alimentação
     Route::prefix('alimentacao')->group(function () {
 
         // DASHBOARD
@@ -220,10 +220,8 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
-    // PROFILE USER
+    // Agendas
     Route::prefix('agendas')->group(function () {
-
-        // PROJECTS
         Route::name('agenda.')->group(function () {
             Route::get('/', [AgendaController::class, 'index'])->name('index');
             Route::get('/adicionar', [AgendaController::class, 'create'])->name('create');
@@ -234,13 +232,10 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/editar/{id?}', [AgendaController::class, 'update'])->name('update');
             Route::put('/calendario/{id?}', [AgendaController::class, 'changeCalendar'])->name('calendar.update');
         });
-
     });
 
     // PROFILE USER
     Route::prefix('catalogo-itens')->group(function () {
-
-        // PROJECTS
         Route::name('catalogs.items.')->group(function () {
             Route::get('/', [CatalogItemController::class, 'index'])->name('index');
             Route::get('/adicionar/{id}', [CatalogItemController::class, 'create'])->name('create');
@@ -250,7 +245,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar/{id}', [CatalogItemController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [CatalogItemController::class, 'update'])->name('update');
         });
-
     });
 
     // PROFILE USER
@@ -367,6 +361,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
     });
+    
     // PROFILE USER
     Route::prefix('configuracoes')->group(function () {
         Route::name('configs.')->group(function () {

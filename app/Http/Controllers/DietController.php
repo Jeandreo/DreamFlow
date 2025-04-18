@@ -46,9 +46,9 @@ class DietController extends Controller
     public function create()
     {
         // RENDER VIEW
-        $dishes = Meal::where('status', true)->get();
+        $meals = Meal::where('status', true)->get();
         return view('pages.nutrition.diets.create')->with([
-            'dishes' => $dishes,
+            'meals' => $meals,
         ]);
     } 
 
@@ -70,8 +70,8 @@ class DietController extends Controller
         // SEND DATA
         $meal = $this->repository->create($data);
 
-        // SYNC dishes (without pivot data)
-        $meal->dishes()->sync($request->input('dishes'));
+        // SYNC meals (without pivot data)
+        $meal->meals()->sync($request->input('meals'));
 
         // REDIRECT AND MESSAGES
         return redirect()
@@ -90,7 +90,7 @@ class DietController extends Controller
     {
         // GET ALL DATA
         $content = $this->repository->find($id);
-        $dishes = Meal::where('status', true)->get();
+        $meals = Meal::where('status', true)->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
@@ -98,7 +98,7 @@ class DietController extends Controller
         // GENERATES DISPLAY WITH DATA
         return view('pages.nutrition.diets.edit')->with([
             'content' => $content,
-            'dishes' => $dishes,
+            'meals' => $meals,
         ]);
     }
 
@@ -125,8 +125,8 @@ class DietController extends Controller
         // STORING NEW DATA
         $content->update($data);
 
-        // SYNC dishes (without pivot data)
-        $content->dishes()->sync($request->input('dishes', []));
+        // SYNC meals (without pivot data)
+        $content->meals()->sync($request->input('meals', []));
 
         // REDIRECT AND MESSAGES
         return redirect()

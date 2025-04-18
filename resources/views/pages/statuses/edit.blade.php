@@ -5,7 +5,6 @@
 @section('title-toolbar', 'Editar Status')
 
 @section('content')
-	@include('layouts.title')
 	<div class="row">
 		<div class="col-3">
 		</div>

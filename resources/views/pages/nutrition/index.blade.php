@@ -1,19 +1,7 @@
 @extends('layouts.app')
-@section('title-page', 'Dashboard')
-@section('title-toolbar', 'Dashboard')
+@section('title-page', 'Nutrição')
+@section('title-toolbar', 'Nutrição')
 @section('content')
-<div class="row m-0 background-dashboard" style="background-image: url('{{ asset('assets/media/logos/background-pattern.webp') }}'); background-size: cover;">
-    <div style="background: linear-gradient(0deg, #090c11, #18202bf0);">
-        <div class="col-12">
-            <div class="toolbar py-20 mb-10" id="kt_toolbar">
-                <div id="kt_toolbar_container" class="container-xxl d-flex justify-content-center">
-                    @include('includes.nav-admin', ['title' => "Alimentação da família!", 'phrase' => "“Se você realmente quer algo, não espere. Ensine a si mesmo a ser impaciente.” – Gurbaksh Chahal"])
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container py-6">
     <div class="row">
         <div class="col-12 order-1">
             <div class="row">
@@ -84,5 +72,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection

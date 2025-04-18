@@ -5,7 +5,6 @@
 @section('title-toolbar', 'Editar Desafio')
 
 @section('content')
-	@include('layouts.title')
 	<div class="row">
 		<div class="col-6 offset-3">
 			<div class="card">

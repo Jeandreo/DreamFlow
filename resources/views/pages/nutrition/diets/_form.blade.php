@@ -1,23 +1,38 @@
 <div class="row">
     <div class="col-12 mb-5">
-        <label class="required form-label fw-bold">Nome:</label>
-        <input type="text" class="form-control form-control-solid" placeholder="Nome do alimento" name="name" value="{{ $content->name ?? old('name') }}" required />
+        <label class="required form-label fw-bold">Nome da Dieta:</label>
+        <input type="text" 
+               class="form-control form-control-solid" 
+               placeholder="Nome da dieta" 
+               name="name" 
+               value="{{ $content->name ?? old('name') }}" 
+               required />
     </div>
+
     <div class="col-12 mb-5">
-        <label class="form-label fw-bold">Descrição:</label>
-        <textarea class="form-control form-control-solid" name="description" cols="30" rows="3" placeholder="Observações...">@if(isset($content)){{ $content->description }}@endif</textarea>
+        <label class="form-label fw-bold">Objetivo:</label>
+        <textarea class="form-control form-control-solid" 
+                  name="goal" 
+                  cols="30" 
+                  rows="3" 
+                  placeholder="Ex: Emagrecimento, ganho de massa, manutenção...">@if(isset($content)){{ $content->goal }}@endif</textarea>
     </div>
+
     <div class="col-12 mb-5">
-        <label class="form-label fw-bold">Modo de preparação:</label>
-        <textarea class="form-control form-control-solid" name="preparation_method" cols="30" rows="3" placeholder="Observações...">@if(isset($content)){{ $content->preparation_method }}@endif</textarea>
-    </div>
-    <div class="col-12 mb-5">
-        <label class="form-label fw-bold">Alimentos:</label>
-        <select class="form-select form-select-solid" name="dishes[]" data-control="select2" data-placeholder="Selecione" data-allow-clear="true" multiple>
+        <label class="form-label fw-bold">Refeições:</label>
+        <select class="form-select form-select-solid" 
+                name="meals[]" 
+                data-control="select2" 
+                data-placeholder="Selecione os pratos" 
+                data-allow-clear="true" 
+                multiple>
             <option value=""></option>
-            @foreach ($dishes as $dish)
-            <option value="{{ $dish->id }}" @if(isset($content) && $content->dishes->contains($dish->id)) selected @endif>{{ $dish->name }}</option>
+            @foreach ($meals as $meal)
+                <option value="{{ $meal->id }}" @if(isset($content) && $content->meals->flatMap->meals->pluck('id')->contains($meal->id)) selected @endif>
+                    {{ $meal->name }}
+                </option>
             @endforeach
         </select>
+        <div class="form-text mt-2">Você poderá definir os horários e dias da semana após criar a dieta.</div>
     </div>
 </div>
