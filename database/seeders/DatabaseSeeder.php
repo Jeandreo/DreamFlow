@@ -17,6 +17,8 @@ use App\Models\FinancialTransactions;
 use App\Models\FinancialWallet;
 use App\Models\Food;
 use App\Models\Meal;
+use App\Models\MealItem;
+use App\Models\MealTime;
 use App\Models\Project;
 use App\Models\ProjectCategory;
 use App\Models\ProjectStatus;
@@ -1079,32 +1081,71 @@ class DatabaseSeeder extends Seeder
             );
         });
 
-        // Cria refeições com pratos
-        $meals = Meal::factory()->count(5)->create()->each(function ($meal) use ($dishes) {
-            $meal->dishes()->attach(
-                $dishes->random(2)->pluck('id')->mapWithKeys(fn($id) => [$id => ['quantity' => rand(1, 2)]])->toArray()
-            );
-        });
+        // Cria dietas
+        $diets = Diet::factory()->count(5)->create();
 
-        // Cria dietas com refeições por dias da semana
-        Diet::factory()->count(2)->create()->each(function ($diet) use ($meals) {
-            $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        // Define os dias e refeições padrão
+        $daysOfWeek = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+        $mealTimes = ['Café da Manhã', 'Lanche da Manhã', 'Almoço', 'Lanche da Tarde', 'Jantar'];
 
-            foreach ($days as $day) {
-                $diet->meals()->attach(
-                    $meals->random(3)->pluck('id')->mapWithKeys(fn($id) => [
-                        $id => [
-                            'time' => now()->addHours(rand(6, 20))->format('H:i'),
-                            'day_of_week' => $day,
-                        ]
-                    ])->toArray()
-                );
+        // Cria os horários de refeição
+        foreach ($diets as $diet) {
+            foreach ($daysOfWeek as $day) {
+                foreach ($mealTimes as $meal) {
+                    MealTime::create([
+                        'name' => $meal,
+                        'diet_id' => $diet->id,
+                        'day_of_week' => $day,
+                    ]);
+                }
             }
-        });
+        }
 
+        // Associa alimentos/pratos às refeições
+        foreach ($diets as $diet) {
+            foreach ($daysOfWeek as $day) {
+                foreach ($mealTimes as $mealName) {
+
+                    // Busca o mealTime correspondente à dieta, dia e nome da refeição
+                    $mealTime = MealTime::where('diet_id', $diet->id)
+                        ->where('day_of_week', $day)
+                        ->where('name', $mealName)
+                        ->first();
+
+                    if (!$mealTime) continue;
+
+                    // Define entre 2 e 4 itens para essa refeição
+                    $itemCount = rand(2, 4);
+
+                    for ($i = 0; $i < $itemCount; $i++) {
+                        $isFood = rand(0, 1);
+
+                        if ($isFood) {
+                            $food = $foods->random();
+                            MealItem::create([
+                                'meal_time_id' => $mealTime->id,
+                                'food_id'      => $food->id,
+                                'dish_id'      => null,
+                                'quantity'     => rand(1, 3),
+                            ]);
+                        } else {
+                            $dish = $dishes->random();
+                            MealItem::create([
+                                'meal_time_id' => $mealTime->id,
+                                'food_id'      => null,
+                                'dish_id'      => $dish->id,
+                                'quantity'     => rand(1, 2),
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
+
+        
         // $this->call(DietSeeder::class);
 
-        \App\Models\User::factory(10)->create();
-        /* \App\Models\FinancialTransactions::factory(10)->create(); */
+        User::factory(10)->create();
+        /* FinancialTransactions::factory(10)->create(); */
     }
 }

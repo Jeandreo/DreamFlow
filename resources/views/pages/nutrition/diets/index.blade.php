@@ -13,8 +13,7 @@
 						<thead>
 							<tr class="fw-bold fs-6 text-gray-800 px-7">
 								<th>Nome</th>
-								<th>Pratos</th>
-								<th>Calorias</th>
+								<th>Pratos/Alimentos</th>
 								<th class="text-center">Status</th>
 								<th class="text-center" width="165px">
 									<span>Ações</span>
@@ -30,10 +29,7 @@
 										</a>
 									</td>
 									<td>
-										{{ $content->meals->count() }}
-									</td>
-									<td>
-										{{ $content->calculateTotalCalories() }}<span class="fs-8 text-gray-500">/kcal</span>
+										{{ $content->items->count() }}
 									</td>
 									<td class="text-center">
 										@if($content->status == 1) 

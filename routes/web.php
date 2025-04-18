@@ -17,6 +17,7 @@ use App\Http\Controllers\FinancialTransactionsController;
 use App\Http\Controllers\FinancialWalletController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\MealController;
+use App\Http\Controllers\MealItemController;
 use App\Http\Controllers\NutritionController;
 use App\Http\Controllers\ProjectCategoryController;
 use App\Http\Controllers\ProjectCommentController;
@@ -151,7 +152,18 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/editar/{id}', [DietController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [DietController::class, 'update'])->name('update');
                 Route::get('/remove/{id}', [DietController::class, 'destroy'])->name('destroy');
+
+                // Items
+                Route::prefix('comidas')->group(function () {
+                    Route::name('items.')->group(function () {
+                        Route::post('/adicionar', [MealItemController::class, 'store'])->name('store');
+                        Route::put('/editar/{id}', [MealItemController::class, 'update'])->name('update');
+                        Route::get('/remove/{id}', [MealItemController::class, 'destroy'])->name('destroy');
+                    });
+                });
+                
             });
+
         });
 
         // Alimentos
@@ -175,18 +187,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/editar/{id}', [DishController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [DishController::class, 'update'])->name('update');
                 Route::get('/remove/{id}', [DishController::class, 'destroy'])->name('destroy');
-            });
-        });
-
-        // Refeições
-        Route::prefix('refeicoes')->group(function () {
-            Route::name('meals.')->group(function () {
-                Route::get('/', [MealController::class, 'index'])->name('index');
-                Route::get('/adicionar', [MealController::class, 'create'])->name('create');
-                Route::post('/adicionar', [MealController::class, 'store'])->name('store');
-                Route::get('/editar/{id}', [MealController::class, 'edit'])->name('edit');
-                Route::put('/editar/{id}', [MealController::class, 'update'])->name('update');
-                Route::get('/remove/{id}', [MealController::class, 'destroy'])->name('destroy');
             });
         });
 

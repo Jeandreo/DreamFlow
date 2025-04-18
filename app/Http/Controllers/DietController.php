@@ -46,9 +46,7 @@ class DietController extends Controller
     public function create()
     {
         // RENDER VIEW
-        $meals = Meal::where('status', true)->get();
         return view('pages.nutrition.diets.create')->with([
-            'meals' => $meals,
         ]);
     } 
 
@@ -70,13 +68,10 @@ class DietController extends Controller
         // SEND DATA
         $meal = $this->repository->create($data);
 
-        // SYNC meals (without pivot data)
-        $meal->meals()->sync($request->input('meals'));
-
         // REDIRECT AND MESSAGES
         return redirect()
                 ->route('diets.index')
-                ->with('message', 'Deita adicionado com sucesso.');
+                ->with('message', 'Dieta adicionado com sucesso.');
 
     }
 
@@ -89,12 +84,12 @@ class DietController extends Controller
     public function show($id)
     {
         
-        // GET ALL DATA
-        $contents = $this->repository->find($id);
+        // Obtém dieta
+        $diet = $this->repository->find($id);
 
         // RETURN VIEW WITH DATA
         return view('pages.nutrition.diets.show')->with([
-            'contents' => $contents,
+            'diet' => $diet,
         ]);
 
     }
@@ -109,7 +104,6 @@ class DietController extends Controller
     {
         // GET ALL DATA
         $content = $this->repository->find($id);
-        $meals = Meal::where('status', true)->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
@@ -117,7 +111,6 @@ class DietController extends Controller
         // GENERATES DISPLAY WITH DATA
         return view('pages.nutrition.diets.edit')->with([
             'content' => $content,
-            'meals' => $meals,
         ]);
     }
 
@@ -144,13 +137,10 @@ class DietController extends Controller
         // STORING NEW DATA
         $content->update($data);
 
-        // SYNC meals (without pivot data)
-        $content->meals()->sync($request->input('meals', []));
-
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('diets.index')
-            ->with('message', 'Deita editado com sucesso.');
+            ->with('message', 'Dieta editado com sucesso.');
 
     }
 
@@ -173,7 +163,7 @@ class DietController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('diets.index')
-            ->with('message', 'Deita ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
+            ->with('message', 'Dieta ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
     }
 

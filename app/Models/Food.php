@@ -18,6 +18,7 @@ class Food extends Model
         'carbohydrates',
         'fats',
         'fiber',
+        'sodium',
         'notes',
         'status',
         'created_by',

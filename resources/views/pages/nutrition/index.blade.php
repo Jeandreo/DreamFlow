@@ -38,22 +38,6 @@
                     </a>
                 </div>
                 <div class="col-6 col-md-3">
-                    <a href="{{ route('meals.index') }}">
-                        <div class="card mb-4">
-                            <div class="card-body p-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="h-40px w-40px rounded bg-light-danger d-flex align-items-center justify-content-center">
-                                        <i class="fa-solid fa-bowl-food fs-4 text-danger"></i> <!-- Bowl de comida para Refeições -->
-                                    </div>
-                                    <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
-                                        Refeições
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-3">
                     <a href="{{ route('diets.index') }}">
                         <div class="card mb-4">
                             <div class="card-body p-3">

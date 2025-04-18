@@ -185,22 +185,6 @@ Breadcrumbs::for('dishes.edit', function (BreadcrumbTrail $trail, $id) {
     $trail->push("Editar Prato", route('dishes.edit', $id));
 });
 
-// Refeições
-Breadcrumbs::for('meals.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('nutrition.index');
-    $trail->push('Refeições', route('meals.index'));
-});
-
-Breadcrumbs::for('meals.create', function (BreadcrumbTrail $trail) {
-    $trail->parent('meals.index');
-    $trail->push('Adicionar', route('meals.create'));
-});
-
-Breadcrumbs::for('meals.edit', function (BreadcrumbTrail $trail, $id) {
-    $trail->parent('meals.index');
-    $trail->push("Editar Refeição", route('meals.edit', $id));
-});
-
 ////////////// NUTRIÇÃO //////////////
 
 ////////////// Catalogo //////////////

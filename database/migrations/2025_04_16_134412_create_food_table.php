@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('calories')->default(0);
             $table->decimal('proteins')->default(0);
             $table->decimal('carbohydrates')->default(0);
+            $table->decimal('sodium')->default(0);
             $table->decimal('fats')->default(0);
             $table->decimal('fiber')->default(0);
             $table->text('notes')->nullable();

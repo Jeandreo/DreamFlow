@@ -7,64 +7,44 @@
 @section('content')
 <div class="row">
 	<div class="col">
-		@foreach ([
-			'Segunda',
-			'Terça',
-			'Quarta',
-			'Quinta',
-			'Sexta',
-			'Sábado',
-			'Domingo',
-		] as $day)
+		@foreach ($diet->meals->groupBy('day_of_week')->toArray() as $meal)
 			<div class="card mb-8">
 				<div class="card-header d-flex align-items-center justify-content-center py-0 min-h-50px" style="background: linear-gradient(180deg, #85c515, #48a833)">
 					<span class="title-header fs-1 text-white text-uppercase fw-bold">
-						{{ $day }}
+						{{ $meal[0]['day_of_week'] }}
 					</span>
 				</div>
 				<div class="card-body p-0">
 					<div class="row m-0">
-						@foreach ([
-							'Café da Manhã',
-							'Lanche da Manhã',
-							'Almoço',
-							'Lanche da Tarde',
-							'Jantar',
-						] as $lunch)
-						<div class="col p-0 @if (!$loop->last) border-end @endif">
-							<p class="mb-0 text-center fs-6 text-gray-700 fw-bolder text-uppercase h-40px bg-light d-flex align-items-center justify-content-center border-bottom">
-								{{ $lunch }}
-							</p>
-							<div class="p-4">
-								@foreach ([
-									'Peito de Frango' => '85kcal',
-									'2 Ovos' => '85kcal',
-									'200ml de Iogurte' => '85kcal',
-									'Paçoca' => '85kcal',
-								] as $food => $kcal)
-								<div class="d-flex justify-content-between">
-									<span class="text-gray-700 fw-bold">
-										{{ $food }}
-									</span>
-									<span class="text-gray-600">
-										{{ $kcal }}
-									</span>
+						@foreach ($meal as $lunch)
+							<div class="col p-0 @if (!$loop->last) border-end @endif">
+								<p class="mb-0 text-center fs-6 text-gray-700 fw-bolder text-uppercase h-40px bg-light d-flex align-items-center justify-content-center border-bottom">
+									{{ $lunch['name'] }}
+								</p>
+								{{ dd($meal->items) }}
+								<div class="p-4">
+									@foreach ($groupedItems[$day][$lunch] ?? [] as $item)
+										<div class="d-flex justify-content-between">
+											<span class="text-gray-700 fw-bold">
+												{{ Str::limit($item->food?->name ?? $item->dish?->name, 23) }}
+											</span>
+											<span class="text-gray-600">
+												{{ floor($item->food?->calories ?? $item->dish?->getTotalCaloriesAttribute()) }}
+											</span>
+										</div>
+											<div class="separator separator-dashed my-3"></div>
+									@endforeach
+									<select class="form-select form-select-food border-0 p-0 fs-7 select-ajax add-food" data-diet="{{ $diet->id }}" data-day="{{ $day }}" data-lunch="{{ $lunch }}" data-placeholder="Adicionar">
+										<option></option>
+									</select>
 								</div>
-								@if (!$loop->last)
-									<div class="separator separator-dashed my-2"></div>
-								@endif
-								@endforeach
-								<select class="form-select form-select-food border-0 p-0 fs-7 mt-4 select-ajax" data-placeholder="Adicionar">
-									<option></option>
-								</select>
 							</div>
-						</div>
 						@endforeach
 					</div>
 				</div>
 				<div class="card-footer d-flex flex-wrap gap-3 py-4 justify-content-center">
 					<div class="d-flex justify-content-between align-items-center bg-light-primary rounded px-5 py-2">
-					<i class="fa-solid fa-egg text-primary fs-4 me-2"></i>
+						<i class="fa-solid fa-egg text-primary fs-4 me-2"></i>
 						<div class="text-primary">
 							<span>Proteínas</span>
 							<span class="fw-bolder">42g</span>
@@ -108,6 +88,7 @@
 				</div>
 			</div>
 		@endforeach
+
 	</div>
 	<div class="col-2">
 		@foreach ([
@@ -151,5 +132,33 @@
 @parent
 <script>
 	selectOptionsAjax();
+	$(document).on('change', '.add-food', function(){
+
+		// Obtém dados
+		var foodId 	= $(this).val();
+		var dietId 	= $(this).data('diet');
+		var day 	= $(this).data('day');
+		var lunch 	= $(this).data('lunch');
+
+		console.log(foodId, dietId, day, lunch);
+
+        // AJAX
+        $.ajax({
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'POST',
+            url: "{{ route('diets.items.store') }}",
+            data: {
+				food_dish: 	 foodId,	
+				diet_id: 	 dietId,	
+				day_of_week: day,	
+				meal_time: 	 lunch,	
+			},
+            success: function(data){
+                alert('sucesso');
+            }
+        });
+
+
+	});
 </script>
 @endsection

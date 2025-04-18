@@ -23,11 +23,6 @@ class Dish extends Model
         return $this->belongsToMany(Food::class)->withTimestamps();
     }
 
-    public function meals()
-    {
-        return $this->belongsToMany(Meal::class)->withPivot('quantity')->withTimestamps();
-    }
-
     public function getTotalCaloriesAttribute()
     {
         return $this->foods->sum('calories');

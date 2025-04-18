@@ -13,26 +13,7 @@ class Diet extends Model
 
     public function meals()
     {
-        return $this->belongsToMany(Meal::class)->withPivot('time', 'day_of_week')->withTimestamps();
+        return $this->hasMany(MealTime::class);
     }
-     /**
-     * Função para calcular o total de calorias de uma dieta
-     *
-     * @return int
-     */
-    public function calculateTotalCalories()
-    {
-        $totalCalories = 0;
 
-        // Itera sobre as refeições associadas à dieta
-        foreach ($this->meals as $meal) {
-            // Itera sobre os pratos de cada refeição
-            foreach ($meal->dishes as $dish) {
-                // Soma as calorias do prato
-                $totalCalories += $dish->foods->sum('calories');
-            }
-        }
-
-        return $totalCalories;
-    }
 }
