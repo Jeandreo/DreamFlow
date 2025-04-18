@@ -11,11 +11,15 @@ class MealTime extends Model
     
     protected $fillable = [
         'name',
-        'diet_id',
-        'day_of_week',
+        'day_of_week_id',
         'status',
         'created_by',
         'updated_by'
     ];
     
+    public function day()
+    {
+        return $this->belongsTo(DayOfWeek::class);
+    }
+
 }

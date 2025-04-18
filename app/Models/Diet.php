@@ -11,9 +11,9 @@ class Diet extends Model
 
     protected $fillable = ['name', 'goal', 'total_calories'];
 
-    public function meals()
+    public function days()
     {
-        return $this->hasMany(MealTime::class);
+        return $this->hasMany(DayOfWeek::class);
     }
 
 }
