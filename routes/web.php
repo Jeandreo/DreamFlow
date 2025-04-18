@@ -147,6 +147,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [DietController::class, 'index'])->name('index');
                 Route::get('/adicionar', [DietController::class, 'create'])->name('create');
                 Route::post('/adicionar', [DietController::class, 'store'])->name('store');
+                Route::get('/visualizar/{id}', [DietController::class, 'show'])->name('show');
                 Route::get('/editar/{id}', [DietController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [DietController::class, 'update'])->name('update');
                 Route::get('/remove/{id}', [DietController::class, 'destroy'])->name('destroy');

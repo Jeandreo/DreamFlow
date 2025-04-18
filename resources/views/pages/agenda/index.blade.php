@@ -5,12 +5,12 @@
 @section('title-toolbar', 'Agenda')
 
 @section('content')
-    <div class="d-flex justify-content-between mb-6">
-        <a href="{{ route('dashboard.index') }}" class="btn btn-sm fw-bold btn-secondary">Voltar</a>
-        <a href="{{ route('catalogs.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger" data-bs-toggle="modal" data-bs-target="#modal_meeting">Agendar Compromisso</a>
-    </div>
     <div class="card">
         <div class="card-body">
+            <div class="d-flex justify-content-between mb-6">
+                <a href="{{ route('dashboard.index') }}" class="btn btn-sm fw-bold btn-secondary">Voltar</a>
+                <a href="{{ route('catalogs.create') }}" class="btn btn-sm fw-bold btn-primary btn-active-danger" data-bs-toggle="modal" data-bs-target="#modal_meeting">Agendar Compromisso</a>
+            </div>
             <div id="full-calendar">
                 {{-- CARREGA CALENDÁRIO --}}
                 {{-- CARREGA CALENDÁRIO --}}

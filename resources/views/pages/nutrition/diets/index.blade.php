@@ -25,7 +25,7 @@
 							@foreach ($contents as $content)
 								<tr>
 									<td>
-										<a href="{{ route('diets.edit', $content->id) }}" class="text-center text-gray-700 text-hover-primary fw-bold">
+										<a href="{{ route('diets.show', $content->id) }}" class="text-center text-gray-700 text-hover-primary fw-bold">
 											{{ $content->name }}
 										</a>
 									</td>
@@ -47,6 +47,9 @@
 										@endif
 									</td>
 									<td class="text-center">
+										<a href="{{ route('diets.show', $content->id) }}" class="btn btn-sm btn-light btn-active-light-success btn-icon">
+											<i class="fa-solid fa-eye "></i>
+										</a>
 										<a href="{{ route('diets.edit', $content->id) }}" class="btn btn-sm btn-light btn-active-light-success btn-icon">
 											<i class="fa-solid fa-pen-to-square "></i>
 										</a>

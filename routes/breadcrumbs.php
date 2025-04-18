@@ -143,6 +143,11 @@ Breadcrumbs::for('diets.create', function (BreadcrumbTrail $trail) {
     $trail->push('Adicionar', route('diets.create'));
 });
 
+Breadcrumbs::for('diets.show', function (BreadcrumbTrail $trail, $id) {
+    $trail->parent('diets.index');
+    $trail->push("Gerenciar Dieta", route('diets.show', $id));
+});
+
 Breadcrumbs::for('diets.edit', function (BreadcrumbTrail $trail, $id) {
     $trail->parent('diets.index');
     $trail->push("Editar Dieta", route('diets.edit', $id));
@@ -229,6 +234,9 @@ Breadcrumbs::for('catalogs.edit', function (BreadcrumbTrail $trail, $id) {
 ////////////// Projetos //////////////
 
 // Projetos
+Breadcrumbs::for('agenda.index', function (BreadcrumbTrail $trail) {
+});
+
 Breadcrumbs::for('projects.index', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard.index');
     $trail->push('Lista de projetos', route('projects.index'));
