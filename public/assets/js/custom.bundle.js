@@ -211,7 +211,47 @@ function onlyUrl(getUrl = '.get-to-url', onlyUrl = '.only-url') {
     });
 }
 
+/**
+ * Função gera um seletor AJAX com o plugin Select2,
+ * o paramentro "type" se refere ao modelo que ele deve buscar
+ * o segundo é onde ele deve carregar o select2.
+ */
+function selectOptionsAjax(options = {}) {
 
+    // Define opções padrão
+    let {
+        type = 'foods',
+        seletor = '.select-ajax',
+        dropdow = null,
+        minLenght = 0,
+    } = options;
+
+    // Caso tenha um dropdown selecionado
+    let dropdowElement = dropdow ? $(dropdow) : null;
+
+    $(seletor).select2({
+        placeholder: 'Selecione um item',
+        dropdownParent: dropdowElement,
+        minimumInputLength: minLenght,
+        ajax: {
+            url: globalUrl + '/configuracoes/options',
+            dataType: 'json',
+            delay: 500,
+            data: function (params) {
+                return {
+                    type: type,
+                    term: params.term
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true,
+        }
+    });
+}
 
 // OPTIONS OF CROPPER
 var defaultOptionsCropper = {

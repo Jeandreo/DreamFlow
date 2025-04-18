@@ -366,6 +366,7 @@ Route::middleware(['auth'])->group(function () {
     // PROFILE USER
     Route::prefix('configuracoes')->group(function () {
         Route::name('configs.')->group(function () {
+            Route::get('/options', [ConfigController::class, 'select2Options']);
             Route::post('/CKEupload', [ConfigController::class, 'CKEupload']);
         });
     });

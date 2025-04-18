@@ -41,8 +41,6 @@
 									'2 Ovos' => '85kcal',
 									'200ml de Iogurte' => '85kcal',
 									'Paçoca' => '85kcal',
-									'-' => '-',
-									'-' => '-',
 								] as $food => $kcal)
 								<div class="d-flex justify-content-between">
 									<span class="text-gray-700 fw-bold">
@@ -56,6 +54,9 @@
 									<div class="separator separator-dashed my-2"></div>
 								@endif
 								@endforeach
+								<select class="form-select form-select-food border-0 p-0 fs-7 mt-4 select-ajax" data-placeholder="Adicionar">
+									<option></option>
+								</select>
 							</div>
 						</div>
 						@endforeach
@@ -144,4 +145,11 @@
 	</div>
 </div>
 	@include('pages.nutrition.diets._resume')
+@endsection
+
+@section('custom-footer')
+@parent
+<script>
+	selectOptionsAjax();
+</script>
 @endsection

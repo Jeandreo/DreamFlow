@@ -422,3 +422,9 @@ input[type=text]:disabled {
     height: calc(1.0em + 1.1rem + 2px);
     width: calc(1.0em + 1.1rem + 2px);
 }
+
+.form-select-food {
+    font-weight: 400;
+    background-position: right 0rem center;
+    background-size: 9px 12px;
+}

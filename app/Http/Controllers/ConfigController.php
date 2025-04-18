@@ -2,10 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dish;
+use App\Models\Food;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ConfigController extends Controller
 {
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function select2Options(Request $request)
+    {
+        $term = $request->term;
+        $results = [];
+
+        // Buscar alimentos
+        $foods = Food::where('status', 1)
+                    ->where('name', 'LIKE', $term . '%')
+                    ->limit(10)
+                    ->get();
+
+        foreach ($foods as $item) {
+            $results[] = [
+                'id' => 'food_' . $item->id,
+                'text' => "{$item->name} ({$item->calories} kcal)",
+            ];
+        }
+
+        // Buscar pratos
+        $dishes = Dish::where('status', 1)
+                        ->where('name', 'LIKE', $term . '%')
+                        ->limit(10)
+                        ->get();
+
+        foreach ($dishes as $item) {
+            $results[] = [
+                'id' => 'dish_' . $item->id,
+                'text' => Str::limit($item->name, 18) . " {$item->getTotalCaloriesAttribute()} kcal",
+            ];
+        }
+
+        return response()->json($results);
+    }
+
+
      /**
      * Store a newly created resource in storage.
      *
