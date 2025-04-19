@@ -57,17 +57,6 @@ class DashboardController extends Controller
         // Obtém dieta ativa
         $diet = Diet::where('status', true)->first();
 
-        if ($diet) {
-            // Define a localização para pegar o nome do dia em português
-            Carbon::setLocale('pt_BR');
-        
-            // Obtém o nome do dia atual (ex: Segunda, Terça, etc.)
-            $todayName = ucfirst(Carbon::now()->isoFormat('dddd'));
-        
-            // Busca o dia correspondente na dieta
-            $day = $diet->days()->where('name', $todayName)->first();
-        }
-
         // RETURN VIEW WITH DATA
         return view('pages.dashboard.index')->with([
             'actualMonth'       => $actualMonth,
@@ -79,7 +68,6 @@ class DashboardController extends Controller
             'lists'             => $lists,
             'projects'          => $projects,
             'diet'              => $diet,
-            'meals'             => $day->meals,
             'pageClean'         => true,
         ]);
 

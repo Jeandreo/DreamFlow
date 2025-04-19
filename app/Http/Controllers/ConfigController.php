@@ -30,7 +30,7 @@ class ConfigController extends Controller
         foreach ($foods as $item) {
             $results[] = [
                 'id' => 'food_' . $item->id,
-                'text' => "{$item->name} ({$item->calories} kcal)",
+                'text' => "{$item->name} " . round($item->calories) . "kcal",
             ];
         }
 

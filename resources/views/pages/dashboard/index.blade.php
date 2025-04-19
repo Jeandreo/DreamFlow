@@ -187,17 +187,23 @@
                     <span class="text-muted fw-semibold fs-7">É só seguir o plano e deixar o shape agradecer! 🍽️🔥</span>
                 </h3>
                 <div class="card-toolbar">
+                @if ($diet)
                     <ol class="p-0 m-0 carousel-indicators carousel-indicators-bullet carousel-indicators-active-primary">
                         @foreach ($meals as $key => $meal)
                             <li data-bs-target="#carousel_meals" data-bs-slide-to="{{ $key }}" class="ms-1 @if($key == 0) active @endif"></li>
                         @endforeach
                     </ol>
-                </div>
+                @else
+                <a href="{{ route('nutrition.index') }}" class="btn btn-sm btn-light">
+                    Alimentação
+                </a>
+                @endif
+            </div>
             </div>
             <div class="card-body py-6">
                 @if ($diet)
                 <div class="carousel-inner h-100">
-                    @foreach ($meals as $key => $meal)
+                    @foreach ($diet->today->meals as $key => $meal)
                     <div class="carousel-item @if($key == 0) active @endif">
                         <div class="row">
                             @if ($meal->items->count())
@@ -226,7 +232,7 @@
                     @endforeach
                 </div>
                 @else
-                <div class="bg-light rounded py-3 px-7">
+                <div class="bg-light rounded py-3 px-7 h-150px d-flex justify-content-center align-items-center">
                     <div class="text-center">
                         <p class="fw-bold text-gray-700 fs-6 mb-0 lh-1">DIETA NÃO PROGRAMADA 😔</p>
                         <p class="text-gray-600 fs-6">Como você quer ficar saradão desse jeito?</p>

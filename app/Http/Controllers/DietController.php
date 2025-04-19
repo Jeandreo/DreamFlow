@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DayOfWeek;
 use App\Models\Diet;
 use App\Models\Meal;
+use App\Models\MealTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -67,7 +68,26 @@ class DietController extends Controller
         $data['created_by'] = Auth::id();
         
         // SEND DATA
-        $meal = $this->repository->create($data);
+        $diet = $this->repository->create($data);
+
+        // Dias da semana e refeições padrão
+        $days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+        $mealNames = ['Café da Manhã', 'Lanche da Manhã', 'Almoço', 'Lanche da Tarde', 'Jantar'];
+
+        // Adiciona dias e refeições
+        foreach ($days as $day) {
+            $dayOfWeek = DayOfWeek::create([
+                'name'     => $day,
+                'diet_id'  => $diet->id,
+            ]);
+
+            foreach ($mealNames as $mealName) {
+                MealTime::create([
+                    'name'            => $mealName,
+                    'day_of_week_id'  => $dayOfWeek->id,
+                ]);
+            }
+        }
 
         // REDIRECT AND MESSAGES
         return redirect()
@@ -86,7 +106,10 @@ class DietController extends Controller
     {
         
         // Obtém dieta
-        $diet = $this->repository->find($id);
+        if(!$diet = $this->repository->find($id))
+        return redirect()
+                ->route('diets.index')
+                ->with('message', 'Dieta não encontrada.');
 
         // RETURN VIEW WITH DATA
         return view('pages.nutrition.diets.show')->with([

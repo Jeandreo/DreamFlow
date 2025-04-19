@@ -1073,8 +1073,142 @@ class DatabaseSeeder extends Seeder
         ]); */
 
        // Cria alimentos
-       $foods = Food::factory()->count(20)->create();
+        //    $foods = Food::factory()->count(20)->create();
 
+        $foods = [  
+            'Omelete (3 ovos)' => [  
+                'type' => 'unidade',  
+                'quantity' => 1,  
+                'calories' => 240  
+            ],  
+            'Queijo Light Tirolez' => [  
+                'type' => 'unidade',  
+                'quantity' => 1, // 1 fatia  
+                'calories' => 35  
+            ],  
+            'Presunto Frimesa' => [  
+                'type' => 'unidade',  
+                'quantity' => 1, // 1 fatia  
+                'calories' => 19  
+            ],  
+            'Iogurte Morango Zero' => [  
+                'type' => 'unidade',  
+                'quantity' => 1, // 1 pote  
+                'calories' => 50  
+            ],  
+            'Pão Integral' => [  
+                'type' => 'unidade',  
+                'quantity' => 1,  
+                'calories' => 70  
+            ],  
+            'Maçã' => [  
+                'type' => 'peso',  
+                'quantity' => 100, // gramas  
+                'calories' => 52  
+            ],  
+            'Arroz Cozido' => [  
+                'type' => 'peso',  
+                'quantity' => 100, // gramas  
+                'calories' => 130  
+            ],  
+            'Peito de Frango Grelhado' => [  
+                'type' => 'peso',  
+                'quantity' => 100, // gramas  
+                'calories' => 165  
+            ],  
+            'Salada (folhas verdes)' => [  
+                'type' => 'peso',  
+                'quantity' => 50, // gramas (valor simbólico para "a vontade")  
+                'calories' => 15  
+            ],  
+            'Bombom Ouro Branco' => [  
+                'type' => 'peso',  
+                'quantity' => 20, // gramas  
+                'calories' => 110  
+            ],  
+            'Feijão Preto Cozido' => [  
+                'type' => 'peso',  
+                'quantity' => 100, // gramas  
+                'calories' => 130  
+            ],  
+            'Banana Prata' => [  
+                'type' => 'peso',  
+                'quantity' => 100, // gramas  
+                'calories' => 89  
+            ],  
+            'Clube Social Integral' => [  
+                'type' => 'unidade',  
+                'quantity' => 1,  
+                'calories' => 70  
+            ],  
+            'Aveia em Flocos' => [  
+                'type' => 'peso',  
+                'quantity' => 50, // gramas  
+                'calories' => 190  
+            ],  
+            'Whey Protein' => [  
+                'type' => 'unidade',  
+                'quantity' => 1, // 1 dose (30g)  
+                'calories' => 120  
+            ],  
+            'Iogurte Desnatado' => [  
+                'type' => 'unidade',  
+                'quantity' => 1, // 1 pote  
+                'calories' => 60  
+            ],  
+            'Requeijão Light' => [  
+                'type' => 'peso',  
+                'quantity' => 30, // gramas  
+                'calories' => 60  
+            ],  
+            'Doce de Leite Mu Mu' => [  
+                'type' => 'peso',  
+                'quantity' => 20, // gramas  
+                'calories' => 70  
+            ],  
+            'Manga Palmer' => [  
+                'type' => 'unidade',  
+                'quantity' => 1,  
+                'calories' => 110  
+            ],  
+            'Purê de Batata' => [  
+                'type' => 'peso',  
+                'quantity' => 100, // gramas  
+                'calories' => 85  
+            ],  
+            'Bife de Patinho' => [  
+                'type' => 'peso',  
+                'quantity' => 100, // gramas  
+                'calories' => 200  
+            ],  
+            'Gelatina Diet' => [  
+                'type' => 'peso',  
+                'quantity' => 100, // gramas  
+                'calories' => 10  
+            ],  
+            'Tomate' => [  
+                'type' => 'peso',  
+                'quantity' => 100, // gramas  
+                'calories' => 18  
+            ],  
+            'Mussarela Light' => [  
+                'type' => 'unidade',  
+                'quantity' => 1, // 1 fatia  
+                'calories' => 50  
+            ]  
+        ];  
+
+        foreach ($foods as $foodName => $info) {
+            Food::create([
+                'name' => $foodName,
+                'type' => $info['type'],
+                'quantity' => $info['quantity'],
+                'calories' => $info['calories'],
+                'created_by' => 1,
+            ]);
+        }
+
+       /* /
        // Cria pratos com alimentos
        $dishes = Dish::factory()->count(10)->create()->each(function ($dish) use ($foods) {
            $dish->foods()->attach(
@@ -1135,7 +1269,7 @@ class DatabaseSeeder extends Seeder
                    }
                }
            }
-       }
+       } */
 
        // Usuários de exemplo
        User::factory(10)->create();

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('food', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('type', ['unidade', '100g'])->default('unidade');
-            $table->string('base_quantity');
+            $table->string('type')->default('unidade');
+            $table->string('quantity')->default(1);
             $table->decimal('calories')->default(0);
             $table->decimal('proteins')->default(0);
             $table->decimal('carbohydrates')->default(0);

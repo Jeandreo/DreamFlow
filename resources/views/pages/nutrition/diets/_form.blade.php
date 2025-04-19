@@ -9,11 +9,12 @@
                required />
     </div>
     <div class="col-12 mb-5">
-        <label class="form-label fw-bold">Objetivo:</label>
+        <label class="form-label fw-bold required">Objetivo:</label>
         <textarea class="form-control form-control-solid" 
-                  name="goal" 
-                  cols="30" 
-                  rows="3" 
-                  placeholder="Ex: Emagrecimento, ganho de massa, manutenção...">@if(isset($content)){{ $content->goal }}@endif</textarea>
+                name="goal" 
+                cols="30" 
+                rows="3" 
+                required
+                placeholder="Ex: Emagrecimento, ganho de massa, manutenção...">@if(isset($content)){{ $content->goal }}@endif</textarea>
     </div>
 </div>

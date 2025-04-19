@@ -13,10 +13,10 @@
 						<thead>
 							<tr class="fw-bold fs-6 text-gray-800 px-7">
 								<th>Nome</th>
-								<th>Tipo de Unidade</th>
+								<th>Quantidade</th>
 								<th>Proteínas (g)</th>
-								<th>Carboidratos (g)</th>
-								<th>Gorduras (g)</th>
+								{{-- <th>Carboidratos (g)</th>
+								<th>Gorduras (g)</th> --}}
 								<th>Calorias</th>
 								<th class="text-center">Status</th>
 								<th class="text-center" width="165px">
@@ -32,10 +32,12 @@
 											{{ $content->name }}
 										</a>
 									</td>
-									<td>{{ $content->type }}</td>
+									<td>
+										{{ $content->quantity }}{{ $content->type == 'unidade' ? ' unidade' : 'g' }}
+									</td>
 									<td>{{ $content->proteins }}</td>
-									<td>{{ $content->carbohydrates }}</td>
-									<td>{{ $content->fats }}</td>
+									{{-- <td>{{ $content->carbohydrates }}</td>
+									<td>{{ $content->fats }}</td> --}}
 									<td>{{ $content->calories }}<span class="fs-8 text-gray-500">/kcal</span></td>
 									<td class="text-center">
 										@if($content->status == 1) 

@@ -82,6 +82,13 @@ function generateMasks(){
         "numericInput": true,
         "clearIncomplete": true,
     }).mask(".input-money-usd");
+
+    Inputmask(["9999999.9"], {
+        numericInput: true,
+        showMaskOnHover: false,
+        showMaskOnFocus: true,
+        placeholder: "",
+    }).mask(".input-calorias");
 }
 
 // MARK ALL TRUE
