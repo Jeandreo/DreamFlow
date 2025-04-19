@@ -150,7 +150,7 @@
 		@endforeach
 	</div>
 </div>
-@include('pages.nutrition.diets._resume')
+{{-- @include('pages.nutrition.diets._resume') --}}
 @endsection
 
 @section('custom-footer')

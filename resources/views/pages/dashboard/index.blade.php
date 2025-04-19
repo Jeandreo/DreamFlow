@@ -189,7 +189,7 @@
                 <div class="card-toolbar">
                 @if ($diet)
                     <ol class="p-0 m-0 carousel-indicators carousel-indicators-bullet carousel-indicators-active-primary">
-                        @foreach ($meals as $key => $meal)
+                        @foreach ($diet->today()->meals as $key => $meal)
                             <li data-bs-target="#carousel_meals" data-bs-slide-to="{{ $key }}" class="ms-1 @if($key == 0) active @endif"></li>
                         @endforeach
                     </ol>
@@ -203,7 +203,7 @@
             <div class="card-body py-6">
                 @if ($diet)
                 <div class="carousel-inner h-100">
-                    @foreach ($diet->today->meals as $key => $meal)
+                    @foreach ($diet->today()->meals as $key => $meal)
                     <div class="carousel-item @if($key == 0) active @endif">
                         <div class="row">
                             @if ($meal->items->count())
@@ -222,8 +222,8 @@
                             @else
                             <div class="bg-light rounded d-flex align-items-center justify-content-center h-150px">
                                 <div class="text-center">
-                                    <p class="fw-bold text-gray-700 fs-4 mb-0">SEM ITENS NA REFEIÇÃO 🧐</p>
-                                    <p class="text-gray-600 fs-6">Adicione seus itens e mantenha sua dieta nos trilhos.</p>
+                                    <p class="fw-bold text-gray-700 fs-4 mb-0 text-uppercase">{{ $meal->name }}</p>
+                                    <p class="text-gray-600 fs-6">Monte sua dieta em alimentação.</p>
                                 </div>
                             </div>
                             @endif
