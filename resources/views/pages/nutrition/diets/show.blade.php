@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="row">
-	<div class="col">
+	<div class="col-12 col-md">
 		@foreach ($diet->days as $day)
 		<div class="card mb-8 card-day card-day-{{ $day->id }}" data-day="{{ $day->id }}">
 			<div class="card-body p-2">
@@ -21,31 +21,29 @@
 					@foreach ($day->meals as $meal)
 					  <div class="col-12 col-xl p-0 d-flex flex-column @if (!$loop->last) border-end @endif">
 						<div class="h-40px bg-light d-flex align-items-center justify-content-center border-bottom p-4">
-						  <p class="mb-0 text-center fs-6 text-gray-700 fw-bolder text-uppercase">
-							{{ $meal->name }}
-						  </p>
+							<p class="mb-0 text-center fs-6 text-gray-700 fw-bolder text-uppercase">
+								{{ $meal->name }}
+							</p>
 						</div>
 						<div class="items p-4 d-flex flex-column" style="min-height: 1px; height: 100%;">
 						  @foreach ($meal->items ?? [] as $item)
-							<div class="d-flex justify-content-between">
-							  <span class="text-gray-700 fw-bold">
+							<div class="d-flex justify-content-between opacity-1">
+							  <span class="text-gray-700 fw-bold d-flex align-items-center">
 								{{ Str::limit($item->food?->name ?? $item->dish?->name, 23) }} @if ($item->quantity > 1) <span class="fw-normal text-gray-500 fs-7">{{ $item->quantity }}x</span> @endif
+								<i class="fa-solid fa-circle-xmark text-danger text-hover-primary remove-item cursor-pointer opacity-0 p-2" data-item="{{ $item->id }}"></i>
 							  </span>
 							  <span class="text-gray-600">
 								{{ floor($item->food?->calories ?? $item->dish?->getTotalCaloriesAttribute()) }}
 							  </span>
 							</div>
-							<div class="separator separator-dashed my-3"></div>
+							<div class="separator separator-dashed my-2"></div>
 						  @endforeach
-						  
-						  <!-- Espaço flexível que empurra o total para baixo -->
 						  <div class="flex-grow-1"></div>
-						  
-						  <!-- Container do meal-total fixo no rodapé -->
-						  <div class="sticky-bottom">
+						  <div class="">
 							<div class="d-flex align-items-center justify-content-between mb-4 p-2 px-4 bg-light rounded meal-total">
 							  <span class="text-gray-700 fs-8 text-uppercase fw-bold">Total</span>
-							  <span class="text-gray-600 fs-7 fw-semibold">{{ $meal->getTotalNutrient('calories') }}/kcal</span>
+							  <span class="text-gray-600 fs-7 fw-semibold">
+								<span class="meal-calories">{{ $meal->getTotalNutrient('calories') }}</span>/kcal</span>
 							</div>
 							<div class="px-4">
 							  <select class="form-select form-select-food border-0 p-0 fs-7 select-ajax add-food" data-meal="{{ $meal->id }}" data-placeholder="Adicionar">
@@ -110,7 +108,7 @@
 		  </div>
 		@endforeach
 	</div>
-	<div class="col-2">
+	<div class="col-12 col-md-2">
 		@foreach ([
 			'Jeandreo' => [
 				'Altura' => '173cm',
@@ -146,24 +144,6 @@
 	</div>
 </div>
 @include('pages.nutrition.diets._resume')
-<style>
-	.sticky-bottom {
-	  position: sticky;
-	  bottom: 0;
-	  background: white;
-	  padding-top: 1rem;
-	  margin-top: auto;
-	}
-	
-	.items {
-	  position: relative;
-	  padding-bottom: 80px;
-	}
-	
-	.flex-grow-1 {
-	  flex-grow: 1;
-	}
-  </style>
 @endsection
 
 @section('custom-footer')
@@ -196,6 +176,10 @@
 				food_dish: foodId,    
 			},
 			success: function(data) {
+
+				// Atualiza as calorias do dia
+				container.find('.meal-calories').text(data['meal']);
+				
 				// Cria o elemento a ser inserido
 				var $html = $('<div class="d-flex justify-content-between">' +
 					'<span class="text-gray-700 fw-bold food-name">' + 
@@ -215,7 +199,42 @@
 
 				// Atualiza total de calorias da refeição
 				loadNutrients(dayId);
+
 			}.bind(this) // Mantém o contexto do 'this'
+		});
+	});
+
+	/**
+	 * Remove alimento da dieta
+	 */
+	$(document).on('click', '.remove-item', function() {
+		// Obtém dados
+		var itemId = $(this).data('item');
+		var container = $(this).closest('.items');
+		var $itemElement = $(this).closest('.d-flex.justify-content-between');
+		var dayId = $(this).closest('.card-day').data('day');
+
+		// AJAX
+		$.ajax({
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+			type: 'GET',
+			url: "{{ route('diets.items.destroy', '') }}/" + itemId,
+			success: function(caloriesMeal) {
+
+				// Atualiza as calorias do dia
+				container.find('.meal-calories').text(caloriesMeal);
+
+				// Remove o item e o separador seguinte
+				$itemElement.next('.separator').remove(); // Remove o separador
+				$itemElement.remove(); // Remove o item
+				
+				// Atualiza os totais
+				loadNutrients(dayId);
+				
+				// Mensagem de sucesso
+				toastr.success('Item removido com sucesso!');
+
+			},
 		});
 	});
 

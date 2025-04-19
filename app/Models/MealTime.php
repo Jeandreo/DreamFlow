@@ -56,7 +56,7 @@ class MealTime extends Model
 
         }
 
-        return $total;
+        return round($total, 2);
 
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MealItem;
+use App\Models\MealTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,12 +45,16 @@ class MealItemController extends Controller
         // Alimento
         $item = $this->repository->create($data);
 
+        // Obtém calorias da refeição
+        $meal = MealTime::find($data['meal_time_id']);
+
         // REDIRECT AND MESSAGES
         return response()->json([
             'id' => $item->id,
             'name' => $item->item()->name,
             'quantity' => ($item->quantity ?? 1),
             'calories' => $item->getCalories(),
+            'meal' => $meal->getTotalNutrient('calories'),
         ]);
 
     }
@@ -95,15 +100,15 @@ class MealItemController extends Controller
         
         // GET DATA
         $content = $this->repository->find($id);
-        $status = $content->status == true ? false : true;
 
-        // STORING NEW DATA
-        $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
+        // Obtém calorias da refeição
+        $meal = MealTime::find($content->meal_time_id);
+        
+        // Remove item
+        $content->delete();
 
         // REDIRECT AND MESSAGES
-        return redirect()
-            ->route('diets.index')
-            ->with('message', 'Dieta ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
+        return response()->json($meal->getTotalNutrient('calories'));
 
     }
 
