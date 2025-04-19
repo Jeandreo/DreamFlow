@@ -175,6 +175,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/editar/{id}', [FoodController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [FoodController::class, 'update'])->name('update');
                 Route::get('/remove/{id}', [FoodController::class, 'destroy'])->name('destroy');
+                Route::post('/registrar', [FoodController::class, 'food'])->name('eat');
             });
         });
 

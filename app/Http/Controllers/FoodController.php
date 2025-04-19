@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Food;
+use App\Models\FoodLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -146,4 +147,27 @@ class FoodController extends Controller
             ->with('message', 'Alimento ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
     }
+
+    public function food(Request $request)
+    {
+
+        // Obtém dados do formul´årio
+        $data = $request->all();
+
+        // Ajusta o valor eaten
+        $data['eaten'] = $data['eaten'] == 'true' ? true : false;
+
+        $log = FoodLog::updateOrCreate(
+            [
+                'food_id' => $data['itemId'],
+                'date' => date('Y-m-d'),
+            ],
+            [
+                'eaten' => $data['eaten'],
+            ]
+        );
+    
+        return response()->json($log);
+    }
+
 }

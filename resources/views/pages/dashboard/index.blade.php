@@ -211,7 +211,7 @@
                                 <div class="col-12 mb-2">
                                     <div class="d-flex align-items-center">
                                         <div class="form-check form-check-custom form-check-solid cursor-pointer me-2">
-                                            <input class="form-check-input cursor-pointer" type="checkbox" id="item_{{ $item->id }}"/>
+                                            <input class="form-check-input cursor-pointer check-eat" value="{{ $item->id }}" type="checkbox" id="item_{{ $item->id }}"/>
                                         </div>
                                         <label class="text-gray-700 fw-bold mb-0 fs-6 cursor-pointer" for="item_{{ $item->id }}">
                                             {{ Str::limit($item->item()->name, 35) }}
@@ -428,6 +428,29 @@
 
         // Carrega lista
         loadList();
+
+    });
+
+    // Desmarca ou marca
+    $(document).on('change', '.check-eat', function(){
+
+        // Obtém item da dieta
+        var itemId = $(this).val();
+        var eaten = $(this).is(':checked');
+
+        // AJAX
+        $.ajax({
+            type:'POST',
+            url: "{{ route('foods.eat') }}",
+            data: {
+                _token: @json(csrf_token()),
+                itemId: itemId,
+                eaten: eaten,
+            },
+            success:function(response) {
+               
+            }
+        });
 
     });
 
