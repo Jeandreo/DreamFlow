@@ -51,8 +51,14 @@ class DayOfWeek extends Model
             }
         }
 
+        // Arredonda todos os valores para 2 casas decimais
+        foreach ($totals as $key => $value) {
+            $totals[$key] = round($value, 2);
+        }
+
         return $totals;
     }
+
 
 
 }

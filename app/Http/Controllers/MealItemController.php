@@ -42,14 +42,14 @@ class MealItemController extends Controller
         }
 
         // Alimento
-        $food = $this->repository->create($data);
+        $item = $this->repository->create($data);
 
         // REDIRECT AND MESSAGES
         return response()->json([
-            'id' => $food->id,
-            'name' => $food->item()->name,
-            'quantity' => $food->quantity,
-            'calories' => $food->getCalories(),
+            'id' => $item->id,
+            'name' => $item->item()->name,
+            'quantity' => ($item->quantity ?? 1),
+            'calories' => $item->getCalories(),
         ]);
 
     }

@@ -424,7 +424,7 @@ input[type=text]:disabled {
 }
 
 .form-select-food {
-    font-weight: 400;
+    font-weight: 500;
     background-position: right 0rem center;
     background-size: 9px 12px;
 }

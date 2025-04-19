@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DayOfWeek;
 use App\Models\Diet;
 use App\Models\Meal;
 use Illuminate\Http\Request;
@@ -164,6 +165,23 @@ class DietController extends Controller
         return redirect()
             ->route('diets.index')
             ->with('message', 'Dieta ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function nutrients($id)
+    {
+        
+        // Obtém dieta
+        $diet = DayOfWeek::find($id);
+
+        // RETURN VIEW WITH DATA
+        return response()->json($diet->getTotalNutrients());
 
     }
 

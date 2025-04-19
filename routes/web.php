@@ -152,6 +152,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/editar/{id}', [DietController::class, 'edit'])->name('edit');
                 Route::put('/editar/{id}', [DietController::class, 'update'])->name('update');
                 Route::get('/remove/{id}', [DietController::class, 'destroy'])->name('destroy');
+                Route::get('/nutrientes/{id}', [DietController::class, 'nutrients'])->name('nutrients');
 
                 // Items
                 Route::prefix('comidas')->group(function () {

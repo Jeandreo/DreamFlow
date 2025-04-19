@@ -8,98 +8,106 @@
 <div class="row">
 	<div class="col">
 		@foreach ($diet->days as $day)
-		<div class="card mb-8">
+		<div class="card mb-8 card-day card-day-{{ $day->id }}" data-day="{{ $day->id }}">
 			<div class="card-body p-2">
-				<div class="card border border-gray-200">
-					<div class="card-header d-flex align-items-center justify-content-center py-0 min-h-50px bg-dark">
-						<span class="title-header fs-1 text-white text-uppercase fw-bold">
-							{{ $day->name }}
-						</span>
-					</div>
-					<div class="card-body p-0">
-						<div class="row m-0">
-							@foreach ($day->meals as $meal)
-								<div class="col p-0 @if (!$loop->last) border-end @endif">
-									<div class="h-40px bg-light d-flex align-items-center justify-content-between border-bottom px-4">
-										<p class="mb-0 text-center fs-6 text-gray-700 fw-bolder text-uppercase">
-											{{ $meal->name }}
-										</p>
-										<span class="text-gray-700 fs-8">{{ $meal->getTotalNutrient('calories') }}/kcal</span>
-									</div>
-									<div class="p-4">
-										@foreach ($meal->items ?? [] as $item)
-											<div class="d-flex justify-content-between">
-												<span class="text-gray-700 fw-bold">
-													{{ Str::limit($item->food?->name ?? $item->dish?->name, 23) }} @if ($item->quantity > 1) <span class="fw-normal text-gray-500 fs-7">{{ $item->quantity }}x</span> @endif
-												</span>
-												<span class="text-gray-600">
-													{{ floor($item->food?->calories ?? $item->dish?->getTotalCaloriesAttribute()) }}
-												</span>
-											</div>
-												<div class="separator separator-dashed my-3"></div>
-										@endforeach
-										<select class="form-select form-select-food border-0 p-0 fs-7 select-ajax add-food" data-meal="{{ $meal->id }}" data-placeholder="Adicionar">
-											<option></option>
-											{{-- RESULTS HERE --}}
-											{{-- RESULTS HERE --}}
-											{{-- RESULTS HERE --}}
-										</select>
-									</div>
-								</div>
-							@endforeach
-						</div>
-					</div>
-					@php
-						$nutrients = $day->getTotalNutrients();
-					@endphp
-					<div class="card-footer d-flex flex-wrap gap-3 py-4 justify-content-center">
-						<div class="d-flex justify-content-between align-items-center bg-light-primary rounded px-5 py-2">
-							<i class="fa-solid fa-egg text-primary fs-4 me-2"></i>
-							<div class="text-primary">
-								<span>Proteínas</span>
-								<span class="fw-bolder">{{ $nutrients['proteins'] ?? 0 }}g</span>
-							</div>
-						</div>
-						<div class="d-flex justify-content-between align-items-center bg-light-warning rounded px-5 py-2">
-							<i class="fa-solid fa-bread-slice text-warning fs-4 me-2"></i>
-							<div class="text-warning">
-								<span>Carboidratos</span>
-								<span class="fw-bolder">{{ $nutrients['carbohydrates'] ?? 0 }}g</span>
-							</div>
-						</div>
-						<div class="d-flex justify-content-between align-items-center bg-light-danger rounded px-5 py-2">
-							<i class="fa-solid fa-drumstick-bite text-danger fs-4 me-2"></i>
-							<div class="text-danger">
-								<span>Gorduras</span>
-								<span class="fw-bolder">{{ $nutrients['fats'] ?? 0 }}g</span>
-							</div>
-						</div>
-						<div class="d-flex justify-content-between align-items-center bg-light-success rounded px-5 py-2">
-							<i class="fa-solid fa-leaf text-success fs-4 me-2"></i>
-							<div class="text-success">
-								<span>Fibras</span>
-								<span class="fw-bolder">{{ $nutrients['fibers'] ?? 0 }}g</span>
-							</div>
-						</div>
-						<div class="d-flex justify-content-between align-items-center bg-light-info rounded px-5 py-2">
-							<i class="fa-solid fa-utensils text-info fs-4 me-2"></i>
-							<div class="text-info">
-								<span>Sódio</span>
-								<span class="fw-bolder">{{ $nutrients['sodium'] ?? 0 }}mg</span>
-							</div>
-						</div>
-						<div class="d-flex justify-content-between align-items-center bg-light-dark rounded px-5 py-2">
-							<i class="fa-solid fa-fire text-gray-700 fs-4 me-2"></i>
-							<div class="text-gray-700">
-								<span>Calorias</span>
-								<span class="fw-bolder">{{ $nutrients['calories'] ?? 0 }}kcal</span>
-							</div>
-						</div>
-					</div>
-	
+			  <div class="card border border-gray-200">
+				<div class="card-header d-flex align-items-center justify-content-center py-0 min-h-50px bg-dark">
+				  <span class="title-header fs-1 text-white text-uppercase fw-bold">
+					{{ $day->name }}
+				  </span>
 				</div>
+				<div class="card-body p-0">
+				  <div class="row m-0 d-flex align-items-stretch"> 
+					@foreach ($day->meals as $meal)
+					  <div class="col-12 col-xl p-0 d-flex flex-column @if (!$loop->last) border-end @endif">
+						<div class="h-40px bg-light d-flex align-items-center justify-content-center border-bottom p-4">
+						  <p class="mb-0 text-center fs-6 text-gray-700 fw-bolder text-uppercase">
+							{{ $meal->name }}
+						  </p>
+						</div>
+						<div class="items p-4 d-flex flex-column" style="min-height: 1px; height: 100%;">
+						  @foreach ($meal->items ?? [] as $item)
+							<div class="d-flex justify-content-between">
+							  <span class="text-gray-700 fw-bold">
+								{{ Str::limit($item->food?->name ?? $item->dish?->name, 23) }} @if ($item->quantity > 1) <span class="fw-normal text-gray-500 fs-7">{{ $item->quantity }}x</span> @endif
+							  </span>
+							  <span class="text-gray-600">
+								{{ floor($item->food?->calories ?? $item->dish?->getTotalCaloriesAttribute()) }}
+							  </span>
+							</div>
+							<div class="separator separator-dashed my-3"></div>
+						  @endforeach
+						  
+						  <!-- Espaço flexível que empurra o total para baixo -->
+						  <div class="flex-grow-1"></div>
+						  
+						  <!-- Container do meal-total fixo no rodapé -->
+						  <div class="sticky-bottom">
+							<div class="d-flex align-items-center justify-content-between mb-4 p-2 px-4 bg-light rounded meal-total">
+							  <span class="text-gray-700 fs-8 text-uppercase fw-bold">Total</span>
+							  <span class="text-gray-600 fs-7 fw-semibold">{{ $meal->getTotalNutrient('calories') }}/kcal</span>
+							</div>
+							<div class="px-4">
+							  <select class="form-select form-select-food border-0 p-0 fs-7 select-ajax add-food" data-meal="{{ $meal->id }}" data-placeholder="Adicionar">
+								<option></option>
+							  </select>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					@endforeach
+				  </div>
+				</div>
+				@php
+				  $nutrients = $day->getTotalNutrients();
+				@endphp
+				<div class="card-footer d-flex flex-wrap gap-3 py-4 justify-content-center">
+				  <div class="d-flex justify-content-between align-items-center bg-light-primary rounded px-5 py-2">
+					<i class="fa-solid fa-egg text-primary fs-4 me-2"></i>
+					<div class="text-primary">
+					  <span>Proteínas</span>
+					  <span class="fw-bolder qnt-proteins">{{ $nutrients['proteins'] ?? 0 }}g</span>
+					</div>
+				  </div>
+				  <div class="d-flex justify-content-between align-items-center bg-light-warning rounded px-5 py-2">
+					<i class="fa-solid fa-bread-slice text-warning fs-4 me-2"></i>
+					<div class="text-warning">
+					  <span>Carboidratos</span>
+					  <span class="fw-bolder qnt-carbohydrates">{{ $nutrients['carbohydrates'] ?? 0 }}g</span>
+					</div>
+				  </div>
+				  <div class="d-flex justify-content-between align-items-center bg-light-danger rounded px-5 py-2">
+					<i class="fa-solid fa-drumstick-bite text-danger fs-4 me-2"></i>
+					<div class="text-danger">
+					  <span>Gorduras</span>
+					  <span class="fw-bolder qnt-fats">{{ $nutrients['fats'] ?? 0 }}g</span>
+					</div>
+				  </div>
+				  <div class="d-flex justify-content-between align-items-center bg-light-success rounded px-5 py-2">
+					<i class="fa-solid fa-leaf text-success fs-4 me-2"></i>
+					<div class="text-success">
+					  <span>Fibras</span>
+					  <span class="fw-bolder qnt-fibers">{{ $nutrients['fibers'] ?? 0 }}g</span>
+					</div>
+				  </div>
+				  <div class="d-flex justify-content-between align-items-center bg-light-info rounded px-5 py-2">
+					<i class="fa-solid fa-utensils text-info fs-4 me-2"></i>
+					<div class="text-info">
+					  <span>Sódio</span>
+					  <span class="fw-bolder qnt-sodium">{{ $nutrients['sodium'] ?? 0 }}mg</span>
+					</div>
+				  </div>
+				  <div class="d-flex justify-content-between align-items-center bg-light-dark rounded px-5 py-2">
+					<i class="fa-solid fa-fire text-gray-700 fs-4 me-2"></i>
+					<div class="text-gray-700">
+					  <span>Calorias</span>
+					  <span class="fw-bolder qnt-calories">{{ $nutrients['calories'] ?? 0 }}kcal</span>
+					</div>
+				  </div>
+				</div>
+			  </div>
 			</div>
-		</div>
+		  </div>
 		@endforeach
 	</div>
 	<div class="col-2">
@@ -137,34 +145,103 @@
 		@endforeach
 	</div>
 </div>
-	@include('pages.nutrition.diets._resume')
+@include('pages.nutrition.diets._resume')
+<style>
+	.sticky-bottom {
+	  position: sticky;
+	  bottom: 0;
+	  background: white;
+	  padding-top: 1rem;
+	  margin-top: auto;
+	}
+	
+	.items {
+	  position: relative;
+	  padding-bottom: 80px;
+	}
+	
+	.flex-grow-1 {
+	  flex-grow: 1;
+	}
+  </style>
 @endsection
 
 @section('custom-footer')
 @parent
 <script>
 	selectOptionsAjax();
-	$(document).on('change', '.add-food', function(){
 
+	/**
+	 * Adiciona alimento a dieta
+	 */
+	$(document).on('change', '.add-food', function() {
 		// Obtém dados
-		var foodId 	= $(this).val();
-		var mealId 	= $(this).data('meal');
+		var foodId = $(this).val();
+		var mealId = $(this).data('meal');
+		var dayId = $(this).closest('.card-day').data('day');
 
-        // AJAX
-        $.ajax({
+		// Se não houver alimento selecionado, não faz nada
+		if (!foodId) return;
+
+		// Seleciona container
+		var container = $(this).closest('.items');
+
+		// AJAX
+		$.ajax({
 			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'POST',
-            url: "{{ route('diets.items.store') }}",
-            data: {
-				meal_time_id: mealId,	
-				food_dish: foodId,	
+			type: 'POST',
+			url: "{{ route('diets.items.store') }}",
+			data: {
+				meal_time_id: mealId,    
+				food_dish: foodId,    
 			},
-            success: function(data){
-                console.log('sucesso');
-            }
-        });
+			success: function(data) {
+				// Cria o elemento a ser inserido
+				var $html = $('<div class="d-flex justify-content-between">' +
+					'<span class="text-gray-700 fw-bold food-name">' + 
+					(data.name.length > 23 ? data.name.slice(0, 23) + '…' : data.name) +
+					'</span>' +
+					'<span class="text-gray-600 food-kcal">' + 
+					Math.floor(data.calories) +
+					'</span>' +
+					'</div>' +
+					'<div class="separator separator-dashed my-3"></div>');
 
+				// Insere antes do select
+				container.find('.flex-grow-1').before($html);
 
+				// Limpa o select usando métodos do Select2
+				$(this).val(null).trigger('change');
+
+				// Atualiza total de calorias da refeição
+				loadNutrients(dayId);
+			}.bind(this) // Mantém o contexto do 'this'
+		});
 	});
+
+
+	// Carrega os nutrientes do dia
+	function loadNutrients(id){
+		// AJAX
+		$.ajax({
+			type: 'GET',
+			url: "{{ route('diets.nutrients', '') }}/" + id,
+			success: function(data){
+
+				// Obtém o quadro
+				var card = $('.card-day-' + id);
+
+				// Atualiza os valores
+				card.find('.qnt-calories').text(data['calories'] + 'kcal');
+				card.find('.qnt-sodium').text(data['sodium'] + 'mg');
+				card.find('.qnt-proteins').text(data['proteins'] + 'g');
+				card.find('.qnt-carbohydrates').text(data['carbohydrates'] + 'g');
+				card.find('.qnt-fats').text(data['fats'] + 'g');
+				card.find('.qnt-fibers').text(data['fibers'] + 'g');
+
+			}
+		});
+	}
+
 </script>
 @endsection
