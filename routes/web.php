@@ -158,7 +158,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::prefix('comidas')->group(function () {
                     Route::name('items.')->group(function () {
                         Route::post('/adicionar', [MealItemController::class, 'store'])->name('store');
-                        Route::put('/editar/{id}', [MealItemController::class, 'update'])->name('update');
                         Route::get('/remove/{id}', [MealItemController::class, 'destroy'])->name('destroy');
                     });
                 });

@@ -52,40 +52,12 @@ class MealItemController extends Controller
         return response()->json([
             'id' => $item->id,
             'name' => $item->item()->name,
-            'quantity' => ($item->quantity ?? 1),
+            'type' => $item->item()->type,
+            'quantity' => $item->item()->quantity,
+            'quantity' => ($item->item()->quantity ?? 1),
             'calories' => $item->getCalories(),
             'meal' => $meal->getTotalNutrient('calories'),
         ]);
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-
-        // VERIFY IF EXISTS
-        if(!$content = $this->repository->find($id))
-        return redirect()->back();
-
-        // GET FORM DATA
-        $data = $request->all();
-
-        // UPDATE BY
-        $data['updated_by'] = Auth::id();
-        
-        // STORING NEW DATA
-        $content->update($data);
-
-        // REDIRECT AND MESSAGES
-        return redirect()
-            ->route('diets.index')
-            ->with('message', 'Dieta editado com sucesso.');
 
     }
 

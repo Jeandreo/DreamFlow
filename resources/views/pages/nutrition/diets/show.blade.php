@@ -31,11 +31,11 @@
 								<span class="text-gray-700 fw-bold d-flex align-items-center">
 									{{ Str::limit($item->food?->name ?? $item->dish?->name, 23) }}
 									@if ($item->food->quantity > 1)
-									@if ($item->food->type == 'unidade')
-									<span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->food->quantity }}uni</span>
-									@else
-									<span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->food->quantity }}g</span>
-									@endif
+										@if ($item->food->type == 'unidade')
+											<span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->food->quantity }}uni</span>
+										@else
+											<span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->food->quantity }}g</span>
+										@endif
 									@endif
 								</span>
 								<span class="text-gray-600">
@@ -183,20 +183,30 @@
 				food_dish: foodId,    
 			},
 			success: function(data) {
-
 				// Atualiza as calorias do dia
 				container.find('.meal-calories').text(data['meal']);
 				
-				// Cria o elemento a ser inserido
-				var $html = $('<div class="d-flex justify-content-between">' +
-					'<span class="text-gray-700 fw-bold food-name">' + 
+				// Cria o elemento a ser inserido com todas as regras de estilo
+				var quantityHtml = '';
+				if (data.quantity > 1) {
+					if (data.type == 'unidade') {
+						quantityHtml = '<span class="fw-normal text-gray-500 fs-7 ms-2">' + data.quantity + 'uni</span>';
+					} else {
+						quantityHtml = '<span class="fw-normal text-gray-500 fs-7 ms-2">' + data.quantity + 'g</span>';
+					}
+				}
+				
+				var $html = $('<div class="d-flex justify-content-between opacity-1 position-relative">' +
+					'<span class="text-gray-700 fw-bold d-flex align-items-center">' + 
 					(data.name.length > 23 ? data.name.slice(0, 23) + '…' : data.name) +
+					quantityHtml +
 					'</span>' +
-					'<span class="text-gray-600 food-kcal">' + 
+					'<span class="text-gray-600">' + 
 					Math.floor(data.calories) +
 					'</span>' +
+					'<i class="fa-solid fa-circle-xmark text-danger text-hover-primary remove-item cursor-pointer opacity-0 p-1 shadow bg-white rounded-circle position-absolute" style="top: 0px;right: -23px;" data-item="' + data.id + '"></i>' +
 					'</div>' +
-					'<div class="separator separator-dashed my-3"></div>');
+					'<div class="separator separator-dashed my-2"></div>');
 
 				// Insere antes do select
 				container.find('.flex-grow-1').before($html);
@@ -206,8 +216,7 @@
 
 				// Atualiza total de calorias da refeição
 				loadNutrients(dayId);
-
-			}.bind(this) // Mantém o contexto do 'this'
+			}.bind(this)
 		});
 	});
 
