@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('food_logs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('diet_id')->constrained()->onDelete('cascade');
+            $table->foreignId('meal_time_id')->constrained()->onDelete('cascade');
             $table->foreignId('food_id')->constrained()->onDelete('cascade');
             $table->date('date');
             $table->boolean('eaten')->default(false);

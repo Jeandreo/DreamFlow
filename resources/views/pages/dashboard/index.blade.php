@@ -211,7 +211,7 @@
                                 <div class="col-12 mb-2">
                                     <div class="d-flex align-items-center">
                                         <div class="form-check form-check-custom form-check-solid cursor-pointer me-2">
-                                            <input class="form-check-input cursor-pointer check-eat" value="{{ $item->id }}" type="checkbox" id="item_{{ $item->id }}"/>
+                                            <input class="form-check-input cursor-pointer check-eat" @if(in_array($item->id, $diet->eatToday()[$meal['id']])) checked @endif  value="{{ $item->id }}" data-meal="{{ $meal->id }}" type="checkbox" id="item_{{ $item->id }}"/>
                                         </div>
                                         <label class="text-gray-700 fw-bold mb-0 fs-6 cursor-pointer" for="item_{{ $item->id }}">
                                             {{ Str::limit($item->item()->name, 35) }}
@@ -436,6 +436,7 @@
 
         // Obtém item da dieta
         var itemId = $(this).val();
+        var mealId = $(this).data('meal');
         var eaten = $(this).is(':checked');
 
         // AJAX
@@ -445,10 +446,11 @@
             data: {
                 _token: @json(csrf_token()),
                 itemId: itemId,
+                mealId: mealId,
                 eaten: eaten,
             },
             success:function(response) {
-               
+                toastr.success('Olhaaa o shapee vindoo!!!');
             }
         });
 

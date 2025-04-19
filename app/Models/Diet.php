@@ -33,4 +33,19 @@ class Diet extends Model
 
     }
 
+    public function eatToday() {
+
+        $logs = FoodLog::where('diet_id', $this->id)
+        ->where('date', date('Y-m-d'))
+        ->where('eaten', true)
+        ->get()
+        ->groupBy('meal_time_id')
+        ->map(function ($group) {
+            return $group->pluck('food_id')->toArray();
+        })
+        ->toArray();        
+
+        return $logs;
+    }
+
 }

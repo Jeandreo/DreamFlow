@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Diet;
 use App\Models\Food;
 use App\Models\FoodLog;
 use Illuminate\Http\Request;
@@ -154,11 +155,16 @@ class FoodController extends Controller
         // Obtém dados do formul´årio
         $data = $request->all();
 
+        // Obtém a dieta ativa do usuário
+        $diet = Diet::where('status', true)->first();
+
         // Ajusta o valor eaten
         $data['eaten'] = $data['eaten'] == 'true' ? true : false;
 
         $log = FoodLog::updateOrCreate(
             [
+                'diet_id' => $diet->id,
+                'meal_time_id' => $data['mealId'],
                 'food_id' => $data['itemId'],
                 'date' => date('Y-m-d'),
             ],

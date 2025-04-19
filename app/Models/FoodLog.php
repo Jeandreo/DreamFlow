@@ -12,6 +12,8 @@ class FoodLog extends Model
     protected $table = 'food_logs';
 
     protected $fillable = [
+        'diet_id',
+        'meal_time_id',
         'food_id',
         'date',
         'eaten',
