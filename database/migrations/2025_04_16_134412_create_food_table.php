@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('carbohydrates')->default(0);
             $table->decimal('sodium')->default(0);
             $table->decimal('fats')->default(0);
-            $table->decimal('fiber')->default(0);
+            $table->decimal('fibers')->default(0);
             $table->text('notes')->nullable();
             $table->boolean('status')->default(true);
             $table->integer('created_by');

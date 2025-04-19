@@ -1083,7 +1083,7 @@ class DatabaseSeeder extends Seeder
        });
 
        // Cria dietas
-       $diets = Diet::factory()->count(5)->create();
+       $diets = Diet::factory()->count(1)->create();
 
        // Dias da semana e refeições padrão
        $days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
@@ -1110,7 +1110,7 @@ class DatabaseSeeder extends Seeder
            foreach ($diet->days as $day) {
                foreach ($day->meals as $mealTime) {
                    // Define entre 2 e 4 itens para essa refeição
-                   $itemCount = rand(2, 4);
+                   $itemCount = rand(1, 2);
 
                    for ($i = 0; $i < $itemCount; $i++) {
                        $isFood = rand(0, 1);

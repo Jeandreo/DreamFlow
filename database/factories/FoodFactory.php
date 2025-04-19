@@ -78,7 +78,8 @@ class FoodFactory extends Factory
             'proteins' => $this->faker->randomFloat(2, 0, 30),
             'carbohydrates' => $this->faker->randomFloat(2, 0, 50),
             'fats' => $this->faker->randomFloat(2, 0, 20),
-            'fiber' => $this->faker->randomFloat(2, 0, 10),
+            'fibers' => $this->faker->randomFloat(2, 0, 10),
+            'sodium' => $this->faker->randomFloat(2, 0, 10),
             'notes' => $this->faker->optional()->sentence(),
             'created_by' => 1,
         ];

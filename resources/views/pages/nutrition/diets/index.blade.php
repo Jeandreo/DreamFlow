@@ -29,7 +29,7 @@
 										</a>
 									</td>
 									<td>
-										{{ $content->items->count() }}
+										{{-- {{ $content->items->count() }} --}}
 									</td>
 									<td class="text-center">
 										@if($content->status == 1) 

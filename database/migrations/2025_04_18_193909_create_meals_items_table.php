@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('meal_time_id')->onDelete('cascade');
             $table->foreignId('food_id')->nullable()->onDelete('cascade');
             $table->foreignId('dish_id')->nullable()->onDelete('cascade');
-            $table->float('quantity')->nullable();
+            $table->float('quantity')->default(1);
             $table->timestamps();
         });
     }
