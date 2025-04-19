@@ -41,10 +41,16 @@ class MealItemController extends Controller
             $data['dish_id'] = $item[1];
         }
 
-        $this->repository->create($data);
+        // Alimento
+        $food = $this->repository->create($data);
 
         // REDIRECT AND MESSAGES
-        return response()->json('Alimento adicionado com sucesso.');
+        return response()->json([
+            'id' => $food->id,
+            'name' => $food->item()->name,
+            'quantity' => $food->quantity,
+            'calories' => $food->getCalories(),
+        ]);
 
     }
 

@@ -13,7 +13,7 @@
 						<thead>
 							<tr class="fw-bold fs-6 text-gray-800 px-7">
 								<th>Nome</th>
-								{{-- <th>Categoria</th> --}}
+								<th>Tipo de Unidade</th>
 								<th>Proteínas (g)</th>
 								<th>Carboidratos (g)</th>
 								<th>Gorduras (g)</th>
@@ -32,7 +32,7 @@
 											{{ $content->name }}
 										</a>
 									</td>
-									{{-- <td>{{ $content->type }}</td> --}}
+									<td>{{ $content->type }}</td>
 									<td>{{ $content->proteins }}</td>
 									<td>{{ $content->carbohydrates }}</td>
 									<td>{{ $content->fats }}</td>

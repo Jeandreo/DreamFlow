@@ -19,6 +19,29 @@ class MealItem extends Model
         'quantity'
     ];
 
+    public function item()
+    {
+        if ($this->food_id) {
+            return $this->food;
+        } else {
+            return $this->dish;
+        }
+    }
+
+    public function getCalories()
+    {
+
+        if ($this->food) {
+            return $this->food->calories * ($this->quantity ?? 1);
+        }
+
+        if ($this->dish) {
+            return $this->dish->getTotalCaloriesAttribute();
+        }
+
+        return 0;
+    }
+
     public function diet()
     {
         return $this->belongsTo(Diet::class);

@@ -72,7 +72,7 @@ class FoodFactory extends Factory
                 'Queijo Parmesão'
             ]
             ),
-            'category' => $this->faker->randomElement(['Proteína', 'Carboidrato', 'Gordura', 'Vegetal', 'Fruta']),
+            'type' => $this->faker->randomElement(['unidade', '100g']),
             'base_quantity' => '100g',
             'calories' => $this->faker->randomFloat(2, 20, 300),
             'proteins' => $this->faker->randomFloat(2, 0, 30),
