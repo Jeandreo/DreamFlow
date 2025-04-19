@@ -13,7 +13,7 @@
 						<thead>
 							<tr class="fw-bold fs-6 text-gray-800 px-7">
 								<th>Nome</th>
-								<th>Pratos/Alimentos</th>
+								<th>Meta</th>
 								<th class="text-center">Status</th>
 								<th class="text-center" width="165px">
 									<span>Ações</span>
@@ -29,7 +29,9 @@
 										</a>
 									</td>
 									<td>
-										{{-- {{ $content->items->count() }} --}}
+										<span class="text-gray-600">
+											{{ $content->goal }}
+										</span>
 									</td>
 									<td class="text-center">
 										@if($content->status == 1) 
