@@ -211,7 +211,7 @@
                                 <div class="col-12 mb-2">
                                     <div class="d-flex align-items-center">
                                         <div class="form-check form-check-custom form-check-solid cursor-pointer me-2">
-                                            <input class="form-check-input cursor-pointer check-eat" @if(in_array($item->id, $diet->eatToday()[$meal['id']])) checked @endif  value="{{ $item->id }}" data-meal="{{ $meal->id }}" type="checkbox" id="item_{{ $item->id }}"/>
+                                            <input class="form-check-input cursor-pointer check-eat" @if(isset($diet->eatToday()[$meal['id']]) && in_array($item->id, $diet->eatToday()[$meal['id']])) checked @endif  value="{{ $item->id }}" data-meal="{{ $meal->id }}" type="checkbox" id="item_{{ $item->id }}"/>
                                         </div>
                                         <label class="text-gray-700 fw-bold mb-0 fs-6 cursor-pointer" for="item_{{ $item->id }}">
                                             {{ Str::limit($item->item()->name, 35) }}
