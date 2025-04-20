@@ -48,14 +48,13 @@ class MealItemController extends Controller
         // Obtém calorias da refeição
         $meal = MealTime::find($data['meal_time_id']);
 
+        // Renderiza o html
+        $template = view('pages.nutrition.diets._template')->with('item', $item)->render();
+
         // REDIRECT AND MESSAGES
         return response()->json([
             'id' => $item->id,
-            'name' => $item->item()->name,
-            'type' => $item->item()->type,
-            'quantity' => $item->item()->quantity,
-            'quantity' => ($item->item()->quantity ?? 1),
-            'calories' => $item->getCalories(),
+            'html' => $template,
             'meal' => $meal->getTotalNutrient('calories'),
         ]);
 

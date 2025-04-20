@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="row">
-	<div class="col-12 col-md">
+	<div class="col-12">
 		@foreach ($diet->days as $day)
 		<div class="card mb-8 card-day card-day-{{ $day->id }}" data-day="{{ $day->id }}">
 			<div class="card-body p-2">
@@ -26,38 +26,22 @@
 							</p>
 						</div>
 						<div class="items p-4 d-flex flex-column" style="min-height: 1px; height: 100%;">
-						  @foreach ($meal->items ?? [] as $item)
-							<div class="d-flex justify-content-between opacity-1 position-relative">
-								<span class="text-gray-700 fw-bold d-flex align-items-center">
-									{{ Str::limit($item->food?->name ?? $item->dish?->name, 23) }}
-									@if ($item->food->quantity > 1)
-										@if ($item->food->type == 'unidade')
-											<span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->food->quantity }}uni</span>
-										@else
-											<span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->food->quantity }}g</span>
-										@endif
-									@endif
-								</span>
-								<span class="text-gray-600">
-									{{ floor($item->food?->calories ?? $item->dish?->getTotalCaloriesAttribute()) }}
-								</span>
-								<i class="fa-solid fa-circle-xmark text-danger text-hover-primary remove-item cursor-pointer opacity-0 p-1 shadow bg-white rounded-circle position-absolute" style="top: 0px;right: -23px;" data-item="{{ $item->id }}"></i>
+							@foreach ($meal->items ?? [] as $item)
+									@include('pages.nutrition.diets._template')
+							@endforeach
+							<div class="flex-grow-1"></div>
+							<div class="">
+								<div class="d-flex align-items-center justify-content-between mb-4 p-2 px-4 bg-light rounded meal-total">
+									<span class="text-gray-700 fs-8 text-uppercase fw-bold">Total</span>
+									<span class="text-gray-600 fs-7 fw-semibold">
+									<span class="meal-calories">{{ $meal->getTotalNutrient('calories') }}</span>/kcal</span>
+								</div>
+								<div class="px-4">
+									<select class="form-select form-select-food border-0 p-0 fs-7 select-ajax add-food" data-meal="{{ $meal->id }}" data-placeholder="Adicionar">
+										<option></option>
+									</select>
+								</div>
 							</div>
-							<div class="separator separator-dashed my-2"></div>
-						  @endforeach
-						  <div class="flex-grow-1"></div>
-						  <div class="">
-							<div class="d-flex align-items-center justify-content-between mb-4 p-2 px-4 bg-light rounded meal-total">
-							  <span class="text-gray-700 fs-8 text-uppercase fw-bold">Total</span>
-							  <span class="text-gray-600 fs-7 fw-semibold">
-								<span class="meal-calories">{{ $meal->getTotalNutrient('calories') }}</span>/kcal</span>
-							</div>
-							<div class="px-4">
-							  <select class="form-select form-select-food border-0 p-0 fs-7 select-ajax add-food" data-meal="{{ $meal->id }}" data-placeholder="Adicionar">
-								<option></option>
-							  </select>
-							</div>
-						  </div>
 						</div>
 					  </div>
 					@endforeach
@@ -183,33 +167,12 @@
 				food_dish: foodId,    
 			},
 			success: function(data) {
+
 				// Atualiza as calorias do dia
 				container.find('.meal-calories').text(data['meal']);
-				
-				// Cria o elemento a ser inserido com todas as regras de estilo
-				var quantityHtml = '';
-				if (data.quantity > 1) {
-					if (data.type == 'unidade') {
-						quantityHtml = '<span class="fw-normal text-gray-500 fs-7 ms-2">' + data.quantity + 'uni</span>';
-					} else {
-						quantityHtml = '<span class="fw-normal text-gray-500 fs-7 ms-2">' + data.quantity + 'g</span>';
-					}
-				}
-				
-				var $html = $('<div class="d-flex justify-content-between opacity-1 position-relative">' +
-					'<span class="text-gray-700 fw-bold d-flex align-items-center">' + 
-					(data.name.length > 23 ? data.name.slice(0, 23) + '…' : data.name) +
-					quantityHtml +
-					'</span>' +
-					'<span class="text-gray-600">' + 
-					Math.floor(data.calories) +
-					'</span>' +
-					'<i class="fa-solid fa-circle-xmark text-danger text-hover-primary remove-item cursor-pointer opacity-0 p-1 shadow bg-white rounded-circle position-absolute" style="top: 0px;right: -23px;" data-item="' + data.id + '"></i>' +
-					'</div>' +
-					'<div class="separator separator-dashed my-2"></div>');
 
 				// Insere antes do select
-				container.find('.flex-grow-1').before($html);
+				container.find('.flex-grow-1').before(data['html']);
 
 				// Limpa o select usando métodos do Select2
 				$(this).val(null).trigger('change');
