@@ -227,7 +227,12 @@
 		// Obtém dados
 		var itemId = $(this).data('item');
 		var container = $(this).closest('.items');
+		
+		// Remove o item e o separador seguinte
 		var $itemElement = $(this).closest('.d-flex.justify-content-between');
+		$itemElement.next('.separator').remove(); // Remove o separador
+		$itemElement.remove(); // Remove o item
+		
 		var dayId = $(this).closest('.card-day').data('day');
 
 		// AJAX
@@ -239,10 +244,6 @@
 
 				// Atualiza as calorias do dia
 				container.find('.meal-calories').text(caloriesMeal);
-
-				// Remove o item e o separador seguinte
-				$itemElement.next('.separator').remove(); // Remove o separador
-				$itemElement.remove(); // Remove o item
 				
 				// Atualiza os totais
 				loadNutrients(dayId);
