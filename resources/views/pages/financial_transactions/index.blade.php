@@ -427,19 +427,11 @@
 
             // AJAX
             $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 type: 'PUT',
-                url: "{{ route('financial.transactions.destroy') }}",
-                data: {
-                    id: transactionID
-                },
+                url: "{{ route('financial.transactions.destroy', '') }}/" + transactionID,
                 success: function(response) {
-
-                    // RELOAD TABLE
                     table.DataTable().ajax.reload();
-
                 }
             });
 

@@ -443,11 +443,11 @@ class FinancialTransactionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request, $id)
     {
 
         // VERIFY IF EXISTS
-        if (!$content = $this->repository->find($request->id))
+        if (!$content = $this->repository->find($id))
             return redirect()->back();
 
         // VERIFY RECURRENCE
