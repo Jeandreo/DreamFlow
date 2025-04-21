@@ -236,7 +236,7 @@
                             @endif
                             @endforeach
                         @else
-                        <div class="bg-light rounded d-flex align-items-center justify-content-center h-225px">
+                        <div class="bg-light rounded d-flex align-items-center justify-content-center h-175px">
                             <div class="text-center">
                                 <p class="fw-bold text-gray-700 fs-4 mb-0 text-uppercase">{{ $meal->name }}</p>
                                 <p class="text-gray-600 fs-6">Monte sua dieta em alimentação.</p>
@@ -255,29 +255,27 @@
                 </div>
                 @endif
             </div>
-            <div class="card-footer">
-                @if(Auth::user()->lastBody())
+            <div class="card-footer pt-1 pb-2">
                 <div class="row">
                     <div class="col-6">
                         <p class="fw-bold text-gray-700 mb-1">
                             Consumido até agora: <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" title="Quantia de calorias que você consumiu ao longo do dia."></i><br>
-                            <span class="fw-bolder text-success">{{ Auth::user()->lastBody->bmr }}<span class="fw-normal text-gray-600 fs-8">/kcal</span></span>
+                            <span class="fw-bolder text-success">{{ $diet->caloriesEatenToday() }}<span class="fw-normal text-gray-600 fs-8">/kcal</span></span>
                         </p>
                     </div>
                     <div class="col-3">
                         <p class="fw-bold text-gray-700 mb-1">
                             TMB: <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" title="É a quantidade de calorias que seu corpo gasta em repouso absoluto para manter funções básicas vitais."></i><br>
-                            <span class="fw-bolder text-success">{{ Auth::user()->lastBody->bmr }}<span class="fw-normal text-gray-600 fs-8">/kcal</span></span></span>
+                            <span class="fw-bolder text-success">{{ Auth::user()->lastBody->bmr ?? '-' }}<span class="fw-normal text-gray-600 fs-8">/kcal</span></span></span>
                         </p>
                     </div>
                     <div class="col-3">
                         <p class="fw-bold text-gray-700 mb-1">
                             GED:<i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" title="Gasto Energético Diário: É o total de calorias que seu corpo gasta considerando a taxa base + quantidade gasta por exercícios."></i><br>
-                            <span class="fw-bolder text-success">{{ Auth::user()->lastBody->total_calories }}<span class="fw-normal text-gray-600 fs-8">/kcal</span></span>
+                            <span class="fw-bolder text-success">{{ Auth::user()->lastBody->total_calories ?? '-' }}<span class="fw-normal text-gray-600 fs-8">/kcal</span></span>
                         </p>
                     </div>
                 </div>
-                @endif
             </div>
         </div>
     </div>

@@ -72,4 +72,16 @@ class Diet extends Model
         return $logs;
     }
 
+    public function caloriesEatenToday()
+    {
+        // Pega os IDs dos alimentos comidos hoje
+        $foodIds = collect($this->eatToday())
+                    ->flatten()
+                    ->unique()
+                    ->toArray();
+
+        // Soma as calorias dos alimentos
+        return Food::whereIn('id', $foodIds)->sum('calories');
+    }
+
 }
