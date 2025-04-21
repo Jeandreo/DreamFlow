@@ -175,7 +175,7 @@
         </div>
         <div class="card mb-4">
             <div class="card-body p-2">
-                <textarea class="form-control form-control-solid" name="notes" rows="3" placeholder="Anotações aqui...">{{ Auth::user()->notes }}</textarea>
+                <textarea class="form-control form-control-solid" name="notes" rows="5" placeholder="Anotações aqui...">{{ Auth::user()->notes }}</textarea>
             </div>
         </div>
     </div>
@@ -194,33 +194,52 @@
                         @endforeach
                     </ol>
                 @else
-                <a href="{{ route('nutrition.index') }}" class="btn btn-sm btn-light">
-                    Alimentação
+                <a href="{{ route('nutrition.index') }}" class="btn btn-sm btn-icon btn-light-success btn-active-primary">
+                    <i class="fa-solid fa-utensils"></i>
                 </a>
                 @endif
             </div>
             </div>
-            <div class="card-body py-6">
+            <div class="card-body pb-2 pt-1">
                 @if ($diet)
                 <div class="carousel-inner h-100">
                     @foreach ($diet->today()->meals as $key => $meal)
                     <div class="carousel-item @if($key == 0) active @endif">
-                        <div class="row">
+                        <div class="row m-0">
                             @if ($meal->items->count())
                                 @foreach ($meal->items as $item)
-                                <div class="col-12 mb-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="form-check form-check-custom form-check-solid cursor-pointer me-2">
-                                            <input class="form-check-input cursor-pointer check-eat" @if(isset($diet->eatToday()[$meal['id']]) && in_array($item->id, $diet->eatToday()[$meal['id']])) checked @endif  value="{{ $item->id }}" data-meal="{{ $meal->id }}" type="checkbox" id="item_{{ $item->id }}"/>
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <div class="form-check form-check-custom form-check-solid cursor-pointer me-2">
+                                                <input class="form-check-input cursor-pointer check-eat" @if(isset($diet->eatToday()[$meal['id']]) && in_array($item->id, $diet->eatToday()[$meal['id']])) checked @endif  value="{{ $item->id }}" data-meal="{{ $meal->id }}" type="checkbox" id="item_{{ $item->id }}"/>
+                                            </div>
+                                            <label class="d-flex justify-content-between cursor-pointer" for="item_{{ $item->id }}">
+                                                <span class="text-gray-700 fw-bold d-flex align-items-center">
+                                                    {{ Str::limit($item->item()?->name ?? $item->dish?->name, 23) }}
+                                                    @if ($item->item()->quantity > 1)
+                                                        @if ($item->item()->type == 'unidade')
+                                                            <span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->item()->quantity }}uni</span>
+                                                        @else
+                                                            <span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->item()->quantity }}g</span>
+                                                        @endif
+                                                    @endif
+                                                </span>
+                                            </label>
                                         </div>
-                                        <label class="text-gray-700 fw-bold mb-0 fs-6 cursor-pointer" for="item_{{ $item->id }}">
-                                            {{ Str::limit($item->item()->name, 35) }}
-                                        </label>
+                                        <div>
+                                            <span class="text-gray-600">
+                                                {{ floor($item->item()->calories) }}/kcal
+                                            </span>
+                                        </div>
                                     </div>
+                                    @if (!$loop->last)
+                                    <div class="separator separator-dashed my-2"></div>
+                                    @endif
                                 </div>
                                 @endforeach
                             @else
-                            <div class="bg-light rounded d-flex align-items-center justify-content-center h-150px">
+                            <div class="bg-light rounded d-flex align-items-center justify-content-center h-225px">
                                 <div class="text-center">
                                     <p class="fw-bold text-gray-700 fs-4 mb-0 text-uppercase">{{ $meal->name }}</p>
                                     <p class="text-gray-600 fs-6">Monte sua dieta em alimentação.</p>
@@ -232,7 +251,7 @@
                     @endforeach
                 </div>
                 @else
-                <div class="bg-light rounded py-3 px-7 h-150px d-flex justify-content-center align-items-center">
+                <div class="bg-light rounded py-3 px-7 h-225px d-flex justify-content-center align-items-center">
                     <div class="text-center">
                         <p class="fw-bold text-gray-700 fs-6 mb-0 lh-1">DIETA NÃO PROGRAMADA 😔</p>
                         <p class="text-gray-600 fs-6">Como você quer ficar saradão desse jeito?</p>
@@ -282,7 +301,7 @@
                         </div>
                     @endforeach
                 @else
-                <div class="bg-light rounded d-flex align-items-center justify-content-center h-150px">
+                <div class="bg-light rounded d-flex align-items-center justify-content-center h-225px">
                     <div class="text-center">
                         <p class="fw-bold text-gray-700 fs-3 mb-1">EIIIIITAAA VOCÊ ESTA SEM DESAFIOS 😱</p>
                         <p class="text-gray-600 fs-5">Para você ter um desafio, você precisa ter uma tarefa.</p>
@@ -313,7 +332,7 @@
                     @if ($lists->count())
                         @foreach ($lists as $key => $list)
                         <div class="carousel-item @if($key == 0)active @endif">
-                            <div class="row h-150px">
+                            <div class="row">
                                 @if ($list->items->count())
                                     @foreach ($list->items()->get()->take(6) as $item)
                                     <div class="col-6 mb-2">
@@ -333,7 +352,7 @@
                                     </div>
                                     @endforeach
                                 @else
-                                <div class="bg-light rounded d-flex align-items-center justify-content-center h-150px">
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center h-225px">
                                     <div class="text-center">
                                         <p class="fw-bold text-gray-700 fs-4 mb-0">SEM ITENS NA LISTA 🧐</p>
                                         <p class="text-gray-600 fs-6">Adicione seus items e gerencie suas ideias aqui.</p>

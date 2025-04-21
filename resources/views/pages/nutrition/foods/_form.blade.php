@@ -17,27 +17,27 @@
     </div>
     <div class="col-2 mb-5">
         <label class="form-label fw-bold required">Calorias:</label>
-        <input type="texta" class="form-control form-control-solid input-calorias" placeholder="Ex: 150" name="calories" value="{{ isset($content) ? number_format($content->calories, 1, '.', '') : old('calories') }}" required/>
+        <input type="texta" class="form-control form-control-solid input-one" placeholder="Ex: 150" name="calories" value="{{ isset($content) ? number_format($content->calories, 1, '.', '') : old('calories') }}" required/>
     </div>
     <div class="col-2 mb-5">
         <label class="form-label fw-bold">Proteínas (g):</label>
-        <input type="texta" step="0.1" class="form-control form-control-solid input-calorias" placeholder="Ex: 10.5" name="proteins" value="{{ isset($content) ? number_format($content->proteins, 1, '.', '') : old('proteins') }}" />
+        <input type="texta" step="0.1" class="form-control form-control-solid input-one" placeholder="Ex: 10.5" name="proteins" value="{{ isset($content) ? number_format($content->proteins, 1, '.', '') : old('proteins') }}" />
     </div>
     <div class="col-2 mb-5">
         <label class="form-label fw-bold">Carboidratos (g):</label>
-        <input type="texta" step="0.1" class="form-control form-control-solid input-calorias" placeholder="Ex: 20.3" name="carbohydrates" value="{{ isset($content) ? number_format($content->carbohydrates, 1, '.', '') : old('carbohydrates') }}" />
+        <input type="texta" step="0.1" class="form-control form-control-solid input-one" placeholder="Ex: 20.3" name="carbohydrates" value="{{ isset($content) ? number_format($content->carbohydrates, 1, '.', '') : old('carbohydrates') }}" />
     </div>
     <div class="col-2 mb-5">
         <label class="form-label fw-bold">Gorduras (g):</label>
-        <input type="texta" step="0.1" class="form-control form-control-solid input-calorias" placeholder="Ex: 5.7" name="fats" value="{{ isset($content) ? number_format($content->fats, 1, '.', '') : old('fats') }}" />
+        <input type="texta" step="0.1" class="form-control form-control-solid input-one" placeholder="Ex: 5.7" name="fats" value="{{ isset($content) ? number_format($content->fats, 1, '.', '') : old('fats') }}" />
     </div>
     <div class="col-2 mb-5">
         <label class="form-label fw-bold">Sódio:</label>
-        <input type="texta" class="form-control form-control-solid input-calorias" placeholder="Ex: 150" name="sodium" value="{{ isset($content) ? number_format($content->sodium, 1, '.', '') : old('sodium') }}" />
+        <input type="texta" class="form-control form-control-solid input-one" placeholder="Ex: 150" name="sodium" value="{{ isset($content) ? number_format($content->sodium, 1, '.', '') : old('sodium') }}" />
     </div>
     <div class="col-2 mb-5">
         <label class="form-label fw-bold">Fibras:</label>
-        <input type="texta" class="form-control form-control-solid input-calorias" placeholder="Ex: 150" name="fiber" value="{{ isset($content) ? number_format($content->fiber, 1, '.', '') : old('fiber') }}" />
+        <input type="texta" class="form-control form-control-solid input-one" placeholder="Ex: 150" name="fiber" value="{{ isset($content) ? number_format($content->fiber, 1, '.', '') : old('fiber') }}" />
     </div>
     <div class="col-12 mb-5">
         <label class="form-label fw-bold">Observações:</label>

@@ -83,12 +83,19 @@ function generateMasks(){
         "clearIncomplete": true,
     }).mask(".input-money-usd");
 
-    Inputmask(["9999999.9"], {
+    Inputmask(["999.9"], {
         numericInput: true,
         showMaskOnHover: false,
         showMaskOnFocus: true,
         placeholder: "",
-    }).mask(".input-calorias");
+    }).mask(".input-one");
+
+    Inputmask(["999.99"], {
+        numericInput: true,
+        showMaskOnHover: false,
+        showMaskOnFocus: true,
+        placeholder: "",
+    }).mask(".input-two");
 }
 
 // MARK ALL TRUE
@@ -577,3 +584,4 @@ loadDataTable();
 generateFlatpickr();
 onlyUrl();
 generateMasks();
+cropImage();

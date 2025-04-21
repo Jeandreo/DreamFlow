@@ -21,8 +21,8 @@
                         </div>
                     </a>
                 </div>
-                {{-- <div class="col-6 col-md-3">
-                    <a href="{{ route('dishes.index') }}">
+                <div class="col-6 col-md-3">
+                    <a href="{{ route('body.edit') }}">
                         <div class="card mb-4">
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center">
@@ -30,13 +30,13 @@
                                         <i class="fa-solid fa-utensils fs-4 text-warning"></i> <!-- Utensílios para Pratos -->
                                     </div>
                                     <span class="ms-4 fw-bolder fs-7 text-uppercase text-gray-700">
-                                        Pratos
+                                        Meu Corpo
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </a>
-                </div> --}}
+                </div>
                 <div class="col-6 col-md-3">
                     <a href="{{ route('diets.index') }}">
                         <div class="card mb-4">

@@ -28,10 +28,3 @@
         <input type="text" class="form-control form-control-solid" placeholder="*********" name="password" value="" @if(!isset($content)) required @endif/>
     </div>
 </div>
-
-@section('custom-footer')
-<script>
-    // CALL CROPPER
-    cropImage();
-</script>
-@endsection

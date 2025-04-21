@@ -17,19 +17,15 @@ class Diet extends Model
         return $this->hasMany(DayOfWeek::class);
     }
 
+
     public function today()
     {
         
-        // Define a localização para pegar o nome do dia em português
-        Carbon::setLocale('pt_BR');
-    
-        // Obtém o nome do dia atual (ex: Segunda, Terça, etc.)
-        $todayName = ucfirst(Carbon::now()->isoFormat('dddd'));
-    
-        // Busca o dia correspondente na dieta
-        $day = $this->days()->where('name', $todayName)->first();
+        // Usa dayOfWeekIso (1 a 7, onde 1 = Segunda e 7 = Domingo)
+        $dayIndex = Carbon::now()->dayOfWeekIso - 1;
 
-        return $day;
+        // Retorna o modelo DayOfWeek correspondente (mantém relacionamentos)
+        return $this->days->values()->get($dayIndex);
 
     }
 

@@ -24,6 +24,7 @@ use App\Http\Controllers\ProjectCommentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\ProjectTaskController;
+use App\Http\Controllers\UserBodyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -140,6 +141,14 @@ Route::middleware(['auth'])->group(function () {
         // DASHBOARD
         Route::name('nutrition.')->group(function () {
             Route::get('/', [NutritionController::class, 'index'])->name('index');
+        });
+
+        // Meu corpo
+        Route::prefix('corpo')->group(function () {
+            Route::name('body.')->group(function () {
+                Route::get('/meu-corpo', [UserBodyController::class, 'edit'])->name('edit');
+                Route::post('/meu-corpo', [UserBodyController::class, 'store'])->name('store');
+            });
         });
 
         // Dieta

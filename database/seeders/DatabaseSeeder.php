@@ -25,6 +25,7 @@ use App\Models\ProjectCategory;
 use App\Models\ProjectStatus;
 use App\Models\ProjectTask;
 use App\Models\User;
+use App\Models\UserBody;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -1072,9 +1073,20 @@ class DatabaseSeeder extends Seeder
             'created_by' => 1,
         ]); */
 
-       // Cria alimentos
+        // Cria alimentos
         //    $foods = Food::factory()->count(20)->create();
 
+        $this->call(FoodSeeder::class);
+
+        $body = UserBody::create([
+            'user_id'   => 80,
+            'weight'    => 80,
+            'height'    => 173,
+            'age'       => 24,
+            'gender'    => 'male',
+        ]);
+
+        $body->calculateBmr();
 
        /* /
        // Cria pratos com alimentos

@@ -15,6 +15,7 @@ body {
     --bs-app-sidebar-width-actual: 335px;
     --bs-border-radius: 15px;
     --bs-success: #94cb0a;
+    --bs-success-light: #94cb0a21;
 }
 .modal {
     --bs-modal-width: 1250px;

@@ -133,6 +133,13 @@ Breadcrumbs::for('nutrition.index', function (BreadcrumbTrail $trail) {
 });
 
 // Dietas
+Breadcrumbs::for('body.edit', function (BreadcrumbTrail $trail) {
+    $trail->parent('nutrition.index');
+    $trail->push('Meu Corpo', route('diets.index'));
+});
+
+
+// Dietas
 Breadcrumbs::for('diets.index', function (BreadcrumbTrail $trail) {
     $trail->parent('nutrition.index');
     $trail->push('Dietas', route('diets.index'));
