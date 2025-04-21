@@ -1079,7 +1079,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FoodSeeder::class);
 
         $body = UserBody::create([
-            'user_id'   => 80,
+            'user_id'   => 1,
             'weight'    => 80,
             'height'    => 173,
             'age'       => 24,
@@ -1087,6 +1087,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $body->calculateBmr();
+
+        Diet::create([
+            'name' => 'Jeandreo Shape', 
+            'goal' => 'Remover Gordura', 
+            'created_by' => 1,
+        ]);
 
        /* /
        // Cria pratos com alimentos

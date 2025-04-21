@@ -68,26 +68,7 @@ class DietController extends Controller
         $data['created_by'] = Auth::id();
         
         // SEND DATA
-        $diet = $this->repository->create($data);
-
-        // Dias da semana e refeições padrão
-        $days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
-        $mealNames = ['Café da Manhã', 'Lanche da Manhã', 'Almoço', 'Lanche da Tarde', 'Jantar'];
-
-        // Adiciona dias e refeições
-        foreach ($days as $day) {
-            $dayOfWeek = DayOfWeek::create([
-                'name'     => $day,
-                'diet_id'  => $diet->id,
-            ]);
-
-            foreach ($mealNames as $mealName) {
-                MealTime::create([
-                    'name'            => $mealName,
-                    'day_of_week_id'  => $dayOfWeek->id,
-                ]);
-            }
-        }
+        $this->repository->create($data);
 
         // REDIRECT AND MESSAGES
         return redirect()

@@ -10,7 +10,34 @@ class Diet extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'goal', 'total_calories', 'created_by', 'updated_by'];
+    protected $fillable = [
+        'name', 
+        'goal', 
+        'total_calories', 
+        'created_by',
+        'updated_by'
+    ];
+
+    protected static function booted()
+    {
+        static::created(function ($diet) {
+            $diet->createDefaultDaysAndMeals();
+        });
+    }
+
+    public function createDefaultDaysAndMeals()
+    {
+        $days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+        $mealNames = ['Café da Manhã', 'Lanche da Manhã', 'Almoço', 'Lanche da Tarde', 'Jantar'];
+
+        foreach ($days as $dayName) {
+            $day = $this->days()->create(['name' => $dayName]);
+
+            foreach ($mealNames as $mealName) {
+                $day->meals()->create(['name' => $mealName]);
+            }
+        }
+    }
 
     public function days()
     {
@@ -31,7 +58,8 @@ class Diet extends Model
 
     public function eatToday() {
 
-        $logs = FoodLog::where('diet_id', $this->id)
+        $logs = FoodLog::where(
+                'diet_id', $this->id)
                 ->where('date', date('Y-m-d'))
                 ->where('eaten', true)
                 ->get()

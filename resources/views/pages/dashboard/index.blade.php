@@ -205,48 +205,44 @@
                 <div class="carousel-inner h-100">
                     @foreach ($diet->today()->meals as $key => $meal)
                     <div class="carousel-item @if($key == 0) active @endif">
-                        <div class="row m-0">
-                            @if ($meal->items->count())
-                                @foreach ($meal->items as $item)
-                                <div class="col-12">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <div class="form-check form-check-custom form-check-solid cursor-pointer me-2">
-                                                <input class="form-check-input cursor-pointer check-eat" @if(isset($diet->eatToday()[$meal['id']]) && in_array($item->id, $diet->eatToday()[$meal['id']])) checked @endif  value="{{ $item->id }}" data-meal="{{ $meal->id }}" type="checkbox" id="item_{{ $item->id }}"/>
-                                            </div>
-                                            <label class="d-flex justify-content-between cursor-pointer" for="item_{{ $item->id }}">
-                                                <span class="text-gray-700 fw-bold d-flex align-items-center">
-                                                    {{ Str::limit($item->item()?->name ?? $item->dish?->name, 23) }}
-                                                    @if ($item->item()->quantity > 1)
-                                                        @if ($item->item()->type == 'unidade')
-                                                            <span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->item()->quantity }}uni</span>
-                                                        @else
-                                                            <span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->item()->quantity }}g</span>
-                                                        @endif
-                                                    @endif
-                                                </span>
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <span class="text-gray-600">
-                                                {{ floor($item->item()->calories) }}/kcal
-                                            </span>
-                                        </div>
+                        @if ($meal->items->count())
+                            @foreach ($meal->items as $item)
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check form-check-custom form-check-solid cursor-pointer me-2">
+                                        <input class="form-check-input cursor-pointer check-eat" @if(isset($diet->eatToday()[$meal['id']]) && in_array($item->id, $diet->eatToday()[$meal['id']])) checked @endif  value="{{ $item->id }}" data-meal="{{ $meal->id }}" type="checkbox" id="item_{{ $item->id }}"/>
                                     </div>
-                                    @if (!$loop->last)
-                                    <div class="separator separator-dashed my-2"></div>
-                                    @endif
+                                    <label class="d-flex justify-content-between cursor-pointer" for="item_{{ $item->id }}">
+                                        <span class="text-gray-700 fw-bold d-flex align-items-center">
+                                            {{ Str::limit($item->item()?->name ?? $item->dish?->name, 35) }}
+                                            @if ($item->item()->quantity > 1)
+                                                @if ($item->item()->type == 'unidade')
+                                                    <span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->item()->quantity }}uni</span>
+                                                @else
+                                                    <span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->item()->quantity }}g</span>
+                                                @endif
+                                            @endif
+                                        </span>
+                                    </label>
                                 </div>
-                                @endforeach
-                            @else
-                            <div class="bg-light rounded d-flex align-items-center justify-content-center h-225px">
-                                <div class="text-center">
-                                    <p class="fw-bold text-gray-700 fs-4 mb-0 text-uppercase">{{ $meal->name }}</p>
-                                    <p class="text-gray-600 fs-6">Monte sua dieta em alimentação.</p>
+                                <div>
+                                    <span class="text-gray-600">
+                                        {{ floor($item->item()->calories) }}/kcal
+                                    </span>
                                 </div>
                             </div>
+                            @if (!$loop->last)
+                            <div class="separator separator-dashed my-2"></div>
                             @endif
+                            @endforeach
+                        @else
+                        <div class="bg-light rounded d-flex align-items-center justify-content-center h-225px">
+                            <div class="text-center">
+                                <p class="fw-bold text-gray-700 fs-4 mb-0 text-uppercase">{{ $meal->name }}</p>
+                                <p class="text-gray-600 fs-6">Monte sua dieta em alimentação.</p>
+                            </div>
                         </div>
+                        @endif
                     </div>
                     @endforeach
                 </div>
@@ -255,6 +251,30 @@
                     <div class="text-center">
                         <p class="fw-bold text-gray-700 fs-6 mb-0 lh-1">DIETA NÃO PROGRAMADA 😔</p>
                         <p class="text-gray-600 fs-6">Como você quer ficar saradão desse jeito?</p>
+                    </div>
+                </div>
+                @endif
+            </div>
+            <div class="card-footer">
+                @if(Auth::user()->lastBody())
+                <div class="row">
+                    <div class="col-6">
+                        <p class="fw-bold text-gray-700 mb-1">
+                            Consumido até agora: <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" title="Quantia de calorias que você consumiu ao longo do dia."></i><br>
+                            <span class="fw-bolder text-success">{{ Auth::user()->lastBody->bmr }}<span class="fw-normal text-gray-600 fs-8">/kcal</span></span>
+                        </p>
+                    </div>
+                    <div class="col-3">
+                        <p class="fw-bold text-gray-700 mb-1">
+                            TMB: <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" title="É a quantidade de calorias que seu corpo gasta em repouso absoluto para manter funções básicas vitais."></i><br>
+                            <span class="fw-bolder text-success">{{ Auth::user()->lastBody->bmr }}<span class="fw-normal text-gray-600 fs-8">/kcal</span></span></span>
+                        </p>
+                    </div>
+                    <div class="col-3">
+                        <p class="fw-bold text-gray-700 mb-1">
+                            GED:<i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" title="Gasto Energético Diário: É o total de calorias que seu corpo gasta considerando a taxa base + quantidade gasta por exercícios."></i><br>
+                            <span class="fw-bolder text-success">{{ Auth::user()->lastBody->total_calories }}<span class="fw-normal text-gray-600 fs-8">/kcal</span></span>
+                        </p>
                     </div>
                 </div>
                 @endif
