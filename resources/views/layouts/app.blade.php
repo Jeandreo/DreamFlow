@@ -12,8 +12,12 @@
                     @include('layouts.sidebar')
                     <div class="app-main flex-column flex-row-fluid">
                         <div class="app-container container-fluid" style="padding: 0px !important;">
+                            @if (Auth::id() == 1)
                             <div class="row m-0 background-dashboard" style="background-image: url('{{ asset('assets/media/logos/background-pattern.webp') }}'); background-size: cover; margin-bottom: -50px !important;">
                                 <div style="background: linear-gradient(0deg, #090c11, #18202bf0);">
+                            @else
+                            <div class="row m-0" style="background: url('{{ asset('assets/media/images/bg_colors.jpg') }}'); background-position: center;">
+                                    @endif
                                     <div class="col-12">
                                         <div class="toolbar py-20" id="kt_toolbar">
                                             <div id="kt_toolbar_container" class="container-xxl d-flex justify-content-center">
