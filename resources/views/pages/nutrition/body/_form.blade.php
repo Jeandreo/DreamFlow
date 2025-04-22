@@ -24,7 +24,7 @@
             <label class="required form-label fw-bold">Nível de Atividade Física:</label>
             <select class="form-select form-select-solid" name="activity_level" data-control="select2" data-hide-search="true" data-placeholder="Selecione" required>
                 <option value="sedentary" @if(isset($lastBody) && $lastBody->activity_level == 'sedentary') selected @endif>Sedentário</option>
-                <option value="light" @if(isset($lastBody) && $lastBody->activity_level == 'light') selected @endif>Levemente Ativo</option>
+                <option value="light"   @if(isset($lastBody) && $lastBody->activity_level == 'light') selected @endif>Levemente Ativo</option>
                 <option value="moderate" @if(isset($lastBody) && $lastBody->activity_level == 'moderate') selected @endif>Moderadamente Ativo</option>
                 <option value="intense" @if(isset($lastBody) && $lastBody->activity_level == 'intense') selected @endif>Muito Ativo</option>
                 <option value="extreme" @if(isset($lastBody) && $lastBody->activity_level == 'extreme') selected @endif>Extremamente Ativo</option>

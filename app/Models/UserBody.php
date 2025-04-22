@@ -17,6 +17,7 @@ class UserBody extends Model
         'age',
         'gender',
         'body_fat',
+        'activity_level',
     ];
 
     /**
