@@ -99,40 +99,6 @@
 		  </div>
 		@endforeach
 	</div>
-	<div class="col-12 col-md-2">
-		@foreach ([
-			'Jeandreo' => [
-				'Altura' => '173cm',
-				'Peso' 	 => '81,5kg',
-				'Idade'  => '25 anos',
-				'TMB' 	 => '1950/kcal',
-			],
-			'Eduarda' => [
-				'Altura' => '158cm',
-				'Peso' 	 => '78kg',
-				'Idade'  => '22 anos',
-				'TMB' 	 => '1413/kcal',
-			]
-		] as $person => $keys)
-		<div class="card mb-8">
-			<div class="card-body">
-					<p class="text-center text-uppercase text-gray-700 fw-bolder fw-bolder">
-						{{ $person }}
-					</p>
-					@foreach ($keys as $key => $info)
-					<div class="d-flex justify-content-between">
-						<span class="text-gray-700 fw-bold">
-							{{ $key }}
-						</span>
-						<span class="text-gray-600">
-							{{ $info }}
-						</span>
-					</div>
-					@endforeach
-				</div>
-			</div>
-		@endforeach
-	</div>
 </div>
 {{-- @include('pages.nutrition.diets._resume') --}}
 @endsection
