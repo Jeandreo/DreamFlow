@@ -271,7 +271,7 @@
                     </div>
                     <div class="col-3">
                         <p class="fw-bold text-gray-700 mb-1">
-                            GED:<i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" title="Gasto Energético Diário: É o total de calorias que seu corpo gasta considerando a taxa base + quantidade gasta por exercícios."></i><br>
+                            GED: <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" title="Gasto Energético Diário: É o total de calorias que seu corpo gasta considerando a taxa base + quantidade gasta por exercícios."></i><br>
                             <span class="fw-bolder text-success">{{ Auth::user()->lastBody->total_calories ?? '-' }}<span class="fw-normal text-gray-600 fs-8">/kcal</span></span>
                         </p>
                     </div>
