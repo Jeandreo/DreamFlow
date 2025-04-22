@@ -63,6 +63,11 @@ class FoodController extends Controller
         // GET FORM DATA
         $data = $request->all();
 
+        // REMOVE NULL VALUES
+        $data = array_filter($data, function ($value) {
+            return !is_null($value);
+        });
+
         // CREATED BY
         $data['created_by'] = Auth::id();
         
@@ -112,6 +117,11 @@ class FoodController extends Controller
 
         // GET FORM DATA
         $data = $request->all();
+
+        // REMOVE NULL VALUES
+        $data = array_filter($data, function ($value) {
+            return !is_null($value);
+        });
 
         // UPDATE BY
         $data['updated_by'] = Auth::id();
