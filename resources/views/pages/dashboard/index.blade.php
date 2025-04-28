@@ -203,49 +203,63 @@
             <div class="card-body pb-2 pt-1">
                 @if ($diet)
                 <div class="carousel-inner h-100">
-                    @foreach ($diet->today()->meals as $key => $meal)
-                    <div class="carousel-item @if($key == 0) active @endif">
-                        @if ($meal->items->count())
-                            @foreach ($meal->items as $item)
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <div class="form-check form-check-custom form-check-solid cursor-pointer me-2">
-                                        <input class="form-check-input cursor-pointer check-eat" @if(isset($diet->eatToday()[$meal['id']]) && in_array($item->id, $diet->eatToday()[$meal['id']])) checked @endif  value="{{ $item->id }}" data-meal="{{ $meal->id }}" type="checkbox" id="item_{{ $item->id }}"/>
-                                    </div>
-                                    <label class="d-flex justify-content-between cursor-pointer" for="item_{{ $item->id }}">
-                                        <span class="text-gray-700 fw-bold d-flex align-items-center">
-                                            {{ Str::limit($item->item()?->name ?? $item->dish?->name, 35) }}
-                                            @if ($item->item()->quantity > 1)
-                                                @if ($item->item()->type == 'unidade')
-                                                    <span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->item()->quantity }}uni</span>
-                                                @else
-                                                    <span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item->item()->quantity }}g</span>
+                    @foreach ($diet->plannedToday() as $mealData)
+                        <div class="carousel-item @if($loop->first) active @endif">
+                            @if ($mealData['foods']->count())
+                                @foreach ($mealData['foods'] as $item)
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <div class="form-check form-check-custom form-check-solid cursor-pointer me-2">
+                                                <input 
+                                                    class="form-check-input cursor-pointer check-eat" 
+                                                    @if(isset($diet->eatToday()[$mealData['meal_id']]) && in_array($item['food']->id, $diet->eatToday()[$mealData['meal_id']])) checked @endif  
+                                                    value="{{ $item['food']->id }}" 
+                                                    data-meal="{{ $mealData['meal_id'] }}" 
+                                                    type="checkbox" 
+                                                    id="item_{{ $item['food']->id }}"
+                                                />
+                                            </div>
+                                            <label class="d-flex justify-content-between cursor-pointer" for="item_{{ $item['food']->id }}">
+                                                <span class="text-gray-700 fw-bold d-flex align-items-center">
+                                                    {{ Str::limit($item['food']->name, 35) }}
+                                                    @if (!$item['is_extra'] && $item['quantity'] > 1)
+                                                        @if ($item['food']->type == 'unidade')
+                                                            <span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item['quantity'] }}uni</span>
+                                                        @else
+                                                            <span class="fw-normal text-gray-500 fs-7 ms-2">{{ $item['quantity'] }}g</span>
+                                                        @endif
+                                                    @endif
+                                                </span>
+                                                @if($item['is_extra'])
+                                                    <span class="badge badge-light-warning ms-2">Extra</span>
                                                 @endif
-                                            @endif
-                                        </span>
-                                    </label>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-600">
+                                                {{ floor($item['food']->calories) }}/kcal
+                                            </span>
+                                        </div>
+                                    </div>
+                                    @if (!$loop->last)
+                                    <div class="separator separator-dashed my-2"></div>
+                                    @endif
+                                @endforeach
+                                <button class="btn btn-sm btn-light w-100 mt-4" data-bs-toggle="modal" data-bs-target="#modal_add_food">
+                                    Adicionar alimento fora da dieta
+                                </button>
+                            @else
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center h-175px">
+                                    <div class="text-center">
+                                        <p class="fw-bold text-gray-700 fs-4 mb-0 text-uppercase">{{ $mealData['meal_name'] }}</p>
+                                        <p class="text-gray-600 fs-6">Monte sua dieta em alimentação.</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span class="text-gray-600">
-                                        {{ floor($item->item()->calories) }}/kcal
-                                    </span>
-                                </div>
-                            </div>
-                            @if (!$loop->last)
-                            <div class="separator separator-dashed my-2"></div>
                             @endif
-                            @endforeach
-                        @else
-                        <div class="bg-light rounded d-flex align-items-center justify-content-center h-175px">
-                            <div class="text-center">
-                                <p class="fw-bold text-gray-700 fs-4 mb-0 text-uppercase">{{ $meal->name }}</p>
-                                <p class="text-gray-600 fs-6">Monte sua dieta em alimentação.</p>
-                            </div>
                         </div>
-                        @endif
-                    </div>
                     @endforeach
                 </div>
+                
                 @else
                 <div class="bg-light rounded py-3 px-7 h-225px d-flex justify-content-center align-items-center">
                     <div class="text-center">
@@ -432,10 +446,39 @@
         </div>
     </div>
 </div>
+<div class="modal fade" data-bs-focus="false" id="modal_add_food">
+    <div class="modal-dialog w-500px modal-dialog-centered rounded">
+        <div class="modal-content">
+            <div class="modal-header py-3 bg-dark">
+                <h5 class="modal-title text-white">Adicionar alimento</h5>
+                <div class="btn btn-icon bg-dark ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-2x fw-bolder">X</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <select class="form-select form-select-solid select-ajax mb-2" data-placeholder="Adicionar alimento ao dia">
+                        <option></option>
+                        {{-- RESULTS HERE --}}
+                        {{-- RESULTS HERE --}}
+                        {{-- RESULTS HERE --}}
+                    </select>
+                    <button class="btn btn-success w-100" type="submit">
+                        Adicionar Alimento
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('custom-footer')
 <script>
+
+
+	selectOptionsAjax();
+
     // CONFIG NOTES
     var typingTimer;
     var doneTypingInterval = 300;

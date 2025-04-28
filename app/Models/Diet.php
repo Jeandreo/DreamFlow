@@ -44,6 +44,51 @@ class Diet extends Model
         return $this->hasMany(DayOfWeek::class);
     }
 
+    public function plannedToday()
+    {
+        $day = $this->today();
+
+        if (!$day) {
+            return collect();
+        }
+
+        $meals = $day->meals()->with(['items.food'])->get();
+
+        return $meals->map(function ($meal) {
+            // Planejados
+            $plannedFoods = $meal->items->map(function ($item) {
+                return [
+                    'food' => $item->food,
+                    'quantity' => $item->quantity,
+                    'is_extra' => false, // planejado
+                ];
+            });
+
+            // Extras (FoodLog com planned = false)
+            $extraFoods = FoodLog::where('meal_time_id', $meal->id)
+                ->whereDate('date', today())
+                ->where('planned', false)
+                ->with('food')
+                ->get()
+                ->map(function ($foodLog) {
+                    return [
+                        'food' => $foodLog->food,
+                        'is_extra' => true, // extra
+                    ];
+                });
+
+            // Junta planejados + extras
+            $allFoods = $plannedFoods->merge($extraFoods);
+
+            return [
+                'meal_id' => $meal->id,
+                'meal_name' => $meal->name,
+                'foods' => $allFoods,
+            ];
+        });
+    }
+
+
 
     public function today()
     {
@@ -59,29 +104,37 @@ class Diet extends Model
     public function eatToday() {
 
         $logs = FoodLog::where(
-                'diet_id', $this->id)
-                ->where('date', date('Y-m-d'))
-                ->where('eaten', true)
-                ->get()
-                ->groupBy('meal_time_id')
-                ->map(function ($group) {
-                    return $group->pluck('food_id')->toArray();
-                })
-                ->toArray();        
+            'diet_id', $this->id)
+            ->where('date', date('Y-m-d'))
+            ->where('eaten', true)
+            ->get()
+            ->groupBy('meal_time_id')
+            ->map(function ($group) {
+                return $group->pluck('food_id')->toArray();
+            })
+            ->toArray();        
 
         return $logs;
+
     }
 
     public function caloriesEatenToday()
     {
-        // Pega os IDs dos alimentos comidos hoje
-        $foodIds = collect($this->eatToday())
-                    ->flatten()
-                    ->unique()
-                    ->toArray();
+       
+        $logsFoods = FoodLog::where('diet_id', $this->id)
+                ->whereDate('date', today())
+                ->where('eaten', true)
+                ->get();
 
-        // Soma as calorias dos alimentos
-        return Food::whereIn('id', $foodIds)->sum('calories');
+        // Soma calorias
+        $calories = 0;
+
+        foreach ($logsFoods as $log) {
+        $calories += $log->food->calories;
+        }
+
+        return $calories;
+
     }
 
 }

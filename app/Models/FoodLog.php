@@ -19,4 +19,10 @@ class FoodLog extends Model
         'eaten',
         'planned',
     ];
+
+    public function food()
+    {
+        return $this->belongsTo(Food::class, 'food_id');
+    }
+
 }

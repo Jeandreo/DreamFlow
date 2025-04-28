@@ -39,6 +39,9 @@
 								<div class="px-4">
 									<select class="form-select form-select-food border-0 p-0 fs-7 select-ajax add-food" data-meal="{{ $meal->id }}" data-placeholder="Adicionar">
 										<option></option>
+										{{-- RESULTS HERE --}}
+										{{-- RESULTS HERE --}}
+										{{-- RESULTS HERE --}}
 									</select>
 								</div>
 							</div>
