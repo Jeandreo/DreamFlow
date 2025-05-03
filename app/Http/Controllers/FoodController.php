@@ -171,12 +171,19 @@ class FoodController extends Controller
         // Ajusta o valor eaten
         $data['eaten'] = $data['eaten'] == 'true' ? true : false;
 
+        // Marca como planejado
+        $data['planned'] = !isset($data['planned']) ? true : false;
+
+        // Separa id do tipo
+        $item = explode('_', $data['itemId']);
+
         $log = FoodLog::updateOrCreate(
             [
-                'diet_id' => $diet->id,
-                'meal_time_id' => $data['mealId'],
-                'food_id' => $data['itemId'],
-                'date' => date('Y-m-d'),
+                'diet_id'       => $diet->id,
+                'meal_time_id'  => $data['mealId'],
+                'food_id'       => end($item),
+                'planned'       => $data['planned'],
+                'date'          => date('Y-m-d'),
             ],
             [
                 'eaten' => $data['eaten'],

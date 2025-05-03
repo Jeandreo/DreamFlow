@@ -245,7 +245,7 @@
                                     <div class="separator separator-dashed my-2"></div>
                                     @endif
                                 @endforeach
-                                <button class="btn btn-sm btn-light w-100 mt-4" data-bs-toggle="modal" data-bs-target="#modal_add_food">
+                                <button class="btn btn-sm btn-light w-100 mt-4 meal-extra" data-meal="{{ $mealData['meal_id'] }}" data-bs-toggle="modal" data-bs-target="#modal_add_food">
                                     Adicionar alimento fora da dieta
                                 </button>
                             @else
@@ -447,7 +447,7 @@
     </div>
 </div>
 <div class="modal fade" data-bs-focus="false" id="modal_add_food">
-    <div class="modal-dialog w-500px modal-dialog-centered rounded">
+    <div class="modal-dialog w-md-500px modal-dialog-centered rounded">
         <div class="modal-content">
             <div class="modal-header py-3 bg-dark">
                 <h5 class="modal-title text-white">Adicionar alimento</h5>
@@ -456,8 +456,10 @@
                 </div>
             </div>
             <div class="modal-body">
-                <form>
-                    <select class="form-select form-select-solid select-ajax mb-2" data-placeholder="Adicionar alimento ao dia">
+                <form action="#" method="POST" id="send-food-extra">
+                    @csrf
+                    <input type="hidden" name="meal_id" id="meal-extra-food">
+                    <select class="form-select form-select-solid select-ajax mb-2" name="food_id" data-placeholder="Adicionar alimento ao dia">
                         <option></option>
                         {{-- RESULTS HERE --}}
                         {{-- RESULTS HERE --}}
@@ -531,6 +533,43 @@
             },
             success:function(response) {
                 toastr.success('Olhaaa o shapee vindoo!!!');
+            }
+        });
+
+    });
+    
+    $(document).on('click', '.meal-extra', function(e){
+    
+        var mealId = $(this).data('meal');
+
+        $('#meal-extra-food').val(mealId);
+
+    });
+
+    // Desmarca ou marca
+    $(document).on('submit', '#send-food-extra', function(e){
+
+        // Para formulário
+        e.preventDefault();
+
+        // Obtém item da dieta
+        var form = $(this);
+        var foodId = $(this).find('[name="food_id"]').val();
+        var mealId = $(this).find('[name="meal_id"]').val();
+
+        // AJAX
+        $.ajax({
+            type:'POST',
+            url: "{{ route('foods.eat') }}",
+            data: {
+                _token: @json(csrf_token()),
+                itemId: foodId,
+                mealId: mealId,
+                eaten: true,
+                planned: false,
+            },
+            success:function(response) {
+                $('#modal_add_food').modal('hide');
             }
         });
 

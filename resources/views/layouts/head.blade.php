@@ -21,7 +21,7 @@
 <!--begin::Global Stylesheets Bundle(used by all pages)-->
 <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('assets/css/custom.bundle.css?v=2') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/css/custom.bundle.css?v=3') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ asset('assets/plugins/custom/cropper/cropper.bundle.css') }}" rel="stylesheet" type="text/css" />
 <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
