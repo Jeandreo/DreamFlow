@@ -6,7 +6,7 @@
 
 @section('content')
 	<div class="row">
-		<div class="col-6 offset-3">
+		<div class="col-12 col-md-6 offset-md-3">
 			<div class="card">
 				<div class="card-body">
 					<form action="{{ route('challenges.store') }}" method="POST" enctype="multipart/form-data">

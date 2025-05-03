@@ -3,7 +3,7 @@
 @section('title-toolbar', 'Transações')
 @section('content')
     <div class="row">
-        <div class="col-2 offset-5">
+        <div class="col-12 col-md-2 offset-md-5">
             <div class="card mb-4 shadow-light">
                 <div class="card-body">
                     <h2 class="fs-5 text-center text-uppercase text-gray-700">
