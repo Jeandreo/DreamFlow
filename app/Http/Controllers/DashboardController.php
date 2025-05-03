@@ -54,9 +54,6 @@ class DashboardController extends Controller
         // OBTÉM PROJETOS
         $projects = Project::where('status', 1)->get();
 
-        // Obtém dieta ativa
-        $diet = Diet::where('status', true)->first();
-
         // RETURN VIEW WITH DATA
         return view('pages.dashboard.index')->with([
             'actualMonth'       => $actualMonth,
@@ -67,7 +64,6 @@ class DashboardController extends Controller
             'weekChallenge'     => $weekChallenge,
             'lists'             => $lists,
             'projects'          => $projects,
-            'diet'              => $diet,
             'pageClean'         => true,
         ]);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Diet;
 use App\Models\MealItem;
 use App\Models\MealTime;
 use Illuminate\Http\Request;
@@ -18,6 +19,24 @@ class MealItemController extends Controller
         $this->request = $request;
         $this->repository = $content;
 
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+
+        // Obtém dieta ativa
+        $diet = Diet::where('status', true)->first();
+
+        // RETURN VIEW WITH DATA
+        return view('pages.dashboard.meals._today')->with([
+            'diet' => $diet,
+        ]);
     }
 
     /**
