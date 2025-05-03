@@ -3,77 +3,39 @@
 @section('title-toolbar', 'Transações')
 @section('content')
     <div class="row">
-        <div class="col">
+        <div class="col-2 offset-5">
             <div class="card mb-4 shadow-light">
                 <div class="card-body">
-                    <h2 class="fs-5 text-center text-uppercase text-gray-700 mb-0">
+                    <h2 class="fs-5 text-center text-uppercase text-gray-700">
                         Resultado do mês
                     </h2>
                     <p class="m-0 d-flex justify-content-between">
-                        <span class="fw-bold text-gray-700">
+                        <span class="fw-semibold text-gray-700">
                             Entrada Prevista
                         </span>
-                        <span class="text-uppercase text-gray-700 fw-normal mb-0" id="current-month-revenue">
+                        <span class="text-uppercase text-success fw-normal mb-0" id="current-month-revenue">
                             R$ 0,00
                         </span>
                     </p>
                     <p class="m-0 d-flex justify-content-between">
-                        <span class="fw-bold text-gray-700">
+                        <span class="fw-semibold text-gray-700">
                             Saída Prevista
                         </span>
-                        <span class="text-uppercase text-gray-700 fw-normal mb-0" id="current-month-expense">
-                            R$ 0,00
+                        <span class="text-uppercase text-danger fw-normal mb-0">
+                            -<span id="current-month-expense">R$ 0,00</span>
                         </span>
                     </p>
+                    <div class="separator separator-dashed my-2"></div>
                     <p class="m-0 d-flex justify-content-between">
                         <span class="fw-bold text-gray-700">
                             Resultado do mês
                         </span>
-                        <span class="text-uppercase text-gray-700 fw-normal mb-0" id="current-month-result">
+                        <span class="text-uppercase text-primary fw-normal mb-0" id="current-month-result">
                             R$ 0,00
                         </span>
                     </p>
                 </div>
             </div>
-        </div>
-
-        <div class="col">
-            <div class="card mb-4 shadow">
-                <div class="card-body">
-                    <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-revenue">
-                        R$ 0,00
-                    </h3>
-                    <h2 class="fs-5 text-uppercase text-primary mb-0">
-                        Entrada Prevista
-                    </h2>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card mb-4 shadow">
-                <div class="card-body">
-                    <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-expense">
-                        R$ 0,00
-                    </h3>
-                    <h2 class="fs-5 text-uppercase text-primary mb-0">
-                        Saída Prevista
-                    </h2>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card mb-4 shadow">
-                <div class="card-body">
-                    <h3 class="fs-1 text-uppercase text-gray-700 fw-normal mb-0" id="current-month-result">
-                        R$ 0,00
-                    </h3>
-                    <h2 class="fs-5 text-uppercase text-primary mb-0">
-                        Resultado do mês
-                    </h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-2 d-none d-md-block">
         </div>
     </div>
     <div class="row">
@@ -159,7 +121,7 @@
                         </div>
                     </div>
                     <table id="datatables-transactions"
-                        class="table align-middle table-row-dashed fs-6 gy-3 table-odd-light">
+                        class="table table-striped align-middle table-row-dashed fs-6 gy-1 table-odd-light dataTable no-footer">
                         <thead>
                             <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                 <th class="w-10px pe-2">-</th>

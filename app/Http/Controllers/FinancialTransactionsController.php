@@ -608,7 +608,7 @@ class FinancialTransactionsController extends Controller
                                 </button>";
                 }
 
-                return $showTransactios . $btnDelete . "<button class='btn btn-light btn-active-light-primary btn-sm me-3'>Ações</button>";
+                return $showTransactios . $btnDelete . "<button class='btn btn-light btn-active-light-primary btn-sm me-3 py-1 h-30px my-auto'>Ações</button>";
             })
             ->rawColumns(['checked', 'name', 'category_id', 'date', 'value', 'wallet_credit', 'actions'])
             ->setTotalRecords($totalRecords)
