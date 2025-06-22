@@ -12,7 +12,6 @@
 					<table class="table table-striped table-row-bordered gy-1 gs-7 border rounded align-middle dmk-datatables">
 						<thead>
 							<tr class="fw-bold fs-6 text-gray-800 px-7">
-								<th width="4%" class="pe-0 ps-5">ID</th>
 								<th>Nome</th>
 								<th>Categoria</th>
 								<th>Tipo</th>
@@ -27,11 +26,6 @@
 						<tbody>
 							@foreach (projects()->get() as $content)
 							<tr>
-								<td class="pe-0 ps-4">
-									<span class="fw-semibold text-gray-700">
-										{{  str_pad($content->id , 4 , '0' , STR_PAD_LEFT)}}
-									</span>
-								</td>
 								<td>
 									<a href="{{ route('projects.show', $content->id) }}" class="d-flex align-items-center text-gray-800 text-hover-primary fs-6 fw-normal">
 										<span class="bullet bullet-dot h-5px w-5px me-2" style="background: {{ $content->color }}"></span>
