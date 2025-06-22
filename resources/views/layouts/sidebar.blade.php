@@ -172,10 +172,10 @@
                         <!--begin:Menu sub-->
                         <div  class="menu-sub menu-sub-accordion">
                             <div  class="menu-item">
-                                <a class="menu-link" href="{{ route('projects.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Quadros</span></a>
+                                <a class="menu-link" href="{{ route('projects.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Listas de Tarefas</span></a>
                             </div>
                             <div  class="menu-item">
-                                <a class="menu-link" href="{{ route('catalogs.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Listas</span></a>
+                                <a class="menu-link" href="{{ route('catalogs.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Catálogos</span></a>
                             </div>
                             <div  class="menu-item" >
                                 <a class="menu-link" href="{{ route('statuses.index') }}"><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Status</span></a>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title-page', $projects->count() == 1 ? $projects[0]->name : 'Projetos')
+@section('title-page', $projects->count() == 1 ? $projects[0]->name : 'Listas de tarefas')
 
 @section('custom-head')
 <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>

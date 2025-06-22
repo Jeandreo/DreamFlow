@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title-page', 'Lista de projetos')
+@section('title-page', 'Lista de tarefas')
 
-@section('title-toolbar', 'Lista de projetos')
+@section('title-toolbar', 'Lista de tarefas')
 
 @section('content')
 	<div class="row">
