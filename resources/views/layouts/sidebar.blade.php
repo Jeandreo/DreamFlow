@@ -72,10 +72,10 @@
                         </div>
                     </div>
                     <div  class="menu-item">
-                        <a class="menu-link active"  href="{{ route('dashboard.index') }}"  ><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Painél de controle</span></a>
+                        <a class="menu-link"  href="{{ route('dashboard.index') }}"  ><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span><span class="menu-title">Painél de controle</span></a>
                     </div>
                     <div  class="menu-item">
-                        <a class="menu-link" href="{{ route('dashboard.tasks') }}"  ><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span>
+                        <a class="menu-link active" href="{{ route('dashboard.tasks') }}"  ><span class="menu-bullet" ><span class="bullet bullet-dot"></span></span>
                             <span class="menu-title">Lista de tarefas </span>
                             <span class="menu-badge">
                                 <span class="badge badge-primary">

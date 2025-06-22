@@ -44,8 +44,8 @@ Route::middleware(['auth'])->group(function () {
 
     // DASHBOARD
     Route::name('dashboard.')->group(function () {
-        Route::get('/', [DashboardController::class, 'tasks'])->name('index');
-        Route::get('/tarefas', [DashboardController::class, 'tasks'])->name('tasks');
+        Route::get('/', [DashboardController::class, 'tasks'])->name('tasks');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('index');
         Route::get('/lista/{range?}', [DashboardController::class, 'list'])->name('list');
     });
 
