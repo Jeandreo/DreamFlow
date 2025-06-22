@@ -238,6 +238,16 @@ Breadcrumbs::for('projects.show', function (BreadcrumbTrail $trail) {
     $trail->push('Visualizando Projeto', route('projects.show'));
 });
 
+Breadcrumbs::for('projects.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('projects.index');
+    $trail->push('Adicionar Projeto', route('projects.show'));
+});
+
+Breadcrumbs::for('projects.edit', function (BreadcrumbTrail $trail) {
+    $trail->parent('projects.index');
+    $trail->push('Editar Projeto', route('projects.show'));
+});
+
 Breadcrumbs::for('tasks.others', function (BreadcrumbTrail $trail) {
     $trail->parent('projects.index');
     $trail->push('Ideias e Excluídas', route('projects.index'));
