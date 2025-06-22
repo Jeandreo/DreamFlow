@@ -25,7 +25,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach (projects()->where('type', 1)->get() as $content)
+							@foreach (projects()->get() as $content)
 							<tr>
 								<td class="pe-0 ps-4">
 									<span class="fw-semibold text-gray-700">
