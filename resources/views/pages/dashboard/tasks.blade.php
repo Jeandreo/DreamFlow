@@ -10,7 +10,7 @@
         <div class="card mb-4">
             <div class="card-header border-0 py-5">
                 <h3 class="card-title align-items-start flex-column">
-                    <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Minhas tarefas do dia!</span>
+                    <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Minhas próximas tarefas!</span>
                     <span class="text-muted fw-semibold fs-7">Concluir tarefas te deixa um passo mais próximo dos seus sonhos!</span>
                 </h3>
                 <div class="card-toolbar">
