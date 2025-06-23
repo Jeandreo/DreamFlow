@@ -10,8 +10,8 @@
         <div class="card mb-4">
             <div class="card-header border-0 py-5">
                 <h3 class="card-title align-items-start flex-column">
-                    <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Faça o que for preciso pela missão!</span>
-                    <span class="text-muted fw-semibold fs-7">Seja um destruidor de tarefas!</span>
+                    <span class="card-label fs-4 text-uppercase fw-bold text-gray-700 m-0">Minhas tarefas do dia!</span>
+                    <span class="text-muted fw-semibold fs-7">Concluir tarefas te deixa um passo mais próximo dos seus sonhos!</span>
                 </h3>
                 <div class="card-toolbar">
                     <div class="form-check form-switch form-check-custom form-check-solid">
