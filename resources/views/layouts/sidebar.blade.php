@@ -2,7 +2,7 @@
     data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="325px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#open_sidebar"
     >
     <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
-        <a href="{{ route('dashboard.index') }}">
+        <a href="{{ route('dashboard.tasks') }}">
         @if (Auth::id() == 1)
         <img alt="Logo" src="{{ asset('/assets/media/logos/logo-jeandreo.webp') }}" class="h-30px app-sidebar-logo-default"/>
         <img alt="Logo" src="{{ asset('/assets/media/logos/favicon.webp') }}" class="h-35px app-sidebar-logo-minimize ms-n1"/>
