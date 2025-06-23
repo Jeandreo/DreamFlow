@@ -30,7 +30,7 @@
                     {{-- RESULTS HERE --}}
                     {{-- RESULTS HERE --}}
                 </div>
-                @if(projects()->exists())
+                @if(projects()->where('reminder', true)->exists())
                 <form action="#" method="POST" class="send-tasks">
                     @csrf
                     <div class="d-flex h-40px mt-5">
